@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "dev-server-client": "file:DevServerClient"
+  }
+}
