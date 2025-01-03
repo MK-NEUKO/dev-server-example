@@ -34,8 +34,11 @@ export class WeatherForecastComponent {
     console.log(this.city);
     this.weatherForecastService.getLocations(this.city).subscribe((data: Location[]) => {
       this.locations = data;
-      console.log(data);
     });
+  }
+
+  getForecast(location: Location) {
+    console.log(location);
   }
 
 }
