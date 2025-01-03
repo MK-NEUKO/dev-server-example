@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using Microsoft.Extensions.Options;
 using WeatherForecastApi.Domain.Abstractions;
 using WeatherForecastApi.Domain.Location;
 
@@ -9,10 +10,10 @@ public class OpenWeatherMapLocationService : ILocationService
     private readonly HttpClient _httpClient;
     private readonly OpenWeatherMapOptions _options;
 
-    public OpenWeatherMapLocationService(HttpClient httpClient, OpenWeatherMapOptions options)
+    public OpenWeatherMapLocationService(HttpClient httpClient, IOptions<OpenWeatherMapOptions> options)
     {
         _httpClient = httpClient;
-        _options = options;
+        _options = options.Value;
     }
 
     public async Task<List<Location>> GetLocationAsync(string city, string zipCode)

@@ -1,3 +1,5 @@
+using WeatherForecastApi.Application.GetLocation;
+using WeatherForecastApi.Application.GetLocation.Abstractions;
 using WeatherForecastApi.Domain.Abstractions;
 using WeatherForecastApi.Infrastructure;
 
@@ -27,6 +29,7 @@ builder.AddServiceDefaults();
 // Add services to the container.
 builder.Services.Configure<OpenWeatherMapOptions>(builder.Configuration.GetSection("OpenWeatherMap"));
 builder.Services.AddHttpClient<ILocationService, OpenWeatherMapLocationService>();
+builder.Services.AddScoped<IGetLocation, GetLocation>();
 
 
 

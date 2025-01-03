@@ -1,8 +1,9 @@
-﻿using WeatherForecastApi.Domain.Abstractions;
+﻿using WeatherForecastApi.Application.GetLocation.Abstractions;
+using WeatherForecastApi.Domain.Abstractions;
 
 namespace WeatherForecastApi.Application.GetLocation;
 
-public class GetLocation
+public class GetLocation : IGetLocation
 {
     private readonly ILocationService _locationService;
 
@@ -11,7 +12,7 @@ public class GetLocation
         _locationService = locationService;
     }
 
-    public async Task<List<LocationDTO>> RequestLocations(string City, string ZipCode = "")
+    public async Task<IEnumerable<LocationDTO>> RequestLocations(string City, string ZipCode = "")
     {
         var response = await _locationService.GetLocationAsync(City, ZipCode);
 
