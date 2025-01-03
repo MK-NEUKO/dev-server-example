@@ -1,1 +1,19 @@
-<p>weather-forecast works!</p>
+<h2 class="text-center my-4">Weather Forecast</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Temp. °C</th>
+            <th scope="col">Temp. °F</th>
+            <th scope="col">Summery</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let forecast of forecasts">
+            <td>{{forecast.date}}</td>
+            <td>{{forecast.temperatureC}}</td>
+            <td>{{forecast.temperatureF}}</td>
+            <td>{{forecast.summary}}</td>
+        </tr>
+    </tbody>
+  </table>

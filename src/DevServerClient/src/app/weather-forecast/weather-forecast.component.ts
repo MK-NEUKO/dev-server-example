@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { DefaultWeather } from '../../models/weatherforecast/defaultweather';
 import { WeatherForecastService } from '../weather-forecast.service';
 
 @Component({
   selector: 'weather-forecast',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './weather-forecast.component.html',
   styleUrl: './weather-forecast.component.css'
 })
