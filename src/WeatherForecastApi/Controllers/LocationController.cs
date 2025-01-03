@@ -16,8 +16,10 @@ public class LocationController : Controller
     }
 
     [HttpGet(Name = "GetLocations")]
-    public async Task<IEnumerable<LocationDTO>> Get(string City, string ZipCode = "")
+    [Route("GetLocations/{city}")]
+    public async Task<IEnumerable<LocationDTO>> GetLocations(string city, string ZipCode = "")
     {
-        return await _getLocation.RequestLocations(City, ZipCode);
+        var response = await _getLocation.RequestLocations(city, ZipCode);
+        return response.ToArray();
     }
 }
