@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\GetLocation\" />
     <Folder Include="Application\GetWeatherForecast\" />
     <Folder Include="Domain\WeatherForecast\" />
   </ItemGroup>

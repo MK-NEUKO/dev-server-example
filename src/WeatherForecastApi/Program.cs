@@ -1,3 +1,6 @@
+using WeatherForecastApi.Domain.Abstractions;
+using WeatherForecastApi.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -19,10 +22,17 @@ builder.Services.AddCors(options =>
 
 builder.AddServiceDefaults();
 
+
+
 // Add services to the container.
+builder.Services.Configure<OpenWeatherMapOptions>(builder.Configuration.GetSection("OpenWeatherMap"));
+builder.Services.AddHttpClient<ILocationService, OpenWeatherMapLocationService>();
+
+
+
+
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
