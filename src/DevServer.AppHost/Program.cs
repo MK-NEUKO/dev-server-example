@@ -10,4 +10,6 @@ builder.AddNpmApp("devServerClient", "../DevServerClient")
     .WithExternalHttpEndpoints()
     .PublishAsDockerFile();
 
+builder.AddProject<Projects.WeatherForecastApi>("weatherforecastapi");
+
 builder.Build().Run();

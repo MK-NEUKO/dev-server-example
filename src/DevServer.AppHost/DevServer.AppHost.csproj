@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WeatherApi\WeatherApi.csproj" />
+    <ProjectReference Include="..\WeatherForecastApi\WeatherForecastApi.csproj" />
   </ItemGroup>
 
   <Target Name="RestoreNpm" BeforeTargets="Build" Condition=" '$(DesignTimeBuild)' != 'true' ">
