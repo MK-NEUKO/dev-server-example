@@ -1,31 +1,26 @@
-﻿using WeatherForecastApi.Application.GetLocation.Abstractions;
+﻿using AutoMapper;
+using WeatherForecastApi.Application.Abstractions;
 using WeatherForecastApi.Domain.Abstractions;
 
 namespace WeatherForecastApi.Application.GetLocation;
 
-public class GetLocation : IGetLocation
+public class GetLocation(
+    ILocationService locationService,
+    IMapper mapper
+    ) 
+    : IGetLocation
 {
-    private readonly ILocationService _locationService;
-
-    public GetLocation(ILocationService locationService)
+    public async Task<IEnumerable<LocationQueryResultDto>> RequestLocations(string query)
     {
-        _locationService = locationService;
-    }
+        var response = await locationService.GetLocationAsync(query);
 
-    public async Task<IEnumerable<LocationDTO>> RequestLocations(string City, string ZipCode = "")
-    {
-        var response = await _locationService.GetLocationAsync(City, ZipCode);
-
-        var locations = response.Select(location => new LocationDTO
+        var locations = new List<LocationQueryResultDto>();
+        foreach (var responseResult in response.Results)
         {
-            Name = location.Name,
-            LocalNames = location.LocalNames,
-            Lat = location.Lat,
-            Lon = location.Lon,
-            Country = location.Country,
-            State = location.State
-        }).ToList();
+            var location = mapper.Map<LocationQueryResultDto>(responseResult);
+            locations.Add(location);
+        }
 
-        return await Task.FromResult(locations);
+        return locations;
     }
 }

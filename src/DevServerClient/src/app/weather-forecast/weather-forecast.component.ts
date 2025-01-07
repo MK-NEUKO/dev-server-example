@@ -23,17 +23,18 @@ export class WeatherForecastComponent {
 
   constructor(private weatherForecastService: WeatherForecastService) { }
 
-  ngOnInit() {
-    this.weatherForecastService.getWeatherForecast().subscribe((data: DefaultWeather[]) => {
-      this.forecasts = data;
-      console.log(data);
-    });
-  }
+  //ngOnInit() {
+  //  this.weatherForecastService.getWeatherForecast().subscribe((data: DefaultWeather[]) => {
+  //    this.forecasts = data;
+  //    console.log(data);
+  //  });
+  //}
 
   onSubmit() {
     console.log(this.city);
     this.weatherForecastService.getLocations(this.city).subscribe((data: Location[]) => {
       this.locations = data;
+      console.log(data);
     });
   }
 

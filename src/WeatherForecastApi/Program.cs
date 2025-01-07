@@ -1,7 +1,9 @@
+using AutoMapper;
+using WeatherForecastApi.Application.Abstractions;
 using WeatherForecastApi.Application.GetLocation;
-using WeatherForecastApi.Application.GetLocation.Abstractions;
 using WeatherForecastApi.Domain.Abstractions;
 using WeatherForecastApi.Infrastructure;
+using WeatherForecastApi.Infrastructure.MeteoBlueApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,12 +26,14 @@ builder.Services.AddCors(options =>
 
 builder.AddServiceDefaults();
 
-
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 // Add services to the container.
-builder.Services.Configure<OpenWeatherMapOptions>(builder.Configuration.GetSection("OpenWeatherMap"));
-builder.Services.AddHttpClient<ILocationService, OpenWeatherMapLocationService>();
+builder.Services.Configure<MeteoBlueOptions>(builder.Configuration.GetSection("MeteoBlue"));
+builder.Services.AddHttpClient<ILocationService, MeteoBlueLocationService>();
 builder.Services.AddScoped<IGetLocation, GetLocation>();
+
+
 
 
 
