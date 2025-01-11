@@ -16,7 +16,7 @@ export class WeatherForecastService {
   }
 
   getLocations(city: string): Observable<Location[]> {
-    return this.http.get<Location[]>(`weather-api/Location/GetLocations/${city}`);
+    return this.http.get<Location[]>(`weather-api/Locations/GetLocations/${city}`);
   }
 
 }

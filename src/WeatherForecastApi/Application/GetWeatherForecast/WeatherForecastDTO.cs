@@ -1,5 +1,5 @@
 ﻿namespace WeatherForecastApi.Application.GetWeatherForecast;
 
-public record WeatherForecastDTO
+public record WeatherForecastDto
 {
 }

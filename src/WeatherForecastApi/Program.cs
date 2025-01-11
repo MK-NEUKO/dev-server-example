@@ -1,6 +1,6 @@
 using AutoMapper;
 using WeatherForecastApi.Application.Abstractions;
-using WeatherForecastApi.Application.GetLocation;
+using WeatherForecastApi.Application.GetLocations;
 using WeatherForecastApi.Domain.Abstractions;
 using WeatherForecastApi.Infrastructure;
 using WeatherForecastApi.Infrastructure.MeteoBlueApi;
@@ -30,8 +30,9 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 // Add services to the container.
 builder.Services.Configure<MeteoBlueOptions>(builder.Configuration.GetSection("MeteoBlue"));
-builder.Services.AddHttpClient<ILocationService, MeteoBlueLocationService>();
-builder.Services.AddScoped<IGetLocation, GetLocation>();
+builder.Services.AddHttpClient<ILocationsService, MeteoBlueLocationsService>();
+builder.Services.AddScoped<IGetLocation, GetLocations>();
+
 
 
 

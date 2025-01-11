@@ -5,16 +5,16 @@ using WeatherForecastApi.Domain.Location;
 
 namespace WeatherForecastApi.Infrastructure.MeteoBlueApi;
 
-public class MeteoBlueLocationService(
+public class MeteoBlueLocationsService(
     IOptions<MeteoBlueOptions> options,
     HttpClient httpClient,
-    ILogger<MeteoBlueLocationService> logger
+    ILogger<MeteoBlueLocationsService> logger
     )
-    : ILocationService
+    : ILocationsService
 {
     private readonly MeteoBlueOptions _options = options.Value;
 
-    public async Task<LocationQueryResult> GetLocationAsync(string query)
+    public async Task<LocationQueryResult> GetLocationsAsync(string query)
     {
         logger.LogInformation("Querying location for {Query}", query);
 

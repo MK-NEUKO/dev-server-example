@@ -1,6 +1,6 @@
-﻿namespace WeatherForecastApi.Application.GetLocation;
+﻿namespace WeatherForecastApi.Application.GetLocations;
 
-public record LocationQueryResultDto
+public record LocationsQueryResultDto
 {
     public string Name { get; init; }
     public double Lat { get; init; }

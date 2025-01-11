@@ -1,8 +1,8 @@
-﻿using WeatherForecastApi.Application.GetLocation;
+﻿using WeatherForecastApi.Application.GetLocations;
 
 namespace WeatherForecastApi.Application.Abstractions;
 
 public interface IGetLocation
 {
-    Task<IEnumerable<LocationQueryResultDto>> RequestLocations(string query);
+    Task<IEnumerable<LocationsQueryResultDto>> HandleAsync(string query);
 }

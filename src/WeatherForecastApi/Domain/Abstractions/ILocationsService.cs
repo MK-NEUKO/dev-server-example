@@ -2,7 +2,7 @@
 
 namespace WeatherForecastApi.Domain.Abstractions;
 
-public interface ILocationService
+public interface ILocationsService
 {
-    Task<LocationQueryResult> GetLocationAsync(string query);
+    Task<LocationQueryResult> GetLocationsAsync(string query);
 }
