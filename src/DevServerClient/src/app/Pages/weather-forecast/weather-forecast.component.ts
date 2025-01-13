@@ -6,7 +6,7 @@ import { WeatherForecastService } from '../../../Services/WeatherForecast/weathe
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'weather-forecast',
+  selector: 'app-weather-forecast',
   standalone: true,
   imports: [
     CommonModule,

@@ -1,7 +1,14 @@
 import { Routes } from '@angular/router';
 import { WeatherForecastComponent } from './Pages/weather-forecast/weather-forecast.component';
+import { BaseLayoutComponent } from './Layout/base-layout/base-layout.component';
 
 export const routes: Routes = [
-    {path: '', component: WeatherForecastComponent},
-    {path: 'weather-forecast', redirectTo: '', pathMatch: 'full'}
+    {
+        path: '',
+        component: BaseLayoutComponent,
+        children: [
+            {path: '', component: WeatherForecastComponent}
+        ]
+            },
+    
 ];
