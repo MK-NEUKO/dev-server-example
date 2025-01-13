@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DefaultWeather } from '../../models/weatherforecast/defaultweather';
-import { Location } from '../../models/weatherforecast/location';
-import { WeatherForecastService } from '../weather-forecast.service';
+import { DefaultWeather } from '../../../models/weatherforecast/defaultweather';
+import { Location } from '../../../models/weatherforecast/location';
+import { WeatherForecastService } from '../../../Services/WeatherForecast/weather-forecast.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   templateUrl: './weather-forecast.component.html',
-  styleUrl: './weather-forecast.component.css'
+  styleUrls: ['./weather-forecast.component.css']
 })
 export class WeatherForecastComponent {
 

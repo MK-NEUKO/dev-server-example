@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DefaultWeather } from '../models/weatherforecast/defaultweather';
-import { Location } from '../models/weatherforecast/location';
+import { DefaultWeather } from '../../models/weatherforecast/defaultweather';
+import { Location } from '../../models/weatherforecast/location';
 
 @Injectable({
   providedIn: 'root'

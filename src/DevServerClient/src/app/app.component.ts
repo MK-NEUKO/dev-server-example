@@ -1,7 +1,6 @@
 import { Component, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule } from '@angular/router';
-import { WeatherForecastComponent } from './weather-forecast/weather-forecast.component';
 
 @Injectable()
 @Component({
