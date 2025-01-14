@@ -9,6 +9,6 @@ export const routes: Routes = [
         children: [
             {path: '', component: WeatherForecastComponent}
         ]
-            },
+    },
     
 ];
