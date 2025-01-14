@@ -7,8 +7,8 @@
   "scripts": {
     "ng": "ng",
     "start": "run-script-os",
-    "start:win32": "ng serve --port %PORT%",
-    "start:default": "ng serve --port $PORT",
+    "start:win32": "ng serve --port %DEV_SERVER_CLIENT_PORT%",
+    "start:default": "ng serve --port $DEV_SERVER_CLIENT_PORT",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -23,6 +23,7 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
+    "bootstrap": "^5.3.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
@@ -38,7 +39,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.4.2",
-    "run-script-os": "^1.1.6"
+    "run-script-os": "^1.1.6",
+    "typescript": "~5.4.2"
   }
 }

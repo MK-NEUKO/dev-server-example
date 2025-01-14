@@ -1,25 +1,21 @@
 import { Component, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { WeatherForecasts } from '../types/weatherForecast';
+import { RouterOutlet, RouterModule } from '@angular/router';
 
 @Injectable()
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterModule
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'weather';
-  forecasts: WeatherForecasts = [];
+  title = 'Dev-Server-App';
 
-  constructor(private http: HttpClient) {
-    http.get<WeatherForecasts>('api/weatherforecast').subscribe(result => {
-      next: this.forecasts = result;
-      error: console.error
-    });
-  }
+  constructor() {}
 }
