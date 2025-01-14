@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { DarkModeService } from '../../../Services/dark-mode.service';
 
 @Component({
   selector: 'app-theme-toggler',
@@ -8,5 +9,10 @@ import { Component } from '@angular/core';
   styleUrl: './theme-toggler.component.css'
 })
 export class ThemeTogglerComponent {
+  
+  darkModeService: DarkModeService = inject(DarkModeService);
 
+  toggleDarkMode() {
+    this.darkModeService.updateDarkMode();
+  }
 }

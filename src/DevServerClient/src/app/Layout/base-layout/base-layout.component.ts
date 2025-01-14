@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NavbarComponent } from "../Components/navbar/navbar.component";
 import { SidebarComponent } from '../Components/sidebar/sidebar.component';
 import { RouterOutlet } from '@angular/router';
+import { FooterComponent } from "../Components/footer/footer.component";
 
 
 @Component({
@@ -10,8 +11,9 @@ import { RouterOutlet } from '@angular/router';
   imports: [
     NavbarComponent,
     SidebarComponent,
-    RouterOutlet
-  ],
+    RouterOutlet,
+    FooterComponent
+],
   templateUrl: './base-layout.component.html',
   styleUrl: './base-layout.component.css'
 })

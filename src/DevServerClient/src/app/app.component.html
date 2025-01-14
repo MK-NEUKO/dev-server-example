@@ -1,1 +1,3 @@
-<router-outlet></router-outlet>
+<div [attr.data-bs-theme]="darkModeService.darkModeSignal()" class="bg-body-tertiary">
+    <router-outlet></router-outlet>
+</div>
