@@ -1,16 +1,20 @@
-<div class="sticky-top">
-    <app-navbar></app-navbar>
-</div>
-<div class="d-flex">
-    <div class="col-2 bg-body border-end border-info-subtle vh-50 overflow-auto position-static">
-        <app-sidebar></app-sidebar>
-    </div>
-    <div class="col-10 bg-body-tertiary">
-        <div class="container vh-100">
-            <router-outlet></router-outlet>
+<div [attr.data-bs-theme]="darkModeService.darkModeSignal()" class="d-flex">
+    <div class="col-2 bg-body border-end border-info-subtle overflow-auto position-static">
+        <div class="">
+            <app-sidebar></app-sidebar>
         </div>
-        <div>
-            <app-footer></app-footer>
+    </div>
+    <div class="col-10">
+        <div class="sticky-top">
+            <app-navbar></app-navbar>
+        </div>
+        <div class="bg-body-tertiary vh-100">
+            <div>
+                <router-outlet></router-outlet>
+            </div>
+            <div class="fixed-bottom">
+                <app-footer></app-footer>
+            </div>
         </div>
     </div>
 </div>

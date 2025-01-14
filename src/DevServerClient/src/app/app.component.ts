@@ -1,7 +1,6 @@
-import { Component, inject, Injectable } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule } from '@angular/router';
-import { DarkModeService } from './Services/dark-mode.service';
 
 @Injectable()
 @Component({
@@ -17,7 +16,5 @@ import { DarkModeService } from './Services/dark-mode.service';
 })
 export class AppComponent {
   title = 'Dev-Server-App';
-
-  darkModeService: DarkModeService = inject(DarkModeService);
   constructor() {}
 }

@@ -3,6 +3,7 @@ import { NavbarComponent } from "../Components/navbar/navbar.component";
 import { SidebarComponent } from '../Components/sidebar/sidebar.component';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from "../Components/footer/footer.component";
+import { DarkModeService } from '../../Services/dark-mode.service';
 
 
 @Component({
@@ -18,5 +19,7 @@ import { FooterComponent } from "../Components/footer/footer.component";
   styleUrl: './base-layout.component.css'
 })
 export class BaseLayoutComponent {
+
+  darkModeService: DarkModeService = inject(DarkModeService);
 
 }
