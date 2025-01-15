@@ -5,15 +5,14 @@ import { RouterOutlet } from '@angular/router';
 
 
 @Component({
-  selector: 'app-base-layout',
-  standalone: true,
-  imports: [
-    NavbarComponent,
-    SidebarComponent,
-    RouterOutlet
-  ],
-  templateUrl: './base-layout.component.html',
-  styleUrl: './base-layout.component.css'
+    selector: 'app-base-layout',
+    imports: [
+        NavbarComponent,
+        SidebarComponent,
+        RouterOutlet
+    ],
+    templateUrl: './base-layout.component.html',
+    styleUrl: './base-layout.component.css'
 })
 export class BaseLayoutComponent {
 

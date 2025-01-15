@@ -6,14 +6,13 @@ import { WeatherForecastService } from '../../../Services/WeatherForecast/weathe
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-weather-forecast',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule
-  ],
-  templateUrl: './weather-forecast.component.html',
-  styleUrls: ['./weather-forecast.component.css']
+    selector: 'app-weather-forecast',
+    imports: [
+        CommonModule,
+        FormsModule
+    ],
+    templateUrl: './weather-forecast.component.html',
+    styleUrls: ['./weather-forecast.component.css']
 })
 export class WeatherForecastComponent {
 
