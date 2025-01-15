@@ -14,7 +14,7 @@ import { DarkModeService } from '../../Services/dark-mode.service';
     SidebarComponent,
     RouterOutlet,
     FooterComponent
-],
+  ],
   templateUrl: './base-layout.component.html',
   styleUrl: './base-layout.component.css'
 })
