@@ -1,54 +1,101 @@
-<h2 class="text-center my-4">Weather Forecast</h2>
+<h2 class="text-center text-body">Weather Forecast</h2>
 
 <div class="card">
-    <div class="card-header">
-        Search Location
-    </div>
-    <div class="card-body">
-        <form (ngSubmit)="onSubmit()">
-            <div class="col-4 d-flex mb-3" role="search">
-                <input type="text" name="name" [(ngModel)]="city" class="form-control me-2" placeholder="Enter city" aria-label="Search">
-                <button type="submit" class="btn btn-outline-success">Search</button>
-            </div>
-        </form>
-        <table class="table" *ngIf="locations.length > 0">
-            <tbody>
-                <tr *ngFor="let location of locations">
-                    <td><button class="btn btn-info" (click)="getForecast(location)">{{location.name}}</button></td>
-                    <td>{{location.country}}</td>
-                    <td>{{location.state}}</td>
-                    <td>{{location.localNames}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+  <div class="card-header">Search Location</div>
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()">
+      <div class="col-4 d-flex mb-3" role="search">
+        <input
+          type="text"
+          name="name"
+          [(ngModel)]="city"
+          class="form-control me-2"
+          placeholder="Enter city"
+          aria-label="Search"
+        />
+        <button type="submit" class="btn btn-outline-success">Search</button>
+      </div>
+    </form>
+    <table class="table" *ngIf="locations.length > 0">
+      <tbody>
+        <tr *ngFor="let location of locations">
+          <td>
+            <button class="btn btn-info" (click)="getForecast(location)">
+              {{ location.name }}
+            </button>
+          </td>
+          <td>{{ location.country }}</td>
+          <td>{{ location.state }}</td>
+          <td>{{ location.localNames }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div class="card my-5">
-    <div class="card-header">
-        Forecast
-    </div>
-    <div class="card-body">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Temp. °C</th>
-                    <th scope="col">Temp. °F</th>
-                    <th scope="col">Summery</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let forecast of forecasts">
-                    <td>{{forecast.date}}</td>
-                    <td>{{forecast.temperatureC}}</td>
-                    <td>{{forecast.temperatureF}}</td>
-                    <td>{{forecast.summary}}</td>
-                </tr>
-            </tbody>
-          </table>
-    </div>
+  <div class="card-header">Forecast</div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Temp. °C</th>
+          <th scope="col">Temp. °F</th>
+          <th scope="col">Summery</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let forecast of forecasts">
+          <td>{{ forecast.date }}</td>
+          <td>{{ forecast.temperatureC }}</td>
+          <td>{{ forecast.temperatureF }}</td>
+          <td>{{ forecast.summary }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-
-
+<p class="text-body">
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vitae
+  nibh nisi. Mauris feugiat mi nisi, vitae iaculis felis congue feugiat. Mauris
+  quam lacus, molestie eget magna sit amet, luctus pretium odio. Sed tincidunt
+  augue id mattis tempor. Praesent facilisis dapibus odio id sagittis.
+  Pellentesque non risus nec elit maximus pellentesque. Curabitur facilisis
+  pellentesque dolor, sit amet eleifend leo egestas at. Donec risus felis,
+  feugiat a ultricies vel, sagittis ut lacus. In eu vulputate augue. Vestibulum
+  vitae urna a dui ornare luctus. Nam varius porta tempus. Phasellus euismod
+  augue augue, quis dapibus metus congue condimentum. In hac habitasse platea
+  dictumst. Phasellus quis elit a libero ultrices pharetra non vitae nibh. In
+  tincidunt suscipit lacus, condimentum dignissim dui ultrices mattis. Proin
+  blandit ex sit amet libero pellentesque, a sodales odio sagittis. In eu tempus
+  velit. Etiam nibh arcu, tincidunt sit amet mattis id, fermentum vitae magna.
+  Morbi et turpis quis odio ornare lobortis. Pellentesque risus velit, pharetra
+  eu varius ut, semper at magna. Nunc feugiat et magna sed congue. Vivamus
+  scelerisque rhoncus porta. Nunc ultricies iaculis accumsan. Aliquam congue
+  lectus ac sapien scelerisque vulputate. Vestibulum viverra ullamcorper nibh.
+  Quisque varius, sem sit amet suscipit consectetur, metus mi maximus ante, nec
+  malesuada risus nisl sed lorem. Mauris ac rutrum arcu. Sed finibus semper eros
+  sed placerat. Praesent dignissim interdum velit non eleifend. Nunc
+  ullamcorper, lectus id pharetra malesuada, tellus mi suscipit mi, quis
+  volutpat lacus magna at arcu. Aenean metus felis, viverra at venenatis nec,
+  gravida at enim. Quisque nec sem lectus. Quisque non ipsum at tellus egestas
+  interdum vitae ac nibh. Fusce vehicula at lorem non maximus. Suspendisse vitae
+  lacus vel odio tempus finibus. Praesent bibendum odio velit, non hendrerit
+  nunc dignissim vitae. Proin elementum quam et orci sagittis tristique. Cras
+  sodales neque ut faucibus dictum. Proin suscipit magna fermentum volutpat
+  efficitur. In eget turpis vehicula eros pulvinar fermentum. Sed egestas non
+  quam vitae consectetur. Suspendisse iaculis hendrerit varius. Nullam quis erat
+  at lorem fermentum mattis at at orci. Quisque at egestas nisi, dictum varius
+  risus. Integer sed diam nisi. Morbi quis elit ultricies lorem dapibus varius.
+  Sed convallis est sed ex suscipit commodo. Morbi gravida massa eu orci mattis,
+  ut aliquet ligula dapibus. Pellentesque porta efficitur diam, eget rhoncus
+  magna tempus a. Ut ut scelerisque quam. Fusce a pellentesque felis. Vivamus id
+  cursus sem. Maecenas orci enim, tristique at orci a, sagittis auctor elit.
+  Aliquam ullamcorper libero id urna maximus pretium. Lorem ipsum dolor sit
+  amet, consectetur adipiscing elit. Cras in sodales mi. Maecenas eu feugiat
+  quam, blandit posuere nisi. Quisque a porta tortor, ut sodales urna.
+  Vestibulum eget nibh molestie, suscipit sapien ut, laoreet magna. Donec at
+  facilisis eros.
+</p>

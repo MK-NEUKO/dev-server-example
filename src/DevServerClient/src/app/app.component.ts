@@ -16,6 +16,5 @@ import { RouterOutlet, RouterModule } from '@angular/router';
 })
 export class AppComponent {
   title = 'Dev-Server-App';
-
   constructor() {}
 }
