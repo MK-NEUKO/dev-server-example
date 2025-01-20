@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WeatherForecastApi.Domain.Location;
+namespace WeatherForecastApi.Location;
 
 public record LocationQueryResult
 {

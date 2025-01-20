@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WeatherForecastApi.Application.Abstractions;
-using WeatherForecastApi.Application.GetLocations;
+using WeatherForecastApi.Services.Abstractions;
+using WeatherForecastApi.Services.LocationService;
 
 namespace WeatherForecastApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
 public class LocationsController(
-    IGetLocation getLocations,
+    ILocationService locationService,
     ILogger<LocationsController> logger
     )
     : Controller
 {
     [HttpGet(Name = "GetLocations")]
     [Route("GetLocations/{query}")]
-    public async Task<IEnumerable<LocationsQueryResultDto>> GetLocations(string query)
+    public async Task<LocationQueryResultDto> GetLocations(string query)
     {
         logger.LogInformation("Getting LocationsQueryResultDto for {Query}", query);
-        var response = await getLocations.HandleAsync(query);
+        var response = await locationService.HandleAsync(query, CancellationToken.None);
         return response;
     }
 }

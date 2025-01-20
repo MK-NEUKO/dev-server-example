@@ -8,8 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\WeatherForecast\" />
+    <Folder Include="Services\Abstractions\" />
+    <Folder Include="WeatherForecast\" />
   </ItemGroup>
 
 </Project>
