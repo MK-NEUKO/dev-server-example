@@ -27,7 +27,7 @@ builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
-builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<ILocationService, GetLocationHandler>();
 builder.Services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
 builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
 

@@ -1,6 +1,6 @@
 ﻿namespace WeatherForecastApi.Services.LocationService;
 
-public record LocationDto
+public sealed record LocationDto
 {
     public int Id { get; init; }
     public string Name { get; init; }

@@ -2,7 +2,7 @@
 
 namespace WeatherForecastApi.Location;
 
-public record Location(
+internal sealed record Location(
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("iso2")] string CountryCodeIso2,
     [property: JsonPropertyName("country")] string Country,

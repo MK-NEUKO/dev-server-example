@@ -5,7 +5,9 @@ using WeatherForecastApi.Location;
 
 namespace WeatherForecastApi.Services.LocationService;
 
-public class LocationRepository : ILocationRepository
+internal sealed class LocationRepository(
+    ILogger<LocationRepository> logger
+    ) : ILocationRepository
 {
     /// <summary>
     /// Retrieves location data based on the provided query.
@@ -16,26 +18,25 @@ public class LocationRepository : ILocationRepository
     /// <returns>A task that represents the asynchronous operation. The task result contains the location query result.</returns>
     public async Task<LocationQueryResult?> GetLocationsAsync(string query, CancellationToken cancellationToken)
     {
-        using var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(LocationCopenhagen.DemoQuery));
-        var locationQueryResult = await JsonSerializer.DeserializeAsync<LocationQueryResult>(stream, new JsonSerializerOptions
+        try
         {
-            PropertyNameCaseInsensitive = true
-        }, cancellationToken);
+            using var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(LocationCopenhagen.DemoQuery));
+            var locationQueryResult = await JsonSerializer.DeserializeAsync<LocationQueryResult>(stream, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            }, cancellationToken);
 
-        return locationQueryResult ?? new LocationQueryResult
-        (
-            query: query,
-            iso2: "",
-            currentPage: 0,
-            itemsPerPage: 0,
-            pages: 0,
-            count: 0,
-            orderBy: "",
-            lat: 0.0,
-            lon: 0.0,
-            radius: 0,
-            type: "",
-            results: []
-        );
+            if (locationQueryResult == null)
+            {
+                throw new JsonException("Deserialization returned null.");
+            }
+
+            return locationQueryResult;
+        }
+        catch (JsonException ex)
+        {
+            logger.LogError(ex, "Failed to deserialize location query result for query: {Query}", query);
+            throw new BadHttpRequestException("Invalid location query result.");
+        }
     }
 }

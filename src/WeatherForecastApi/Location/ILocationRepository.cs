@@ -1,6 +1,6 @@
 ﻿namespace WeatherForecastApi.Location;
 
-public interface ILocationRepository
+internal interface ILocationRepository
 {
     Task<LocationQueryResult?> GetLocationsAsync(string query, CancellationToken cancellationToken);
 }

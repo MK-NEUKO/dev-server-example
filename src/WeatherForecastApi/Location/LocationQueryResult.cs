@@ -2,7 +2,7 @@
 
 namespace WeatherForecastApi.Location;
 
-public record LocationQueryResult
+internal sealed record LocationQueryResult
 {
     [JsonConstructor]
     public LocationQueryResult(
@@ -53,7 +53,7 @@ public record LocationQueryResult
     public int Count { get; init; }
 
     [JsonPropertyName("orderBy")]
-    public string OrderBy { get; init; } = string.Empty;
+    public string OrderBy { get; init; }
 
     [JsonPropertyName("lat")]
     public double? Lat { get; init; }
@@ -65,7 +65,7 @@ public record LocationQueryResult
     public int Radius { get; init; }
 
     [JsonPropertyName("type")]
-    public string Type { get; init; } = string.Empty;
+    public string Type { get; init; }
 
     [JsonPropertyName("results")]
     public IEnumerable<Location> Results { get; init; } = new List<Location>();

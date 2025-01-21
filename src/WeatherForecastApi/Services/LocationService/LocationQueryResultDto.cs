@@ -1,6 +1,6 @@
 ﻿namespace WeatherForecastApi.Services.LocationService;
 
-public record LocationQueryResultDto
+public sealed record LocationQueryResultDto
 {
     public string Query { get; init; }
     public string Iso2 { get; init; }

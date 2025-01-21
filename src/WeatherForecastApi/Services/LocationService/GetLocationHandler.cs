@@ -3,15 +3,19 @@ using WeatherForecastApi.Services.Abstractions;
 
 namespace WeatherForecastApi.Services.LocationService;
 
-public class LocationService(
-    ILocationRepository _locationRepository
+internal sealed class GetLocationHandler(
+    ILocationRepository locationRepository
     ) : ILocationService
 {
     public async Task<LocationQueryResultDto> HandleAsync(string query, CancellationToken cancellationToken)
     {
-        // get data from repository
-        var result = await _locationRepository.GetLocationsAsync(query, cancellationToken);
-        // map to LocationQueryResultDto
+        var result = await locationRepository.GetLocationsAsync(query, cancellationToken);
+
+        if (result == null)
+        {
+            throw new BadHttpRequestException("Invalid location query result.");
+        }
+
         var dto = new LocationQueryResultDto
         {
             Query = result.Query,
