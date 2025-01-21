@@ -10,7 +10,7 @@ public class LocationsController(
     ILocationService locationService,
     ILogger<LocationsController> logger
     )
-    : Controller
+    : ControllerBase
 {
     [HttpGet(Name = "GetLocations")]
     [Route("GetLocations/{query}")]

@@ -9,7 +9,7 @@ namespace WeatherForecastApi.Controllers;
 public class WeatherForecastController(
     ILogger<WeatherForecastController> logger,
     IWeatherForecastService weatherForecastService
-    ) : Controller
+    ) : ControllerBase
 {
     [HttpGet(Name = "GetWeatherForecast")]
     [Route("GetWeatherForecast/{lat}/{lon}")]
