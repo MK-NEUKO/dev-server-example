@@ -1,45 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DefaultWeather } from '../../../models/weatherforecast/defaultweather';
-import { Location } from '../../../models/weatherforecast/location';
-import { WeatherForecastService } from '../../../Services/WeatherForecast/weather-forecast.service';
 import { FormsModule } from '@angular/forms';
+import { LocationQueryResult } from '../../models/weather-forecast/locationQueryResult';
+import { Location } from '../../models/weather-forecast/location';
+import { WeatherForecastService } from '../../services/weather-forecast/weather-forecast.service';
+
 
 @Component({
   selector: 'app-weather-forecast',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './weather-forecast.component.html',
   styleUrls: ['./weather-forecast.component.css']
 })
 export class WeatherForecastComponent {
 
+
+
   public city: string = '';
-  public locations: Location[] = [];
-  public forecasts: DefaultWeather[] = [];
+  public locationQueryResult: LocationQueryResult = {
+    query: '',
+    iso2: '',
+    currentPage: 0,
+    itemsPerPage: 0,
+    pages: 0,
+    count: 0,
+    orderBy: '',
+    lat: 0,
+    lon: 0,
+    radius: 0,
+    type: '',
+    results: [] as Location[]
+  };
 
   constructor(private weatherForecastService: WeatherForecastService) { }
 
-  //ngOnInit() {
-  //  this.weatherForecastService.getWeatherForecast().subscribe((data: DefaultWeather[]) => {
-  //    this.forecasts = data;
-  //    console.log(data);
-  //  });
-  //}
-
   onSubmit() {
     console.log(this.city);
-    this.weatherForecastService.getLocations(this.city).subscribe((data: Location[]) => {
-      this.locations = data;
-      console.log(data);
+    this.weatherForecastService.getLocations(this.city).subscribe((data: LocationQueryResult) => {
+      this.locationQueryResult = data;
+      console.log(this.locationQueryResult);
     });
-  }
-
-  getForecast(location: Location) {
-    console.log(location);
   }
 
 }
