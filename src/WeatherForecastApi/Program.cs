@@ -29,7 +29,7 @@ builder.AddServiceDefaults();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<IGetLocationHandler, GetGetLocationHandler>();
 builder.Services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
-builder.Services.AddScoped<IWeatherForecastService, GetWeatherForecastHandler>();
+builder.Services.AddScoped<IGetWeatherForecastHandler, GetGetWeatherForecastHandler>();
 
 
 

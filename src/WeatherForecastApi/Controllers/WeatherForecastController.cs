@@ -8,7 +8,7 @@ namespace WeatherForecastApi.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController(
     ILogger<WeatherForecastController> logger,
-    IWeatherForecastService weatherForecastService
+    IGetWeatherForecastHandler getWeatherForecastHandler
     ) : ControllerBase
 {
     [HttpGet(Name = "GetWeatherForecast")]
@@ -16,7 +16,7 @@ public class WeatherForecastController(
     public async Task<WeatherForecastDto> GetWeatherForecast(double lat, double lon)
     {
         logger.LogInformation("Getting WeatherForecastDto for {Lat} and {Lon}", lat, lon);
-        var response = await weatherForecastService.HandleAsync(lat, lon, CancellationToken.None);
+        var response = await getWeatherForecastHandler.HandleAsync(lat, lon, CancellationToken.None);
         return response;
     }
 }

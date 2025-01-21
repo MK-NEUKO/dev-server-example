@@ -2,7 +2,7 @@
 
 namespace WeatherForecastApi.Application.Abstractions;
 
-public interface IWeatherForecastService
+public interface IGetWeatherForecastHandler
 {
     Task<WeatherForecastDto> HandleAsync(double lat, double lon, CancellationToken cancellationToken);
 }

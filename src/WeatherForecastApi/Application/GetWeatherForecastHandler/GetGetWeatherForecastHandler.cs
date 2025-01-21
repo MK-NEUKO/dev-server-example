@@ -3,14 +3,19 @@ using WeatherForecastApi.WeatherForecast;
 
 namespace WeatherForecastApi.Application.GetWeatherForecastHandler;
 
-public class GetWeatherForecastHandler(
+public class GetGetWeatherForecastHandler(
     IWeatherForecastRepository weatherForecastRepository
-    ) : IWeatherForecastService
+    ) : IGetWeatherForecastHandler
 {
     public async Task<WeatherForecastDto> HandleAsync(double lat, double lon, CancellationToken cancellationToken)
     {
         var result = await weatherForecastRepository.GetWeatherForecastAsync(lat, lon, cancellationToken);
         
+        if (result == null)
+        {
+            throw new BadHttpRequestException("Invalid weather forecast query result.");
+        }
+
         var dto = new WeatherForecastDto
         {
             MetadataDto = new MetadataDto
