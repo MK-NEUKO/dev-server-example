@@ -7,7 +7,7 @@ public record LocationQueryResult
     [JsonConstructor]
     public LocationQueryResult(
         string query,
-        string? iso2,
+        string iso2,
         int currentPage,
         int itemsPerPage,
         int pages,
@@ -35,10 +35,10 @@ public record LocationQueryResult
     }
 
     [JsonPropertyName("query")]
-    public string Query { get; init; } = string.Empty;
+    public string Query { get; init; }
 
     [JsonPropertyName("iso2")]
-    public string? Iso2 { get; init; }
+    public string Iso2 { get; init; }
 
     [JsonPropertyName("currentPage")]
     public int CurrentPage { get; init; }
