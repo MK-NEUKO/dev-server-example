@@ -2,7 +2,7 @@
 using WeatherForecastApi.DemoData;
 using WeatherForecastApi.WeatherForecast;
 
-namespace WeatherForecastApi.Services.WeatherForecastService;
+namespace WeatherForecastApi.Application.GetWeatherForecastHandler;
 
 public class WeatherForecastRepository : IWeatherForecastRepository
 {

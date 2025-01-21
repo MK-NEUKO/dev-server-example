@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WeatherForecastApi.Services.Abstractions;
-using WeatherForecastApi.Services.WeatherForecastService;
+using WeatherForecastApi.Application.Abstractions;
+using WeatherForecastApi.Application.GetWeatherForecastHandler;
 
 namespace WeatherForecastApi.Controllers;
 

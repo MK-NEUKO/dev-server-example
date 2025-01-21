@@ -1,4 +1,4 @@
-﻿namespace WeatherForecastApi.Services.LocationService;
+﻿namespace WeatherForecastApi.Application.GetLocationHandler;
 
 public sealed record LocationDto
 {

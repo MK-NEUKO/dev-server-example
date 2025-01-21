@@ -1,11 +1,11 @@
-﻿using WeatherForecastApi.Location;
-using WeatherForecastApi.Services.Abstractions;
+﻿using WeatherForecastApi.Application.Abstractions;
+using WeatherForecastApi.Location;
 
-namespace WeatherForecastApi.Services.LocationService;
+namespace WeatherForecastApi.Application.GetLocationHandler;
 
-internal sealed class GetLocationHandler(
+internal sealed class GetGetLocationHandler(
     ILocationRepository locationRepository
-    ) : ILocationService
+    ) : IGetLocationHandler
 {
     public async Task<LocationQueryResultDto> HandleAsync(string query, CancellationToken cancellationToken)
     {

@@ -1,6 +1,6 @@
-﻿using WeatherForecastApi.Services.WeatherForecastService;
+﻿using WeatherForecastApi.Application.GetWeatherForecastHandler;
 
-namespace WeatherForecastApi.Services.Abstractions;
+namespace WeatherForecastApi.Application.Abstractions;
 
 public interface IWeatherForecastService
 {

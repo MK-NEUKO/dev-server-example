@@ -1,9 +1,8 @@
-﻿using System.Runtime.CompilerServices;
-using System.Text.Json;
+﻿using System.Text.Json;
 using WeatherForecastApi.DemoData;
 using WeatherForecastApi.Location;
 
-namespace WeatherForecastApi.Services.LocationService;
+namespace WeatherForecastApi.Application.GetLocationHandler;
 
 internal sealed class LocationRepository(
     ILogger<LocationRepository> logger

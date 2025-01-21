@@ -1,9 +1,9 @@
-﻿using WeatherForecastApi.Services.Abstractions;
+﻿using WeatherForecastApi.Application.Abstractions;
 using WeatherForecastApi.WeatherForecast;
 
-namespace WeatherForecastApi.Services.WeatherForecastService;
+namespace WeatherForecastApi.Application.GetWeatherForecastHandler;
 
-public class WeatherForecastService(
+public class GetWeatherForecastHandler(
     IWeatherForecastRepository weatherForecastRepository
     ) : IWeatherForecastService
 {
@@ -73,14 +73,14 @@ public class WeatherForecastService(
                 TemperatureMin = result.ForecastDataPerDay.TemperatureMin,
                 WindDirection = result.ForecastDataPerDay.WindDirection,
                 FeltTemperatureMax = result.ForecastDataPerDay.FeltTemperatureMax,
-                IndexTo1hValuesEnd = result.ForecastDataPerDay.IndexTo1hValuesEnd,
+                IndexTo1HValuesEnd = result.ForecastDataPerDay.IndexTo1hValuesEnd,
                 RelativeHumidityMin = result.ForecastDataPerDay.RelativeHumidityMin,
                 FeltTemperatureMean = result.ForecastDataPerDay.FeltTemperatureMean,
                 WindSpeedMin = result.ForecastDataPerDay.WindSpeedMin,
                 FeltTemperatureMin = result.ForecastDataPerDay.FeltTemperatureMin,
                 PrecipitationProbability = result.ForecastDataPerDay.PrecipitationProbability,
                 UvIndex = result.ForecastDataPerDay.UvIndex,
-                IndexTo1hValuesStart = result.ForecastDataPerDay.IndexTo1hValuesStart,
+                IndexTo1HValuesStart = result.ForecastDataPerDay.IndexTo1hValuesStart,
                 RainSpot = result.ForecastDataPerDay.RainSpot,
                 TemperatureMean = result.ForecastDataPerDay.TemperatureMean,
                 SeaLevelPressureMax = result.ForecastDataPerDay.SeaLevelPressureMax,

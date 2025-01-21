@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WeatherForecastApi.Services.Abstractions;
-using WeatherForecastApi.Services.LocationService;
+using WeatherForecastApi.Application.Abstractions;
+using WeatherForecastApi.Application.GetLocationHandler;
 
 namespace WeatherForecastApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
 public class LocationsController(
-    ILocationService locationService,
+    IGetLocationHandler getLocationHandler,
     ILogger<LocationsController> logger
     )
     : ControllerBase
@@ -17,7 +17,7 @@ public class LocationsController(
     public async Task<LocationQueryResultDto> GetLocations(string query)
     {
         logger.LogInformation("Getting LocationsQueryResultDto for {Query}", query);
-        var response = await locationService.HandleAsync(query, CancellationToken.None);
+        var response = await getLocationHandler.HandleAsync(query, CancellationToken.None);
         return response;
     }
 }
