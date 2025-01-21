@@ -3,7 +3,7 @@
 namespace WeatherForecastApi.WeatherForecast;
 
 public record ForecastDataPerHour(
-    [property: JsonPropertyName("time")] IEnumerable<DateTime> Time,
+    [property: JsonPropertyName("time")] IEnumerable<string> Time,
     [property: JsonPropertyName("snowfraction")] IEnumerable<double> SnowFraction,
     [property: JsonPropertyName("windspeed")] IEnumerable<double> WindSpeed,
     [property: JsonPropertyName("precipitation_probability")] IEnumerable<int> PrecipitationProbability,

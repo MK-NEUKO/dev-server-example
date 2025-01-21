@@ -1,6 +1,8 @@
 using WeatherForecastApi.Location;
 using WeatherForecastApi.Services.Abstractions;
 using WeatherForecastApi.Services.LocationService;
+using WeatherForecastApi.Services.WeatherForecastService;
+using WeatherForecastApi.WeatherForecast;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,8 @@ builder.AddServiceDefaults();
 // Add services to the container.
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
+builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
 
 
 
