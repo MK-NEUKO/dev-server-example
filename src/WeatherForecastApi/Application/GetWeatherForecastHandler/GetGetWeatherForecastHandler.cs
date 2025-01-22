@@ -23,24 +23,24 @@ public class GetGetWeatherForecastHandler(
                 ModelRunUpdateTimeUtc = result.Metadata.ModelRunUpdateTimeUtc,
                 Name = result.Metadata.Name,
                 Height = result.Metadata.Height,
-                TimezoneAbbrevation = result.Metadata.TimezoneAbbrevation,
-                Latidude = result.Metadata.Latidude,
+                TimezoneAbbreviation = result.Metadata.TimezoneAbbrevation,
+                Latitude = result.Metadata.Latidude,
                 ModelRunUtc = result.Metadata.ModelRunUtc,
                 Longitude = result.Metadata.Longitude,
-                UtcTimeoffset = result.Metadata.UtcTimeoffset,
+                UtcTimeOffset = result.Metadata.UtcTimeoffset,
                 GenerationTimeMs = result.Metadata.GenerationTimeMs
             },
             UnitsDto = new UnitsDto
             {
-                Predictebility = result.Units.Predictebility,
+                Predictability = result.Units.Predictebility,
                 Precipitation = result.Units.Precipitation,
-                Windspeed = result.Units.Windspeed,
+                WindSpeed = result.Units.Windspeed,
                 PrecipitationProbability = result.Units.PrecipitationProbability,
-                Relativehumidity = result.Units.Relativehumidity,
+                RelativeHumidity = result.Units.Relativehumidity,
                 Temperature = result.Units.Temperature,
                 Time = result.Units.Time,
                 Pressure = result.Units.Pressure,
-                Winddirection = result.Units.Winddirection
+                WindDirection = result.Units.Winddirection
             },
             ForecastDataPerHourDto = new ForecastDataPerHourDto
             {

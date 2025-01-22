@@ -4,11 +4,14 @@
   <div class="card-header">Search Location</div>
   <div class="card-header text-danger fst-italic">
     Sorry, this is a demo. The request comes from an API with demo data for
-    'Copenhagen'.
+    "Copenhagen".
   </div>
   <div class="card-body">
     <form (ngSubmit)="onSubmit()">
       <div class="col-4 d-flex mb-3" role="search">
+        <span class="px-2 py-1">
+          <i class="bi bi-search"></i>
+        </span>
         <input
           type="text"
           name="name"
@@ -20,44 +23,40 @@
         <button type="submit" class="btn btn-outline-success">Search</button>
       </div>
     </form>
-    <table class="table" *ngIf="locationQueryResult.results.length > 0">
+    <table
+      class="table table-hover"
+      *ngIf="locationQueryResult.results.length > 0"
+    >
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Country Code</th>
+          <th scope="col">Country</th>
+          <th scope="col">State</th>
+          <th scope="col">Above Sea Level</th>
+          <th scope="col">Latitude</th>
+          <th scope="col">Longitude</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr *ngFor="let location of locationQueryResult.results">
-          <td>
-            <button class="btn btn-info">{{ location.name }}</button>
-          </td>
+        <tr
+          class="cursor-pointer"
+          *ngFor="let location of locationQueryResult.results"
+          (click)="onGetForecast(location)"
+        >
+          <td>{{ location.name }}</td>
+          <td>{{ location.countryCodeIso2 }}</td>
           <td>{{ location.country }}</td>
           <td>{{ location.state }}</td>
           <td>{{ location.aboveSeaLevel }}</td>
-          <td>{{ location.lon }}</td>
           <td>{{ location.lat }}</td>
-          <td>{{ location.countryCodeIso2 }}</td>
+          <td>{{ location.lon }}</td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<div class="card my-5">
-  <div class="card-header">Forecast</div>
-  <div class="card-body">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Date</th>
-          <th scope="col">Temp. °C</th>
-          <th scope="col">Temp. °F</th>
-          <th scope="col">Summery</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div class="mt-5">
+  <app-forecast-nav-tab></app-forecast-nav-tab>
 </div>
