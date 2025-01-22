@@ -20,7 +20,7 @@ export class WeatherForecastComponent {
 
 
 
-  public city: string = '';
+  public query: string = 'Copenhagen';
   public locationQueryResult: LocationQueryResult = {
     query: '',
     iso2: '',
@@ -39,10 +39,8 @@ export class WeatherForecastComponent {
   constructor(private weatherForecastService: WeatherForecastService) { }
 
   onSubmit() {
-    console.log(this.city);
-    this.weatherForecastService.getLocations(this.city).subscribe((data: LocationQueryResult) => {
+    this.weatherForecastService.getLocations(this.query = "Copenhagen").subscribe((data: LocationQueryResult) => {
       this.locationQueryResult = data;
-      console.log(this.locationQueryResult);
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
 import { NavbarComponent } from "../Components/navbar/navbar.component";
 import { SidebarComponent } from '../Components/sidebar/sidebar.component';
 import { RouterOutlet } from '@angular/router';
@@ -18,8 +18,22 @@ import { DarkModeService } from '../../services/dark-mode.service';
   templateUrl: './base-layout.component.html',
   styleUrl: './base-layout.component.css'
 })
-export class BaseLayoutComponent {
+export class BaseLayoutComponent implements AfterViewInit {
 
   darkModeService: DarkModeService = inject(DarkModeService);
 
+  ngAfterViewInit(): void {
+    this.setContentMinHeight();
+  }
+
+  setContentMinHeight() {
+    const navbarHeight = document.getElementById('navbar')?.offsetHeight;
+    const footerHeight = document.getElementById('footer')?.offsetHeight;
+    const content = document.getElementById('content');
+
+    if (navbarHeight && footerHeight && content) {
+      const contentMinHeight = window.innerHeight - navbarHeight - footerHeight;
+      content.style.minHeight = `${contentMinHeight}px`;
+    }
+  }
 }

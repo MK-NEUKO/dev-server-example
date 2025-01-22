@@ -2,7 +2,7 @@
   class="d-flex flex-column vh-100"
   [attr.data-bs-theme]="darkModeService.darkModeSignal()"
 >
-  <div class="sticky-top">
+  <div class="sticky-top" id="navbar">
     <app-navbar></app-navbar>
   </div>
   <div class="d-flex flex-grow-1 overflow-hidden">
@@ -10,10 +10,10 @@
       <app-sidebar></app-sidebar>
     </div>
     <div class="col-10 bg-body-tertiary overflow-auto">
-      <div class="">
+      <div class="px-4 py-3" id="content">
         <router-outlet></router-outlet>
       </div>
-      <div class="">
+      <div class="" id="footer">
         <app-footer></app-footer>
       </div>
     </div>

@@ -2,15 +2,19 @@
 
 <div class="card">
   <div class="card-header">Search Location</div>
+  <div class="card-header text-danger fst-italic">
+    Sorry, this is a demo. The request comes from an API with demo data for
+    'Copenhagen'.
+  </div>
   <div class="card-body">
     <form (ngSubmit)="onSubmit()">
       <div class="col-4 d-flex mb-3" role="search">
         <input
           type="text"
           name="name"
-          [(ngModel)]="city"
+          [(ngModel)]="query"
           class="form-control me-2"
-          placeholder="Enter city"
+          placeholder="Copenhagen"
           aria-label="Search"
         />
         <button type="submit" class="btn btn-outline-success">Search</button>
