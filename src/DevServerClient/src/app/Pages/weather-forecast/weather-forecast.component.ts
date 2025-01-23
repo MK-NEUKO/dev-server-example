@@ -5,6 +5,10 @@ import { LocationQueryResult } from '../../models/weather-forecast/locationQuery
 import { Location } from '../../models/weather-forecast/location';
 import { WeatherForecastService } from '../../services/weather-forecast/weather-forecast.service';
 import { WeatherForecast } from '../../models/weather-forecast/weatherForecast';
+import { MetaData } from '../../models/weather-forecast/metaData';
+import { Units } from '../../models/weather-forecast/units';
+import { ForecastDataPerHour } from '../../models/weather-forecast/forecastDataPerHour';
+import { ForecastDataPerDay } from '../../models/weather-forecast/forecastDataPerDay';
 import { ForecastNavTabComponent } from "./Components/forecast-nav-tab/forecast-nav-tab.component";
 
 
@@ -39,22 +43,50 @@ export class WeatherForecastComponent {
     results: []
   };
 
-  public weatherForecast!: WeatherForecast;
+  public weatherForecast: WeatherForecast = {
+    metaData: {
+      modelRunUpdateTimeUtc: '',
+      name: '',
+      height: 0,
+      timezoneAbbreviation: '',
+      latitude: 0,
+      modelRunUtc: '',
+      longitude: 0,
+      UtcTimeOffset: 0,
+      generationTimeMs: 0
+    } as MetaData,
+    units: {
+      predictability: '',
+      precipitation: '',
+      windSpeed: '',
+      precipitationProbability: '',
+      relativeHumidity: '',
+      temperature: '',
+      time: '',
+      pressure: '',
+      windDirection: ''
+    } as Units,
+    forecastDataPerHour: [] as ForecastDataPerHour[],
+    forecastDataPerDay: [] as ForecastDataPerDay[]
+  };
+
+
 
   constructor(private weatherForecastService: WeatherForecastService) { }
 
   onSubmit() {
     this.weatherForecastService.getLocations(this.query = "Copenhagen").subscribe((data: LocationQueryResult) => {
       this.locationQueryResult = data;
+      console.log(data)
     });
   }
 
   onGetForecast(location: Location) {
     const lat = location.lat;
     const lon = location.lon;
-    this.weatherForecastService.getForecast(lat, lon).subscribe((data) => {
+    this.weatherForecastService.getForecast(lat, lon).subscribe((data: WeatherForecast) => {
       this.weatherForecast = data;
-      console.log(this.weatherForecast);
+      console.log(this.weatherForecast.metaData.UtcTimeOffset);
     });
 
     console.log(lat, lon);
