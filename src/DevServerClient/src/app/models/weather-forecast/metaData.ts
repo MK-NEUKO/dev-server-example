@@ -1,4 +1,4 @@
-export interface MetaData {
+export interface Metadata {
     modelRunUpdateTimeUtc: string;
     name: string;
     height: number;

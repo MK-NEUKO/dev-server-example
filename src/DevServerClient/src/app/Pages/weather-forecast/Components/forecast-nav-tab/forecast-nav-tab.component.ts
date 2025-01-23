@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ForecastNavItemComponent } from "../forecast-nav-item/forecast-nav-item.component";
 import { ForecastTabContentComponent } from "../forecast-tab-content/forecast-tab-content.component";
 import { WeatherForecast } from '../../../../models/weather-forecast/weatherForecast';
@@ -12,5 +12,6 @@ import { WeatherForecast } from '../../../../models/weather-forecast/weatherFore
 })
 export class ForecastNavTabComponent {
 
+  weatherForecast = input.required<WeatherForecast>();
 
 }

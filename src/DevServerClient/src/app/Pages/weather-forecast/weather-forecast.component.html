@@ -58,19 +58,6 @@
 </div>
 
 <div class="mt-5">
-  <app-forecast-nav-tab> </app-forecast-nav-tab>
-
-  <div class="card">
-    <div class="card-header">
-      Featured
-      <p>Test: {{ weatherForecast.metadataDto.modelRunUpdateTimeUtc }}</p>
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Special title treatment</h5>
-      <p class="card-text">
-        With supporting text below as a natural lead-in to additional content.
-      </p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
+  <app-forecast-nav-tab [weatherForecast]="weatherForecast">
+  </app-forecast-nav-tab>
 </div>
