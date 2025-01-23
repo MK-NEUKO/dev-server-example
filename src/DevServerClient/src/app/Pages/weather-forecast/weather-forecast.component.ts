@@ -44,7 +44,7 @@ export class WeatherForecastComponent {
   };
 
   public weatherForecast: WeatherForecast = {
-    metaData: {
+    metadataDto: {
       modelRunUpdateTimeUtc: '',
       name: '',
       height: 0,
@@ -52,10 +52,10 @@ export class WeatherForecastComponent {
       latitude: 0,
       modelRunUtc: '',
       longitude: 0,
-      UtcTimeOffset: 0,
+      utcTimeOffset: 0,
       generationTimeMs: 0
     } as MetaData,
-    units: {
+    unitsDto: {
       predictability: '',
       precipitation: '',
       windSpeed: '',
@@ -66,8 +66,8 @@ export class WeatherForecastComponent {
       pressure: '',
       windDirection: ''
     } as Units,
-    forecastDataPerHour: [] as ForecastDataPerHour[],
-    forecastDataPerDay: [] as ForecastDataPerDay[]
+    forecastDataPerHourDto: [] as ForecastDataPerHour[],
+    forecastDataPerDayDto: [] as ForecastDataPerDay[]
   };
 
 
@@ -86,7 +86,7 @@ export class WeatherForecastComponent {
     const lon = location.lon;
     this.weatherForecastService.getForecast(lat, lon).subscribe((data: WeatherForecast) => {
       this.weatherForecast = data;
-      console.log(this.weatherForecast.metaData.UtcTimeOffset);
+      console.log(this.weatherForecast);
     });
 
     console.log(lat, lon);

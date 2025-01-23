@@ -6,6 +6,6 @@ export interface MetaData {
     latitude: number;
     modelRunUtc: string;
     longitude: number;
-    UtcTimeOffset: number;
+    utcTimeOffset: number;
     generationTimeMs: number;
 }
