@@ -8,8 +8,8 @@ import { WeatherForecast } from '../../models/weather-forecast/weatherForecast';
 import { Metadata } from '../../models/weather-forecast/metaData';
 import { Units } from '../../models/weather-forecast/units';
 import { ForecastDataPerHour } from '../../models/weather-forecast/forecastDataPerHour';
-import { ForecastDataPerDay } from '../../models/weather-forecast/forecastDataPerDay';
 import { ForecastNavTabComponent } from "./Components/forecast-nav-tab/forecast-nav-tab.component";
+import { WeatherForecastDataService } from '../../services/weather-forecast/weather-forecast-data.service';
 
 
 @Component({
@@ -23,7 +23,7 @@ import { ForecastNavTabComponent } from "./Components/forecast-nav-tab/forecast-
   templateUrl: './weather-forecast.component.html',
   styleUrls: ['./weather-forecast.component.css']
 })
-export class WeatherForecastComponent {
+export class WeatherForecastComponent implements OnInit {
 
 
 
@@ -119,12 +119,30 @@ export class WeatherForecastComponent {
 
 
 
-  constructor(private weatherForecastService: WeatherForecastService) { }
+  constructor(
+    private weatherForecastService: WeatherForecastService,
+    private weatherForecastDataService: WeatherForecastDataService
+  ) { }
+
+  ngOnInit() {
+    this.weatherForecastDataService.getLocationQueryResult().subscribe(data => {
+      if (data) {
+        this.locationQueryResult = data;
+      }
+    });
+
+    this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
+      if (data) {
+        this.weatherForecast = data;
+      }
+    });
+  }
 
   onSubmit() {
-    this.weatherForecastService.getLocations(this.query = "Copenhagen").subscribe((data: LocationQueryResult) => {
+    this.weatherForecastService.getLocations(this.query).subscribe((data: LocationQueryResult) => {
       this.locationQueryResult = data;
-      console.log(data)
+      this.weatherForecastDataService.setLocationQueryResult(data);
+      console.log(data);
     });
   }
 
@@ -133,6 +151,7 @@ export class WeatherForecastComponent {
     const lon = location.lon;
     this.weatherForecastService.getForecast(lat, lon).subscribe((data: WeatherForecast) => {
       this.weatherForecast = data;
+      this.weatherForecastDataService.setWeatherForecast(data);
       console.log(this.weatherForecast);
     });
 
