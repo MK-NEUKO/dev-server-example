@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
-import { WeatherForecast } from '../../../../models/weather-forecast/weatherForecast';
+import { ForecastDataPerDay } from '../../../../models/weather-forecast/forecastDataPerDay';
 
 @Component({
   selector: 'app-forecast-nav-item',
@@ -14,15 +14,15 @@ import { WeatherForecast } from '../../../../models/weather-forecast/weatherFore
 })
 export class ForecastNavItemComponent implements OnInit {
 
-  public weatherForecast!: WeatherForecast;
+  public forecastPerDay!: ForecastDataPerDay;
 
   constructor(private weatherForecastDataService: WeatherForecastDataService) {
   }
 
   ngOnInit() {
-    this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
+    this.weatherForecastDataService.getWeatherForecastPerDay().subscribe(data => {
       if (data) {
-        this.weatherForecast = data;
+        this.forecastPerDay = data;
       }
     });
   }

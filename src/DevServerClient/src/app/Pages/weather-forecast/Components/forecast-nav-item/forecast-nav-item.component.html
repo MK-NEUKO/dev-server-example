@@ -30,9 +30,8 @@
     </div>
   </button>
   <div
-    *ngFor="
-      let item of weatherForecast.forecastDataPerDayDto.feltTemperatureMax
-    "
+    class="text-body"
+    *ngFor="let item of forecastPerDay.feltTemperatureMean"
   >
     <p>Test: {{ item }}</p>
   </div>
