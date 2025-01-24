@@ -19,7 +19,7 @@ export class ForecastNavItemComponent implements OnInit {
   constructor(private weatherForecastDataService: WeatherForecastDataService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.weatherForecastDataService.getWeatherForecastPerDay().subscribe(data => {
       if (data) {
         this.forecastPerDay = data;

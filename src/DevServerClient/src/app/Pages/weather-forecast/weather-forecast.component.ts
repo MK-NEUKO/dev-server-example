@@ -5,9 +5,6 @@ import { LocationQueryResult } from '../../models/weather-forecast/locationQuery
 import { Location } from '../../models/weather-forecast/location';
 import { WeatherForecastService } from '../../services/weather-forecast/weather-forecast.service';
 import { WeatherForecast } from '../../models/weather-forecast/weatherForecast';
-import { Metadata } from '../../models/weather-forecast/metaData';
-import { Units } from '../../models/weather-forecast/units';
-import { ForecastDataPerHour } from '../../models/weather-forecast/forecastDataPerHour';
 import { ForecastNavTabComponent } from "./Components/forecast-nav-tab/forecast-nav-tab.component";
 import { WeatherForecastDataService } from '../../services/weather-forecast/weather-forecast-data.service';
 
@@ -51,7 +48,7 @@ export class WeatherForecastComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onGetLocations() {
     this.weatherForecastService.getLocations(this.query).subscribe((data: LocationQueryResult) => {
       this.locationQueryResult = data;
       this.weatherForecastDataService.setLocationQueryResult(data);

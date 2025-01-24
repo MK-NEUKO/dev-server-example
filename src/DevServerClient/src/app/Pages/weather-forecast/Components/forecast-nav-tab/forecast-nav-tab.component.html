@@ -1,4 +1,6 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <app-forecast-nav-item></app-forecast-nav-item>
+  <div *ngFor="let item of forecastPerDay.time">
+    <app-forecast-nav-item></app-forecast-nav-item>
+  </div>
 </ul>
 <app-forecast-tab-content></app-forecast-tab-content>
