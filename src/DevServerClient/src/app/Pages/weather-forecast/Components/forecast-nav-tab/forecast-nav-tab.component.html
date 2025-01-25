@@ -1,6 +1,32 @@
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-  <div *ngFor="let item of forecastPerDay.time">
-    <app-forecast-nav-item></app-forecast-nav-item>
+<nav>
+  <div
+    class="nav nav-tabs nav-fill"
+    id="weather-forecast-nav-tab"
+    role="tablist"
+  >
+    <app-forecast-nav-item
+      *ngFor="let item of forecastPerDay.time; index as index"
+      [itemIndex]="index"
+      class="nav-link"
+      role="tab"
+      id="nav-link-{{ index }}"
+      data-bs-toggle="tab"
+      [attr.data-bs-target]="'#tab-pane-' + index"
+      type="button"
+      aria-controls="nav-tab"
+      [attr.aria-selected]="index === 0 ? 'true' : 'false'"
+      [ngClass]="{ active: index === 0 }"
+    ></app-forecast-nav-item>
   </div>
-</ul>
-<app-forecast-tab-content></app-forecast-tab-content>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <app-forecast-tab-content
+    *ngFor="let item of forecastPerDay.time; index as index"
+    [tabIndex]="index"
+    class="tab-pane fade"
+    id="tab-pane-{{ index }}"
+    role="tabpanel"
+    [attr.aria-labelledby]="'nav-tab-' + index"
+    [ngClass]="{ 'show active': index === 0 }"
+  ></app-forecast-tab-content>
+</div>

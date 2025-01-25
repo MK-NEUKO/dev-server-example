@@ -21,6 +21,7 @@ export class ForecastNavTabComponent implements OnInit {
 
   public weatherForecast!: WeatherForecast;
   public forecastPerDay!: ForecastDataPerDay;
+  public index: number = 0;
 
   constructor(private weatherForecastDataService: WeatherForecastDataService) { }
 

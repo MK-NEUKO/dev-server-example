@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
 import { WeatherForecast } from '../../../../models/weather-forecast/weatherForecast';
 
@@ -12,6 +12,7 @@ import { WeatherForecast } from '../../../../models/weather-forecast/weatherFore
 export class ForecastTabContentComponent implements OnInit {
 
   public weatherForecast!: WeatherForecast;
+  tabIndex = input<number>(0);
 
   constructor(private weatherForecastDataService: WeatherForecastDataService) { }
 

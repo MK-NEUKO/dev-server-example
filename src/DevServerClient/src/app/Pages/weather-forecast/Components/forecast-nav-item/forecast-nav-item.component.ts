@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
 import { ForecastDataPerDay } from '../../../../models/weather-forecast/forecastDataPerDay';
@@ -15,6 +15,7 @@ import { ForecastDataPerDay } from '../../../../models/weather-forecast/forecast
 export class ForecastNavItemComponent implements OnInit {
 
   public forecastPerDay!: ForecastDataPerDay;
+  itemIndex = input<number>(0);
 
   constructor(private weatherForecastDataService: WeatherForecastDataService) {
   }

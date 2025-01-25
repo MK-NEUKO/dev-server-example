@@ -22,12 +22,9 @@ import { WeatherForecastDataService } from '../../services/weather-forecast/weat
 })
 export class WeatherForecastComponent implements OnInit {
 
-
-
-  public query: string = 'Copenhagen';
+  public query: string = 'copenhagen';
   public locationQueryResult!: LocationQueryResult;
   public weatherForecast!: WeatherForecast;
-
 
   constructor(
     private weatherForecastService: WeatherForecastService,
@@ -48,11 +45,14 @@ export class WeatherForecastComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit() {
+    this.onGetLocations();
+
+  }
+
   onGetLocations() {
     this.weatherForecastService.getLocations(this.query).subscribe((data: LocationQueryResult) => {
-      this.locationQueryResult = data;
       this.weatherForecastDataService.setLocationQueryResult(data);
-      console.log(data);
     });
   }
 
@@ -60,12 +60,7 @@ export class WeatherForecastComponent implements OnInit {
     const lat = location.lat;
     const lon = location.lon;
     this.weatherForecastService.getForecast(lat, lon).subscribe((data: WeatherForecast) => {
-      this.weatherForecast = data;
       this.weatherForecastDataService.setWeatherForecast(data);
-      console.log(this.weatherForecast);
     });
-
-    console.log(lat, lon);
   }
-
 }
