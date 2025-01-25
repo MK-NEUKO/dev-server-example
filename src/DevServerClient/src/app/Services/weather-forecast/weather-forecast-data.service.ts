@@ -6,6 +6,8 @@ import { initializeLocationQueryResult } from './locationQueryResult-initializer
 import { initializeWeatherForecast } from './weather-forecast-initializer';
 import { initializeForecastDataPerDay } from './forecastPerDay-initializer';
 import { ForecastDataPerDay } from '../../models/weather-forecast/forecastDataPerDay';
+import { initializeUnits } from './units-initializer';
+import { Units } from '../../models/weather-forecast/units';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,7 @@ export class WeatherForecastDataService {
   private locationQueryResultSubject = new BehaviorSubject<LocationQueryResult>(initializeLocationQueryResult());
   private weatherForecastSubject = new BehaviorSubject<WeatherForecast>(initializeWeatherForecast());
   private forecastPerDaySubject = new BehaviorSubject<ForecastDataPerDay>(initializeForecastDataPerDay());
+  private units = new BehaviorSubject<Units>(initializeUnits());
 
   constructor() {
 
@@ -31,6 +34,7 @@ export class WeatherForecastDataService {
   setWeatherForecast(data: WeatherForecast) {
     this.weatherForecastSubject.next(data);
     this.forecastPerDaySubject.next(data.forecastDataPerDayDto);
+    this.units.next(data.unitsDto);
   }
 
   getWeatherForecast(): Observable<WeatherForecast | null> {
@@ -39,5 +43,9 @@ export class WeatherForecastDataService {
 
   getWeatherForecastPerDay(): Observable<ForecastDataPerDay> {
     return this.forecastPerDaySubject.asObservable();
+  }
+
+  getUnits(): Observable<Units> {
+    return this.units.asObservable();
   }
 }

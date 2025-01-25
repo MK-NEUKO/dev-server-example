@@ -2,6 +2,7 @@ import { Component, OnInit, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
 import { ForecastDataPerDay } from '../../../../models/weather-forecast/forecastDataPerDay';
+import { Units } from '../../../../models/weather-forecast/units';
 
 @Component({
   selector: 'app-forecast-nav-item',
@@ -15,7 +16,7 @@ import { ForecastDataPerDay } from '../../../../models/weather-forecast/forecast
 export class ForecastNavItemComponent implements OnInit {
 
   public forecastPerDay!: ForecastDataPerDay;
-
+  public units!: Units;
 
   itemIndex = input<number>(0);
   weekdays: string[] = [];
@@ -29,6 +30,12 @@ export class ForecastNavItemComponent implements OnInit {
     this.weatherForecastDataService.getWeatherForecastPerDay().subscribe(data => {
       if (data) {
         this.forecastPerDay = data;
+      }
+    });
+    this.weatherForecastDataService.getUnits().subscribe(data => {
+      if (data) {
+        this.units = data;
+        console.log(this.units.temperature);
       }
     });
 

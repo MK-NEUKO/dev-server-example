@@ -2,8 +2,14 @@
   <div>{{ weekdays[itemIndex()] }}</div>
   <div>{{ dates[itemIndex()] }}</div>
   <img src="{{ picToCodePath[itemIndex()] }}" alt="weather icon" width="70px" />
-  <div>max temp</div>
-  <div>{{ forecastPerDay.feltTemperatureMin[itemIndex()] }} °C</div>
+  <div>
+    {{ forecastPerDay.temperatureMax[itemIndex()] }}
+    °{{ units.temperature }}
+  </div>
+  <div>
+    {{ forecastPerDay.temperatureMin[itemIndex()] }}
+    °{{ units.temperature }}
+  </div>
   <div>wind</div>
   <div>niederschl.</div>
   <div>sonne</div>
