@@ -15,9 +15,12 @@ import { ForecastDataPerDay } from '../../../../models/weather-forecast/forecast
 export class ForecastNavItemComponent implements OnInit {
 
   public forecastPerDay!: ForecastDataPerDay;
+
+
   itemIndex = input<number>(0);
   weekdays: string[] = [];
   dates: string[] = [];
+  picToCodePath: string[] = [];
 
   constructor(private weatherForecastDataService: WeatherForecastDataService) {
   }
@@ -31,6 +34,7 @@ export class ForecastNavItemComponent implements OnInit {
 
     this.convertDateToWeekday(this.forecastPerDay.time);
     this.convertDateToDates(this.forecastPerDay.time);
+    this.convertPicToCodePath(this.forecastPerDay.picToCode);
   }
 
   convertDateToWeekday(date: string[]): void {
@@ -57,7 +61,12 @@ export class ForecastNavItemComponent implements OnInit {
     });
   }
 
-  convertPicToCode(date: number[]): void {
-
+  convertPicToCodePath(date: number[]): void {
+    const basePath = '/images/weather-forecast/daily/';
+    date.forEach(element => {
+      const picToCode = element;
+      const pathToPic = `${basePath}0${picToCode}_iday.svg`;
+      this.picToCodePath.push(pathToPic);
+    });
   }
 }
