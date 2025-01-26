@@ -22,6 +22,8 @@ export class ForecastNavItemComponent implements OnInit {
   weekdays: string[] = [];
   dates: string[] = [];
   picToCodePath: string[] = [];
+  wind: string[] = [];
+  precipitation: string[] = [];
 
   constructor(private weatherForecastDataService: WeatherForecastDataService) {
   }
@@ -35,13 +37,14 @@ export class ForecastNavItemComponent implements OnInit {
     this.weatherForecastDataService.getUnits().subscribe(data => {
       if (data) {
         this.units = data;
-        console.log(this.units.temperature);
       }
     });
 
     this.convertDateToWeekday(this.forecastPerDay.time);
     this.convertDateToDates(this.forecastPerDay.time);
     this.convertPicToCodePath(this.forecastPerDay.picToCode);
+    this.gererateWindProperty();
+    this.generatePrecipitation();
   }
 
   convertDateToWeekday(date: string[]): void {
@@ -76,4 +79,35 @@ export class ForecastNavItemComponent implements OnInit {
       this.picToCodePath.push(pathToPic);
     });
   }
+
+  gererateWindProperty(): void {
+    this.forecastPerDay.windDirection.forEach((element, index) => {
+      const windSpeed = (this.forecastPerDay.windSpeedMax[index] + this.forecastPerDay.windSpeedMin[index]) / 2;
+      const windDirection = this.windDegToUnicode(this.forecastPerDay.windDirection[index]);
+      const wind = `${windDirection} ${windSpeed.toFixed(1)} ${this.units.windSpeed}`;
+      this.wind.push(wind);
+    });
+  }
+  windDegToUnicode(windDirection: number): string {
+    switch (windDirection) {
+      case 0: return '&#xE000;';
+      case 45: return '&#xE002;';
+      case 90: return '&#xE004;';
+      case 135: return '&#xE006;';
+      case 180: return '&#xE008;';
+      case 225: return '&#xE00A;';
+      case 270: return '&#xE00C;';
+      case 315: return '&#xE00E;';
+      default: return '';
+    }
+  }
+
+  generatePrecipitation(): void {
+    this.forecastPerDay.precipitation.forEach((element, index) => {
+      const precipitation = element;
+      const precipitationText = `&#xE016 ${precipitation.toFixed(1)} ${this.units.precipitation}`;
+      this.precipitation.push(precipitationText);
+    });
+  }
+
 }
