@@ -1,5 +1,6 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, input, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
 import { ForecastDataPerDay } from '../../../../models/weather-forecast/forecastDataPerDay';
 import { Units } from '../../../../models/weather-forecast/units';
@@ -13,8 +14,9 @@ import { Units } from '../../../../models/weather-forecast/units';
   templateUrl: './forecast-nav-item.component.html',
   styleUrl: './forecast-nav-item.component.css'
 })
-export class ForecastNavItemComponent implements OnInit {
+export class ForecastNavItemComponent implements OnInit, OnDestroy {
 
+  private dataSubscription!: Subscription;
   public forecastPerDay!: ForecastDataPerDay;
   public units!: Units;
 
@@ -29,13 +31,13 @@ export class ForecastNavItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.weatherForecastDataService.getWeatherForecastPerDay().subscribe(data => {
+    this.dataSubscription = this.weatherForecastDataService.getWeatherForecastPerDay().subscribe(data => {
       if (data) {
         this.forecastPerDay = data;
         this.checkAndGenerateForecastData();
       }
     });
-    this.weatherForecastDataService.getUnits().subscribe(data => {
+    this.dataSubscription = this.weatherForecastDataService.getUnits().subscribe(data => {
       if (data) {
         this.units = data;
         this.checkAndGenerateForecastData();
@@ -43,6 +45,12 @@ export class ForecastNavItemComponent implements OnInit {
     });
 
     this.generateForecastData();
+  }
+
+  ngOnDestroy(): void {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
   }
 
   checkAndGenerateForecastData(): void {
@@ -117,14 +125,24 @@ export class ForecastNavItemComponent implements OnInit {
       case 225: return '&#xE00A;';
       case 270: return '&#xE00C;';
       case 315: return '&#xE00E;';
-      default: return '';
+      default: return '-';
     }
   }
 
   generatePrecipitation(): void {
     this.forecastPerDay.precipitation.forEach((element, index) => {
-      const precipitation = element;
-      const precipitationText = `&#xE016 ${precipitation.toFixed(1)} ${this.units.precipitation}`;
+      let precipitation = element;
+      let precipitationType = '';
+      if (this.forecastPerDay.snowFraction[index] === 0) {
+        precipitationType = '&#xE016';
+      } else if (this.forecastPerDay.snowFraction[index] === 1) {
+        precipitationType = '&#xE025';
+        precipitation *= 7;
+      }
+      if (precipitation === 0) {
+        precipitationType = '';
+      }
+      const precipitationText = `${precipitationType} ${precipitation.toFixed(1)} ${this.units.precipitation}`;
       this.precipitation.push(precipitationText);
     });
   }

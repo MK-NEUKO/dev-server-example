@@ -1,4 +1,5 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, input, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
 import { WeatherForecast } from '../../../../models/weather-forecast/weatherForecast';
 
@@ -9,8 +10,9 @@ import { WeatherForecast } from '../../../../models/weather-forecast/weatherFore
   templateUrl: './forecast-tab-content.component.html',
   styleUrl: './forecast-tab-content.component.css'
 })
-export class ForecastTabContentComponent implements OnInit {
+export class ForecastTabContentComponent implements OnInit, OnDestroy {
 
+  private dataSubscription!: Subscription;
   public weatherForecast!: WeatherForecast;
   tabIndex = input<number>(0);
 
@@ -18,11 +20,17 @@ export class ForecastTabContentComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
+    this.dataSubscription = this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
       if (data) {
         this.weatherForecast = data;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
   }
 
 }

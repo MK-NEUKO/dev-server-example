@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { LocationQueryResult } from '../../models/weather-forecast/locationQueryResult';
 import { Location } from '../../models/weather-forecast/location';
 import { WeatherForecastService } from '../../services/weather-forecast/weather-forecast.service';
@@ -20,8 +21,9 @@ import { WeatherForecastDataService } from '../../services/weather-forecast/weat
   templateUrl: './weather-forecast.component.html',
   styleUrls: ['./weather-forecast.component.css']
 })
-export class WeatherForecastComponent implements OnInit {
+export class WeatherForecastComponent implements OnInit, OnDestroy {
 
+  private dataSubscription!: Subscription;
   public query: string = 'copenhagen';
   public locationQueryResult!: LocationQueryResult;
   public weatherForecast!: WeatherForecast;
@@ -34,13 +36,13 @@ export class WeatherForecastComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.weatherForecastDataService.getLocationQueryResult().subscribe(data => {
+    this.dataSubscription = this.weatherForecastDataService.getLocationQueryResult().subscribe(data => {
       if (data) {
         this.locationQueryResult = data;
       }
     });
 
-    this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
+    this.dataSubscription = this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
       if (data) {
         this.weatherForecast = data;
       }
@@ -50,6 +52,12 @@ export class WeatherForecastComponent implements OnInit {
   ngAfterViewInit() {
     this.onGetLocations();
 
+  }
+
+  ngOnDestroy(): void {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
   }
 
   generateLocations(): void {
