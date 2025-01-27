@@ -1,11 +1,11 @@
 <h2 class="text-center text-body">Weather Forecast</h2>
 
 <div class="card">
-  <div class="card-header">Search Location</div>
   <div class="card-header text-info fst-italic">
-    Sorry, this is a demo. The request comes from an API with demo data for
+    This is a demo. The request comes from an API with demo data for
     "Copenhagen".
   </div>
+  <div class="card-header">Search Location</div>
   <div class="card-body">
     <form (ngSubmit)="onGetLocations()">
       <div class="col-4 d-flex mb-3" role="search">
@@ -41,7 +41,7 @@
       <tbody>
         <tr
           class="cursor-pointer"
-          *ngFor="let location of locationQueryResult.results"
+          *ngFor="let location of locations"
           (click)="onGetForecast(location)"
         >
           <td>{{ location.name }}</td>

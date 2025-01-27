@@ -26,6 +26,8 @@ export class WeatherForecastComponent implements OnInit {
   public locationQueryResult!: LocationQueryResult;
   public weatherForecast!: WeatherForecast;
 
+  locations: Location[] = [];
+
   constructor(
     private weatherForecastService: WeatherForecastService,
     private weatherForecastDataService: WeatherForecastDataService
@@ -50,9 +52,18 @@ export class WeatherForecastComponent implements OnInit {
 
   }
 
+  generateLocations(): void {
+    this.locationQueryResult.results.forEach((location: Location, index: number) => {
+      if (index < 2) {
+        this.locations.push(location);
+      }
+    });
+  }
+
   onGetLocations() {
     this.weatherForecastService.getLocations(this.query).subscribe((data: LocationQueryResult) => {
       this.weatherForecastDataService.setLocationQueryResult(data);
+      this.generateLocations();
     });
   }
 

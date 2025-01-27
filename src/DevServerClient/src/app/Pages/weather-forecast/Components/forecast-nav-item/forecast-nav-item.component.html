@@ -3,7 +3,14 @@
     <div>{{ weekdays[itemIndex()] }}</div>
     <div>{{ dates[itemIndex()] }}</div>
   </div>
-  <img src="{{ picToCodePath[itemIndex()] }}" alt="weather icon" width="70px" />
+  <div>
+    <img
+      class="bg-primary bg-gradient rounded-2"
+      src="{{ picToCodePath[itemIndex()] }}"
+      alt="weather icon"
+      width="70px"
+    />
+  </div>
   <div>
     <div>
       {{ forecastPerDay.temperatureMax[itemIndex()] }}

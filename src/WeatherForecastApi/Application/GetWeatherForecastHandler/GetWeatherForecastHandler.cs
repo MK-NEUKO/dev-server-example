@@ -3,7 +3,7 @@ using WeatherForecastApi.WeatherForecast;
 
 namespace WeatherForecastApi.Application.GetWeatherForecastHandler;
 
-public class GetGetWeatherForecastHandler(
+public class GetWeatherForecastHandler(
     IWeatherForecastRepository weatherForecastRepository
     ) : IGetWeatherForecastHandler
 {

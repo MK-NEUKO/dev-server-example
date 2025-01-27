@@ -32,19 +32,38 @@ export class ForecastNavItemComponent implements OnInit {
     this.weatherForecastDataService.getWeatherForecastPerDay().subscribe(data => {
       if (data) {
         this.forecastPerDay = data;
+        this.checkAndGenerateForecastData();
       }
     });
     this.weatherForecastDataService.getUnits().subscribe(data => {
       if (data) {
         this.units = data;
+        this.checkAndGenerateForecastData();
       }
     });
+
+    this.generateForecastData();
+  }
+
+  checkAndGenerateForecastData(): void {
+    if (this.forecastPerDay && this.units) {
+      this.generateForecastData();
+    }
+  }
+
+  generateForecastData(): void {
+    this.weekdays = [];
+    this.dates = [];
+    this.picToCodePath = [];
+    this.wind = [];
+    this.precipitation = [];
 
     this.convertDateToWeekday(this.forecastPerDay.time);
     this.convertDateToDates(this.forecastPerDay.time);
     this.convertPicToCodePath(this.forecastPerDay.picToCode);
     this.gererateWindProperty();
     this.generatePrecipitation();
+    console.log(this.forecastPerDay);
   }
 
   convertDateToWeekday(date: string[]): void {
@@ -63,7 +82,7 @@ export class ForecastNavItemComponent implements OnInit {
         this.dates.push('Today');
       }
       else if (index === 1) {
-        this.dates.push('Tomorrow');
+        this.dates.push('Tmr');
       }
       else {
         this.dates.push(date);
@@ -75,7 +94,7 @@ export class ForecastNavItemComponent implements OnInit {
     const basePath = '/images/weather-forecast/daily/';
     date.forEach(element => {
       const picToCode = element;
-      const pathToPic = `${basePath}0${picToCode}_iday.svg`;
+      const pathToPic = `${basePath}${picToCode}_iday.svg`;
       this.picToCodePath.push(pathToPic);
     });
   }
