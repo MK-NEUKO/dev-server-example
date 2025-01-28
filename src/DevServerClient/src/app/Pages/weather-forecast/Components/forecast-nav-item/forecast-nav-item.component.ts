@@ -70,7 +70,6 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
     this.convertPicToCodePath(this.forecastPerDay.picToCode);
     this.gererateWindProperty();
     this.generatePrecipitation();
-    console.log(this.forecastPerDay);
   }
 
   convertDateToWeekday(date: string[]): void {

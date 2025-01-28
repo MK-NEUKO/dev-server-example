@@ -18,6 +18,7 @@ export class WeatherForecastDataService {
   private forecastPerDaySubject = new BehaviorSubject<ForecastDataPerDay>(initializeForecastDataPerDay());
   private units = new BehaviorSubject<Units>(initializeUnits());
 
+
   constructor() {
 
   }
