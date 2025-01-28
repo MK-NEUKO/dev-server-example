@@ -11,15 +11,14 @@ import { WeatherForecastDataService } from '../../services/weather-forecast/weat
 
 
 @Component({
-  selector: 'app-weather-forecast',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ForecastNavTabComponent
-  ],
-  templateUrl: './weather-forecast.component.html',
-  styleUrls: ['./weather-forecast.component.css']
+    selector: 'app-weather-forecast',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ForecastNavTabComponent
+    ],
+    templateUrl: './weather-forecast.component.html',
+    styleUrls: ['./weather-forecast.component.css']
 })
 export class WeatherForecastComponent implements OnInit, OnDestroy {
 

@@ -7,16 +7,15 @@ import { DarkModeService } from '../../services/dark-mode.service';
 
 
 @Component({
-  selector: 'app-base-layout',
-  standalone: true,
-  imports: [
-    NavbarComponent,
-    SidebarComponent,
-    RouterOutlet,
-    FooterComponent
-  ],
-  templateUrl: './base-layout.component.html',
-  styleUrl: './base-layout.component.css'
+    selector: 'app-base-layout',
+    imports: [
+        NavbarComponent,
+        SidebarComponent,
+        RouterOutlet,
+        FooterComponent
+    ],
+    templateUrl: './base-layout.component.html',
+    styleUrl: './base-layout.component.css'
 })
 export class BaseLayoutComponent implements AfterViewInit {
 

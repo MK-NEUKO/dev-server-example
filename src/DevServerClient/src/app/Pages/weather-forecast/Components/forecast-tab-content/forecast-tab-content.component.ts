@@ -4,11 +4,10 @@ import { WeatherForecastDataService } from '../../../../services/weather-forecas
 import { WeatherForecast } from '../../../../models/weather-forecast/weatherForecast';
 
 @Component({
-  selector: 'app-forecast-tab-content',
-  standalone: true,
-  imports: [],
-  templateUrl: './forecast-tab-content.component.html',
-  styleUrl: './forecast-tab-content.component.css'
+    selector: 'app-forecast-tab-content',
+    imports: [],
+    templateUrl: './forecast-tab-content.component.html',
+    styleUrl: './forecast-tab-content.component.css'
 })
 export class ForecastTabContentComponent implements OnInit, OnDestroy {
 

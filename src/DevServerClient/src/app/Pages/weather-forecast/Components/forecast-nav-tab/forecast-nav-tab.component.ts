@@ -7,15 +7,14 @@ import { ForecastDataPerDay } from '../../../../models/weather-forecast/forecast
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
 
 @Component({
-  selector: 'app-forecast-nav-tab',
-  standalone: true,
-  imports: [
-    ForecastNavItemComponent,
-    ForecastTabContentComponent,
-    CommonModule
-  ],
-  templateUrl: './forecast-nav-tab.component.html',
-  styleUrl: './forecast-nav-tab.component.css'
+    selector: 'app-forecast-nav-tab',
+    imports: [
+        ForecastNavItemComponent,
+        ForecastTabContentComponent,
+        CommonModule
+    ],
+    templateUrl: './forecast-nav-tab.component.html',
+    styleUrl: './forecast-nav-tab.component.css'
 })
 export class ForecastNavTabComponent implements OnInit {
 

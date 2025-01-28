@@ -6,13 +6,12 @@ import { ForecastDataPerDay } from '../../../../models/weather-forecast/forecast
 import { Units } from '../../../../models/weather-forecast/units';
 
 @Component({
-  selector: 'app-forecast-nav-item',
-  standalone: true,
-  imports: [
-    CommonModule
-  ],
-  templateUrl: './forecast-nav-item.component.html',
-  styleUrl: './forecast-nav-item.component.css'
+    selector: 'app-forecast-nav-item',
+    imports: [
+        CommonModule
+    ],
+    templateUrl: './forecast-nav-item.component.html',
+    styleUrl: './forecast-nav-item.component.css'
 })
 export class ForecastNavItemComponent implements OnInit, OnDestroy {
 
