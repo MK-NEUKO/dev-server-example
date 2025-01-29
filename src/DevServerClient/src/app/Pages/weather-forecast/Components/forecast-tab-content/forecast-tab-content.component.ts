@@ -58,7 +58,13 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
           backgroundColor: 'rgba(160, 160, 160, 1)',
           cubicInterpolationMode: 'monotone',
           borderWidth: 10,
-          borderColor: 'rgb(23, 31, 31)',
+          borderColor: 'rgb(47, 131, 156)',
+        },
+        point: {
+          radius: 0,
+          hitRadius: 10,
+          hoverRadius: 5,
+          hoverBorderWidth: 2
         }
       },
       scales: {

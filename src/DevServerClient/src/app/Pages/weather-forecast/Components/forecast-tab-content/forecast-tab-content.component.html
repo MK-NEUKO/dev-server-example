@@ -3,5 +3,12 @@
     This is the corresponding tab content for the tab with the index
     {{ tabIndex() }}
   </p>
-  <canvas baseChart [data]="data" [options]="options" [type]="'line'"> </canvas>
+  <canvas
+    class="max-height"
+    baseChart
+    [data]="data"
+    [options]="options"
+    [type]="'line'"
+  >
+  </canvas>
 </div>
