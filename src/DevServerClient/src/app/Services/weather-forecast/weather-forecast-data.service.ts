@@ -34,8 +34,8 @@ export class WeatherForecastDataService {
 
   setWeatherForecast(data: WeatherForecast) {
     this.weatherForecastSubject.next(data);
-    this.forecastPerDaySubject.next(data.forecastDataPerDayDto);
-    this.units.next(data.unitsDto);
+    this.forecastPerDaySubject.next(data.forecastDataPerDay);
+    this.units.next(data.units);
   }
 
   getWeatherForecast(): Observable<WeatherForecast | null> {

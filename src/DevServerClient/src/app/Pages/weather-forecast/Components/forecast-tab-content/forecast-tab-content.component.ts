@@ -44,10 +44,10 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
 
 
     this.data = {
-      labels: this.weatherForecast.forecastDataPerHourDto.time,
+      labels: this.weatherForecast.forecastDataPerDayPerHour[this.tabIndex()].time,
       datasets: [{
         label: 'Temperature',
-        data: this.weatherForecast.forecastDataPerHourDto.feltTemperature,
+        data: this.weatherForecast.forecastDataPerDayPerHour[this.tabIndex()].feltTemperature,
         borderWidth: 1
       }]
     };

@@ -4,21 +4,29 @@ using WeatherForecastApi.WeatherForecast;
 namespace WeatherForecastApi.Application.GetWeatherForecastHandler;
 
 public class GetWeatherForecastHandler(
-    IWeatherForecastRepository weatherForecastRepository
+    IWeatherForecastRepository weatherForecastRepository,
+    IWeatherForecastProcessor forecastProcessor
     ) : IGetWeatherForecastHandler
 {
     public async Task<WeatherForecastDto> HandleAsync(double lat, double lon, CancellationToken cancellationToken)
     {
         var result = await weatherForecastRepository.GetWeatherForecastAsync(lat, lon, cancellationToken);
-        
+
         if (result == null)
         {
             throw new BadHttpRequestException("Invalid weather forecast query result.");
         }
 
+        var processedPerDayPerHour = forecastProcessor.ProcessPerDayPerHour(result.ForecastDataPerHour);
+
+        if (processedPerDayPerHour == null)
+        {
+            throw new BadHttpRequestException("Invalid processedPerDayPerHour result.");
+        }
+
         var dto = new WeatherForecastDto
         {
-            MetadataDto = new MetadataDto
+            Metadata = new MetadataDto
             {
                 ModelRunUpdateTimeUtc = result.Metadata.ModelRunUpdateTimeUtc,
                 Name = result.Metadata.Name,
@@ -30,7 +38,7 @@ public class GetWeatherForecastHandler(
                 UtcTimeOffset = result.Metadata.UtcTimeoffset,
                 GenerationTimeMs = result.Metadata.GenerationTimeMs
             },
-            UnitsDto = new UnitsDto
+            Units = new UnitsDto
             {
                 Predictability = result.Units.Predictebility,
                 Precipitation = result.Units.Precipitation,
@@ -42,24 +50,24 @@ public class GetWeatherForecastHandler(
                 Pressure = result.Units.Pressure,
                 WindDirection = result.Units.Winddirection
             },
-            ForecastDataPerHourDto = new ForecastDataPerHourDto
+            ForecastDataPerDayPerHour = processedPerDayPerHour.Select(x => new ForecastDataPerHourDto
             {
-                Time = result.ForecastDataPerHour.Time,
-                SnowFraction = result.ForecastDataPerHour.SnowFraction,
-                WindSpeed = result.ForecastDataPerHour.WindSpeed,
-                PrecipitationProbability = result.ForecastDataPerHour.PrecipitationProbability,
-                ConvectivePrecipitation = result.ForecastDataPerHour.ConvectivePrecipitation,
-                RainSpot = result.ForecastDataPerHour.RainSpot,
-                PicToCode = result.ForecastDataPerHour.PicToCode,
-                FeltTemperature = result.ForecastDataPerHour.FeltTemperature,
-                Precipitation = result.ForecastDataPerHour.Precipitation,
-                IsDayLight = result.ForecastDataPerHour.IsDayLight,
-                UvIndex = result.ForecastDataPerHour.UvIndex,
-                RelativeHumidity = result.ForecastDataPerHour.RelativeHumidity,
-                SeaLevelPressure = result.ForecastDataPerHour.SeaLevelPressure,
-                WindDirection = result.ForecastDataPerHour.WindDirection
-            },
-            ForecastDataPerDayDto = new ForecastDataPerDayDto
+                Time = x.Time,
+                SnowFraction = x.SnowFraction,
+                WindSpeed = x.WindSpeed,
+                PrecipitationProbability = x.PrecipitationProbability,
+                ConvectivePrecipitation = x.ConvectivePrecipitation,
+                RainSpot = x.RainSpot,
+                PicToCode = x.PicToCode,
+                FeltTemperature = x.FeltTemperature,
+                Precipitation = x.Precipitation,
+                IsDayLight = x.IsDayLight,
+                UvIndex = x.UvIndex,
+                RelativeHumidity = x.RelativeHumidity,
+                SeaLevelPressure = x.SeaLevelPressure,
+                WindDirection = x.WindDirection
+            }).ToList(),
+            ForecastDataPerDay = new ForecastDataPerDayDto
             {
                 Time = result.ForecastDataPerDay.Time,
                 TemperatureInstant = result.ForecastDataPerDay.TemperatureInstant,

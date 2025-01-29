@@ -30,6 +30,7 @@ builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<IGetLocationHandler, GetGetLocationHandler>();
 builder.Services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
 builder.Services.AddScoped<IGetWeatherForecastHandler, GetWeatherForecastHandler>();
+builder.Services.AddScoped<IWeatherForecastProcessor, WeatherForecastProcessor>();
 
 
 

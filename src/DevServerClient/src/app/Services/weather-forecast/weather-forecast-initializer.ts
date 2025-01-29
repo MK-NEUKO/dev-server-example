@@ -6,7 +6,7 @@ import { ForecastDataPerDay } from '../../models/weather-forecast/forecastDataPe
 
 export function initializeWeatherForecast(): WeatherForecast {
     return {
-        metadataDto: {
+        metadata: {
             modelRunUpdateTimeUtc: '',
             name: '',
             height: 0,
@@ -17,7 +17,7 @@ export function initializeWeatherForecast(): WeatherForecast {
             utcTimeOffset: 0,
             generationTimeMs: 0
         } as Metadata,
-        unitsDto: {
+        units: {
             predictability: '',
             precipitation: '',
             windSpeed: '',
@@ -28,23 +28,25 @@ export function initializeWeatherForecast(): WeatherForecast {
             pressure: '',
             windDirection: ''
         } as Units,
-        forecastDataPerHourDto: {
-            time: [],
-            snowFraction: [],
-            windSpeed: [],
-            precipitationProbability: [],
-            convectivePrecipitation: [],
-            rainSpot: [],
-            picToCode: [],
-            feltTemperature: [],
-            precipitation: [],
-            isDayLight: [],
-            uvIndex: [],
-            relativeHumidity: [],
-            seaLevelPressure: [],
-            windDirection: [],
-        } as ForecastDataPerHour,
-        forecastDataPerDayDto: {
+        forecastDataPerDayPerHour: [
+            {
+                time: [],
+                snowFraction: [],
+                windSpeed: [],
+                precipitationProbability: [],
+                convectivePrecipitation: [],
+                rainSpot: [],
+                picToCode: [],
+                feltTemperature: [],
+                precipitation: [],
+                isDayLight: [],
+                uvIndex: [],
+                relativeHumidity: [],
+                seaLevelPressure: [],
+                windDirection: [],
+            } as ForecastDataPerHour,
+        ],
+        forecastDataPerDay: {
             time: [],
             temperatureInstant: [],
             precipitation: [],

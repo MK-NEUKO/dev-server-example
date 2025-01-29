@@ -3,18 +3,18 @@
 namespace WeatherForecastApi.WeatherForecast;
 
 public record ForecastDataPerHour(
-    [property: JsonPropertyName("time")] IEnumerable<string> Time,
-    [property: JsonPropertyName("snowfraction")] IEnumerable<double> SnowFraction,
-    [property: JsonPropertyName("windspeed")] IEnumerable<double> WindSpeed,
-    [property: JsonPropertyName("precipitation_probability")] IEnumerable<int> PrecipitationProbability,
-    [property: JsonPropertyName("convective_precipitation")] IEnumerable<double> ConvectivePrecipitation,
-    [property: JsonPropertyName("rainspot")] IEnumerable<string> RainSpot,
-    [property: JsonPropertyName("pictocode")] IEnumerable<int> PicToCode,
-    [property: JsonPropertyName("felttemperature")] IEnumerable<double> FeltTemperature,
-    [property: JsonPropertyName("precipitation")] IEnumerable<double> Precipitation,
-    [property: JsonPropertyName("isdaylight")] IEnumerable<int> IsDayLight,
-    [property: JsonPropertyName("uvindex")] IEnumerable<int> UvIndex,
-    [property: JsonPropertyName("relativehumidity")] IEnumerable<int> RelativeHumidity,
-    [property: JsonPropertyName("sealevelpressure")] IEnumerable<double> SeaLevelPressure,
-    [property: JsonPropertyName("winddirection")] IEnumerable<int> WindDirection
+    [property: JsonPropertyName("time")] List<string> Time,
+    [property: JsonPropertyName("snowfraction")] List<double> SnowFraction,
+    [property: JsonPropertyName("windspeed")] List<double> WindSpeed,
+    [property: JsonPropertyName("precipitation_probability")] List<int> PrecipitationProbability,
+    [property: JsonPropertyName("convective_precipitation")] List<double> ConvectivePrecipitation,
+    [property: JsonPropertyName("rainspot")] List<string> RainSpot,
+    [property: JsonPropertyName("pictocode")] List<int> PicToCode,
+    [property: JsonPropertyName("felttemperature")] List<double> FeltTemperature,
+    [property: JsonPropertyName("precipitation")] List<double> Precipitation,
+    [property: JsonPropertyName("isdaylight")] List<int> IsDayLight,
+    [property: JsonPropertyName("uvindex")] List<int> UvIndex,
+    [property: JsonPropertyName("relativehumidity")] List<int> RelativeHumidity,
+    [property: JsonPropertyName("sealevelpressure")] List<double> SeaLevelPressure,
+    [property: JsonPropertyName("winddirection")] List<int> WindDirection
 );

@@ -2,8 +2,8 @@
 
 public record WeatherForecastDto
 {
-    public MetadataDto? MetadataDto { get; init; }
-    public UnitsDto? UnitsDto { get; init; }
-    public ForecastDataPerHourDto? ForecastDataPerHourDto { get; init; }
-    public ForecastDataPerDayDto? ForecastDataPerDayDto { get; init; }
+    public MetadataDto? Metadata { get; init; }
+    public UnitsDto? Units { get; init; }
+    public IEnumerable<ForecastDataPerHourDto>? ForecastDataPerDayPerHour { get; init; }
+    public ForecastDataPerDayDto? ForecastDataPerDay { get; init; }
 }

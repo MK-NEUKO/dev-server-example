@@ -4,8 +4,8 @@ import { ForecastDataPerHour } from "./forecastDataPerHour";
 import { ForecastDataPerDay } from "./forecastDataPerDay";
 
 export interface WeatherForecast {
-    metadataDto: Metadata;
-    unitsDto: Units;
-    forecastDataPerHourDto: ForecastDataPerHour;
-    forecastDataPerDayDto: ForecastDataPerDay;
+    metadata: Metadata;
+    units: Units;
+    forecastDataPerDayPerHour: ForecastDataPerHour[];
+    forecastDataPerDay: ForecastDataPerDay;
 }
