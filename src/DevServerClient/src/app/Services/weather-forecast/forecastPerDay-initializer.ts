@@ -1,0 +1,37 @@
+import { ForecastDataPerDay } from "../../models/weather-forecast/forecastDataPerDay";
+
+export function initializeForecastDataPerDay(): ForecastDataPerDay {
+    return {
+        time: [],
+        temperatureInstant: [],
+        precipitation: [],
+        predictability: [],
+        temperatureMax: [],
+        seaLevelPressureMean: [],
+        windSpeedMean: [],
+        precipitationHours: [],
+        seaLevelPressureMin: [],
+        pictogramCode: [],
+        snowFraction: [],
+        humidityGreater90Hours: [],
+        convectivePrecipitation: [],
+        relativeHumidityMax: [],
+        temperatureMin: [],
+        windDirection: [],
+        feltTemperatureMax: [],
+        indexTo1HValuesEnd: [],
+        relativeHumidityMin: [],
+        feltTemperatureMean: [],
+        windSpeedMin: [],
+        feltTemperatureMin: [],
+        precipitationProbability: [],
+        uvIndex: [],
+        indexTo1HValuesStart: [],
+        rainSpot: [],
+        temperatureMean: [],
+        seaLevelPressureMax: [],
+        relativeHumidityMean: [],
+        predictabilityClass: [],
+        windSpeedMax: [],
+    } as ForecastDataPerDay
+}

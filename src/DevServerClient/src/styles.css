@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: 'MeteobluePictofont';
+    src: url('../public/fonts/meteoblue_pictofont_rev13.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

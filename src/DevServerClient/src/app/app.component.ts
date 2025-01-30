@@ -5,7 +5,6 @@ import { RouterOutlet, RouterModule } from '@angular/router';
 @Injectable()
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     CommonModule,
     RouterOutlet,
@@ -16,5 +15,5 @@ import { RouterOutlet, RouterModule } from '@angular/router';
 })
 export class AppComponent {
   title = 'Dev-Server-App';
-  constructor() {}
+  constructor() { }
 }

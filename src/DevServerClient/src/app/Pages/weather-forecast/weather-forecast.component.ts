@@ -1,45 +1,84 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DefaultWeather } from '../../../models/weatherforecast/defaultweather';
-import { Location } from '../../../models/weatherforecast/location';
-import { WeatherForecastService } from '../../../Services/WeatherForecast/weather-forecast.service';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { LocationQueryResult } from '../../models/weather-forecast/locationQueryResult';
+import { Location } from '../../models/weather-forecast/location';
+import { WeatherForecastService } from '../../services/weather-forecast/weather-forecast.service';
+import { WeatherForecast } from '../../models/weather-forecast/weatherForecast';
+import { ForecastNavTabComponent } from "./Components/forecast-nav-tab/forecast-nav-tab.component";
+import { WeatherForecastDataService } from '../../services/weather-forecast/weather-forecast-data.service';
+
 
 @Component({
-  selector: 'app-weather-forecast',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule
-  ],
-  templateUrl: './weather-forecast.component.html',
-  styleUrls: ['./weather-forecast.component.css']
+    selector: 'app-weather-forecast',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ForecastNavTabComponent
+    ],
+    templateUrl: './weather-forecast.component.html',
+    styleUrls: ['./weather-forecast.component.css']
 })
-export class WeatherForecastComponent {
+export class WeatherForecastComponent implements OnInit, OnDestroy {
 
-  public city: string = '';
-  public locations: Location[] = [];
-  public forecasts: DefaultWeather[] = [];
+  private dataSubscription!: Subscription;
+  public query: string = 'copenhagen';
+  public locationQueryResult!: LocationQueryResult;
+  public weatherForecast!: WeatherForecast;
 
-  constructor(private weatherForecastService: WeatherForecastService) { }
+  locations: Location[] = [];
 
-  //ngOnInit() {
-  //  this.weatherForecastService.getWeatherForecast().subscribe((data: DefaultWeather[]) => {
-  //    this.forecasts = data;
-  //    console.log(data);
-  //  });
-  //}
+  constructor(
+    private weatherForecastService: WeatherForecastService,
+    private weatherForecastDataService: WeatherForecastDataService
+  ) { }
 
-  onSubmit() {
-    console.log(this.city);
-    this.weatherForecastService.getLocations(this.city).subscribe((data: Location[]) => {
-      this.locations = data;
-      console.log(data);
+  ngOnInit() {
+    this.dataSubscription = this.weatherForecastDataService.getLocationQueryResult().subscribe(data => {
+      if (data) {
+        this.locationQueryResult = data;
+      }
+    });
+
+    this.dataSubscription = this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
+      if (data) {
+        this.weatherForecast = data;
+      }
     });
   }
 
-  getForecast(location: Location) {
-    console.log(location);
+  ngAfterViewInit() {
+    this.onGetLocations();
+
   }
 
+  ngOnDestroy(): void {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
+  }
+
+  generateLocations(): void {
+    this.locationQueryResult.results.forEach((location: Location, index: number) => {
+      if (index < 2) {
+        this.locations.push(location);
+      }
+    });
+  }
+
+  onGetLocations() {
+    this.weatherForecastService.getLocations(this.query).subscribe((data: LocationQueryResult) => {
+      this.weatherForecastDataService.setLocationQueryResult(data);
+      this.generateLocations();
+    });
+  }
+
+  onGetForecast(location: Location) {
+    const lat = location.lat;
+    const lon = location.lon;
+    this.weatherForecastService.getForecast(lat, lon).subscribe((data: WeatherForecast) => {
+      this.weatherForecastDataService.setWeatherForecast(data);
+    });
+  }
 }
