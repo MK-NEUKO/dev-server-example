@@ -20,14 +20,14 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
   public units!: Units;
 
   itemIndex = input<number>(0);
-  weekdays: string[] = [];
-  dates: string[] = [];
-  pictogramPath: string[] = [];
-  temperatureMax: string[] = [];
-  temperatureMin: string[] = [];
-  windDirection: string[] = [];
-  windSpeed: string[] = [];
-  precipitation: string[] = [];
+  weekdayList: string[] = [];
+  dateList: string[] = [];
+  pictogramPathDayList: string[] = [];
+  temperatureMaxList: string[] = [];
+  temperatureMinList: string[] = [];
+  windDirectionList: string[] = [];
+  windSpeedList: string[] = [];
+  precipitationList: string[] = [];
 
   constructor(private weatherForecastDataService: WeatherForecastDataService) {
   }
@@ -46,7 +46,7 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.generateForecastData();
+    this.processForecastData();
   }
 
   ngOnDestroy(): void {
@@ -57,64 +57,61 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
 
   checkAndGenerateForecastData(): void {
     if (this.forecastPerDay && this.units) {
-      this.generateForecastData();
+      this.processForecastData();
     }
   }
 
-  generateForecastData(): void {
-    this.weekdays = [];
-    this.dates = [];
-    this.pictogramPath = [];
-    this.temperatureMax = this.processTemrature(this.forecastPerDay.temperatureMax, this.units.temperature);
-    this.temperatureMin = this.processTemrature(this.forecastPerDay.temperatureMin, this.units.temperature);
-    this.windDirection = [];
-    this.windSpeed = [];
-    this.precipitation = [];
-
-    this.processWeekdays(this.forecastPerDay.time);
-    this.processDates(this.forecastPerDay.time);
-    this.processPictogramPath(this.forecastPerDay.pictogramCode);
-
-
-    this.processWindDirection(this.forecastPerDay.windDirection);
-    this.processWindSpeed(this.forecastPerDay, this.units.windSpeed);
-    this.processPrecipitation(this.forecastPerDay);
+  processForecastData(): void {
+    this.weekdayList = this.processWeekdays(this.forecastPerDay.time);
+    this.dateList = this.processDates(this.forecastPerDay.time);
+    this.pictogramPathDayList = this.processPictogramPaths(this.forecastPerDay.pictogramCode);
+    this.temperatureMaxList = this.processTemratures(this.forecastPerDay.temperatureMax, this.units.temperature);
+    this.temperatureMinList = this.processTemratures(this.forecastPerDay.temperatureMin, this.units.temperature);
+    this.windDirectionList = this.processWindDirections(this.forecastPerDay.windDirection);
+    this.windSpeedList = this.processWindSpeeds(this.forecastPerDay, this.units.windSpeed);
+    this.precipitationList = this.processPrecipitations(this.forecastPerDay);
   }
 
-  processWeekdays(date: string[]): void {
+  processWeekdays(date: string[]): string[] {
+    let weekdays: string[] = [];
     date.forEach(element => {
       const weekday = new Date(element).toLocaleDateString('en-US', { weekday: 'short' });
-      this.weekdays.push(weekday);
+      weekdays.push(weekday);
     });
+    return weekdays;
   }
 
-  processDates(date: string[]): void {
+  processDates(date: string[]): string[] {
+    let dates: string[] = [];
     date.forEach((element, index) => {
       const day = new Date(element).toLocaleDateString('en-US', { day: 'numeric' });
       const month = new Date(element).toLocaleDateString('en-US', { month: 'short' });
       const date = `${day}. ${month}`;
       if (index === 0) {
-        this.dates.push('Today');
+        dates.push('Today');
       }
       else if (index === 1) {
-        this.dates.push('Tmr');
+        dates.push('Tmr');
       }
       else {
-        this.dates.push(date);
+        dates.push(date);
       }
     });
+    return dates;
   }
 
-  processPictogramPath(date: number[]): void {
+  processPictogramPaths(pictogramCode: number[]): string[] {
     const basePath = '/images/weather-forecast/daily/';
-    date.forEach(element => {
-      const picToCode = element;
-      const pathToPic = `${basePath}${picToCode}_iday.svg`;
-      this.pictogramPath.push(pathToPic);
+    let pictogramPathDayList: string[] = [];
+    pictogramCode.forEach(element => {
+      const pictogramCode = element;
+      const pictogramPath = `${basePath}${pictogramCode}_iday.svg`;
+      pictogramPathDayList.push(pictogramPath);
     });
+    return pictogramPathDayList;
   }
 
-  processTemrature(temperature: number[], unit: string): string[] {
+  processTemratures(temperature: number[], unit: string): string[] {
     let temperatureList: string[] = [];
     temperature.forEach(element => {
       const temperature = `${this.roundTemperature(element)} °${unit}`;
@@ -126,11 +123,13 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
     return Math.round(temperature);
   }
 
-  processWindDirection(windDirection: number[]): void {
+  processWindDirections(windDirection: number[]): string[] {
+    let windDirectionUnicodeList: string[] = [];
     windDirection.forEach(element => {
       const windDirectionUnicode = this.convertWindDegToUnicode(element);
-      this.windDirection.push(windDirectionUnicode);
+      windDirectionUnicodeList.push(windDirectionUnicode);
     });
+    return windDirectionUnicodeList;
   }
   convertWindDegToUnicode(windDirection: number): string {
     switch (windDirection) {
@@ -146,12 +145,14 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  processWindSpeed(forecastPerDay: ForecastDataPerDay, windSpeedUnit: string): void {
+  processWindSpeeds(forecastPerDay: ForecastDataPerDay, windSpeedUnit: string): string[] {
+    let windSpeedList: string[] = [];
     forecastPerDay.windSpeedMax.forEach((element, index) => {
       const processedWindSpeedUnit = this.processWindSpeedUnit(windSpeedUnit);
       const windSpeed = `${element.toFixed(0)} - ${forecastPerDay.windSpeedMin[index].toFixed(0)} ${processedWindSpeedUnit}`;
-      this.windSpeed.push(windSpeed);
+      windSpeedList.push(windSpeed);
     });
+    return windSpeedList;
   }
   processWindSpeedUnit(windSpeedUnit: string): string {
     switch (this.units.windSpeed) {
@@ -160,7 +161,8 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
     };
   }
 
-  processPrecipitation(forecastPerDay: ForecastDataPerDay): void {
+  processPrecipitations(forecastPerDay: ForecastDataPerDay): string[] {
+    let precipitationList: string[] = [];
     forecastPerDay.precipitation.forEach((element, index) => {
       let precipitation = element;
       let precipitationType = '';
@@ -174,8 +176,9 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
         precipitationType = '';
       }
       const precipitationText = `${precipitationType} ${precipitation.toFixed(0)} ${this.units.precipitation}`;
-      this.precipitation.push(precipitationText);
+      precipitationList.push(precipitationText);
     });
+    return precipitationList;
   }
 
 }

@@ -1,31 +1,33 @@
 <div class="d-flex flex-row flex-xl-column justify-content-between">
   <div>
-    <div>{{ weekdays[itemIndex()] }}</div>
-    <div>{{ dates[itemIndex()] }}</div>
+    <div>{{ weekdayList[itemIndex()] }}</div>
+    <div>{{ dateList[itemIndex()] }}</div>
   </div>
   <div>
-    <img
-      class="bg-primary bg-gradient rounded-2"
-      src="{{ pictogramPath[itemIndex()] }}"
-      alt="weather icon"
-      width="70px"
-    />
+    <div>
+      <img
+        class="bg-primary bg-gradient rounded-2"
+        src="{{ pictogramPathDayList[itemIndex()] }}"
+        alt="weather icon day"
+        width="70px"
+      />
+    </div>
   </div>
   <div>
-    <div>{{ temperatureMax[itemIndex()] }}</div>
-    <div>{{ temperatureMin[itemIndex()] }}</div>
+    <div>{{ temperatureMaxList[itemIndex()] }}</div>
+    <div>{{ temperatureMinList[itemIndex()] }}</div>
   </div>
   <div>
     <div class="">
       <div
         class="meteoblue-pictofont"
-        [innerHTML]="windDirection[itemIndex()]"
+        [innerHTML]="windDirectionList[itemIndex()]"
       ></div>
-      <div class="" [innerHTML]="windSpeed[itemIndex()]"></div>
+      <div>{{ windSpeedList[itemIndex()] }}</div>
     </div>
     <div
       class="meteoblue-pictofont"
-      [innerHTML]="precipitation[itemIndex()]"
+      [innerHTML]="precipitationList[itemIndex()]"
     ></div>
   </div>
 </div>
