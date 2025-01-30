@@ -11,4 +11,7 @@ builder.AddNpmApp("devServerClient", "../DevServerClient")
     .PublishAsDockerFile();
 
 
+builder.AddProject<Projects.EnvironmentGateway>("environmentgateway");
+
+
 builder.Build().Run();
