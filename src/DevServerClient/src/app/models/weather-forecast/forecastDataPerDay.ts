@@ -8,7 +8,7 @@ export interface ForecastDataPerDay {
     windSpeedMean: number[];
     precipitationHours: number[];
     seaLevelPressureMin: number[];
-    picToCode: number[];
+    pictogramCode: number[];
     snowFraction: number[];
     humidityGreater90Hours: number[];
     convectivePrecipitation: number[];

@@ -11,7 +11,7 @@ export function initializeForecastDataPerDay(): ForecastDataPerDay {
         windSpeedMean: [],
         precipitationHours: [],
         seaLevelPressureMin: [],
-        picToCode: [],
+        pictogramCode: [],
         snowFraction: [],
         humidityGreater90Hours: [],
         convectivePrecipitation: [],

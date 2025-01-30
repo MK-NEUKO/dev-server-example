@@ -12,7 +12,7 @@ public record ForecastDataPerDay(
     [property: JsonPropertyName("windspeed_mean")] IEnumerable<double> WindSpeedMean,
     [property: JsonPropertyName("precipitation_hours")] IEnumerable<double> PrecipitationHours,
     [property: JsonPropertyName("sealevelpressure_min")] IEnumerable<int> SeaLevelPressureMin,
-    [property: JsonPropertyName("pictocode")] IEnumerable<int> PicToCode,
+    [property: JsonPropertyName("pictocode")] IEnumerable<int> PictogramCode,
     [property: JsonPropertyName("snowfraction")] IEnumerable<double> SnowFraction,
     [property: JsonPropertyName("humiditygreater90_hours")] IEnumerable<double> HumidityGreater90Hours,
     [property: JsonPropertyName("convective_precipitation")] IEnumerable<double> ConvectivePrecipitation,

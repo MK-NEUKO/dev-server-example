@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { BaseChartDirective } from 'ng2-charts';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
 import { WeatherForecast } from '../../../../models/weather-forecast/weatherForecast';
-import { elements, LineController, scales } from 'chart.js';
+import { elements, LineController, scales, Title } from 'chart.js';
 import { ForecastDataPerHour } from '../../../../models/weather-forecast/forecastDataPerHour';
 
 @Component({
@@ -21,12 +21,10 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
   tabIndex = input<number>(0);
 
 
-  forecastPerDay1Hour: ForecastDataPerHour[] = [];
-
   options: {} = {};
   data!: {
     labels: string[],
-    datasets: { label: string, data: number[], borderWidth: number }[]
+    datasets: { label: string, data: number[], borderWidth: number, type: string }[]
   };
 
   constructor(private weatherForecastDataService: WeatherForecastDataService) {
@@ -38,17 +36,21 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     this.dataSubscription = this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
       if (data) {
         this.weatherForecast = data;
+        this.generateForecastData();
       }
     });
 
+    this.generateForecastData();
+  }
 
-
+  generateForecastData(): void {
     this.data = {
       labels: this.weatherForecast.forecastDataPerDayPerHour[this.tabIndex()].time,
       datasets: [{
         label: 'Temperature',
-        data: this.weatherForecast.forecastDataPerDayPerHour[this.tabIndex()].feltTemperature,
-        borderWidth: 1
+        data: this.weatherForecast.forecastDataPerDayPerHour[this.tabIndex()].temperature,
+        borderWidth: 1,
+        type: 'line'
       }]
     };
 
@@ -68,8 +70,14 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
         }
       },
       scales: {
+        x: {
+          Title: {
+            display: true,
+            text: 'Time'
+          }
+        },
         y: {
-          beginAtZero: true
+
 
         }
       }

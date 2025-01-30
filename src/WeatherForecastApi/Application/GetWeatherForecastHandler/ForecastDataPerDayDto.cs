@@ -12,7 +12,7 @@ public record ForecastDataPerDayDto
     public IEnumerable<double>? WindSpeedMean { get; init; }
     public IEnumerable<double>? PrecipitationHours { get; init; }
     public IEnumerable<int>? SeaLevelPressureMin { get; init; }
-    public IEnumerable<int>? PicToCode { get; init; }
+    public IEnumerable<int>? PictogramCode { get; init; }
     public IEnumerable<double>? SnowFraction { get; init; }
     public IEnumerable<double>? HumidityGreater90Hours { get; init; }
     public IEnumerable<double>? ConvectivePrecipitation { get; init; }
