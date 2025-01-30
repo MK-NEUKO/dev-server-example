@@ -180,5 +180,4 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
     });
     return precipitationList;
   }
-
 }
