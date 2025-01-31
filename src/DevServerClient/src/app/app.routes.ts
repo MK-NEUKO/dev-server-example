@@ -7,6 +7,10 @@ export const routes: Routes = [
     {
         path: '',
         component: BaseLayoutComponent,
+    },
+    {
+        path: 'weather-forecast',
+        component: BaseLayoutComponent,
         children: [
             { path: '', component: WeatherForecastComponent }
         ]
