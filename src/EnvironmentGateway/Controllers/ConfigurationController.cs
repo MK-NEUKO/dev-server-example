@@ -1,23 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ConfigurationController : ControllerBase
+    public class ConfigurationController(IProxyConfigProvider configurationProvider) : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-
-        public ConfigurationController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         [HttpGet]
         public IActionResult GetConfiguration()
         {
-            var reverseProxyConfig = _configuration.GetSection("ReverseProxy").GetChildren();
+            var proxyConfig = configurationProvider.GetConfig();
+            var reverseProxyConfig = new
+            {
+                Routes = proxyConfig.Routes,
+                Clusters = proxyConfig.Clusters
+            };
             return Ok(reverseProxyConfig);
         }
     }

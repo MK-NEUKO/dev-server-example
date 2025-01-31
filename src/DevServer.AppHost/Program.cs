@@ -1,17 +1,20 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
+var productionGateway = builder.AddProject<Projects.EnvironmentGateway>("production-gateway");
+//var stagingGateway = builder.AddProject<Projects.EnvironmentGateway>("staging-gateway");
+
+
 var weatherApi = builder.AddProject<Projects.WeatherForecastApi>("weatherapi")
     .WithExternalHttpEndpoints();
 
 builder.AddNpmApp("devServerClient", "../DevServerClient")
     .WithReference(weatherApi)
+    .WithReference(productionGateway)
+    //.WithReference(stagingGateway)
     .WaitFor(weatherApi)
     .WithHttpEndpoint(env: "DEV_SERVER_CLIENT_PORT")
     .WithExternalHttpEndpoints()
     .PublishAsDockerFile();
 
 
-builder.AddProject<Projects.EnvironmentGateway>("environmentgateway");
-
-
-builder.Build().Run();
+await builder.Build().RunAsync();
