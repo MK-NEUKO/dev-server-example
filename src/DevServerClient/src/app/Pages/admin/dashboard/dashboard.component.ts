@@ -20,6 +20,6 @@ export class DashboardComponent {
 
   getSlotOne() {
     console.log("got to slot one");
-    window.open("https://localhost:7118/configuration", "_blank");
+    window.open("https://localhost:7118", "_blank");
   }
 }

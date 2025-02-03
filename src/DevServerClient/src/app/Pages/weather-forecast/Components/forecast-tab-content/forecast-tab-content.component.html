@@ -5,4 +5,13 @@
   </p>
   <canvas class="max-height" baseChart [data]="data" [options]="options">
   </canvas>
+  <div class="d-flex flex-row justify-content-between">
+    <div
+      class="text-body"
+      *ngFor="let hour of forecastPerHour.time; let i = index"
+    >
+      <img src="{{ pictogramPathList[i] }}" width="50px" />
+      {{ hour }}
+    </div>
+  </div>
 </div>

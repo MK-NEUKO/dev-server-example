@@ -10,6 +10,6 @@ export class EnvironmentService {
   constructor(private http: HttpClient) { }
 
   getConfigurations(): Observable<any> {
-    return this.http.get<any>('https://localhost:7118/configuration');
+    return this.http.get<any>('https://localhost:7118/configuration/getconfiguration');
   }
 }
