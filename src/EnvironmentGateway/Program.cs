@@ -1,3 +1,6 @@
+using EnvironmentGateway;
+using Yarp.ReverseProxy.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -13,8 +16,11 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
+var inMemoryConfig = new InMemoryConfig();
+builder.Services.AddSingleton(inMemoryConfig);
+
 builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+    .LoadFromMemory(inMemoryConfig.Routes, inMemoryConfig.Clusters);
 
 var app = builder.Build();
 
