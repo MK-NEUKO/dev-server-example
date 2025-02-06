@@ -6,21 +6,21 @@ import { LocationQueryResult } from '../../models/weather-forecast/locationQuery
 import { Location } from '../../models/weather-forecast/location';
 import { WeatherForecastService } from '../../services/weather-forecast/weather-forecast.service';
 import { WeatherForecast } from '../../models/weather-forecast/weatherForecast';
-import { ForecastNavTabComponent } from "./Components/forecast-nav-tab/forecast-nav-tab.component";
+import { WeatherForecastComponent } from "./Components/weather-forecast/weather-forecast.component";
 import { WeatherForecastDataService } from '../../services/weather-forecast/weather-forecast-data.service';
 
 
 @Component({
-  selector: 'app-weather-forecast',
+  selector: 'app-weather-forecast-page',
   imports: [
     CommonModule,
     FormsModule,
-    ForecastNavTabComponent
+    WeatherForecastComponent
   ],
-  templateUrl: './weather-forecast.component.html',
-  styleUrls: ['./weather-forecast.component.css']
+  templateUrl: './weather-forecast-page.component.html',
+  styleUrls: ['./weather-forecast-page.component.css']
 })
-export class WeatherForecastComponent implements OnInit, OnDestroy {
+export class WeatherForecastPageComponent implements OnInit, OnDestroy {
 
   private dataSubscription!: Subscription;
   public query: string = 'copenhagen';

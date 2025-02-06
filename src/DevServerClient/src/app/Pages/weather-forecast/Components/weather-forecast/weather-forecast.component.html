@@ -4,7 +4,7 @@
     id="weather-forecast-nav-tab"
     role="tablist"
   >
-    <app-forecast-nav-item
+    <app-day-overview
       *ngFor="let item of forecastPerDay.time; index as index"
       [itemIndex]="index"
       class="nav-link text-body"
@@ -16,11 +16,11 @@
       aria-controls="nav-tab"
       [attr.aria-selected]="index === 0 ? 'true' : 'false'"
       [ngClass]="{ active: index === 0 }"
-    ></app-forecast-nav-item>
+    ></app-day-overview>
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
-  <app-forecast-tab-content
+  <app-day-details
     *ngFor="let item of forecastPerDay.time; index as index"
     [tabIndex]="index"
     class="tab-pane fade"
@@ -28,5 +28,5 @@
     role="tabpanel"
     [attr.aria-labelledby]="'nav-tab-' + index"
     [ngClass]="{ 'show active': index === 0 }"
-  ></app-forecast-tab-content>
+  ></app-day-details>
 </div>

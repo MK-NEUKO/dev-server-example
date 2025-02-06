@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
 import { NavbarComponent } from "../Components/navbar/navbar.component";
 import { SidebarComponent } from '../Components/sidebar/sidebar.component';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from "../Components/footer/footer.component";
 import { DarkModeService } from '../../services/dark-mode.service';
 
@@ -12,8 +12,6 @@ import { DarkModeService } from '../../services/dark-mode.service';
     NavbarComponent,
     SidebarComponent,
     RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
     FooterComponent
   ],
   templateUrl: './base-layout.component.html',

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ForecastNavTabComponent } from './forecast-nav-tab.component';
+import { ForecastNavTabComponent } from './weather-forecast.component';
 
 describe('ForecastNavTabComponent', () => {
   let component: ForecastNavTabComponent;
@@ -10,7 +10,7 @@ describe('ForecastNavTabComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ForecastNavTabComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ForecastNavTabComponent);
     component = fixture.componentInstance;

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ForecastTabContentComponent } from './forecast-tab-content.component';
+import { ForecastTabContentComponent } from './day-details.component';
 
 describe('ForecastTabContentComponent', () => {
   let component: ForecastTabContentComponent;
@@ -10,7 +10,7 @@ describe('ForecastTabContentComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ForecastTabContentComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ForecastTabContentComponent);
     component = fixture.componentInstance;

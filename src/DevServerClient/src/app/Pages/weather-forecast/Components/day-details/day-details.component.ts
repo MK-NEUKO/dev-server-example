@@ -1,4 +1,4 @@
-import { Component, OnInit, input, OnDestroy } from '@angular/core';
+import { Component, OnInit, input, OnDestroy, provideExperimentalCheckNoChangesForDebug } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { BaseChartDirective } from 'ng2-charts';
@@ -8,14 +8,14 @@ import { Colors, elements, LineController, scales, Title } from 'chart.js';
 import { ForecastDataPerHour } from '../../../../models/weather-forecast/forecastDataPerHour';
 
 @Component({
-  selector: 'app-forecast-tab-content',
+  selector: 'app-day-details',
   imports: [
     BaseChartDirective,
     CommonModule,
     NgFor
   ],
-  templateUrl: './forecast-tab-content.component.html',
-  styleUrl: './forecast-tab-content.component.css'
+  templateUrl: './day-details.component.html',
+  styleUrl: './day-details.component.css'
 })
 export class ForecastTabContentComponent implements OnInit, OnDestroy {
 
@@ -132,7 +132,6 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
       const daytime = isDaylight[index] === 1 ? 'day' : 'night';
       const pictogramPath = `${basePath}${pictogramCode}_${daytime}.svg`;
       pictogramPathList.push(pictogramPath);
-      console.log(pictogramPathList);
     });
     return pictogramPathList;
   }

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ForecastNavItemComponent } from './forecast-nav-item.component';
+import { ForecastNavItemComponent } from './day-overview.component';
 
 describe('ForecastNavItemComponent', () => {
   let component: ForecastNavItemComponent;
@@ -10,7 +10,7 @@ describe('ForecastNavItemComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ForecastNavItemComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ForecastNavItemComponent);
     component = fixture.componentInstance;

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { WeatherForecastComponent } from './Pages/weather-forecast/weather-forecast.component';
+import { WeatherForecastPageComponent } from './Pages/weather-forecast/weather-forecast-page.component';
 import { BaseLayoutComponent } from './Layout/base-layout/base-layout.component';
 import { DashboardComponent } from './Pages/admin/dashboard/dashboard.component';
 
@@ -12,7 +12,7 @@ export const routes: Routes = [
         path: 'weather-forecast',
         component: BaseLayoutComponent,
         children: [
-            { path: '', component: WeatherForecastComponent }
+            { path: '', component: WeatherForecastPageComponent }
         ]
     },
     {
