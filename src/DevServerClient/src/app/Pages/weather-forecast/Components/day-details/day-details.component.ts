@@ -20,12 +20,12 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
 
   private dataSubscription!: Subscription;
   public weatherForecast!: WeatherForecast;
-  dayIndex = input<number>(0);
-
-  forecastPerHour!: ForecastDataPerHour;
-  pictogramPathList: string[] = [];
-  options: {} = {};
-  data!: {
+  public pictogramBgList: string[] = [];
+  public dayIndex = input<number>(0);
+  public forecastPerHour!: ForecastDataPerHour;
+  public pictogramPathList: string[] = [];
+  public options: {} = {};
+  public data!: {
     labels: string[],
     datasets: {
       label: string,
@@ -47,17 +47,17 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
       if (data) {
         this.weatherForecast = data;
         this.forecastPerHour = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()];
-        this.generateForecastData();
-        this.processTemperatureChart();
+        this.processDayDetailForecast();
       }
     });
 
-    this.generateForecastData();
-    this.processTemperatureChart();
+    this.processDayDetailForecast();
   }
 
-  generateForecastData(): void {
+  processDayDetailForecast(): void {
     this.pictogramPathList = this.processPictogramPaths(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].pictogramCode, this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
+    this.pictogramBgList = this.processPictogramBgs(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
+    this.createTemperatureChart();
   }
 
   ngOnDestroy(): void {
@@ -78,9 +78,16 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     return pictogramPathList;
   }
 
-  processTemperatureChart(): void {
+  processPictogramBgs(isDayLight: number[]): string[] {
+    let pictogramBgList: string[] = [];
+    isDayLight.forEach(element => {
+      const pictogramBg = element === 1 ? 'bg-primary' : 'bg-primary-subtle';
+      pictogramBgList.push(pictogramBg);
+    });
+    return pictogramBgList;
+  }
 
-
+  createTemperatureChart(): void {
     this.data = {
       labels: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].time,
       datasets: [
@@ -90,7 +97,6 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
           borderWidth: 2,
           backgroundColor: 'rgba(47, 131, 156, 0.2)',
           borderColor: 'rgb(47, 131, 156)',
-
           type: 'line'
         },
         {
@@ -98,8 +104,8 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
           data: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature,
           borderWidth: 2,
           type: 'line',
-          backgroundColor: '#914c14',
-          borderColor: '#995e1b',
+          backgroundColor: 'rgb(12, 82, 64)',
+          borderColor: 'rgb(28, 179, 141)',
         }
       ]
     };
@@ -132,8 +138,18 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
           }
         },
         y: {
-
-
+          Title: {
+            display: true,
+            text: 'Time'
+          },
+          ticks: {
+            autoSkip: true,
+            font: {
+              size: 12,
+              weight: 'bold'
+            },
+            color: 'rgb(47, 131, 156)'
+          }
         }
       }
     };
