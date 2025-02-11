@@ -124,6 +124,85 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
       },
       scales: {
         x: {
+          display: true,
+          title: {
+            display: true,
+            text: 'Time',
+            font: {
+              size: 12,
+              weight: 'bold'
+            },
+            color: 'rgb(47, 131, 156)'
+          },
+          ticks: {
+            autoSkip: true,
+            font: {
+              size: 12,
+              weight: 'bold'
+            },
+            color: 'rgb(47, 131, 156)'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: `°${this.weatherForecast.units.temperature}`,
+            font: {
+              size: 12,
+              weight: 'bold'
+            },
+            color: 'rgb(47, 131, 156)'
+          },
+          ticks: {
+            autoSkip: true,
+            font: {
+              size: 12,
+              weight: 'bold'
+            },
+            color: 'rgb(47, 131, 156)'
+          }
+        }
+      }
+    };
+  }
+
+  createPrecipitationChart(): void {
+    this.data = {
+      labels: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].time,
+      datasets: [
+        {
+          label: 'Temp.',
+          data: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].precipitation,
+          borderWidth: 2,
+          backgroundColor: 'rgba(47, 131, 156, 0.2)',
+          borderColor: 'rgb(47, 131, 156)',
+          type: 'line'
+        },
+        {
+          label: 'Temp. feels like',
+          data: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature,
+          borderWidth: 2,
+          type: 'line',
+          backgroundColor: 'rgb(12, 82, 64)',
+          borderColor: 'rgb(28, 179, 141)',
+        }
+      ]
+    };
+
+    this.options = {
+      elements: {
+        line: {
+          cubicInterpolationMode: 'monotone',
+        },
+        point: {
+          radius: 5,
+          hitRadius: 10,
+          hoverRadius: 10,
+          hoverBorderWidth: 2,
+        }
+      },
+      scales: {
+        x: {
           Title: {
             display: true,
             text: 'Time'
