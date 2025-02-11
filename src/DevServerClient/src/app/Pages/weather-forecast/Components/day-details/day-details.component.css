@@ -1,3 +1,4 @@
-.max-height {
+.chart {
+    max-width: 1000px;
     max-height: 200px;
 }

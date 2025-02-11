@@ -1,15 +1,4 @@
 <div>
-  <p class="text-body">
-    This is the corresponding tab content for the tab with the index
-    {{ tabIndex() }}
-  </p>
-  <canvas
-    class="max-height border rounded-2 p-2"
-    baseChart
-    [data]="data"
-    [options]="options"
-  >
-  </canvas>
   <div
     class="d-flex flex-column flex-xl-row justify-content-between mt-3 border rounded-2 p-2"
   >
@@ -23,3 +12,4 @@
     </div>
   </div>
 </div>
+<canvas class="chart" baseChart [data]="data" [options]="options"></canvas>

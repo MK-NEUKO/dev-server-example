@@ -19,7 +19,7 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
   public forecastPerDay!: ForecastDataPerDay;
   public units!: Units;
 
-  itemIndex = input<number>(0);
+  dayIndex = input<number>(0);
   weekdayList: string[] = [];
   dateList: string[] = [];
   pictogramPathDayList: string[] = [];

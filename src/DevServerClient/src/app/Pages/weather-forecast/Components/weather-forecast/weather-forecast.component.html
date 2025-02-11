@@ -6,7 +6,7 @@
   >
     <app-day-overview
       *ngFor="let item of forecastPerDay.time; index as index"
-      [itemIndex]="index"
+      [dayIndex]="index"
       class="nav-link text-body"
       role="tab"
       id="nav-link-{{ index }}"
@@ -22,7 +22,7 @@
 <div class="tab-content" id="nav-tabContent">
   <app-day-details
     *ngFor="let item of forecastPerDay.time; index as index"
-    [tabIndex]="index"
+    [dayIndex]="index"
     class="tab-pane fade"
     id="tab-pane-{{ index }}"
     role="tabpanel"
