@@ -1,4 +1,4 @@
-import { Component, OnInit, input, OnDestroy, computed } from '@angular/core';
+import { Component, OnInit, input, OnDestroy, computed, afterRender } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
@@ -24,16 +24,29 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
   public dayIndex = input<number>(0);
   public forecastPerHour!: ForecastDataPerHour;
   public pictogramPathList: string[] = [];
-  public options: {} = {};
-  public data!: {
+  public tempChartOptions: {} = {};
+  public tempChartData!: {
     labels: string[],
     datasets: {
       label: string,
       data: number[],
       borderWidth: number,
       type: string,
-      backgroundColor:
-      string, borderColor: string
+      backgroundColor: string,
+      borderColor: string
+    }[]
+  };
+  public precipitationChartOptions: {} = {};
+  public precipitationChartData!: {
+    labels: string[],
+    datasets: {
+      label: string,
+      data: number[],
+      borderWidth: number,
+      type: string,
+      backgroundColor: string,
+      borderColor: string,
+      yAxisID: string
     }[]
   };
 
@@ -58,6 +71,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     this.pictogramPathList = this.processPictogramPaths(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].pictogramCode, this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
     this.pictogramBgList = this.processPictogramBgs(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
     this.createTemperatureChart();
+    this.createPrecipitationChart();
   }
 
   ngOnDestroy(): void {
@@ -88,7 +102,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
   }
 
   createTemperatureChart(): void {
-    this.data = {
+    this.tempChartData = {
       labels: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].time,
       datasets: [
         {
@@ -110,7 +124,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
       ]
     };
 
-    this.options = {
+    this.tempChartOptions = {
       elements: {
         line: {
           cubicInterpolationMode: 'monotone',
@@ -144,6 +158,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
           }
         },
         y: {
+          display: true,
           title: {
             display: true,
             text: `°${this.weatherForecast.units.temperature}`,
@@ -167,45 +182,54 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
   }
 
   createPrecipitationChart(): void {
-    this.data = {
+    this.precipitationChartData = {
       labels: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].time,
       datasets: [
         {
-          label: 'Temp.',
-          data: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].precipitation,
+          label: 'Precipitation \uE016',
+          data: [] = this.processRainPrecipitations(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()]),
           borderWidth: 2,
-          backgroundColor: 'rgba(47, 131, 156, 0.2)',
+          backgroundColor: 'rgb(20, 175, 223)',
           borderColor: 'rgb(47, 131, 156)',
-          type: 'line'
+          type: 'bar',
+          yAxisID: 'y-axis-rain',
         },
         {
-          label: 'Temp. feels like',
-          data: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature,
+          label: 'Precipitation \uE025',
+          data: this.processSnowPrecipitations(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()]),
           borderWidth: 2,
-          type: 'line',
-          backgroundColor: 'rgb(12, 82, 64)',
-          borderColor: 'rgb(28, 179, 141)',
+          backgroundColor: 'rgb(199, 242, 255)',
+          borderColor: 'rgb(83, 218, 255)',
+          type: 'bar',
+          yAxisID: 'y-axis-snow',
         }
       ]
     };
 
-    this.options = {
-      elements: {
-        line: {
-          cubicInterpolationMode: 'monotone',
+    this.precipitationChartOptions = {
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            font: {
+              family: 'MeteobluePictofont',
+              size: 12,
+            },
+            color: 'rgb(47, 131, 156)'
+          },
         },
-        point: {
-          radius: 5,
-          hitRadius: 10,
-          hoverRadius: 10,
-          hoverBorderWidth: 2,
-        }
       },
       scales: {
         x: {
-          Title: {
+          display: true,
+          title: {
             display: true,
-            text: 'Time'
+            text: 'Time',
+            font: {
+              size: 12,
+              weight: 'bold'
+            },
+            color: 'rgb(47, 131, 156)'
           },
           ticks: {
             autoSkip: true,
@@ -216,10 +240,16 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
             color: 'rgb(47, 131, 156)'
           }
         },
-        y: {
-          Title: {
+        'y-axis-rain': {
+          display: true,
+          title: {
             display: true,
-            text: 'Time'
+            text: 'Rain in mm',
+            font: {
+              size: 12,
+              weight: 'bold'
+            },
+            color: 'rgb(47, 131, 156)'
           },
           ticks: {
             autoSkip: true,
@@ -229,8 +259,58 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
             },
             color: 'rgb(47, 131, 156)'
           }
-        }
+        },
+        'y-axis-snow': {
+          display: true,
+          title: {
+            display: true,
+            text: 'Snow in cm',
+            font: {
+              size: 12,
+              weight: 'bold'
+            },
+            color: 'rgb(83, 218, 255)'
+          },
+          ticks: {
+            autoSkip: true,
+            font: {
+              size: 12,
+              weight: 'bold'
+            },
+            color: 'rgb(83, 218, 255)'
+          }
+        },
+
       }
     };
   }
+
+  processRainPrecipitations(forecastPerHour: ForecastDataPerHour): number[] {
+    let precipitationList: number[] = [];
+    forecastPerHour.precipitation.forEach((element, index) => {
+      let precipitation = element;
+      let precipitationType = '';
+      if (forecastPerHour.snowFraction[index] === 1) {
+        precipitation = 0;
+      }
+      precipitationList.push(precipitation);
+    });
+    return precipitationList;
+  }
+
+  processSnowPrecipitations(forecastPerHour: ForecastDataPerHour): number[] {
+    let precipitationList: number[] = [];
+    forecastPerHour.precipitation.forEach((element, index) => {
+      let precipitation = element;
+      let precipitationType = '';
+      if (forecastPerHour.snowFraction[index] === 1) {
+        precipitation = precipitation * 7 / 10;
+        precipitationList.push(precipitation);
+      } else {
+        precipitationList.push(0);
+      }
+    });
+    return precipitationList;
+  }
+
 }

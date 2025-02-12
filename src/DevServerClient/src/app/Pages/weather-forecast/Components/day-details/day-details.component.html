@@ -16,4 +16,15 @@
     </div>
   </div>
 </div>
-<canvas class="chart" baseChart [data]="data" [options]="options"></canvas>
+<canvas
+  class="chart meteoblue-pictofont"
+  baseChart
+  [data]="tempChartData"
+  [options]="tempChartOptions"
+></canvas>
+<canvas
+  class="chart meteoblue-pictofont"
+  baseChart
+  [data]="precipitationChartData"
+  [options]="precipitationChartOptions"
+></canvas>
