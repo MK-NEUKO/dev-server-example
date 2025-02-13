@@ -36,28 +36,29 @@
             width="40px"
           />
         </div>
-        <div class="p-1 mt-1 border-bottom">
+        <div class="p-1 mt-1">
           <div class="meteoblue-pictofont">&#xE019;</div>
           <div>{{ forecastPerHour.precipitationProbability[hourIndex] }}%</div>
         </div>
-        <div class="p-1 mt-1 border-bottom">
+        <div class="p-1 mt-1">
           <div class="meteoblue-pictofont">&#xE011;</div>
           <div>{{ feltTemperatureList[hourIndex] }}</div>
         </div>
-        <div class="p-1 mt-1 border-bottom">
+        <div class="p-1 mt-1">
           <div class="meteoblue-pictofont">&#xE015;</div>
           <div>{{ forecastPerHour.relativeHumidity[hourIndex] }}%</div>
         </div>
-        <div class="p-1 mt-1 border-bottom">
+        <div class="p-1 mt-1">
           <div class="meteoblue-pictofont">&#xE012;</div>
           <div
             class="meteoblue-pictofont"
             [innerHTML]="windDirectionList[hourIndex]"
           ></div>
         </div>
-        <div class="p-1 mt-1 border-bottom">
+        <div class="p-1 mt-1">
           <div class="meteoblue-pictofont">&#xE013;</div>
           <div>{{ windSpeedList[hourIndex] }}</div>
+          <div>{{ windSpeedUnit }}</div>
         </div>
       </div>
     </div>

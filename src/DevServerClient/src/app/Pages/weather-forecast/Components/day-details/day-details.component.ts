@@ -31,6 +31,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
   public feltTemperatureList: string[] = [];
   public windDirectionList: string[] = [];
   public windSpeedList: string[] = [];
+  public windSpeedUnit: string = '';
   public tempChartOptions: {} = {};
   public tempChartData!: {
     labels: string[],
@@ -86,9 +87,8 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
       this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature,
       this.weatherForecast.units.temperature);
     this.windDirectionList = this.processWindDirections(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].windDirection);
-    this.windSpeedList = this.processWindSpeeds(
-      this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].windSpeed,
-      this.weatherForecast.units.windSpeed);
+    this.windSpeedList = this.processWindSpeeds(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].windSpeed,);
+    this.windSpeedUnit = this.processWindSpeedUnit(this.weatherForecast.units.windSpeed);
     this.createTemperatureChart();
     this.createPrecipitationChart();
   }
@@ -190,15 +190,15 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     }
   }
 
-  processWindSpeeds(windSpeeds: number[], unit: string): string[] {
+  processWindSpeeds(windSpeeds: number[]): string[] {
     let windSpeedList: string[] = [];
-    windSpeeds.forEach((element, index) => {
-      const processedWindSpeedUnit = this.processWindSpeedUnit(unit);
-      const windSpeed = `${element.toFixed(0)} ${processedWindSpeedUnit}`;
+    windSpeeds.forEach((element) => {
+      const windSpeed = `${element.toFixed(0)}`;
       windSpeedList.push(windSpeed);
     });
     return windSpeedList;
   }
+
   processWindSpeedUnit(unit: string): string {
     switch (unit) {
       case 'kmh': return 'km/h';
@@ -230,6 +230,8 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     };
 
     this.tempChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
       elements: {
         line: {
           cubicInterpolationMode: 'monotone',
@@ -349,6 +351,8 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     };
 
     this.precipitationChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
       font: {
         family: 'MeteobluePictofont',
         size: 12,
