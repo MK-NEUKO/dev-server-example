@@ -136,16 +136,25 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
     return windDirectionUnicodeList;
   }
   convertWindDegToUnicode(windDirection: number): string {
-    switch (windDirection) {
-      case 0: return '&#xE000;';
-      case 45: return '&#xE002;';
-      case 90: return '&#xE004;';
-      case 135: return '&#xE006;';
-      case 180: return '&#xE008;';
-      case 225: return '&#xE00A;';
-      case 270: return '&#xE00C;';
-      case 315: return '&#xE00E;';
-      default: return '-';
+    switch (true) {
+      case (windDirection >= 0 && windDirection < 45):
+        return '&#xE000;';
+      case (windDirection >= 45 && windDirection < 90):
+        return '&#xE002;';
+      case (windDirection >= 90 && windDirection < 135):
+        return '&#xE004;';
+      case (windDirection >= 135 && windDirection < 180):
+        return '&#xE006;';
+      case (windDirection >= 180 && windDirection < 225):
+        return '&#xE008;';
+      case (windDirection >= 225 && windDirection < 270):
+        return '&#xE00A;';
+      case (windDirection >= 270 && windDirection < 315):
+        return '&#xE00C;';
+      case (windDirection >= 315 && windDirection <= 360):
+        return '&#xE00E;';
+      default:
+        return '-';
     }
   }
 

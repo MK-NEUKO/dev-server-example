@@ -28,6 +28,9 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
   public forecastPerHour!: ForecastDataPerHour;
   public pictogramPathList: string[] = [];
   public temperatureList: string[] = [];
+  public feltTemperatureList: string[] = [];
+  public windDirectionList: string[] = [];
+  public windSpeedList: string[] = [];
   public tempChartOptions: {} = {};
   public tempChartData!: {
     labels: string[],
@@ -79,6 +82,13 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     this.temperatureList = this.processTemperatures(
       this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].temperature,
       this.weatherForecast.units.temperature);
+    this.feltTemperatureList = this.processFeltTemperatures(
+      this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature,
+      this.weatherForecast.units.temperature);
+    this.windDirectionList = this.processWindDirections(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].windDirection);
+    this.windSpeedList = this.processWindSpeeds(
+      this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].windSpeed,
+      this.weatherForecast.units.windSpeed);
     this.createTemperatureChart();
     this.createPrecipitationChart();
   }
@@ -118,9 +128,82 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     });
     return temperatureList;
   }
+
+  processFeltTemperatures(feltTemperatures: number[], unit: string): string[] {
+    let feltTemperatureList: string[] = [];
+    feltTemperatures.forEach(element => {
+      const feltTemperature = this.roundTemperature(element);
+      feltTemperatureList.push(`${feltTemperature} °${unit}`);
+    });
+    return feltTemperatureList;
+  }
+
   roundTemperature(temperature: number): number {
     let roundedTemperature = Math.round(temperature);
     return roundedTemperature === -0 ? 0 : roundedTemperature;
+  }
+
+  processWindDirections(windDirection: number[]): string[] {
+    let windDirectionUnicodeList: string[] = [];
+    windDirection.forEach(element => {
+      const windDirectionUnicode = this.convertWindDegToUnicode(element);
+      windDirectionUnicodeList.push(windDirectionUnicode);
+    });
+    return windDirectionUnicodeList;
+  }
+  convertWindDegToUnicode(windDirection: number): string {
+    switch (true) {
+      case (windDirection >= 348.75 || windDirection < 11.25):
+        return '&#xE000;';
+      case (windDirection >= 11.25 && windDirection < 33.75):
+        return '&#xE001;';
+      case (windDirection >= 33.75 && windDirection < 56.25):
+        return '&#xE002;';
+      case (windDirection >= 56.25 && windDirection < 78.75):
+        return '&#xE003;';
+      case (windDirection >= 78.75 && windDirection < 101.25):
+        return '&#xE004;';
+      case (windDirection >= 101.25 && windDirection < 123.75):
+        return '&#xE005;';
+      case (windDirection >= 123.75 && windDirection < 146.25):
+        return '&#xE006;';
+      case (windDirection >= 146.25 && windDirection < 168.75):
+        return '&#xE007;';
+      case (windDirection >= 168.75 && windDirection < 191.25):
+        return '&#xE008;';
+      case (windDirection >= 191.25 && windDirection < 213.75):
+        return '&#xE009;';
+      case (windDirection >= 213.75 && windDirection < 236.25):
+        return '&#xE00A;';
+      case (windDirection >= 236.25 && windDirection < 258.75):
+        return '&#xE00B;';
+      case (windDirection >= 258.75 && windDirection < 281.25):
+        return '&#xE00C;';
+      case (windDirection >= 281.25 && windDirection < 303.75):
+        return '&#xE00D;';
+      case (windDirection >= 303.75 && windDirection < 326.25):
+        return '&#xE00E;';
+      case (windDirection >= 326.25 && windDirection < 348.75):
+        return '&#xE00F;';
+      default:
+        return '-';
+    }
+  }
+
+  processWindSpeeds(windSpeeds: number[], unit: string): string[] {
+    let windSpeedList: string[] = [];
+    windSpeeds.forEach((element, index) => {
+      const processedWindSpeedUnit = this.processWindSpeedUnit(unit);
+      const windSpeed = `${element.toFixed(0)} ${processedWindSpeedUnit}`;
+      windSpeedList.push(windSpeed);
+    });
+    return windSpeedList;
+  }
+  processWindSpeedUnit(unit: string): string {
+    switch (unit) {
+      case 'kmh': return 'km/h';
+      default: return unit;
+    };
   }
 
   createTemperatureChart(): void {
