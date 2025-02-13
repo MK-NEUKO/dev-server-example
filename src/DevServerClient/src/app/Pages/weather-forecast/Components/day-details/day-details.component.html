@@ -6,25 +6,32 @@
       class="text-body text-center d-flex flex-row flex-xl-column justify-content-between"
       *ngFor="let hour of forecastPerHour.time; let i = index"
     >
-      <div class="py-1">{{ hour }}</div>
-      <img
-        class="{{ pictogramBgList[i] }} bg-gradient rounded-2"
-        src="{{ pictogramPathList[i] }}"
-        width="40px"
-      />
-      <div class="py-1">{{ forecastPerHour.relativeHumidity[i] }}%</div>
+      <div class="py-1">
+        <div>{{ hour }}</div>
+        <div>{{ temperatureList[i] }}</div>
+      </div>
+      <div class="py-1">
+        <img
+          class="{{ pictogramBgList[i] }} bg-gradient rounded-2"
+          src="{{ pictogramPathList[i] }}"
+          width="40px"
+        />
+      </div>
+      <div class="py-1">
+        <div>{{ forecastPerHour.relativeHumidity[i] }}%</div>
+      </div>
     </div>
   </div>
+  <canvas
+    class="chart meteoblue-pictofont border rounded-2 mt-3"
+    baseChart
+    [data]="tempChartData"
+    [options]="tempChartOptions"
+  ></canvas>
+  <canvas
+    class="chart meteoblue-pictofont border rounded-2 mt-3"
+    baseChart
+    [data]="precipitationChartData"
+    [options]="precipitationChartOptions"
+  ></canvas>
 </div>
-<canvas
-  class="chart meteoblue-pictofont"
-  baseChart
-  [data]="tempChartData"
-  [options]="tempChartOptions"
-></canvas>
-<canvas
-  class="chart meteoblue-pictofont"
-  baseChart
-  [data]="precipitationChartData"
-  [options]="precipitationChartOptions"
-></canvas>

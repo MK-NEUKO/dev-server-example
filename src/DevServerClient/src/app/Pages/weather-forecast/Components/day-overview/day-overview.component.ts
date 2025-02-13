@@ -11,7 +11,10 @@ import { Units } from '../../../../models/weather-forecast/units';
     CommonModule
   ],
   templateUrl: './day-overview.component.html',
-  styleUrl: './day-overview.component.css'
+  styleUrls: [
+    './day-overview.component.css',
+    '../../weather-forecast-page.component.css'
+  ]
 })
 export class ForecastNavItemComponent implements OnInit, OnDestroy {
 
@@ -120,7 +123,8 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
     return temperatureList;
   }
   roundTemperature(temperature: number): number {
-    return Math.round(temperature);
+    let roundedTemperature = Math.round(temperature);
+    return roundedTemperature === -0 ? 0 : roundedTemperature;
   }
 
   processWindDirections(windDirection: number[]): string[] {

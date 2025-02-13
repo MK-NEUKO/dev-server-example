@@ -14,7 +14,10 @@ import { BaseChartDirective } from 'ng2-charts';
     BaseChartDirective,
   ],
   templateUrl: './day-details.component.html',
-  styleUrl: './day-details.component.css'
+  styleUrls: [
+    './day-details.component.css',
+    '../../weather-forecast-page.component.css',
+  ]
 })
 export class ForecastTabContentComponent implements OnInit, OnDestroy {
 
@@ -24,6 +27,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
   public dayIndex = input<number>(0);
   public forecastPerHour!: ForecastDataPerHour;
   public pictogramPathList: string[] = [];
+  public temperatureList: string[] = [];
   public tempChartOptions: {} = {};
   public tempChartData!: {
     labels: string[],
@@ -68,8 +72,13 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
   }
 
   processDayDetailForecast(): void {
-    this.pictogramPathList = this.processPictogramPaths(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].pictogramCode, this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
+    this.pictogramPathList = this.processPictogramPaths(
+      this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].pictogramCode,
+      this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
     this.pictogramBgList = this.processPictogramBgs(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
+    this.temperatureList = this.processTemperatures(
+      this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].temperature,
+      this.weatherForecast.units.temperature);
     this.createTemperatureChart();
     this.createPrecipitationChart();
   }
@@ -95,10 +104,23 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
   processPictogramBgs(isDayLight: number[]): string[] {
     let pictogramBgList: string[] = [];
     isDayLight.forEach(element => {
-      const pictogramBg = element === 1 ? 'bg-primary' : 'bg-primary-subtle';
+      const pictogramBg = element === 1 ? 'bg-day' : 'bg-night';
       pictogramBgList.push(pictogramBg);
     });
     return pictogramBgList;
+  }
+
+  processTemperatures(temperatures: number[], unit: string): string[] {
+    let temperatureList: string[] = [];
+    temperatures.forEach(element => {
+      const temperature = this.roundTemperature(element);
+      temperatureList.push(`${temperature} °${unit}`);
+    });
+    return temperatureList;
+  }
+  roundTemperature(temperature: number): number {
+    let roundedTemperature = Math.round(temperature);
+    return roundedTemperature === -0 ? 0 : roundedTemperature;
   }
 
   createTemperatureChart(): void {
