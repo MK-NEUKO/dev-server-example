@@ -75,7 +75,10 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
       this.forecastPerDay.windSpeedMin,
       this.forecastPerDay.windSpeedMax,
       this.units.windSpeed);
-    this.precipitationList = this.processPrecipitations(this.forecastPerDay);
+    this.precipitationList = this.processPrecipitations(
+      this.forecastPerDay.precipitation,
+      this.forecastPerDay.snowFraction,
+      this.units.precipitation);
   }
 
   processWeekdays(date: string[]): string[] {
@@ -177,21 +180,21 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
     };
   }
 
-  processPrecipitations(forecastPerDay: ForecastDataPerDay): string[] {
+  processPrecipitations(precipitations: number[], snowFraction: number[], unit: string): string[] {
     let precipitationList: string[] = [];
-    forecastPerDay.precipitation.forEach((element, index) => {
+    precipitations.forEach((element, index) => {
       let precipitation = element;
-      let precipitationType = '';
-      if (forecastPerDay.snowFraction[index] === 0) {
-        precipitationType = '&#xE016';
-      } else if (forecastPerDay.snowFraction[index] === 1) {
-        precipitationType = '&#xE025';
-        precipitation *= 7;
+      let precipitationType = snowFraction[index] === 0 ? 'rain' : 'snow';
+      let precipitationText = '';
+      if (precipitationType === 'rain') {
+        const precipitationIcon = '&#xE016';
+        precipitationText = `${precipitationIcon} ${precipitation.toFixed(0)} ${unit}`;
+      } else if (snowFraction[index] === 1) {
+        const precipitationIcon = '&#xE025';
+        precipitation = precipitation * 7 / 10;
+        const snowUnit = 'cm';
+        precipitationText = `${precipitationIcon} ${precipitation.toFixed(1)} ${snowUnit}`
       }
-      if (precipitation === 0) {
-        precipitationType = '';
-      }
-      const precipitationText = `${precipitationType} ${precipitation.toFixed(0)} ${this.units.precipitation}`;
       precipitationList.push(precipitationText);
     });
     return precipitationList;
