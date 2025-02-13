@@ -71,7 +71,10 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
     this.temperatureMaxList = this.processTemratures(this.forecastPerDay.temperatureMax, this.units.temperature);
     this.temperatureMinList = this.processTemratures(this.forecastPerDay.temperatureMin, this.units.temperature);
     this.windDirectionList = this.processWindDirections(this.forecastPerDay.windDirection);
-    this.windSpeedList = this.processWindSpeeds(this.forecastPerDay, this.units.windSpeed);
+    this.windSpeedList = this.processWindSpeeds(
+      this.forecastPerDay.windSpeedMin,
+      this.forecastPerDay.windSpeedMax,
+      this.units.windSpeed);
     this.precipitationList = this.processPrecipitations(this.forecastPerDay);
   }
 
@@ -158,17 +161,17 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  processWindSpeeds(forecastPerDay: ForecastDataPerDay, windSpeedUnit: string): string[] {
+  processWindSpeeds(windSpeedsMin: number[], windSpeedsMax: number[], unit: string): string[] {
     let windSpeedList: string[] = [];
-    forecastPerDay.windSpeedMax.forEach((element, index) => {
-      const processedWindSpeedUnit = this.processWindSpeedUnit(windSpeedUnit);
-      const windSpeed = `${element.toFixed(0)} - ${forecastPerDay.windSpeedMin[index].toFixed(0)} ${processedWindSpeedUnit}`;
+    windSpeedsMin.forEach((element, index) => {
+      const processedWindSpeedUnit = this.processWindSpeedUnit(unit);
+      const windSpeed = `${element.toFixed(0)} - ${windSpeedsMax[index].toFixed(0)} ${processedWindSpeedUnit}`;
       windSpeedList.push(windSpeed);
     });
     return windSpeedList;
   }
-  processWindSpeedUnit(windSpeedUnit: string): string {
-    switch (this.units.windSpeed) {
+  processWindSpeedUnit(unit: string): string {
+    switch (unit) {
       case 'kmh': return 'km/h';
       default: return this.units.windSpeed;
     };
