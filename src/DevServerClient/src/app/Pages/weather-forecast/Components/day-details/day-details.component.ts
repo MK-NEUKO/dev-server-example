@@ -1,6 +1,6 @@
 import { Component, OnInit, input, OnDestroy, computed, afterRender } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { min, Subscription } from 'rxjs';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
 import { WeatherForecast } from '../../../../models/weather-forecast/weatherForecast';
 import { ForecastDataPerHour } from '../../../../models/weather-forecast/forecastDataPerHour';
@@ -106,7 +106,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
       labels: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].time,
       datasets: [
         {
-          label: 'Temp.',
+          label: 'Temp \uE010',
           data: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].temperature,
           borderWidth: 2,
           backgroundColor: 'rgba(47, 131, 156, 0.2)',
@@ -114,7 +114,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
           type: 'line'
         },
         {
-          label: 'Temp. feels like',
+          label: 'Temp \uE011',
           data: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature,
           borderWidth: 2,
           type: 'line',
@@ -134,6 +134,43 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
           hitRadius: 10,
           hoverRadius: 10,
           hoverBorderWidth: 2,
+        }
+      },
+      font: {
+        family: 'MeteobluePictofont',
+        size: 12,
+        weight: 'bold'
+      },
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            font: {
+              family: 'MeteobluePictofont',
+              size: 12,
+            },
+            color: 'rgb(47, 131, 156)'
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: this.processTemperatureTooltip.bind(this),
+          },
+          titleFont: {
+            family: 'MeteobluePictofont',
+            size: 14,
+            weight: 'bold'
+          },
+          bodyFont: {
+            family: 'MeteobluePictofont',
+            size: 12,
+            weight: 'bold'
+          },
+          footerFont: {
+            family: 'MeteobluePictofont',
+            size: 10,
+            weight: 'bold'
+          }
         }
       },
       scales: {
@@ -207,6 +244,11 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     };
 
     this.precipitationChartOptions = {
+      font: {
+        family: 'MeteobluePictofont',
+        size: 12,
+        weight: 'bold'
+      },
       plugins: {
         legend: {
           display: true,
@@ -218,6 +260,26 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
             color: 'rgb(47, 131, 156)'
           },
         },
+        tooltip: {
+          callbacks: {
+            label: this.processPrecipitationTooltip.bind(this),
+          },
+          titleFont: {
+            family: 'MeteobluePictofont',
+            size: 14,
+            weight: 'bold'
+          },
+          bodyFont: {
+            family: 'MeteobluePictofont',
+            size: 12,
+            weight: 'bold'
+          },
+          footerFont: {
+            family: 'MeteobluePictofont',
+            size: 10,
+            weight: 'bold'
+          }
+        }
       },
       scales: {
         x: {
@@ -238,7 +300,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
               weight: 'bold'
             },
             color: 'rgb(47, 131, 156)'
-          }
+          },
         },
         'y-axis-rain': {
           display: true,
@@ -257,8 +319,10 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
               size: 12,
               weight: 'bold'
             },
-            color: 'rgb(47, 131, 156)'
-          }
+            color: 'rgb(47, 131, 156)',
+            stepSize: 2,
+          },
+          min: 0,
         },
         'y-axis-snow': {
           display: true,
@@ -277,10 +341,11 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
               size: 12,
               weight: 'bold'
             },
-            color: 'rgb(83, 218, 255)'
-          }
+            color: 'rgb(83, 218, 255)',
+            stepSize: 2,
+          },
+          min: 0,
         },
-
       }
     };
   }
@@ -302,15 +367,43 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     let precipitationList: number[] = [];
     forecastPerHour.precipitation.forEach((element, index) => {
       let precipitation = element;
-      let precipitationType = '';
-      if (forecastPerHour.snowFraction[index] === 1) {
+      let precipitationType = forecastPerHour.snowFraction[index] === 1 ? 'snow' : 'rain';
+      if (precipitationType === 'snow') {
         precipitation = precipitation * 7 / 10;
+        precipitation = parseFloat(precipitation.toFixed(1));
         precipitationList.push(precipitation);
       } else {
         precipitationList.push(0);
       }
     });
     return precipitationList;
+  }
+
+  processPrecipitationTooltip(context: any): string {
+    const index = context.dataIndex;
+    const precipitationType = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].snowFraction[index];
+    const value = context.raw;
+    let label = 'Rain \uE016';
+    let unit = 'mm';
+    if (precipitationType === 1) {
+      label = 'Snow \uE025';
+      unit = 'cm';
+    }
+    return `${label} | ${value} ${unit}`;
+  }
+
+  processTemperatureTooltip(context: any): string {
+    const index = context.dataIndex;
+    const datasetIndex = context.datasetIndex;
+    const temperature = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].temperature[index];
+    const feltTemperature = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature[index];
+    const iconTemperature = '\uE010';
+    const iconFeltTemperature = '\uE011';
+    if (datasetIndex === 0) {
+      return `${iconTemperature} | ${temperature} °${this.weatherForecast.units.temperature}`;
+    } else {
+      return `${iconFeltTemperature} | ${feltTemperature} °${this.weatherForecast.units.temperature}`;
+    }
   }
 
 }
