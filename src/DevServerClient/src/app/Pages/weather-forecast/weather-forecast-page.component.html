@@ -23,10 +23,7 @@
         <button type="submit" class="btn btn-outline-success">Search</button>
       </div>
     </form>
-    <table
-      class="table table-hover"
-      *ngIf="locationQueryResult.results.length > 0"
-    >
+    <table class="table table-hover" *ngIf="locationList.length > 0">
       <thead>
         <tr>
           <th scope="col">Name</th>
@@ -41,7 +38,7 @@
       <tbody>
         <tr
           class="cursor-pointer"
-          *ngFor="let location of locations"
+          *ngFor="let location of locationList"
           (click)="onGetForecast(location)"
         >
           <td>{{ location.name }}</td>

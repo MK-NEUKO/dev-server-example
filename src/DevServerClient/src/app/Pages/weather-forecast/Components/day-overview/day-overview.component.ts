@@ -18,7 +18,7 @@ import { WeatherForecast } from '../../../../models/weather-forecast/weatherFore
 export class ForecastNavItemComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
-  public weatherForecast?: WeatherForecast;
+  private weatherForecast?: WeatherForecast;
 
   public dayIndex = input<number>(0);
   public weekdayList: string[] = [];
@@ -36,9 +36,10 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription.add(this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
       this.weatherForecast = data ?? this.weatherForecastDataService.getDefaultWeatherForecast();
+      this.processDayOverviewForecast();
     }));
 
-    this.processForecastData();
+    this.processDayOverviewForecast();
   }
 
   ngOnDestroy(): void {
@@ -47,7 +48,7 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  processForecastData(): void {
+  processDayOverviewForecast(): void {
     this.weekdayList = this.processWeekdays(this.weatherForecast?.forecastDataPerDay?.time ?? []);
     this.dateList = this.processDates(this.weatherForecast?.forecastDataPerDay?.time ?? []);
     this.pictogramPathDayList = this.processPictogramPaths(this.weatherForecast?.forecastDataPerDay?.pictogramCode ?? []);

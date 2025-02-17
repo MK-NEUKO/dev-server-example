@@ -31,6 +31,10 @@ export class WeatherForecastDataService {
     return this.locationQueryResultSubject.asObservable();
   }
 
+  getDefaultLocationQueryResult(): LocationQueryResult {
+    return initializeLocationQueryResult();
+  }
+
 
   setWeatherForecast(data: WeatherForecast) {
     this.weatherForecastSubject.next(data);

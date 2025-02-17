@@ -1,10 +1,11 @@
 import { Component, OnInit, input, OnDestroy, computed, afterRender } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
-import { min, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
 import { WeatherForecast } from '../../../../models/weather-forecast/weatherForecast';
 import { ForecastDataPerHour } from '../../../../models/weather-forecast/forecastDataPerHour';
 import { BaseChartDirective } from 'ng2-charts';
+import { TooltipItem } from 'chart.js';
 
 @Component({
   selector: 'app-day-details',
@@ -21,11 +22,12 @@ import { BaseChartDirective } from 'ng2-charts';
 })
 export class ForecastTabContentComponent implements OnInit, OnDestroy {
 
-  private dataSubscription!: Subscription;
-  public weatherForecast!: WeatherForecast;
+  private subscription: Subscription = new Subscription();
+  public weatherForecast?: WeatherForecast;
+  public forecastPerHour!: ForecastDataPerHour;
+
   public pictogramBgList: string[] = [];
   public dayIndex = input<number>(0);
-  public forecastPerHour!: ForecastDataPerHour;
   public pictogramPathList: string[] = [];
   public temperatureList: string[] = [];
   public feltTemperatureList: string[] = [];
@@ -64,38 +66,36 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.dataSubscription = this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
-      if (data) {
-        this.weatherForecast = data;
-        this.forecastPerHour = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()];
-        this.processDayDetailForecast();
-      }
-    });
+    this.subscription.add(this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
+      this.weatherForecast = data ?? this.weatherForecastDataService.getDefaultWeatherForecast();
+      this.forecastPerHour = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()];
+      this.processDayDetailForecast();
+    }));
 
     this.processDayDetailForecast();
   }
 
   processDayDetailForecast(): void {
     this.pictogramPathList = this.processPictogramPaths(
-      this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].pictogramCode,
-      this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
-    this.pictogramBgList = this.processPictogramBgs(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
+      this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].pictogramCode,
+      this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
+    this.pictogramBgList = this.processPictogramBgs(this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
     this.temperatureList = this.processTemperatures(
-      this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].temperature,
-      this.weatherForecast.units.temperature);
+      this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].temperature,
+      this.weatherForecast!.units.temperature);
     this.feltTemperatureList = this.processFeltTemperatures(
-      this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature,
-      this.weatherForecast.units.temperature);
-    this.windDirectionList = this.processWindDirections(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].windDirection);
-    this.windSpeedList = this.processWindSpeeds(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].windSpeed,);
-    this.windSpeedUnit = this.processWindSpeedUnit(this.weatherForecast.units.windSpeed);
-    this.createTemperatureChart();
-    this.createPrecipitationChart();
+      this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature,
+      this.weatherForecast!.units.temperature);
+    this.windDirectionList = this.processWindDirections(this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].windDirection);
+    this.windSpeedList = this.processWindSpeeds(this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].windSpeed);
+    this.windSpeedUnit = this.processWindSpeedUnit(this.weatherForecast!.units.windSpeed);
+    this.createTemperatureChart(this.weatherForecast!);
+    this.createPrecipitationChart(this.weatherForecast!);
   }
 
   ngOnDestroy(): void {
-    if (this.dataSubscription) {
-      this.dataSubscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
@@ -206,13 +206,13 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     };
   }
 
-  createTemperatureChart(): void {
+  createTemperatureChart(weatherForecast: WeatherForecast): void {
     this.tempChartData = {
-      labels: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].time,
+      labels: weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].time,
       datasets: [
         {
           label: 'Temp \uE010',
-          data: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].temperature,
+          data: weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].temperature,
           borderWidth: 2,
           backgroundColor: 'rgba(47, 131, 156, 0.2)',
           borderColor: 'rgb(47, 131, 156)',
@@ -220,7 +220,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
         },
         {
           label: 'Temp \uE011',
-          data: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature,
+          data: weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature,
           borderWidth: 2,
           type: 'line',
           backgroundColor: 'rgb(12, 82, 64)',
@@ -305,7 +305,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
           display: true,
           title: {
             display: true,
-            text: `°${this.weatherForecast.units.temperature}`,
+            text: `°${weatherForecast.units.temperature}`,
             font: {
               size: 12,
               weight: 'bold'
@@ -325,13 +325,13 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     };
   }
 
-  createPrecipitationChart(): void {
+  createPrecipitationChart(weatherForecast: WeatherForecast): void {
     this.precipitationChartData = {
-      labels: this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].time,
+      labels: weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].time,
       datasets: [
         {
           label: 'Precipitation \uE016',
-          data: [] = this.processRainPrecipitations(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()]),
+          data: [] = this.processRainPrecipitations(weatherForecast.forecastDataPerDayPerHour[this.dayIndex()]),
           borderWidth: 2,
           backgroundColor: 'rgb(20, 175, 223)',
           borderColor: 'rgb(47, 131, 156)',
@@ -340,7 +340,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
         },
         {
           label: 'Precipitation \uE025',
-          data: this.processSnowPrecipitations(this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()]),
+          data: [] = this.processSnowPrecipitations(weatherForecast.forecastDataPerDayPerHour[this.dayIndex()]),
           borderWidth: 2,
           backgroundColor: 'rgb(199, 242, 255)',
           borderColor: 'rgb(83, 218, 255)',
@@ -488,9 +488,9 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     return precipitationList;
   }
 
-  processPrecipitationTooltip(context: any): string {
+  processPrecipitationTooltip(context: TooltipItem<'bar'>): string {
     const index = context.dataIndex;
-    const precipitationType = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].snowFraction[index];
+    const precipitationType = this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].snowFraction[index];
     const value = context.raw;
     let label = 'Rain \uE016';
     let unit = 'mm';
@@ -501,17 +501,17 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     return `${label} | ${value} ${unit}`;
   }
 
-  processTemperatureTooltip(context: any): string {
+  processTemperatureTooltip(context: TooltipItem<'line'>): string {
     const index = context.dataIndex;
     const datasetIndex = context.datasetIndex;
-    const temperature = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].temperature[index];
-    const feltTemperature = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature[index];
+    const temperature = this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].temperature[index];
+    const feltTemperature = this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature[index];
     const iconTemperature = '\uE010';
     const iconFeltTemperature = '\uE011';
     if (datasetIndex === 0) {
-      return `${iconTemperature} | ${temperature} °${this.weatherForecast.units.temperature}`;
+      return `${iconTemperature} | ${temperature} °${this.weatherForecast!.units.temperature}`;
     } else {
-      return `${iconFeltTemperature} | ${feltTemperature} °${this.weatherForecast.units.temperature}`;
+      return `${iconFeltTemperature} | ${feltTemperature} °${this.weatherForecast!.units.temperature}`;
     }
   }
 
