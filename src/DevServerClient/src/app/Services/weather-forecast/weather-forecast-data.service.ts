@@ -41,6 +41,9 @@ export class WeatherForecastDataService {
   getWeatherForecast(): Observable<WeatherForecast | null> {
     return this.weatherForecastSubject.asObservable();
   }
+  getDefaultWeatherForecast(): WeatherForecast {
+    return initializeWeatherForecast();
+  }
 
   getWeatherForecastPerDay(): Observable<ForecastDataPerDay> {
     return this.forecastPerDaySubject.asObservable();

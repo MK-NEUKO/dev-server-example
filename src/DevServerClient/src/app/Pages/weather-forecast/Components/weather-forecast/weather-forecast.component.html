@@ -5,7 +5,10 @@
     role="tablist"
   >
     <app-day-overview
-      *ngFor="let item of forecastPerDay.time; index as index"
+      *ngFor="
+        let item of weatherForecast?.forecastDataPerDay?.time;
+        index as index
+      "
       [dayIndex]="index"
       class="nav-link text-body"
       role="tab"
@@ -21,7 +24,10 @@
 </nav>
 <div class="tab-content" id="nav-tabContent">
   <app-day-details
-    *ngFor="let item of forecastPerDay.time; index as index"
+    *ngFor="
+      let item of weatherForecast?.forecastDataPerDay?.time;
+      index as index
+    "
     [dayIndex]="index"
     class="tab-pane fade"
     id="tab-pane-{{ index }}"
