@@ -2,8 +2,7 @@ import { Component, OnInit, input, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
-import { ForecastDataPerDay } from '../../../../models/weather-forecast/forecastDataPerDay';
-import { Units } from '../../../../models/weather-forecast/units';
+import { WeatherForecast } from '../../../../models/weather-forecast/weatherForecast';
 
 @Component({
   selector: 'app-day-overview',
@@ -18,67 +17,55 @@ import { Units } from '../../../../models/weather-forecast/units';
 })
 export class ForecastNavItemComponent implements OnInit, OnDestroy {
 
-  private dataSubscription!: Subscription;
-  public forecastPerDay!: ForecastDataPerDay;
-  public units!: Units;
+  private subscription: Subscription = new Subscription();
+  public weatherForecast?: WeatherForecast;
 
-  dayIndex = input<number>(0);
-  weekdayList: string[] = [];
-  dateList: string[] = [];
-  pictogramPathDayList: string[] = [];
-  temperatureMaxList: string[] = [];
-  temperatureMinList: string[] = [];
-  windDirectionList: string[] = [];
-  windSpeedList: string[] = [];
-  precipitationList: string[] = [];
+  public dayIndex = input<number>(0);
+  public weekdayList: string[] = [];
+  public dateList: string[] = [];
+  public pictogramPathDayList: string[] = [];
+  public temperatureMaxList: string[] = [];
+  public temperatureMinList: string[] = [];
+  public windDirectionList: string[] = [];
+  public windSpeedList: string[] = [];
+  public precipitationList: string[] = [];
 
   constructor(private weatherForecastDataService: WeatherForecastDataService) {
   }
 
   ngOnInit(): void {
-    this.dataSubscription = this.weatherForecastDataService.getWeatherForecastPerDay().subscribe(data => {
-      if (data) {
-        this.forecastPerDay = data;
-        this.checkAndGenerateForecastData();
-      }
-    });
-    this.dataSubscription = this.weatherForecastDataService.getUnits().subscribe(data => {
-      if (data) {
-        this.units = data;
-        this.checkAndGenerateForecastData();
-      }
-    });
+    this.subscription.add(this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
+      this.weatherForecast = data ?? this.weatherForecastDataService.getDefaultWeatherForecast();
+    }));
 
     this.processForecastData();
   }
 
   ngOnDestroy(): void {
-    if (this.dataSubscription) {
-      this.dataSubscription.unsubscribe();
-    }
-  }
-
-  checkAndGenerateForecastData(): void {
-    if (this.forecastPerDay && this.units) {
-      this.processForecastData();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
   processForecastData(): void {
-    this.weekdayList = this.processWeekdays(this.forecastPerDay.time);
-    this.dateList = this.processDates(this.forecastPerDay.time);
-    this.pictogramPathDayList = this.processPictogramPaths(this.forecastPerDay.pictogramCode);
-    this.temperatureMaxList = this.processTemratures(this.forecastPerDay.temperatureMax, this.units.temperature);
-    this.temperatureMinList = this.processTemratures(this.forecastPerDay.temperatureMin, this.units.temperature);
-    this.windDirectionList = this.processWindDirections(this.forecastPerDay.windDirection);
+    this.weekdayList = this.processWeekdays(this.weatherForecast?.forecastDataPerDay?.time ?? []);
+    this.dateList = this.processDates(this.weatherForecast?.forecastDataPerDay?.time ?? []);
+    this.pictogramPathDayList = this.processPictogramPaths(this.weatherForecast?.forecastDataPerDay?.pictogramCode ?? []);
+    this.temperatureMaxList = this.processTemratures(
+      this.weatherForecast?.forecastDataPerDay?.temperatureMax ?? [],
+      this.weatherForecast?.units?.temperature ?? '');
+    this.temperatureMinList = this.processTemratures(
+      this.weatherForecast?.forecastDataPerDay?.temperatureMin ?? [],
+      this.weatherForecast?.units?.temperature ?? '');
+    this.windDirectionList = this.processWindDirections(this.weatherForecast?.forecastDataPerDay?.windDirection ?? []);
     this.windSpeedList = this.processWindSpeeds(
-      this.forecastPerDay.windSpeedMin,
-      this.forecastPerDay.windSpeedMax,
-      this.units.windSpeed);
+      this.weatherForecast?.forecastDataPerDay?.windSpeedMin ?? [],
+      this.weatherForecast?.forecastDataPerDay?.windSpeedMax ?? [],
+      this.weatherForecast?.units?.windSpeed ?? '');
     this.precipitationList = this.processPrecipitations(
-      this.forecastPerDay.precipitation,
-      this.forecastPerDay.snowFraction,
-      this.units.precipitation);
+      this.weatherForecast?.forecastDataPerDay?.precipitation ?? [],
+      this.weatherForecast?.forecastDataPerDay?.snowFraction ?? [],
+      this.weatherForecast?.units?.precipitation ?? '');
   }
 
   processWeekdays(date: string[]): string[] {
@@ -176,7 +163,7 @@ export class ForecastNavItemComponent implements OnInit, OnDestroy {
   processWindSpeedUnit(unit: string): string {
     switch (unit) {
       case 'kmh': return 'km/h';
-      default: return this.units.windSpeed;
+      default: return unit;
     };
   }
 

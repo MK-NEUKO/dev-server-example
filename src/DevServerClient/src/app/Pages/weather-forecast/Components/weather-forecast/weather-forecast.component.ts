@@ -1,17 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { ForecastNavItemComponent } from "../day-overview/day-overview.component";
-import { ForecastTabContentComponent } from "../day-details/day-details.component";
+import { ForecastNavItemComponent as ForecastDayOverview } from "../day-overview/day-overview.component";
+import { ForecastTabContentComponent as ForecastDayDetails } from "../day-details/day-details.component";
 import { WeatherForecast } from '../../../../models/weather-forecast/weatherForecast';
-import { ForecastDataPerDay } from '../../../../models/weather-forecast/forecastDataPerDay';
 import { WeatherForecastDataService } from '../../../../services/weather-forecast/weather-forecast-data.service';
 
 @Component({
   selector: 'app-weather-forecast',
   imports: [
-    ForecastNavItemComponent,
-    ForecastTabContentComponent,
+    ForecastDayOverview,
+    ForecastDayDetails,
     CommonModule
   ],
   templateUrl: './weather-forecast.component.html',
