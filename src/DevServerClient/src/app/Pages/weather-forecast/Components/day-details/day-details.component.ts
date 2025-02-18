@@ -71,7 +71,7 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
       this.forecastPerHour = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()];
       this.processDayDetailForecast();
     }));
-
+    this.weatherForecast = this.weatherForecastDataService.getDefaultWeatherForecast();
     this.processDayDetailForecast();
   }
 
