@@ -1,5 +1,4 @@
 <h2 class="text-center text-body">Weather Forecast</h2>
-
 <div class="card">
   <div class="card-header text-info fst-italic">
     This is a demo. The request comes from an API with demo data for
@@ -7,7 +6,7 @@
   </div>
   <div class="card-header">Search Location</div>
   <div class="card-body">
-    <form (ngSubmit)="onGetLocations()">
+    <form (ngSubmit)="onGetLocations(searchLocationModal)">
       <div class="col-4 d-flex mb-3" role="search">
         <span class="px-2 py-1">
           <i class="bi bi-search"></i>
@@ -57,3 +56,23 @@
 <div class="mt-5">
   <app-weather-forecast> </app-weather-forecast>
 </div>
+
+<ng-template #searchLocationModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Modal title</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="modal.dismiss()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p>Modal body text goes here.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">
+      Close
+    </button>
+  </div>
+</ng-template>

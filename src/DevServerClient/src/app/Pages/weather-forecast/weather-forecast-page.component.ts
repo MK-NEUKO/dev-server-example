@@ -8,6 +8,7 @@ import { WeatherForecast } from '../../models/weather-forecast/weatherForecast';
 import { WeatherForecastService } from '../../services/weather-forecast/weather-forecast.service';
 import { WeatherForecastComponent } from "./Components/weather-forecast/weather-forecast.component";
 import { WeatherForecastDataService } from '../../services/weather-forecast/weather-forecast-data.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -15,7 +16,8 @@ import { WeatherForecastDataService } from '../../services/weather-forecast/weat
   imports: [
     CommonModule,
     FormsModule,
-    WeatherForecastComponent
+    WeatherForecastComponent,
+
   ],
   templateUrl: './weather-forecast-page.component.html',
   styleUrls: ['./weather-forecast-page.component.css']
@@ -23,15 +25,15 @@ import { WeatherForecastDataService } from '../../services/weather-forecast/weat
 export class WeatherForecastPageComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
-  private locationQueryResult?: LocationQueryResult;
+  //private locationQueryResult?: LocationQueryResult;
 
   public query: string = 'copenhagen';
   public locationList: Location[] = new Array<Location>();
 
   constructor(
     private weatherForecastService: WeatherForecastService,
-    private weatherForecastDataService: WeatherForecastDataService
-  ) { }
+    private weatherForecastDataService: WeatherForecastDataService,
+    private modalService: NgbModal) { }
 
   ngOnInit() {
     this.subscription.add(this.weatherForecastService.getLocations(this.query).subscribe((data: LocationQueryResult) => {
@@ -41,14 +43,10 @@ export class WeatherForecastPageComponent implements OnInit, OnDestroy {
       this.weatherForecastDataService.setLocationQueryResult(data);
     }));
 
-
     this.subscription.add(this.weatherForecastDataService.getLocationQueryResult().subscribe(data => {
-      this.locationQueryResult = data ?? this.weatherForecastDataService.getDefaultLocationQueryResult();
+      //this.locationQueryResult = data ?? this.weatherForecastDataService.getDefaultLocationQueryResult();
       this.locationList = data?.results ?? [];
     }));
-
-
-    this.processDefaultView();
   }
 
   ngOnDestroy(): void {
@@ -57,12 +55,8 @@ export class WeatherForecastPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  processDefaultView(): void {
-
-  }
-
-  onGetLocations() {
-
+  onGetLocations(context: any) {
+    this.modalService.open(context, { centered: true });
   }
 
   onGetForecast(location: Location) {

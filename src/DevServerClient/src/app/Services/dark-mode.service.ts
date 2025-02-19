@@ -1,4 +1,3 @@
-import { JsonPipe } from '@angular/common';
 import { effect, Injectable, signal } from '@angular/core';
 
 @Injectable({
@@ -11,12 +10,18 @@ export class DarkModeService {
   );
 
   updateDarkMode() {
-    this.darkModeSignal.update((value) => (value === 'dark' ? 'null' : 'dark'));
+    this.darkModeSignal.update((value) => (value === 'dark' ? 'light' : 'dark'));
+    this.applyTheme();
   }
 
-  constructor() { 
+  constructor() {
     effect(() => {
       window.localStorage.setItem('darkModeSignal', JSON.stringify(this.darkModeSignal()))
     });
+  }
+
+  applyTheme() {
+    const theme = this.darkModeSignal() === 'dark' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-bs-theme', theme);
   }
 }

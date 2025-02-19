@@ -1,6 +1,7 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule } from '@angular/router';
+import { DarkModeService } from './services/dark-mode.service';
 
 @Injectable()
 @Component({
@@ -13,7 +14,12 @@ import { RouterOutlet, RouterModule } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Dev-Server-App';
-  constructor() { }
+
+  constructor(private darkModeService: DarkModeService) { }
+
+  ngOnInit() {
+    this.darkModeService.applyTheme();
+  }
 }

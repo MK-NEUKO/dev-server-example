@@ -23,8 +23,7 @@ import { TooltipItem } from 'chart.js';
 export class ForecastTabContentComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
-  public weatherForecast?: WeatherForecast;
-  public forecastPerHour!: ForecastDataPerHour;
+  private weatherForecast?: WeatherForecast;
 
   public timeList: string[] = [];
   public pictogramBgList: string[] = [];
@@ -73,7 +72,6 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription.add(this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
       this.weatherForecast = data ?? this.weatherForecastDataService.getDefaultWeatherForecast();
-      this.forecastPerHour = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()];
       this.processDayDetailForecast();
     }));
     this.processDayDetailForecast();
