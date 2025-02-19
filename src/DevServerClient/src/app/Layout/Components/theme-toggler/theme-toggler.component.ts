@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { DarkModeService } from '../../../services/dark-mode.service';
+import { DarkModeService } from '../../../services/theme/dark-mode.service';
 
 @Component({
-    selector: 'app-theme-toggler',
-    imports: [],
-    templateUrl: './theme-toggler.component.html',
-    styleUrl: './theme-toggler.component.css'
+  selector: 'app-theme-toggler',
+  imports: [],
+  templateUrl: './theme-toggler.component.html',
+  styleUrl: './theme-toggler.component.css'
 })
 export class ThemeTogglerComponent {
 

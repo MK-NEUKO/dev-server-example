@@ -59,7 +59,7 @@
 
 <ng-template #searchLocationModal let-modal>
   <div class="modal-header">
-    <h5 class="modal-title">Modal title</h5>
+    <h5 class="modal-title">This is a Demo</h5>
     <button
       type="button"
       class="btn-close"
@@ -68,7 +68,12 @@
     ></button>
   </div>
   <div class="modal-body">
-    <p>Modal body text goes here.</p>
+    <p>
+      You have triggered the onGetLocations method, which is where the request
+      to the API would typically be triggered. At the moment, however, the modal
+      is created in the method, which tells you: You have triggered the
+      onGetLocations method,....
+    </p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">

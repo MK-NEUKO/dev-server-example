@@ -1,7 +1,7 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule } from '@angular/router';
-import { DarkModeService } from './services/dark-mode.service';
+import { DarkModeService } from './services/theme/dark-mode.service';
 
 @Injectable()
 @Component({

@@ -3,7 +3,7 @@ import { NavbarComponent } from "../Components/navbar/navbar.component";
 import { SidebarComponent } from '../Components/sidebar/sidebar.component';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from "../Components/footer/footer.component";
-import { DarkModeService } from '../../services/dark-mode.service';
+import { DarkModeService } from '../../services/theme/dark-mode.service';
 
 
 @Component({
