@@ -23,7 +23,7 @@
     <div class="d-flex flex-column flex-xl-row justify-content-between p-2">
       <div
         class="text-body text-center d-flex flex-row flex-xl-column justify-content-between border rounded-2"
-        *ngFor="let hour of forecastPerHour.time; let hourIndex = index"
+        *ngFor="let hour of timeList; let hourIndex = index"
       >
         <div class="p-1">
           <div>{{ hour }}</div>
@@ -38,7 +38,7 @@
         </div>
         <div class="p-1 mt-1">
           <div class="meteoblue-pictofont">&#xE019;</div>
-          <div>{{ forecastPerHour.precipitationProbability[hourIndex] }}%</div>
+          <div>{{ precipitationProbabilityList[hourIndex] }}</div>
         </div>
         <div class="p-1 mt-1">
           <div class="meteoblue-pictofont">&#xE011;</div>
@@ -46,7 +46,7 @@
         </div>
         <div class="p-1 mt-1">
           <div class="meteoblue-pictofont">&#xE015;</div>
-          <div>{{ forecastPerHour.relativeHumidity[hourIndex] }}%</div>
+          <div>{{ relativeHumidityList[hourIndex] }}</div>
         </div>
         <div class="p-1 mt-1">
           <div class="meteoblue-pictofont">&#xE012;</div>

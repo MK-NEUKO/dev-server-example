@@ -26,14 +26,19 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
   public weatherForecast?: WeatherForecast;
   public forecastPerHour!: ForecastDataPerHour;
 
+  public timeList: string[] = [];
   public pictogramBgList: string[] = [];
   public dayIndex = input<number>(0);
   public pictogramPathList: string[] = [];
   public temperatureList: string[] = [];
+  public precipitationProbabilityList: string[] = [];
   public feltTemperatureList: string[] = [];
+  public relativeHumidityList: string[] = [];
   public windDirectionList: string[] = [];
   public windSpeedList: string[] = [];
   public windSpeedUnit: string = '';
+
+
   public tempChartOptions: {} = {};
   public tempChartData!: {
     labels: string[],
@@ -71,21 +76,24 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
       this.forecastPerHour = this.weatherForecast.forecastDataPerDayPerHour[this.dayIndex()];
       this.processDayDetailForecast();
     }));
-    this.weatherForecast = this.weatherForecastDataService.getDefaultWeatherForecast();
     this.processDayDetailForecast();
   }
 
   processDayDetailForecast(): void {
+    this.timeList = this.processTimes(this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].time);
+    this.temperatureList = this.processTemperatures(
+      this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].temperature,
+      this.weatherForecast!.units.temperature);
     this.pictogramPathList = this.processPictogramPaths(
       this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].pictogramCode,
       this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
     this.pictogramBgList = this.processPictogramBgs(this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].isDayLight);
-    this.temperatureList = this.processTemperatures(
-      this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].temperature,
-      this.weatherForecast!.units.temperature);
+    this.precipitationProbabilityList = this.processPrecipitationProbabilities(
+      this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].precipitationProbability);
     this.feltTemperatureList = this.processFeltTemperatures(
       this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].feltTemperature,
       this.weatherForecast!.units.temperature);
+    this.relativeHumidityList = this.processRelativeHumidities(this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].relativeHumidity);
     this.windDirectionList = this.processWindDirections(this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].windDirection);
     this.windSpeedList = this.processWindSpeeds(this.weatherForecast!.forecastDataPerDayPerHour[this.dayIndex()].windSpeed);
     this.windSpeedUnit = this.processWindSpeedUnit(this.weatherForecast!.units.windSpeed);
@@ -97,6 +105,24 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  processTimes(times: string[]): string[] {
+    let timeList: string[] = [];
+    times.forEach(element => {
+      const time = element;
+      timeList.push(time);
+    });
+    return timeList;
+  }
+
+  processTemperatures(temperatures: number[], unit: string): string[] {
+    let temperatureList: string[] = [];
+    temperatures.forEach(element => {
+      const temperature = this.roundTemperature(element);
+      temperatureList.push(`${temperature} °${unit}`);
+    });
+    return temperatureList;
   }
 
   processPictogramPaths(pictogramCode: number[], isDaylight: number[]): string[] {
@@ -120,13 +146,13 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     return pictogramBgList;
   }
 
-  processTemperatures(temperatures: number[], unit: string): string[] {
-    let temperatureList: string[] = [];
-    temperatures.forEach(element => {
-      const temperature = this.roundTemperature(element);
-      temperatureList.push(`${temperature} °${unit}`);
+  processPrecipitationProbabilities(precipitationProbabilities: number[]): string[] {
+    let precipitationProbabilityList: string[] = [];
+    precipitationProbabilities.forEach(element => {
+      const precipitationProbability = `${element.toFixed(0)}%`;
+      precipitationProbabilityList.push(precipitationProbability);
     });
-    return temperatureList;
+    return precipitationProbabilityList;
   }
 
   processFeltTemperatures(feltTemperatures: number[], unit: string): string[] {
@@ -137,10 +163,18 @@ export class ForecastTabContentComponent implements OnInit, OnDestroy {
     });
     return feltTemperatureList;
   }
-
   roundTemperature(temperature: number): number {
     let roundedTemperature = Math.round(temperature);
     return roundedTemperature === -0 ? 0 : roundedTemperature;
+  }
+
+  processRelativeHumidities(relativeHumidities: number[]): string[] {
+    let relativeHumidityList: string[] = [];
+    relativeHumidities.forEach(element => {
+      const relativeHumidity = `${element.toFixed(0)}%`;
+      relativeHumidityList.push(relativeHumidity);
+    });
+    return relativeHumidityList;
   }
 
   processWindDirections(windDirection: number[]): string[] {
