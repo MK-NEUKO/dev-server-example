@@ -1,0 +1,33 @@
+<div class="d-flex flex-row flex-xl-column justify-content-between">
+  <div>
+    <div>{{ weekdayList[dayIndex()] }}</div>
+    <div>{{ dateList[dayIndex()] }}</div>
+  </div>
+  <div>
+    <div>
+      <img
+        class="bg-day bg-gradient rounded-2"
+        src="{{ pictogramPathDayList[dayIndex()] }}"
+        alt="weather icon day"
+        width="70px"
+      />
+    </div>
+  </div>
+  <div>
+    <div>{{ temperatureMaxList[dayIndex()] }}</div>
+    <div>{{ temperatureMinList[dayIndex()] }}</div>
+  </div>
+  <div>
+    <div class="">
+      <div
+        class="meteoblue-pictofont"
+        [innerHTML]="windDirectionList[dayIndex()]"
+      ></div>
+      <div>{{ windSpeedList[dayIndex()] }}</div>
+    </div>
+    <div
+      class="meteoblue-pictofont"
+      [innerHTML]="precipitationList[dayIndex()]"
+    ></div>
+  </div>
+</div>

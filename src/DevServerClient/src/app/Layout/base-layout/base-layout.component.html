@@ -1,12 +1,11 @@
-<div
-  class="d-flex flex-column vh-100"
-  [attr.data-bs-theme]="darkModeService.darkModeSignal()"
->
+<div class="d-flex flex-column vh-100">
   <div class="sticky-top" id="navbar">
     <app-navbar></app-navbar>
   </div>
   <div class="d-flex flex-grow-1 overflow-hidden">
-    <div class="col-2 bg-body border-end border-info-subtle overflow-auto">
+    <div
+      class="col-2 bg-body text-body border-end border-info-subtle overflow-auto"
+    >
       <app-sidebar></app-sidebar>
     </div>
     <div class="col-10 bg-body-tertiary overflow-auto">
