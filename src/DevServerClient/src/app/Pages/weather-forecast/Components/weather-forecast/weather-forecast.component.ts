@@ -19,7 +19,9 @@ import { WeatherForecastDataService } from '../../../../services/weather-forecas
 export class WeatherForecastComponent implements OnInit, OnDestroy {
 
   private subscripton: Subscription = new Subscription();
-  public weatherForecast?: WeatherForecast;
+  private weatherForecast?: WeatherForecast;
+
+  public forecastDays: string[] = [];
   public index: number = 0;
 
   constructor(private weatherForecastDataService: WeatherForecastDataService) { }
@@ -29,6 +31,8 @@ export class WeatherForecastComponent implements OnInit, OnDestroy {
     this.subscripton.add(this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
       this.weatherForecast = data ?? this.weatherForecastDataService.getDefaultWeatherForecast();
     }));
+
+    this.forecastDays = this.weatherForecast!.forecastDataPerDay.time;
   }
 
   ngOnDestroy(): void {
