@@ -9,11 +9,11 @@ import { EnvironmentService } from '../../../services/environment/environment.se
 })
 export class DashboardComponent {
 
-  constructor(private environment: EnvironmentService) { }
+  constructor(private environmentService: EnvironmentService) { }
 
 
   getConfig() {
-    this.environment.getConfigurations().subscribe(data => {
+    this.environmentService.getConfigurations().subscribe(data => {
       console.log(data);
     });
   }
