@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GatewayConfiguration } from '../../models/environment/gatewayConfiguration';
+import { GatewayConfiguration } from '../../models/environment-gateway/gatewayConfiguration';
 
 @Injectable({
   providedIn: 'root'
