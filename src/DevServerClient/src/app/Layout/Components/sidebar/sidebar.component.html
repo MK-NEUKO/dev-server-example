@@ -17,27 +17,42 @@
         <li class="nav-item">
           <a class="nav-link" aria-current="page" routerLink="/">Home</a>
         </li>
+
         <li class="nav-item">
           <a
             class="nav-link"
             routerLink="/weather-forecast"
             routerLinkActive="active"
             ariaCurrentWhenActive="page"
-            >Weather Forecast</a
+          >
+            <i class="bi bi-cloud-sun-fill"></i>
+            Weather Forecast</a
           >
         </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLink="/admin/dashboard"
-            routerLinkActive="active"
-            ariaCurrentWhenActive="page"
-            >Admin Dashboard</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
+        <ul class="">
+          <li class="ps-2">
+            <i class="bi bi-gear-wide"></i>
+            Admin
+          </li>
+          <li class="nav-item ps-3">
+            <a
+              class="nav-link"
+              routerLink="/admin/dashboard"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              >Dashboard</a
+            >
+          </li>
+          <li class="nav-item ps-3">
+            <a
+              class="nav-link"
+              routerLink="/admin/environments"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              >Environments</a
+            >
+          </li>
+        </ul>
       </ul>
     </div>
   </div>
