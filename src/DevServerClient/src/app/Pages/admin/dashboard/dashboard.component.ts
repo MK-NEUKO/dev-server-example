@@ -1,5 +1,8 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { EnvironmentService } from '../../../services/environment-gateway/environment-gateway.service';
+import { EnvironmentGatewayDataService } from '../../../services/environment-gateway/environment-gateway-data.service';
+import { Subscription } from 'rxjs';
+import { GatewayConfiguration } from '../../../models/environment-gateway/gatewayConfiguration';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,20 +10,30 @@ import { EnvironmentService } from '../../../services/environment-gateway/enviro
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
-
+export class DashboardComponent implements OnInit {
+  private subscription: Subscription = new Subscription();
+  private gatewayConfiguration?: GatewayConfiguration;
   @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
 
-  constructor(private environmentService: EnvironmentService) { }
+  constructor(
+    private environmentService: EnvironmentService,
+    private environmentDataService: EnvironmentGatewayDataService
+  ) { }
 
-
-  getConfig() {
-    this.environmentService.getConfigurations().subscribe(data => {
-      this.renderJsonOnCanvas(data);
-    });
+  ngOnInit() {
+    this.subscription.add(this.environmentDataService.getGatewayConfiguration().subscribe((data) => {
+      this.gatewayConfiguration = data ?? this.environmentDataService.getDefaultGatewayConfiguration();
+      this.renderJsonOnCanvas(this.gatewayConfiguration);
+    }));
   }
 
-  renderJsonOnCanvas(json: any) {
+  getConfig() {
+    this.subscription.add(this.environmentService.getConfigurations().subscribe((data) => {
+      this.environmentDataService.setGatewayConfiguration(data);
+    }));
+  }
+
+  renderJsonOnCanvas(json: GatewayConfiguration) {
     const canvas = this.canvas.nativeElement;
     const ctx = canvas.getContext('2d');
 

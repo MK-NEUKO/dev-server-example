@@ -12,7 +12,10 @@ export class WeatherForecastDataService {
   private locationQueryResultSubject = new BehaviorSubject<LocationQueryResult>(initializeLocationQueryResult());
   private weatherForecastSubject = new BehaviorSubject<WeatherForecast>(initializeWeatherForecast());
 
-  constructor() { }
+
+  constructor() {
+
+  }
 
   setLocationQueryResult(data: LocationQueryResult) {
     this.locationQueryResultSubject.next(data);
@@ -22,11 +25,6 @@ export class WeatherForecastDataService {
     return this.locationQueryResultSubject.asObservable();
   }
 
-  getDefaultLocationQueryResult(): LocationQueryResult {
-    return initializeLocationQueryResult();
-  }
-
-
   setWeatherForecast(data: WeatherForecast) {
     this.weatherForecastSubject.next(data);
   }
@@ -34,6 +32,7 @@ export class WeatherForecastDataService {
   getWeatherForecast(): Observable<WeatherForecast | null> {
     return this.weatherForecastSubject.asObservable();
   }
+
   getDefaultWeatherForecast(): WeatherForecast {
     return initializeWeatherForecast();
   }

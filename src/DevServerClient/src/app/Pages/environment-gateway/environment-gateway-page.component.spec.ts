@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { EnvironmentGatewayComponent } from './environment-gateway.component';
+import { EnvironmentGatewayComponent } from './environment-gateway-page.component';
 
 describe('EnvironmentGatewayComponent', () => {
   let component: EnvironmentGatewayComponent;
@@ -10,7 +9,7 @@ describe('EnvironmentGatewayComponent', () => {
     await TestBed.configureTestingModule({
       imports: [EnvironmentGatewayComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(EnvironmentGatewayComponent);
     component = fixture.componentInstance;

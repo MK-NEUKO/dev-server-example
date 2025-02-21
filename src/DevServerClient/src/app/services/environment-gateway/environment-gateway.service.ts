@@ -11,6 +11,6 @@ export class EnvironmentService {
   constructor(private http: HttpClient) { }
 
   getConfigurations(): Observable<GatewayConfiguration> {
-    return this.http.get<GatewayConfiguration>('https://localhost:7118/configuration/getconfiguration');
+    return this.http.get<GatewayConfiguration>('production-gateway/configuration/getconfiguration');
   }
 }

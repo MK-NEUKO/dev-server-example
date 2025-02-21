@@ -1,4 +1,4 @@
-import { Destinations } from './destinations';
+import { Destination } from './destination';
 
 export interface Cluster {
     clusterId: string;
@@ -7,6 +7,6 @@ export interface Cluster {
     healthCheck: string;
     httpClient: string;
     httpRequest: string;
-    destinations: Destinations[];
+    destinations: Destination[];
     metadata: string;
 }
