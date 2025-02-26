@@ -1,7 +1,9 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
+
+
 var productionGateway = builder.AddProject<Projects.EnvironmentGateway>("production-gateway");
-//var stagingGateway = builder.AddProject<Projects.EnvironmentGateway>("staging-gateway");
+
 
 
 var weatherApi = builder.AddProject<Projects.WeatherForecastApi>("weatherapi")

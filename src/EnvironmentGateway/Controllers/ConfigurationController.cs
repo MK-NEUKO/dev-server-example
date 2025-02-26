@@ -10,11 +10,27 @@ namespace EnvironmentGateway.Controllers
     {
         private readonly InMemoryConfigProvider? _configurationProvider;
         private readonly InMemoryConfig _inMemoryConfig;
+        private readonly IConfiguration _apiContext;
 
-        public ConfigurationController(IProxyConfigProvider configurationProvider, InMemoryConfig inMemoryConfig)
+        public ConfigurationController(
+            IProxyConfigProvider configurationProvider,
+            InMemoryConfig inMemoryConfig,
+            IConfiguration apiContext)
         {
             _configurationProvider = configurationProvider as InMemoryConfigProvider;
             _inMemoryConfig = inMemoryConfig;
+            _apiContext = apiContext;
+        }
+
+        [HttpGet]
+        [EndpointName("GetInfo")]
+        [Route("GetInfo")]
+        public IActionResult GetInfo()
+        {
+            var test = _apiContext.GetSection("Services")
+                .GetChildren()
+                .ToDictionary(x=> x.Key, x=> x.Value);
+            return Ok(test);
         }
 
         [HttpGet]
