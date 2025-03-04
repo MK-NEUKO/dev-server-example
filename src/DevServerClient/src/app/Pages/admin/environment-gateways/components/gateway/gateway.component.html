@@ -1,18 +1,13 @@
-<div class="accordion-body">
-  <div class="card">
-    <h5 class="card-header">Routing 1 {{ gatewayName }}</h5>
-    <div class="card-body">
-      <h5 class="card-title">Routing name eg. routeId</h5>
-      <p class="card-text">Important details of routing at a glance.</p>
-      <a href="#" class="btn btn-primary">Config</a>
-    </div>
+<div class="card text-center mb-3">
+  <div class="card-header">
+    {{ gatewayId }}
   </div>
-  <button class="btn btn-primary" (click)="getConfig()">Get Config</button>
-  <button class="btn btn-primary ms-2" (click)="getSlotOne()">Slot One</button>
-
-  <app-route-editor></app-route-editor>
-
-  <div class="canvas-container">
-    <canvas #canvas width="800" height="1000"></canvas>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">
+      With supporting text below as a natural lead-in to additional content.
+    </p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
   </div>
+  <div class="card-footer text-body-secondary">2 days ago</div>
 </div>

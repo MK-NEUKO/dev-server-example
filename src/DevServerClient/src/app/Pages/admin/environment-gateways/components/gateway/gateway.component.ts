@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { EnvironmentGatewayService } from '../../../../../services/environment-gateway/environment-gateway.service';
 import { EnvironmentGatewayDataService } from '../../../../../services/environment-gateway/environment-gateway-data.service';
 import { Observable, Subscription } from 'rxjs';
@@ -14,14 +14,16 @@ import { GatewayInfo } from '../../../../../models/environment-gateway/gatewayIn
   styleUrl: './gateway.component.css'
 })
 export class GatewayComponent implements OnInit, OnDestroy {
+  @Input() gatewayId: number = 0;
   private subscription: Subscription = new Subscription();
   private gatewayConfiguration?: GatewayConfiguration;
+  private gatewayInfo?: GatewayInfo;
+
 
 
   public gatewayName: string = '';
 
   constructor(
-    private environmentService: EnvironmentGatewayService,
     private environmentDataService: EnvironmentGatewayDataService,
   ) { }
 
@@ -33,16 +35,5 @@ export class GatewayComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-  }
-
-  getConfig() {
-    this.subscription.add(this.environmentService.getGatewayConfigurations().subscribe((data) => {
-      this.environmentDataService.setGatewayConfiguration(data);
-    }));
-  }
-
-  getSlotOne() {
-    console.log("got to slot one");
-    window.open("https://localhost:7118", "_blank");
   }
 }
