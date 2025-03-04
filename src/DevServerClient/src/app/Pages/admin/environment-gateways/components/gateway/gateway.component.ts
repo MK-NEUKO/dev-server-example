@@ -16,7 +16,7 @@ import { GatewayInfo } from '../../../../../models/environment-gateway/gatewayIn
 export class GatewayComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   private gatewayConfiguration?: GatewayConfiguration;
-  private gatewayInfo?: GatewayInfo;
+
 
   public gatewayName: string = '';
 
@@ -28,11 +28,6 @@ export class GatewayComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription.add(this.environmentDataService.getGatewayConfiguration().subscribe((data) => {
       this.gatewayConfiguration = data ?? this.environmentDataService.getDefaultGatewayConfiguration();
-    }));
-    this.subscription.add(this.environmentService.getGatewayInfo().subscribe((data) => {
-      this.environmentDataService.setGatewayInfo(data);
-      this.gatewayInfo = data;
-      this.gatewayName = this.gatewayInfo?.gatewayName ?? '';
     }));
   }
 

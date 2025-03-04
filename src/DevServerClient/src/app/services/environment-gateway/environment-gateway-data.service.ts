@@ -11,7 +11,7 @@ import { initializeGatewayInfo } from './gatewayInfo-initializer';
 })
 export class EnvironmentGatewayDataService {
   private gatewayConfiguration = new BehaviorSubject<GatewayConfiguration>(initializeGatewayConfiguration());
-  private gatewayInfo = new BehaviorSubject<GatewayInfo>(initializeGatewayInfo());
+  private gateways = new BehaviorSubject<GatewayInfo[]>(Array(initializeGatewayInfo()));
 
   constructor() { }
 
@@ -27,15 +27,15 @@ export class EnvironmentGatewayDataService {
     return initializeGatewayConfiguration();
   }
 
-  setGatewayInfo(data: GatewayInfo) {
-    this.gatewayInfo.next(data);
+  setGateways(data: GatewayInfo[]) {
+    this.gateways.next(data);
   }
 
-  getGatewayInfo(): Observable<GatewayInfo | null> {
-    return this.gatewayInfo.asObservable();
+  getGateways(): Observable<GatewayInfo[]> {
+    return this.gateways.asObservable();
   }
 
-  getDefaultGatewayInfo(): GatewayInfo {
-    return initializeGatewayInfo();
+  getDefaultGateways(): GatewayInfo[] {
+    return Array(initializeGatewayInfo());
   }
 }
