@@ -1,6 +1,0 @@
-@EnvironmentGateway_HostAddress = http://localhost:5263
-
-GET {{EnvironmentGateway_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

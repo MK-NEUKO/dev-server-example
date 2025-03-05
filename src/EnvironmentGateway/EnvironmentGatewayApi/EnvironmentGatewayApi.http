@@ -1,0 +1,6 @@
+@EnvironmentGatewayApi_HostAddress = http://localhost:5171
+
+GET {{EnvironmentGatewayApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
