@@ -27,9 +27,8 @@ namespace EnvironmentGateway.Controllers
         [Route("GetInfo")]
         public IActionResult GetInfo()
         {
-            var test = _apiContext.GetSection("Services")
-                .GetChildren()
-                .ToDictionary(x=> x.Key, x=> x.Value);
+            var test = _apiContext.ToString();
+                
             return Ok(test);
         }
 
