@@ -30,9 +30,9 @@ export class WeatherForecastComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscripton.add(this.weatherForecastDataService.getWeatherForecast().subscribe(data => {
       this.weatherForecast = data ?? this.weatherForecastDataService.getDefaultWeatherForecast();
+      this.forecastDays = this.weatherForecast!.forecastDataPerDay.time;
     }));
 
-    this.forecastDays = this.weatherForecast!.forecastDataPerDay.time;
   }
 
   ngOnDestroy(): void {

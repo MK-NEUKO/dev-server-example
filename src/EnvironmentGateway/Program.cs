@@ -3,6 +3,9 @@ using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSingleton(provider => new EnvironmentGateway.Models.EnvironmentGateway(args[0]));
+
+
 builder.AddServiceDefaults();
 
 builder.Services.AddCors(options =>

@@ -54,7 +54,8 @@ namespace Microsoft.Extensions.Hosting
                 {
                     metrics.AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
-                        .AddRuntimeInstrumentation();
+                        .AddRuntimeInstrumentation()
+                        .AddPrometheusExporter();
                 })
                 .WithTracing(tracing =>
                 {
@@ -112,6 +113,8 @@ namespace Microsoft.Extensions.Hosting
                 {
                     Predicate = r => r.Tags.Contains("live")
                 });
+
+                app.MapPrometheusScrapingEndpoint("/metrics");
             }
 
             return app;
