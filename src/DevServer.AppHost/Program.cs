@@ -1,4 +1,13 @@
+using System.Diagnostics;
+using DevServer.AppHost;
+using k8s.Models;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+
 var builder = DistributedApplication.CreateBuilder(args);
+
+
+var environmentGatewayApi = builder.AddProject<Projects.EnvironmentGatewayApi>("EnvironmentGatewayApi")
+    .WithScalar();
 
 
 
@@ -13,7 +22,6 @@ builder.AddNpmApp("devServerClient", "../DevServerClient")
     .PublishAsDockerFile();
 
 
-builder.AddProject<Projects.EnvironmentGatewayApi>("environmentgatewayapi");
 
 
 await builder.Build().RunAsync();
