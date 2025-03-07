@@ -11,6 +11,7 @@ builder.AddProject<Projects.EnvironmentGatewayApi>("EnvironmentGatewayApi")
 
 
 
+
 var weatherApi = builder.AddProject<Projects.WeatherForecastApi>("weatherApi")
     .WithExternalHttpEndpoints();
 
