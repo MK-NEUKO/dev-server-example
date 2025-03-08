@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EnvironmentGateway\EnvironmentGateway.csproj" />
+    <ProjectReference Include="..\EnvironmentGateway\EnvironmentGatewayApi\EnvironmentGatewayApi.csproj" />
     <ProjectReference Include="..\WeatherForecastApi\WeatherForecastApi.csproj" />
   </ItemGroup>
 
