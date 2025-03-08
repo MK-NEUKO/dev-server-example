@@ -2,6 +2,7 @@ using System.Reflection;
 using EnvironmentGatewayApi;
 using EnvironmentGatewayApi.Endpoints.ReverseProxy;
 using EnvironmentGatewayApi.Extensions;
+using EnvironmentGatewayApi.ReverseProxy;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,11 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 builder.Services.AddReverseProxy()
-    .LoadFromMemory(DefaultConfiguration.GetRoutes(), DefaultConfiguration.GetClusters());
+    .LoadFromMemory(StartupBehavior.GetRoutes(), StartupBehavior.GetClusters());
 
-builder.Services.AddOpenApi();
-
-builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+builder.Services.AddPresentation();
 
 var app = builder.Build();
 
@@ -24,12 +23,10 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-app.MapEndpoints();
-
-app.MapReverseProxy();
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
+
+app.MapEndpoints();
+app.MapReverseProxy();
 
 await app.RunAsync();

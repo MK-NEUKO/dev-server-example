@@ -7,7 +7,7 @@ public class Get(IProxyConfigProvider proxyConfigProvider) : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/reverseProxy", (CancellationToken cancelationToken) =>
+        app.MapGet("/reverseProxy/get", (CancellationToken cancelationToken) =>
         {
             var config = proxyConfigProvider.GetConfig();
             return Results.Ok(config);

@@ -1,10 +1,9 @@
 ﻿using Yarp.ReverseProxy.Configuration;
 
-namespace EnvironmentGatewayApi;
+namespace EnvironmentGatewayApi.ReverseProxy;
 
-internal static class DefaultConfiguration
+internal static class StartupBehavior
 {
-    const string DEBUG_HEADER = "Debug";
     const string DEBUG_METADATA_KEY = "debug";
     const string DEBUG_VALUE = "true";
 
@@ -49,5 +48,4 @@ internal static class DefaultConfiguration
             }
         ];
     }
-    
 }
