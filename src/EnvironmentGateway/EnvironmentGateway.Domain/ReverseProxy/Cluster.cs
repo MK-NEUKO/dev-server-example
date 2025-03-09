@@ -11,3 +11,7 @@ public sealed class Cluster
     public List<Destination> Destinations { get; set; }
     public string Metadata { get; set; }
 }
+
+public class Destination
+{
+}

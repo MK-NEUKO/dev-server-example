@@ -7,8 +7,13 @@ internal static class StartupBehavior
     const string DEBUG_METADATA_KEY = "debug";
     const string DEBUG_VALUE = "true";
 
+   
+
+
     internal static RouteConfig[] GetRoutes()
     {
+        //
+
         return
         [
             new RouteConfig()

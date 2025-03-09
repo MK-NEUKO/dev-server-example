@@ -1,16 +1,17 @@
-using System.Diagnostics;
 using DevServer.AppHost;
-using k8s.Models;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+var postgresServer = builder.AddPostgres("postgresServer")
+    .WithEnvironment("POSTGRES_DB", "DevServerDB")
+    .WithPgAdmin();
+var devServerDb = postgresServer.AddDatabase("DevServerDB");
+
+
 
 builder.AddProject<Projects.EnvironmentGatewayApi>("EnvironmentGatewayApi")
-    .WithScalar();
-
-
-
+    .WithScalar()
+    .WithReference(devServerDb);
 
 var weatherApi = builder.AddProject<Projects.WeatherForecastApi>("weatherApi")
     .WithExternalHttpEndpoints();
