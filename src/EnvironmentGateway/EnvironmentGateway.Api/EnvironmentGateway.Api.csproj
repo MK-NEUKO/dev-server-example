@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\DevServer.ServiceDefaults\DevServer.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\EnvironmentGateway.Application\EnvironmentGateway.Application.csproj" />
   </ItemGroup>
 
 </Project>
