@@ -1,14 +1,21 @@
 ﻿using Yarp.ReverseProxy.Configuration;
 
-namespace EnvironmentGatewayApi;
+namespace EnvironmentGatewayApi.GatewayConfiguration;
 
-internal static class DefaultConfiguration
+internal class InitialConfigurator
 {
-    const string DEBUG_HEADER = "Debug";
-    const string DEBUG_METADATA_KEY = "debug";
-    const string DEBUG_VALUE = "true";
+    public static InitialConfiguration GetInitialConfiguration()
+    {
+        var initialConfig = new InitialConfiguration
+        {
+            Routes = GetRoutes(),
+            Clusters = GetClusters()
+        };
 
-    internal static RouteConfig[] GetRoutes()
+        return initialConfig;
+    }
+
+    private static RouteConfig[] GetRoutes()
     {
         return
         [
@@ -25,29 +32,18 @@ internal static class DefaultConfiguration
         ];
     }
 
-    public static ClusterConfig[] GetClusters()
+    private static ClusterConfig[] GetClusters()
     {
-        var debugMetadata = new Dictionary<string, string>
-        {
-            { DEBUG_METADATA_KEY, DEBUG_VALUE }
-        };
-
         return
         [
             new ClusterConfig()
             {
                 ClusterId = "cluster1",
-                SessionAffinity = new SessionAffinityConfig { Enabled = true, Policy = "Cookie", AffinityKeyName = ".Yarp.ReverseProxy.Affinity" },
                 Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
                 {
                     { "destination1", new DestinationConfig() { Address = "https://neuko-know-how.com" } },
-                    { "debugdestination1", new DestinationConfig() {
-                        Address = "https://bing.com",
-                        Metadata = debugMetadata  }
-                    },
                 }
             }
         ];
     }
-    
 }
