@@ -6,7 +6,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 var builder = DistributedApplication.CreateBuilder(args);
 
 
-builder.AddProject<Projects.EnvironmentGatewayApi>("EnvironmentGatewayApi")
+builder.AddProject<Projects.EnvironmentGateway_Api>("EnvironmentGatewayApi")
     .WithScalar();
 
 

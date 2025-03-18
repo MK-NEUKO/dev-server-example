@@ -1,15 +1,15 @@
 using System.Reflection;
-using EnvironmentGatewayApi;
-using EnvironmentGatewayApi.Endpoints.ReverseProxy;
 using EnvironmentGatewayApi.Extensions;
+using EnvironmentGatewayApi.GatewayConfiguration;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+var init = InitialConfigurator.GetInitialConfiguration();
 builder.Services.AddReverseProxy()
-    .LoadFromMemory(DefaultConfiguration.GetRoutes(), DefaultConfiguration.GetClusters());
+    .LoadFromMemory(init.Routes, init.Clusters);
 
 builder.Services.AddOpenApi();
 
