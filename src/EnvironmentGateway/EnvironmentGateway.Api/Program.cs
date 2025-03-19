@@ -1,4 +1,6 @@
 using System.Reflection;
+using EnvironmentGateway.Infrastructure;
+using EnvironmentGateway.Application;
 using EnvironmentGatewayApi.Extensions;
 using EnvironmentGatewayApi.GatewayConfiguration;
 using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
@@ -18,6 +20,10 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
+builder.Services
+    .AddApplication()
+    .AddInfrastructure();
+    
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
