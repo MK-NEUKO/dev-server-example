@@ -15,7 +15,7 @@ internal class InitialConfigurator
         return initialConfig;
     }
 
-    private static RouteConfig[] GetRoutes()
+    internal static RouteConfig[] GetRoutes()
     {
         return
         [

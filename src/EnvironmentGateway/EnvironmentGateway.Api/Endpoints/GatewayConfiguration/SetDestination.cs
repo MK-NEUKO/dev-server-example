@@ -1,4 +1,6 @@
-﻿namespace EnvironmentGatewayApi.Endpoints.GatewayConfiguration;
+﻿using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
+
+namespace EnvironmentGatewayApi.Endpoints.GatewayConfiguration;
 
 public class SetDestination : IEndpoint
 {
@@ -6,9 +8,13 @@ public class SetDestination : IEndpoint
     {
         app.MapPost("/set-address/{address}", (string address, CancellationToken cancellationToken) =>
         {
-            var value = address;
+            var value = $"https://{address}";
 
-            return Results.Json(address);
+            var configurator = app.ServiceProvider.GetRequiredService<IRuntimeConfigurator>();
+
+            configurator.ChangeDestinationAddress(value);
+
+            return Results.Ok();
         });
     }
 }

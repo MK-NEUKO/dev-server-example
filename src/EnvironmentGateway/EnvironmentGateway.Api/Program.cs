@@ -1,11 +1,14 @@
 using System.Reflection;
 using EnvironmentGatewayApi.Extensions;
 using EnvironmentGatewayApi.GatewayConfiguration;
+using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+
+builder.Services.AddSingleton<IRuntimeConfigurator, RuntimeConfigurator>();
 
 var init = InitialConfigurator.GetInitialConfiguration();
 builder.Services.AddReverseProxy()
