@@ -14,7 +14,7 @@ public class SetDestination : IEndpoint
 
             configurator.ChangeDestinationAddress(value);
 
-            return Results.Ok();
+            return Results.Ok($"Property: Address of destination1 has changed; Statuscode: {StatusCodes.Status201Created}");
         });
     }
 }
