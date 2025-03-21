@@ -4,4 +4,4 @@
 
 ### The diagram below is intended to give an impression of what is being created here.
 
-![Dev-Server-Example Overview](images/dev-server-example.drawio.svg)
+![Dev-Server-Example Overview](images/dev-server-example.drawio__v2.svg)
