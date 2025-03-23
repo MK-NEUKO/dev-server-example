@@ -11,6 +11,7 @@ internal class InitialConfigurator
         // If the database has no configuration or is not available,
         // get a default configuration from domain.
 
+
         // Apply configuration to gateway.
 
         // Save configuration to database.
