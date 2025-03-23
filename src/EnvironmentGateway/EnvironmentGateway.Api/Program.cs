@@ -10,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+builder.Services
+    .AddApplication()
+    .AddInfrastructure();
+
 builder.Services.AddSingleton<IRuntimeConfigurator, RuntimeConfigurator>();
 
 var init = InitialConfigurator.GetInitialConfiguration();
@@ -19,10 +23,6 @@ builder.Services.AddReverseProxy()
 builder.Services.AddOpenApi();
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
-
-builder.Services
-    .AddApplication()
-    .AddInfrastructure();
     
 var app = builder.Build();
 

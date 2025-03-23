@@ -6,6 +6,17 @@ internal class InitialConfigurator
 {
     public static InitialConfiguration GetInitialConfiguration()
     {
+        // Query a database to get the initial configuration.
+
+        // If the database has no configuration or is not available,
+        // get a default configuration from domain.
+
+        // Apply configuration to gateway.
+
+        // Save configuration to database.
+
+
+        // For now, return a default configuration.
         var initialConfig = new InitialConfiguration
         {
             Routes = GetRoutes(),
