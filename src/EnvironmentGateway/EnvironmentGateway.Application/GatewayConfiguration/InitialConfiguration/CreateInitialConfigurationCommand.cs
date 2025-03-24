@@ -2,4 +2,4 @@
 
 namespace EnvironmentGateway.Application.GatewayConfiguration.StartConfiguration;
 
-public record CreateStartConfigurationCommand() : ICommand<Guid>;
+public record CreateInitialConfigurationCommand() : ICommand<Guid>;

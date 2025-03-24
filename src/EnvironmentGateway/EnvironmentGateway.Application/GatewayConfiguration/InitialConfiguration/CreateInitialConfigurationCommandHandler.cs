@@ -4,12 +4,12 @@ using EnvironmentGateway.Domain.GatewayConfiguration;
 
 namespace EnvironmentGateway.Application.GatewayConfiguration.StartConfiguration;
 
-public class CreateStartConfigurationCommandHandler : ICommandHandler<CreateStartConfigurationCommand, Guid>
+internal sealed class CreateInitialConfigurationCommandHandler : ICommandHandler<CreateInitialConfigurationCommand, Guid>
 {
     private readonly IGatewayConfigurationRepository _gatewayConfigurationRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateStartConfigurationCommandHandler(
+    public CreateInitialConfigurationCommandHandler(
         IGatewayConfigurationRepository gatewayConfigurationRepository,
         IUnitOfWork unitOfWork)
     {
@@ -17,16 +17,11 @@ public class CreateStartConfigurationCommandHandler : ICommandHandler<CreateStar
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<Guid>> Handle(CreateStartConfigurationCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateInitialConfigurationCommand request, CancellationToken cancellationToken)
     {
         var initialConfigurationName = new Name("InitialConfiguration");
         var configuration =
             Domain.GatewayConfiguration.GatewayConfiguration.CreateInitialConfiguration(initialConfigurationName);
-
-        if (configuration is null)
-        {
-            return Result.Failure<Guid>(GatewayConfigurationErrors.CreateInitialConfigurationFailed);
-        }
 
         try
         {
@@ -38,7 +33,6 @@ public class CreateStartConfigurationCommandHandler : ICommandHandler<CreateStar
         }
         catch (Exception)
         {
-
             return Result.Failure<Guid>(GatewayConfigurationErrors.CreateInitialConfigurationFailed);
         }
     }
