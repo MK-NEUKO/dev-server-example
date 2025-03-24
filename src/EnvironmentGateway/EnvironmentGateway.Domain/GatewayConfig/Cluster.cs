@@ -1,6 +1,6 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 
-namespace EnvironmentGateway.Domain.GatewayConfiguration;
+namespace EnvironmentGateway.Domain.GatewayConfig;
 
 public sealed class Cluster : Entity
 {
@@ -9,6 +9,7 @@ public sealed class Cluster : Entity
     {
     }
 
+    public Guid GatewayConfigId { get;private set; }
     public ClusterId ClusterId { get; private set; }
     public List<Dictionary<string, Destination>> Destinations { get; private set; } = new();
 }

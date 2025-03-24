@@ -1,0 +1,28 @@
+﻿using EnvironmentGateway.Domain.Abstractions;
+using EnvironmentGateway.Domain.GatewayConfig.Events;
+
+namespace EnvironmentGateway.Domain.GatewayConfig;
+
+public sealed class GatewayConfig : Entity
+{
+    private GatewayConfig(Guid id, Name name)
+        : base(id)
+    {
+        Name = name;
+    }
+
+    public Name Name { get; private set; }
+
+    public List<Route> Routes { get; private set; } = new();
+
+    public List<Cluster> Clusters { get; private set; } = new();
+
+    public static GatewayConfig CreateInitialConfiguration(Name name)
+    {
+        var initialConfiguration = new GatewayConfig(Guid.NewGuid(), name);
+        
+        initialConfiguration.RaiseDomainEvent(new InitialConfigCreatedDomainEvent(initialConfiguration.Id));
+
+        return initialConfiguration;
+    }
+}

@@ -1,0 +1,30 @@
+﻿using EnvironmentGateway.Domain.GatewayConfig;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace EnvironmentGateway.Infrastructure.Configurations;
+
+public class GatewayConfigConfiguration : IEntityTypeConfiguration<GatewayConfig>
+{
+    public void Configure(EntityTypeBuilder<GatewayConfig> builder)
+    {
+        builder.ToTable("gateway-configurations");
+
+        builder.HasKey(gatewayConfig => gatewayConfig.Id);
+
+        builder.Property(gatewayConfig => gatewayConfig.Name)
+            .HasMaxLength(200)
+            .HasConversion(name => name.Value, value => new Name(value))
+            .IsRequired();
+
+        builder.HasMany(gatewayConfig => gatewayConfig.Routes)
+            .WithOne()
+            .HasForeignKey(route => route.GatewayConfigId)
+            .IsRequired();
+
+        builder.HasMany(gatewayConfig => gatewayConfig.Clusters)
+            .WithOne()
+            .HasForeignKey(cluster => cluster.GatewayConfigId)
+            .IsRequired();
+    }
+}

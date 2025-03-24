@@ -1,4 +1,5 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Email;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
@@ -11,6 +12,14 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddTransient<IEmailService, IEmailService>();
+
+        var connenctionString = configuration.GetConnectionString("EnvironmentGateway") ??
+                                throw new ArgumentException(nameof(configuration));
+
+        services.AddDbContext<EnvironmentGatewayDbContext>(options =>
+        {
+            options.UseNpgsql().UseSnakeCaseNamingConvention();
+        });
 
         return services;
     }
