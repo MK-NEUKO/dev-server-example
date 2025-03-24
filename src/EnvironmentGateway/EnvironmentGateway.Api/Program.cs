@@ -12,7 +12,7 @@ builder.AddServiceDefaults();
 
 builder.Services
     .AddApplication()
-    .AddInfrastructure();
+    .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddSingleton<IRuntimeConfigurator, RuntimeConfigurator>();
 
