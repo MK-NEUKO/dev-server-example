@@ -17,9 +17,9 @@ public sealed class GatewayConfig : Entity
 
     public List<Cluster.Cluster> Clusters { get; private set; } = new();
 
-    public static GatewayConfig CreateInitialConfiguration(Name name)
+    public static GatewayConfig CreateInitialConfiguration(string name)
     {
-        var initialConfiguration = new GatewayConfig(Guid.NewGuid(), name);
+        var initialConfiguration = new GatewayConfig(Guid.NewGuid(), new Name(name));
         
         initialConfiguration.RaiseDomainEvent(new InitialConfigCreatedDomainEvent(initialConfiguration.Id));
 

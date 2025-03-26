@@ -1,16 +1,27 @@
-﻿using Yarp.ReverseProxy.Configuration;
+﻿using EnvironmentGateway.Application.GatewayConfig.InitialConfig;
+using EnvironmentGateway.Domain.Abstractions;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
 internal class InitialConfigurator
 {
+    private readonly ISender _sender;
+
+    public InitialConfigurator(ISender sender)
+    {
+        _sender = sender;
+    }
+
     public static InitialConfiguration GetInitialConfiguration()
     {
         // Query a database to get the initial configuration.
 
         // If the database has no configuration or is not available,
         // get a default configuration from domain.
-
+        
 
         // Apply configuration to gateway.
 
@@ -25,6 +36,18 @@ internal class InitialConfigurator
         };
 
         return initialConfig;
+    }
+
+    public async void SaveInitialConfiguration(ISender sender)
+    {
+        var command = new CreateInitialConfigCommand("initialConfiguration");
+
+        Result<Guid> result = await sender.Send(command, CancellationToken.None);
+
+        if (result.IsFailure)
+        {
+            // Log error.
+        }
     }
 
     internal static RouteConfig[] GetRoutes()

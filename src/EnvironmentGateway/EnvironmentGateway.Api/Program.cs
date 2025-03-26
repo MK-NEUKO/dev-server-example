@@ -1,11 +1,11 @@
 using System.Reflection;
-using EnvironmentGateway.Api.Extensions;
 using EnvironmentGateway.Api.GatewayConfiguration;
 using EnvironmentGateway.Infrastructure;
 using EnvironmentGateway.Application;
 using EnvironmentGatewayApi.Extensions;
 using EnvironmentGatewayApi.GatewayConfiguration;
 using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
+using MediatR;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +17,9 @@ builder.Services
     .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddSingleton<IRuntimeConfigurator, RuntimeConfigurator>();
-
+builder.Services.AddSingleton<InitialConfigurator>();
+var configurator = builder.Services.BuildServiceProvider().GetService<InitialConfigurator>();
+configurator.SaveInitialConfiguration(builder.Services.BuildServiceProvider().GetService<ISender>());
 var init = InitialConfigurator.GetInitialConfiguration();
 builder.Services.AddReverseProxy()
     .LoadFromMemory(init.Routes, init.Clusters);
