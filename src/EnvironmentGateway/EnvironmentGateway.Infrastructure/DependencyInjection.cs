@@ -3,6 +3,7 @@ using EnvironmentGateway.Application.Abstractions.Email;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfig;
 using EnvironmentGateway.Infrastructure.Data;
+using EnvironmentGateway.Infrastructure.Email;
 using EnvironmentGateway.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddTransient<IEmailService, IEmailService>();
+        services.AddTransient<IEmailService, EmailService>();
 
         var connenctionString = configuration.GetConnectionString("EnvironmentGateway") ??
                                 throw new ArgumentException(nameof(configuration));
