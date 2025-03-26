@@ -1,4 +1,7 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Email;
+using EnvironmentGateway.Domain.Abstractions;
+using EnvironmentGateway.Domain.GatewayConfig;
+using EnvironmentGateway.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +23,10 @@ public static class DependencyInjection
         {
             options.UseNpgsql().UseSnakeCaseNamingConvention();
         });
+
+        services.AddScoped<IGatewayConfigRepository, GatewayConfigRepository>();
+
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<EnvironmentGatewayDbContext>());
 
         return services;
     }
