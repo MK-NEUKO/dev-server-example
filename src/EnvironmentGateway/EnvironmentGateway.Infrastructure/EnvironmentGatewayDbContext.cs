@@ -1,4 +1,5 @@
-﻿using EnvironmentGateway.Domain.Abstractions;
+﻿using EnvironmentGateway.Application.Exceptions;
+using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -24,11 +25,18 @@ public sealed class EnvironmentGatewayDbContext : DbContext, IUnitOfWork
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var result = await base.SaveChangesAsync(cancellationToken);
+        try
+        {
+            var result = await base.SaveChangesAsync(cancellationToken);
 
-        await PublishDomainEventsAsync();
+            await PublishDomainEventsAsync();
 
-        return result;
+            return result;
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            throw new ConcurrencyException("Concurrency exception occurred.", ex);
+        }
     }
 
     private async Task PublishDomainEventsAsync()

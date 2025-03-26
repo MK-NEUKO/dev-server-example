@@ -40,6 +40,4 @@ app.MapReverseProxy();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 await app.RunAsync();
