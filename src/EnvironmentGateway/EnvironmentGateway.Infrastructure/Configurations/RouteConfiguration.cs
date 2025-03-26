@@ -1,0 +1,27 @@
+﻿using EnvironmentGateway.Domain.GatewayConfig.Route;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace EnvironmentGateway.Infrastructure.Configurations;
+
+public class RouteConfiguration : IEntityTypeConfiguration<Route>
+{
+    public void Configure(EntityTypeBuilder<Route> builder)
+    {
+        builder.ToTable("Routs");
+
+        builder.HasKey(route => route.Id);
+
+        builder.Property(route => route.GatewayConfigId)
+            .IsRequired();
+
+        builder.ComplexProperty(route => route.RouteName)
+            .IsRequired();
+
+        builder.ComplexProperty(route => route.ClusterName)
+            .IsRequired();
+
+        builder.ComplexProperty(route => route.Match)
+            .IsRequired();
+    }
+}

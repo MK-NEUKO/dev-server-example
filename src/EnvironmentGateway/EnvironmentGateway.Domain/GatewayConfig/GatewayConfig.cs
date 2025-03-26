@@ -13,9 +13,9 @@ public sealed class GatewayConfig : Entity
 
     public Name Name { get; private set; }
 
-    public List<Route> Routes { get; private set; } = new();
+    public List<Route.Route> Routes { get; private set; } = new();
 
-    public List<Cluster> Clusters { get; private set; } = new();
+    public List<Cluster.Cluster> Clusters { get; private set; } = new();
 
     public static GatewayConfig CreateInitialConfiguration(Name name)
     {

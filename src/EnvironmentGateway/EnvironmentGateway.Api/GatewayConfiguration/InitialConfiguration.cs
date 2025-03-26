@@ -1,6 +1,6 @@
 ﻿using Yarp.ReverseProxy.Configuration;
 
-namespace EnvironmentGatewayApi.GatewayConfiguration;
+namespace EnvironmentGateway.Api.GatewayConfiguration;
 
 internal record InitialConfiguration
 {

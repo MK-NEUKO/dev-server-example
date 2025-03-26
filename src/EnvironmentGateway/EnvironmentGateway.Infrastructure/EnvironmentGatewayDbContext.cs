@@ -9,4 +9,11 @@ public sealed class EnvironmentGatewayDbContext : DbContext, IUnitOfWork
         : base(options)
     {
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(EnvironmentGatewayDbContext).Assembly);
+
+        base.OnModelCreating(modelBuilder);
+    }
 }

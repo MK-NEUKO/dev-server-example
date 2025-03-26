@@ -1,4 +1,5 @@
 using System.Reflection;
+using EnvironmentGateway.Api.GatewayConfiguration;
 using EnvironmentGateway.Infrastructure;
 using EnvironmentGateway.Application;
 using EnvironmentGatewayApi.Extensions;

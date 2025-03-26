@@ -1,6 +1,6 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 
-namespace EnvironmentGateway.Domain.GatewayConfig;
+namespace EnvironmentGateway.Domain.GatewayConfig.Route;
 
 public sealed class Route : Entity
 {
@@ -10,7 +10,7 @@ public sealed class Route : Entity
     }
 
     public Guid GatewayConfigId { get; private set; }
-    public RouteId RouteId { get; private set; }
-    public ClusterId ClusterId { get; private set; }
+    public Name RouteName { get; private set; }
+    public Name ClusterName { get; private set; }
     public RouteMatch Match { get; private set; }
 }
