@@ -19,12 +19,12 @@ public static class DependencyInjection
     {
         services.AddTransient<IEmailService, EmailService>();
 
-        var connenctionString = configuration.GetConnectionString("EnvironmentGateway") ??
+        var connectionString = configuration.GetConnectionString("EnvironmentGateway") ??
                                 throw new ArgumentException(nameof(configuration));
 
         services.AddDbContext<EnvironmentGatewayDbContext>(options =>
         {
-            options.UseNpgsql().UseSnakeCaseNamingConvention();
+            options.UseNpgsql(connectionString).UseSnakeCaseNamingConvention();
         });
 
         services.AddScoped<IGatewayConfigRepository, GatewayConfigRepository>();
@@ -32,7 +32,7 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<EnvironmentGatewayDbContext>());
 
         services.AddSingleton<ISqlConnectionFactory>(_ =>
-            new SqlConnectionFactory(connenctionString));
+            new SqlConnectionFactory(connectionString));
 
         return services;
     }

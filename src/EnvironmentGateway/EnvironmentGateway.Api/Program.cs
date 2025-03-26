@@ -1,4 +1,5 @@
 using System.Reflection;
+using EnvironmentGateway.Api.Extensions;
 using EnvironmentGateway.Api.GatewayConfiguration;
 using EnvironmentGateway.Infrastructure;
 using EnvironmentGateway.Application;
@@ -32,6 +33,9 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
+
+    // Apply migrations in development mode without using aspire.
+    // app.ApplyMigrations();
 }
 
 app.MapEndpoints();
