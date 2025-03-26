@@ -1,6 +1,8 @@
-﻿using EnvironmentGateway.Application.Abstractions.Email;
+﻿using EnvironmentGateway.Application.Abstractions.Data;
+using EnvironmentGateway.Application.Abstractions.Email;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfig;
+using EnvironmentGateway.Infrastructure.Data;
 using EnvironmentGateway.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,9 @@ public static class DependencyInjection
         services.AddScoped<IGatewayConfigRepository, GatewayConfigRepository>();
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<EnvironmentGatewayDbContext>());
+
+        services.AddSingleton<ISqlConnectionFactory>(_ =>
+            new SqlConnectionFactory(connenctionString));
 
         return services;
     }
