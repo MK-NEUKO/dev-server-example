@@ -1,12 +1,11 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfig;
 
-namespace EnvironmentGateway.Domain.Cluster;
+namespace EnvironmentGateway.Domain.Clusters;
 
 public sealed class Destination : Entity
 {
-    private Destination(Guid id)
-        : base(id)
+    private Destination()
     {
     }
 

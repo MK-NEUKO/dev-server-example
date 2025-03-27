@@ -1,4 +1,4 @@
-﻿using EnvironmentGateway.Domain.Route;
+﻿using EnvironmentGateway.Domain.Routes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

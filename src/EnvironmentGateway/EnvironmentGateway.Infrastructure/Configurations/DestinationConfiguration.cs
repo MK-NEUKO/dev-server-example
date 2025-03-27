@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using EnvironmentGateway.Domain.Cluster;
+using EnvironmentGateway.Domain.Clusters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

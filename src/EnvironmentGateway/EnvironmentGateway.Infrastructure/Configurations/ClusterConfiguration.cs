@@ -1,4 +1,4 @@
-﻿using EnvironmentGateway.Domain.Cluster;
+﻿using EnvironmentGateway.Domain.Clusters;
 using EnvironmentGateway.Domain.GatewayConfig;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -1,13 +1,11 @@
-﻿using System.Text.RegularExpressions;
-using EnvironmentGateway.Domain.Abstractions;
+﻿using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfig;
 
-namespace EnvironmentGateway.Domain.Route;
+namespace EnvironmentGateway.Domain.Routes;
 
 public sealed class Route : Entity
 {
-    private Route(Guid id)
-        : base(id)
+    private Route()
     {
     }
 
