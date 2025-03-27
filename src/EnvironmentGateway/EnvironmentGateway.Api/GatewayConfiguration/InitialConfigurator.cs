@@ -1,4 +1,4 @@
-﻿using EnvironmentGateway.Application.GatewayConfig.InitialConfig;
+﻿using EnvironmentGateway.Application.GatewayConfig.CreateInitialConfig;
 using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

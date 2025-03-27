@@ -3,7 +3,7 @@ using EnvironmentGateway.Domain.GatewayConfig;
 using EnvironmentGateway.Domain.GatewayConfig.Events;
 using MediatR;
 
-namespace EnvironmentGateway.Application.GatewayConfig.InitialConfig;
+namespace EnvironmentGateway.Application.GatewayConfig.CreateInitialConfig;
 
 internal sealed class InitialConfigCreatedDomainEventHandler : INotificationHandler<InitialConfigCreatedDomainEvent>
 {

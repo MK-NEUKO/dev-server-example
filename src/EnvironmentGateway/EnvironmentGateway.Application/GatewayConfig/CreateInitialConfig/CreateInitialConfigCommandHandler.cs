@@ -2,7 +2,7 @@
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfig;
 
-namespace EnvironmentGateway.Application.GatewayConfig.InitialConfig;
+namespace EnvironmentGateway.Application.GatewayConfig.CreateInitialConfig;
 
 internal sealed class CreateInitialConfigCommandHandler : ICommandHandler<CreateInitialConfigCommand, Guid>
 {
