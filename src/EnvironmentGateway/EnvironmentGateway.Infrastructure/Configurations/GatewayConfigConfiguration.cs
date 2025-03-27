@@ -8,13 +8,16 @@ public class GatewayConfigConfiguration : IEntityTypeConfiguration<GatewayConfig
 {
     public void Configure(EntityTypeBuilder<GatewayConfig> builder)
     {
-        builder.ToTable("gateway-configurations");
+        builder.ToTable("gateway_configurations");
 
         builder.HasKey(gatewayConfig => gatewayConfig.Id);
 
         builder.Property(gatewayConfig => gatewayConfig.Name)
             .HasMaxLength(200)
             .HasConversion(name => name.Value, value => new Name(value))
+            .IsRequired();
+
+        builder.Property(gatewayConfig => gatewayConfig.IsCurrentConfig)
             .IsRequired();
 
         builder.HasMany(gatewayConfig => gatewayConfig.Routes)

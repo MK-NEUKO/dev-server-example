@@ -1,5 +1,5 @@
-﻿using EnvironmentGateway.Domain.GatewayConfig;
-using EnvironmentGateway.Domain.GatewayConfig.Cluster;
+﻿using EnvironmentGateway.Domain.Cluster;
+using EnvironmentGateway.Domain.GatewayConfig;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
