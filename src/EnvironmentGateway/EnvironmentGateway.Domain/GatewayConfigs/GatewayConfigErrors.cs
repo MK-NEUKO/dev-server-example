@@ -1,6 +1,6 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 
-namespace EnvironmentGateway.Domain.GatewayConfig;
+namespace EnvironmentGateway.Domain.GatewayConfigs;
 
 public static class GatewayConfigErrors
 {

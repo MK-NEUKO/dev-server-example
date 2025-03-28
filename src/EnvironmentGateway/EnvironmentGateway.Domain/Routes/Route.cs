@@ -1,5 +1,6 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
-using EnvironmentGateway.Domain.GatewayConfig;
+using EnvironmentGateway.Domain.GatewayConfigs;
+using EnvironmentGateway.Domain.Shared;
 
 namespace EnvironmentGateway.Domain.Routes;
 

@@ -1,13 +1,23 @@
-﻿using EnvironmentGateway.Application.Exceptions;
+﻿using EnvironmentGateway.Application.Abstractions.Data;
+using EnvironmentGateway.Application.Exceptions;
 using EnvironmentGateway.Domain.Abstractions;
+using EnvironmentGateway.Domain.Clusters;
+using EnvironmentGateway.Domain.GatewayConfigs;
+using EnvironmentGateway.Domain.Routes;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EnvironmentGateway.Infrastructure;
 
-public sealed class EnvironmentGatewayDbContext : DbContext, IUnitOfWork
+public sealed class EnvironmentGatewayDbContext : DbContext, IUnitOfWork, IEnvironmentGatewayDbContext
 {
+    public DbSet<GatewayConfig> GatewayConfigs { get; private set; }
+    public DbSet<Route> Routes { get; private set; }
+    public DbSet<Cluster> Clusters { get; private set; }
+    public DbSet<RouteMatch> RouteMatches { get; private set; }
+    public DbSet<Destination> Destinations { get; private set; }
+
     private readonly IPublisher _publisher;
 
     public EnvironmentGatewayDbContext(DbContextOptions options, IPublisher publisher)
@@ -58,4 +68,6 @@ public sealed class EnvironmentGatewayDbContext : DbContext, IUnitOfWork
             await _publisher.Publish(domainEvent);
         }
     }
+
+    
 }

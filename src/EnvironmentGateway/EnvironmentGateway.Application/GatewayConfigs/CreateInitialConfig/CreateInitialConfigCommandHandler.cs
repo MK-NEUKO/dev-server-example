@@ -1,8 +1,8 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.Abstractions;
-using EnvironmentGateway.Domain.GatewayConfig;
+using EnvironmentGateway.Domain.GatewayConfigs;
 
-namespace EnvironmentGateway.Application.GatewayConfig.CreateInitialConfig;
+namespace EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
 
 internal sealed class CreateInitialConfigCommandHandler : ICommandHandler<CreateInitialConfigCommand, Guid>
 {
@@ -20,7 +20,7 @@ internal sealed class CreateInitialConfigCommandHandler : ICommandHandler<Create
     public async Task<Result<Guid>> Handle(CreateInitialConfigCommand request, CancellationToken cancellationToken)
     {
         var configuration =
-            Domain.GatewayConfig.GatewayConfig.CreateInitialConfiguration(request.Name);
+            Domain.GatewayConfigs.GatewayConfig.CreateInitialConfiguration(request.Name);
 
         try
         {

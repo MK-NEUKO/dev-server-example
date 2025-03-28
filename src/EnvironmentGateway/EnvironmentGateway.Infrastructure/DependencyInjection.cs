@@ -1,7 +1,7 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Data;
 using EnvironmentGateway.Application.Abstractions.Email;
 using EnvironmentGateway.Domain.Abstractions;
-using EnvironmentGateway.Domain.GatewayConfig;
+using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Infrastructure.Data;
 using EnvironmentGateway.Infrastructure.Email;
 using EnvironmentGateway.Infrastructure.Repositories;

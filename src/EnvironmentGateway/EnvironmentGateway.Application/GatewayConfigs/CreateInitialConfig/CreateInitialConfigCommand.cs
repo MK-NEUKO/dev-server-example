@@ -1,5 +1,5 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Messaging;
 
-namespace EnvironmentGateway.Application.GatewayConfig.CreateInitialConfig;
+namespace EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
 
 public record CreateInitialConfigCommand(string Name) : ICommand<Guid>;

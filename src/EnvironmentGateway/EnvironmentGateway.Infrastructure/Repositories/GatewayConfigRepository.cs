@@ -1,4 +1,4 @@
-﻿using EnvironmentGateway.Domain.GatewayConfig;
+﻿using EnvironmentGateway.Domain.GatewayConfigs;
 
 namespace EnvironmentGateway.Infrastructure.Repositories;
 

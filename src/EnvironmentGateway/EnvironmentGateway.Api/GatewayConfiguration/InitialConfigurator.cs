@@ -1,21 +1,13 @@
-﻿using EnvironmentGateway.Application.GatewayConfig.CreateInitialConfig;
+﻿using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
 using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
 internal class InitialConfigurator
 {
-    private readonly ISender _sender;
-
-    public InitialConfigurator(ISender sender)
-    {
-        _sender = sender;
-    }
-
-    public static InitialConfiguration GetInitialConfiguration()
+    public  InitialConfiguration GetInitialConfiguration()
     {
         // Query a database to get the initial configuration.
 

@@ -1,4 +1,5 @@
-﻿using EnvironmentGateway.Domain.GatewayConfig;
+﻿using EnvironmentGateway.Domain.GatewayConfigs;
+using EnvironmentGateway.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

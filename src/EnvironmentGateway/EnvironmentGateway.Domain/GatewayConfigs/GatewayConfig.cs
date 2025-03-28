@@ -1,9 +1,10 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Clusters;
-using EnvironmentGateway.Domain.GatewayConfig.Events;
+using EnvironmentGateway.Domain.GatewayConfigs.Events;
 using EnvironmentGateway.Domain.Routes;
+using EnvironmentGateway.Domain.Shared;
 
-namespace EnvironmentGateway.Domain.GatewayConfig;
+namespace EnvironmentGateway.Domain.GatewayConfigs;
 
 public sealed class GatewayConfig : Entity
 {

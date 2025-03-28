@@ -1,9 +1,9 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Email;
-using EnvironmentGateway.Domain.GatewayConfig;
-using EnvironmentGateway.Domain.GatewayConfig.Events;
+using EnvironmentGateway.Domain.GatewayConfigs;
+using EnvironmentGateway.Domain.GatewayConfigs.Events;
 using MediatR;
 
-namespace EnvironmentGateway.Application.GatewayConfig.CreateInitialConfig;
+namespace EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
 
 internal sealed class InitialConfigCreatedDomainEventHandler : INotificationHandler<InitialConfigCreatedDomainEvent>
 {
