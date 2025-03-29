@@ -22,20 +22,17 @@ internal class InitialConfigurator
 
 
         // For now, return a default configuration.
-        var initialConfig = new InitialConfiguration
-        {
-            Routes = GetRoutes(),
-            Clusters = GetClusters()
-        };
+        var initialConfig = new InitialConfiguration(GetRoutes(), GetClusters());
+        
 
         return initialConfig;
     }
 
     public async void SaveInitialConfiguration(ISender sender)
     {
-        var query = new GetStartConfigQuery(true);
+        //var query = new GetStartConfigQuery(true);
 
-        Result<StartConfigResponse> response = await sender.Send(query, CancellationToken.None);
+        //Result<StartConfigResponse> response = await sender.Send(query, CancellationToken.None);
 
         var command = new CreateInitialConfigCommand("initialConfiguration");
 

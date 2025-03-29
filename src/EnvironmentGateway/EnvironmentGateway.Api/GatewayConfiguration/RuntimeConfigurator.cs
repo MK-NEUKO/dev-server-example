@@ -15,27 +15,28 @@ public class RuntimeConfigurator(
         var clusters = currentConfig?.Clusters;
 
         var newClusters = new List<ClusterConfig>();
-        foreach (var cluster in clusters)
-        {
-            var newDestinations = new Dictionary<string, DestinationConfig>(cluster.Destinations.Count);
-            foreach (var destination in cluster.Destinations)
+        if (clusters != null)
+            foreach (var cluster in clusters)
             {
-                var newDestination = new DestinationConfig
+                var newDestinations = new Dictionary<string, DestinationConfig>(cluster.Destinations!.Count);
+                foreach (var destination in cluster.Destinations)
                 {
-                    Address = address
+                    var newDestination = new DestinationConfig
+                    {
+                        Address = address
+                    };
+                    newDestinations[destination.Key] = newDestination;
+                }
+
+                var newCluster = new ClusterConfig
+                {
+                    ClusterId = cluster.ClusterId,
+                    Destinations = newDestinations
                 };
-                newDestinations[destination.Key] = newDestination;
+                newClusters.Add(newCluster);
             }
 
-            var newCluster = new ClusterConfig
-            {
-                ClusterId = cluster.ClusterId,
-                Destinations = newDestinations
-            };
-            newClusters.Add(newCluster);
-        }
-
-        inMemoryConfigProvider.Update(routes, newClusters);
+        if (routes != null) inMemoryConfigProvider.Update(routes, newClusters);
     }
 
 

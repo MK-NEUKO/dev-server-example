@@ -13,7 +13,7 @@ internal abstract class Repository<T>
         DbContext = dbContext;
     }
 
-    public async Task<T> GetByIdAsync(
+    public async Task<T?> GetByIdAsync(
         Guid id,
         CancellationToken cancellationToken = default)
     {

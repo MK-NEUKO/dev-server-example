@@ -8,7 +8,7 @@ public class RouteMatchConfiguration : IEntityTypeConfiguration<RouteMatch>
 {
     public void Configure(EntityTypeBuilder<RouteMatch> builder)
     {
-        builder.ToTable("RouteMatches");
+        builder.ToTable("route_matches");
 
         builder.HasKey(routeMatch => routeMatch.Id);
 

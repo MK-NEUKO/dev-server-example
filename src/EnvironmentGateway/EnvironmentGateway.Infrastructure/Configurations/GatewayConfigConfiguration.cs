@@ -9,7 +9,7 @@ public class GatewayConfigConfiguration : IEntityTypeConfiguration<GatewayConfig
 {
     public void Configure(EntityTypeBuilder<GatewayConfig> builder)
     {
-        builder.ToTable("gateway_configurations");
+        builder.ToTable("gateway_configs");
 
         builder.HasKey(gatewayConfig => gatewayConfig.Id);
 

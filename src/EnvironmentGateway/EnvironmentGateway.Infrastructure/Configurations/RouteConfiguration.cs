@@ -9,7 +9,7 @@ public class RouteConfiguration : IEntityTypeConfiguration<Route>
 {
     public void Configure(EntityTypeBuilder<Route> builder)
     {
-        builder.ToTable("Routs");
+        builder.ToTable("routs");
 
         builder.HasKey(route => route.Id);
 

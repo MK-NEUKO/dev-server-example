@@ -2,8 +2,6 @@
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
-internal record InitialConfiguration
-{
-    public RouteConfig[] Routes { get; init; }
-    public ClusterConfig[] Clusters { get; init; }
-}
+internal sealed record InitialConfiguration(
+    RouteConfig[] Routes,
+    ClusterConfig[] Clusters);
