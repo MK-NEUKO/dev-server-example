@@ -3,6 +3,7 @@ using EnvironmentGateway.Application.Exceptions;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Clusters;
 using EnvironmentGateway.Domain.GatewayConfigs;
+using EnvironmentGateway.Domain.RouteMatches;
 using EnvironmentGateway.Domain.Routes;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

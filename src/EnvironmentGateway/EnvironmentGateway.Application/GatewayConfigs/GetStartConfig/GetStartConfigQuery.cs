@@ -2,4 +2,4 @@
 
 namespace EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
 
-public sealed record GetStartConfigQuery(bool IsCurrentConfig) : IQuery<StartConfigResponse>
+public sealed record GetStartConfigQuery(bool isCurrentConfig) : IQuery<StartConfigResponse>;

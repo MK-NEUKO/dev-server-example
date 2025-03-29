@@ -1,19 +1,17 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Data;
 using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
 
 internal sealed class GetStartConfigQueryHandler : IQueryHandler<GetStartConfigQuery, StartConfigResponse>
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
     private readonly IEnvironmentGatewayDbContext _context;
 
     public GetStartConfigQueryHandler(
-        ISqlConnectionFactory sqlConnectionFactory,
         IEnvironmentGatewayDbContext context)
     {
-        _sqlConnectionFactory = sqlConnectionFactory;
         _context = context;
     }
 
@@ -21,8 +19,22 @@ internal sealed class GetStartConfigQueryHandler : IQueryHandler<GetStartConfigQ
         GetStartConfigQuery request,
         CancellationToken cancellationToken)
     {
-        var response = new StartConfigResponse();
+        var gatewayConfigSummery = await _context
+            .Database
+            .SqlQuery<GatewayConfigSummery>($"""
+                                             SELECT 
+                                                "Id",
+                                                "IsCurrentConfig"
+                                             FROM
+                                                "GatewayConfigs"
+                                             """)
+            .ToListAsync();
 
+        var response = new StartConfigResponse();
         return response;
     }
+
+    private sealed record GatewayConfigSummery(
+        Guid Id,
+        bool IsCurrentConfig);
 }

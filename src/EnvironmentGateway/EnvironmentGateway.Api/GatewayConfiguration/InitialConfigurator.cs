@@ -1,4 +1,5 @@
 ﻿using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
+using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
 using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
 using Yarp.ReverseProxy.Configuration;
@@ -7,7 +8,7 @@ namespace EnvironmentGateway.Api.GatewayConfiguration;
 
 internal class InitialConfigurator
 {
-    public  InitialConfiguration GetInitialConfiguration()
+    public static  InitialConfiguration GetInitialConfiguration()
     {
         // Query a database to get the initial configuration.
 
@@ -32,6 +33,10 @@ internal class InitialConfigurator
 
     public async void SaveInitialConfiguration(ISender sender)
     {
+        var query = new GetStartConfigQuery(true);
+
+        Result<StartConfigResponse> response = await sender.Send(query, CancellationToken.None);
+
         var command = new CreateInitialConfigCommand("initialConfiguration");
 
         Result<Guid> result = await sender.Send(command, CancellationToken.None);

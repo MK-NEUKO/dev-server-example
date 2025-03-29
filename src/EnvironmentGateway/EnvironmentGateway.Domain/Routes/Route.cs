@@ -1,5 +1,6 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfigs;
+using EnvironmentGateway.Domain.RouteMatches;
 using EnvironmentGateway.Domain.Shared;
 
 namespace EnvironmentGateway.Domain.Routes;
@@ -25,7 +26,7 @@ public sealed class Route : Entity
 
     public static Route CreateInitialRoute(string routeName, string clusterName, string matchPath)
     {
-        var match = new RouteMatch(matchPath);
+        var match = RouteMatch.CreateInitialRouteMatch(matchPath);
 
         var route = new Route(Guid.NewGuid(), new Name(routeName), new Name(clusterName), match);
         

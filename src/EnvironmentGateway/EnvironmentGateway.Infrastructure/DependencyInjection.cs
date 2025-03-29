@@ -29,7 +29,11 @@ public static class DependencyInjection
 
         services.AddScoped<IGatewayConfigRepository, GatewayConfigRepository>();
 
+
+
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<EnvironmentGatewayDbContext>());
+
+        services.AddScoped<IEnvironmentGatewayDbContext>(sp => sp.GetRequiredService<EnvironmentGatewayDbContext>());
 
         services.AddSingleton<ISqlConnectionFactory>(_ =>
             new SqlConnectionFactory(connectionString));

@@ -1,4 +1,5 @@
-﻿using EnvironmentGateway.Domain.Routes;
+﻿using EnvironmentGateway.Domain.RouteMatches;
+using EnvironmentGateway.Domain.Routes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,7 +22,9 @@ public class RouteConfiguration : IEntityTypeConfiguration<Route>
         builder.ComplexProperty(route => route.ClusterName)
             .IsRequired();
 
-        builder.ComplexProperty(route => route.Match)
+        builder.HasOne(route => route.Match)
+            .WithOne()
+            .HasForeignKey<RouteMatch>(match => match.RouteId)
             .IsRequired();
     }
 }

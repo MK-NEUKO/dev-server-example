@@ -1,3 +1,3 @@
 ﻿namespace EnvironmentGateway.Domain.Shared;
 
-public record Name(string Value);
+public sealed record Name(string Value);
