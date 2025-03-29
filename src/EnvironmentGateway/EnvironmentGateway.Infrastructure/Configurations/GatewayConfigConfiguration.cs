@@ -13,9 +13,7 @@ public class GatewayConfigConfiguration : IEntityTypeConfiguration<GatewayConfig
 
         builder.HasKey(gatewayConfig => gatewayConfig.Id);
 
-        builder.Property(gatewayConfig => gatewayConfig.Name)
-            .HasMaxLength(200)
-            .HasConversion(name => name.Value, value => new Name(value))
+        builder.ComplexProperty(gatewayConfig => gatewayConfig.Name)
             .IsRequired();
 
         builder.Property(gatewayConfig => gatewayConfig.IsCurrentConfig)

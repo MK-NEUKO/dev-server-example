@@ -2,4 +2,4 @@
 
 public sealed record ClusterResponse(
     string ClusterName,
-    List<DestinationDto> Destinatons);
+    List<DestinationResponse> Destinatons);

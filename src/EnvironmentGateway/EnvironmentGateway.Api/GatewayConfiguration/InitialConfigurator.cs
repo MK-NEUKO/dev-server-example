@@ -1,4 +1,5 @@
 ﻿using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
+using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
 using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
 using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
@@ -16,51 +17,64 @@ internal class InitialConfigurator : IInitialConfigurator
     }
     public async Task<InitialConfiguration> GetInitialConfigurationAsync(CancellationToken cancellationToken = default)
     {
-        // Query a database to get the initial configuration.
+        // Query the database to get the initial configuration.
+        var query = new GetStartConfigQuery(true);
+
+        Result<StartConfigResponse> response = await _sender.Send(query, CancellationToken.None);
+
+        if (response.IsSuccess)
+        {
+            var initalConfig = MapToInitialConfiguration(response);
+            return initalConfig;
+        }
 
         // If the database has no configuration or is not available,
         // get a default configuration from domain.
-        var command = new CreateInitialConfigCommand("initialConfiguration");
-        Result<Guid> result = await _sender.Send(command, CancellationToken.None);
-        
+        //var command = new CreateInitialConfigCommand("initialConfiguration");
+        //Result<Guid> result = await _sender.Send(command, CancellationToken.None);
+
 
         // Apply configuration to gateway.
-
-
-        var initialConfig = new InitialConfiguration(GetRoutes(), GetClusters());
-
-        return initialConfig;
+        return MapToInitialConfiguration(response);
     }
 
-    private RouteConfig[] GetRoutes()
+    private InitialConfiguration MapToInitialConfiguration(Result<StartConfigResponse> response)
     {
-        return
-        [
-            new RouteConfig()
+        var routes = new List<RouteConfig>();
+        foreach (var route in response.Value.Routes)
+        {
+            var routeConfig = new RouteConfig()
             {
-                RouteId = "route" + Random.Shared.Next(), // Forces a new route id each time GetRoutes is called.
-                ClusterId = "cluster1",
-                Match = new RouteMatch
+                RouteId = route.RouteName,
+                ClusterId = route.ClusterName,
+                Match = new RouteMatch()
                 {
-                    // Path or Hosts are required for each route. This catch-all pattern matches all request paths.
-                    Path = "{**catch-all}"
+                    Path = route.MatchPath
                 }
-            }
-        ];
-    }
+            };
+            routes.Add(routeConfig);
+        }
 
-    private ClusterConfig[] GetClusters()
-    {
-        return
-        [
-            new ClusterConfig()
+        var clusters = new List<ClusterConfig>();
+        var clusterConter = 0;
+        foreach (var cluster in response.Value.Clusters)
+        {
+            var clusterConfig = new ClusterConfig()
             {
-                ClusterId = "cluster1",
+                ClusterId = cluster.ClusterName,
                 Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
                 {
-                    { "destination1", new DestinationConfig() { Address = "https://neuko-know-how.com" } },
+                    {
+                        cluster.Destinatons[clusterConter].DestinationName,
+                        new DestinationConfig() { Address = cluster.Destinatons[clusterConter].Address }
+
+                    }
                 }
-            }
-        ];
+            };
+            clusterConter++;
+            clusters.Add(clusterConfig);
+        }
+
+        return new InitialConfiguration(routes.ToArray(), clusters.ToArray());
     }
 }

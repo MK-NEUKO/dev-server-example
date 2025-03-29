@@ -10,11 +10,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace EnvironmentGateway.Infrastructure.Migrations
+namespace environmentgateway.infrastructure.Migrations
 {
     [DbContext(typeof(EnvironmentGatewayDbContext))]
-    [Migration("20250327065057_Add_IsCurrentConfig")]
-    partial class Add_IsCurrentConfig
+    [Migration("20250329164046_Initial_Create")]
+    partial class Initial_Create
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +26,7 @@ namespace EnvironmentGateway.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfig.Cluster.Cluster", b =>
+            modelBuilder.Entity("EnvironmentGateway.Domain.Clusters.Cluster", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,7 +52,7 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                     b.ToTable("clusters", (string)null);
                 });
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfig.Cluster.Destination", b =>
+            modelBuilder.Entity("EnvironmentGateway.Domain.Clusters.Destination", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +63,7 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("cluster_id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Address", "EnvironmentGateway.Domain.GatewayConfig.Cluster.Destination.Address#Url", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Address", "EnvironmentGateway.Domain.Clusters.Destination.Address#Url", b1 =>
                         {
                             b1.IsRequired();
 
@@ -73,7 +73,7 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                                 .HasColumnName("address_value");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DestinationName", "EnvironmentGateway.Domain.GatewayConfig.Cluster.Destination.DestinationName#Name", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DestinationName", "EnvironmentGateway.Domain.Clusters.Destination.DestinationName#Name", b1 =>
                         {
                             b1.IsRequired();
 
@@ -92,7 +92,7 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                     b.ToTable("destinations", (string)null);
                 });
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfig.GatewayConfig", b =>
+            modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfigs.GatewayConfig", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,19 +103,54 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_current_config");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("name");
+                    b.ComplexProperty<Dictionary<string, object>>("Name", "EnvironmentGateway.Domain.GatewayConfigs.GatewayConfig.Name#Name", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("name_value");
+                        });
 
                     b.HasKey("Id")
-                        .HasName("pk_gateway_configurations");
+                        .HasName("pk_gateway_configs");
 
-                    b.ToTable("gateway_configurations", (string)null);
+                    b.ToTable("gateway_configs", (string)null);
                 });
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfig.Route.Route", b =>
+            modelBuilder.Entity("EnvironmentGateway.Domain.RouteMatches.RouteMatch", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("RouteId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("route_id");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Path", "EnvironmentGateway.Domain.RouteMatches.RouteMatch.Path#Path", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("path_value");
+                        });
+
+                    b.HasKey("Id")
+                        .HasName("pk_route_matches");
+
+                    b.HasIndex("RouteId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_route_matches_route_id");
+
+                    b.ToTable("route_matches", (string)null);
+                });
+
+            modelBuilder.Entity("EnvironmentGateway.Domain.Routes.Route", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,7 +161,7 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("gateway_config_id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("ClusterName", "EnvironmentGateway.Domain.GatewayConfig.Route.Route.ClusterName#Name", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("ClusterName", "EnvironmentGateway.Domain.Routes.Route.ClusterName#Name", b1 =>
                         {
                             b1.IsRequired();
 
@@ -136,17 +171,7 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                                 .HasColumnName("cluster_name_value");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("Match", "EnvironmentGateway.Domain.GatewayConfig.Route.Route.Match#RouteMatch", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("Path")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("match_path");
-                        });
-
-                    b.ComplexProperty<Dictionary<string, object>>("RouteName", "EnvironmentGateway.Domain.GatewayConfig.Route.Route.RouteName#Name", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("RouteName", "EnvironmentGateway.Domain.Routes.Route.RouteName#Name", b1 =>
                         {
                             b1.IsRequired();
 
@@ -157,27 +182,27 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                         });
 
                     b.HasKey("Id")
-                        .HasName("pk_routs");
+                        .HasName("pk_routes");
 
                     b.HasIndex("GatewayConfigId")
-                        .HasDatabaseName("ix_routs_gateway_config_id");
+                        .HasDatabaseName("ix_routes_gateway_config_id");
 
-                    b.ToTable("Routs", (string)null);
+                    b.ToTable("routes", (string)null);
                 });
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfig.Cluster.Cluster", b =>
+            modelBuilder.Entity("EnvironmentGateway.Domain.Clusters.Cluster", b =>
                 {
-                    b.HasOne("EnvironmentGateway.Domain.GatewayConfig.GatewayConfig", null)
+                    b.HasOne("EnvironmentGateway.Domain.GatewayConfigs.GatewayConfig", null)
                         .WithMany("Clusters")
                         .HasForeignKey("GatewayConfigId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_clusters_gateway_config_gateway_config_id");
+                        .HasConstraintName("fk_clusters_gateway_configs_gateway_config_id");
                 });
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfig.Cluster.Destination", b =>
+            modelBuilder.Entity("EnvironmentGateway.Domain.Clusters.Destination", b =>
                 {
-                    b.HasOne("EnvironmentGateway.Domain.GatewayConfig.Cluster.Cluster", null)
+                    b.HasOne("EnvironmentGateway.Domain.Clusters.Cluster", null)
                         .WithMany("Destinations")
                         .HasForeignKey("ClusterId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -185,26 +210,42 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                         .HasConstraintName("fk_destinations_clusters_cluster_id");
                 });
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfig.Route.Route", b =>
+            modelBuilder.Entity("EnvironmentGateway.Domain.RouteMatches.RouteMatch", b =>
                 {
-                    b.HasOne("EnvironmentGateway.Domain.GatewayConfig.GatewayConfig", null)
+                    b.HasOne("EnvironmentGateway.Domain.Routes.Route", null)
+                        .WithOne("Match")
+                        .HasForeignKey("EnvironmentGateway.Domain.RouteMatches.RouteMatch", "RouteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_route_matches_routes_route_id");
+                });
+
+            modelBuilder.Entity("EnvironmentGateway.Domain.Routes.Route", b =>
+                {
+                    b.HasOne("EnvironmentGateway.Domain.GatewayConfigs.GatewayConfig", null)
                         .WithMany("Routes")
                         .HasForeignKey("GatewayConfigId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_routs_gateway_configurations_gateway_config_id");
+                        .HasConstraintName("fk_routes_gateway_configs_gateway_config_id");
                 });
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfig.Cluster.Cluster", b =>
+            modelBuilder.Entity("EnvironmentGateway.Domain.Clusters.Cluster", b =>
                 {
                     b.Navigation("Destinations");
                 });
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfig.GatewayConfig", b =>
+            modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfigs.GatewayConfig", b =>
                 {
                     b.Navigation("Clusters");
 
                     b.Navigation("Routes");
+                });
+
+            modelBuilder.Entity("EnvironmentGateway.Domain.Routes.Route", b =>
+                {
+                    b.Navigation("Match")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

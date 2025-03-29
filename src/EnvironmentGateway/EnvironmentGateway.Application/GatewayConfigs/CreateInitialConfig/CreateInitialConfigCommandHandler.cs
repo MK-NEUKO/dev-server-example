@@ -19,8 +19,7 @@ internal sealed class CreateInitialConfigCommandHandler : ICommandHandler<Create
 
     public async Task<Result<Guid>> Handle(CreateInitialConfigCommand request, CancellationToken cancellationToken)
     {
-        var configuration =
-            Domain.GatewayConfigs.GatewayConfig.CreateInitialConfiguration(request.Name);
+        var configuration = GatewayConfig.CreateInitialConfiguration(request.Name);
 
         try
         {

@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace EnvironmentGateway.Infrastructure.Migrations
+namespace environmentgateway.infrastructure.Migrations
 {
     [DbContext(typeof(EnvironmentGatewayDbContext))]
     partial class EnvironmentGatewayDbContextModelSnapshot : ModelSnapshot
@@ -100,11 +100,15 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_current_config");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("name");
+                    b.ComplexProperty<Dictionary<string, object>>("Name", "EnvironmentGateway.Domain.GatewayConfigs.GatewayConfig.Name#Name", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("name_value");
+                        });
 
                     b.HasKey("Id")
                         .HasName("pk_gateway_configs");
@@ -175,12 +179,12 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                         });
 
                     b.HasKey("Id")
-                        .HasName("pk_routs");
+                        .HasName("pk_routes");
 
                     b.HasIndex("GatewayConfigId")
-                        .HasDatabaseName("ix_routs_gateway_config_id");
+                        .HasDatabaseName("ix_routes_gateway_config_id");
 
-                    b.ToTable("routs", (string)null);
+                    b.ToTable("routes", (string)null);
                 });
 
             modelBuilder.Entity("EnvironmentGateway.Domain.Clusters.Cluster", b =>
@@ -220,7 +224,7 @@ namespace EnvironmentGateway.Infrastructure.Migrations
                         .HasForeignKey("GatewayConfigId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_routs_gateway_configs_gateway_config_id");
+                        .HasConstraintName("fk_routes_gateway_configs_gateway_config_id");
                 });
 
             modelBuilder.Entity("EnvironmentGateway.Domain.Clusters.Cluster", b =>

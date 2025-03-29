@@ -1,5 +1,5 @@
 ﻿namespace EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
 
-public sealed record DestinationDto(
+public sealed record DestinationResponse(
     string DestinationName,
     string Address);
