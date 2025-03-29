@@ -1,50 +1,38 @@
 ﻿using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
-using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
 using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
+using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
 using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
-internal class InitialConfigurator
+internal class InitialConfigurator : IInitialConfigurator
 {
-    public static  InitialConfiguration GetInitialConfiguration()
+    private readonly ISender _sender;
+
+    public InitialConfigurator(ISender sender)
+    {
+        _sender = sender;
+    }
+    public async Task<InitialConfiguration> GetInitialConfigurationAsync(CancellationToken cancellationToken = default)
     {
         // Query a database to get the initial configuration.
 
         // If the database has no configuration or is not available,
         // get a default configuration from domain.
+        var command = new CreateInitialConfigCommand("initialConfiguration");
+        Result<Guid> result = await _sender.Send(command, CancellationToken.None);
         
 
         // Apply configuration to gateway.
 
-        // Save configuration to database.
 
-
-        // For now, return a default configuration.
         var initialConfig = new InitialConfiguration(GetRoutes(), GetClusters());
-        
 
         return initialConfig;
     }
 
-    public async void SaveInitialConfiguration(ISender sender)
-    {
-        //var query = new GetStartConfigQuery(true);
-
-        //Result<StartConfigResponse> response = await sender.Send(query, CancellationToken.None);
-
-        var command = new CreateInitialConfigCommand("initialConfiguration");
-
-        Result<Guid> result = await sender.Send(command, CancellationToken.None);
-
-        if (result.IsFailure)
-        {
-            // Log error.
-        }
-    }
-
-    internal static RouteConfig[] GetRoutes()
+    private RouteConfig[] GetRoutes()
     {
         return
         [
@@ -61,7 +49,7 @@ internal class InitialConfigurator
         ];
     }
 
-    private static ClusterConfig[] GetClusters()
+    private ClusterConfig[] GetClusters()
     {
         return
         [

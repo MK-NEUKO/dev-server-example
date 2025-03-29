@@ -18,10 +18,9 @@ builder.Services
     .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddSingleton<IRuntimeConfigurator, RuntimeConfigurator>();
-builder.Services.AddSingleton<InitialConfigurator>();
-var configurator = builder.Services.BuildServiceProvider().GetService<InitialConfigurator>();
-configurator.SaveInitialConfiguration(builder.Services.BuildServiceProvider().GetService<ISender>());
-var init = InitialConfigurator.GetInitialConfiguration();
+builder.Services.AddSingleton<IInitialConfigurator, InitialConfigurator>();
+var initialConfigurator = builder.Services.BuildServiceProvider()!.GetService<IInitialConfigurator>();
+var init = await initialConfigurator!.GetInitialConfigurationAsync();
 builder.Services.AddReverseProxy()
     .LoadFromMemory(init.Routes, init.Clusters);
 
