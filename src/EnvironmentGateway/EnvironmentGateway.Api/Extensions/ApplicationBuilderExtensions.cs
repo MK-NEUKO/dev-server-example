@@ -1,4 +1,5 @@
-﻿using EnvironmentGateway.Infrastructure;
+﻿using EnvironmentGateway.Api.Middleware;
+using EnvironmentGateway.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnvironmentGateway.Api.Extensions;
@@ -11,8 +12,11 @@ public static class ApplicationBuilderExtensions
 
         using var dbContext = scope.ServiceProvider.GetRequiredService<EnvironmentGatewayDbContext>();
 
-        var connstr = dbContext.Database.GetDbConnection().ConnectionString;
-
         dbContext.Database.Migrate();
+    }
+
+    public static void UseCustomExceptionHandler(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
     }
 }

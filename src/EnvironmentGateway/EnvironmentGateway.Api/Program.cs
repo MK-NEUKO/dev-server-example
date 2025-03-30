@@ -42,6 +42,8 @@ if (app.Environment.IsDevelopment())
 
 app.MapEndpoints();
 
+app.UseCustomExceptionHandler();
+
 app.MapReverseProxy();
 
 app.UseHttpsRedirection();
