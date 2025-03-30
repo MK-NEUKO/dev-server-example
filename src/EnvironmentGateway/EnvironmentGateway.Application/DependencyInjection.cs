@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using EnvironmentGateway.Application.Abstractions.Behaviors;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EnvironmentGateway.Application;
@@ -12,6 +13,8 @@ public static class DependencyInjection
         services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssembly(assembly);
+
+            configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
         });
 
         services.AddValidatorsFromAssembly(assembly);

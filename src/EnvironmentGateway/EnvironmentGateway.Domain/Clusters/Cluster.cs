@@ -17,8 +17,10 @@ public sealed class Cluster : Entity
         Destinations.Add(destination);
     }
 
-    public Guid GatewayConfigId { get;private set; }
+    public Guid GatewayConfigId { get; private set; }
+
     public Name ClusterName { get; private set; }
+
     public List<Destination> Destinations { get; private set; } = new();
 
     public static Cluster CreateInitialCluster(string clusterName, string address)
