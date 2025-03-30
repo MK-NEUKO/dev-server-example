@@ -19,6 +19,11 @@ internal sealed class CreateInitialConfigCommandHandler : ICommandHandler<Create
 
     public async Task<Result<Guid>> Handle(CreateInitialConfigCommand request, CancellationToken cancellationToken)
     {
+        if (await _gatewayConfigRepository.IsCurrentConfigExists(cancellationToken))
+        {
+            return Result.Failure<Guid>(Error.CurrentConfigExists);
+        }
+
         var configuration = GatewayConfig.CreateInitialConfiguration(request.Name);
 
         try

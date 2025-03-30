@@ -17,24 +17,24 @@ internal class InitialConfigurator : IInitialConfigurator
     }
     public async Task<InitialConfiguration> GetInitialConfigurationAsync(CancellationToken cancellationToken = default)
     {
-        // Query the database to get the initial configuration.
+        var command = new CreateInitialConfigCommand("initialConfiguration");
+
+        Result<Guid> result = await _sender.Send(command, CancellationToken.None);
+
+        if (result.IsFailure)
+        {
+            // TODO: handling the error through logs or exceptions
+        }
+
         var query = new GetStartConfigQuery(true);
 
         Result<StartConfigResponse> response = await _sender.Send(query, CancellationToken.None);
 
-        if (response.IsSuccess)
+        if (response.IsFailure)
         {
-            var initalConfig = MapToInitialConfiguration(response);
-            return initalConfig;
+            // TODO: handling the error through logs or exceptions
         }
 
-        // If the database has no configuration or is not available,
-        // get a default configuration from domain.
-        //var command = new CreateInitialConfigCommand("initialConfiguration");
-        //Result<Guid> result = await _sender.Send(command, CancellationToken.None);
-
-
-        // Apply configuration to gateway.
         return MapToInitialConfiguration(response);
     }
 
