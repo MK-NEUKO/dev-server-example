@@ -1,9 +1,10 @@
-﻿using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
+﻿using EnvironmentGateway.Api.GatewayConfiguration;
+using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
 using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGatewayApi.GatewayConfiguration;
 
-public class RuntimeConfigurator(
+internal sealed class RuntimeConfigurator(IInitialConfigurator initialConfigurator,
     IProxyConfigProvider configurationProvider,
     InMemoryConfigProvider inMemoryConfigProvider) 
     : IRuntimeConfigurator
@@ -39,5 +40,15 @@ public class RuntimeConfigurator(
         if (routes != null) inMemoryConfigProvider.Update(routes, newClusters);
     }
 
+    public async Task InitializeGateway()
+    {
+        var initialConfiguration = await initialConfigurator.GetInitialConfigurationAsync();
 
+        UpdateConfiguration(initialConfiguration);
+    }
+
+    private void UpdateConfiguration(InitialConfiguration initialConfiguration)
+    {
+        inMemoryConfigProvider.Update(initialConfiguration.Routes, initialConfiguration.Clusters);
+    }
 }

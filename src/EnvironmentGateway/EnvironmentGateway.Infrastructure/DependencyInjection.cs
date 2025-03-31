@@ -19,7 +19,7 @@ public static class DependencyInjection
     {
         services.AddTransient<IEmailService, EmailService>();
 
-        var connectionString = configuration.GetConnectionString("EnvironmentGateway") ??
+        var connectionString = configuration.GetConnectionString("EnvironmentGatewayDev") ??
                                 throw new ArgumentException(nameof(configuration));
 
         services.AddDbContext<EnvironmentGatewayDbContext>(options =>

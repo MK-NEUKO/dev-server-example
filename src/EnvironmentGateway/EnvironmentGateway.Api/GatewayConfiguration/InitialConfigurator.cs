@@ -15,6 +15,7 @@ internal class InitialConfigurator : IInitialConfigurator
     {
         _sender = sender;
     }
+
     public async Task<InitialConfiguration> GetInitialConfigurationAsync(CancellationToken cancellationToken = default)
     {
         var command = new CreateInitialConfigCommand("initialConfiguration");

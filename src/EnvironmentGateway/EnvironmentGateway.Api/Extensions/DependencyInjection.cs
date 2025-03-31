@@ -4,4 +4,5 @@ namespace EnvironmentGatewayApi.Extensions;
 
 public static class DependencyInjection
 {
+
 }

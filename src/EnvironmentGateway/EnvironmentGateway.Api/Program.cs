@@ -8,8 +8,13 @@ using EnvironmentGatewayApi.GatewayConfiguration;
 using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
 using MediatR;
 using Scalar.AspNetCore;
+using Serilog;
+using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.AddServiceDefaults();
 
@@ -17,12 +22,14 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
-builder.Services.AddSingleton<IRuntimeConfigurator, RuntimeConfigurator>();
-builder.Services.AddSingleton<IInitialConfigurator, InitialConfigurator>();
-var initialConfigurator = builder.Services.BuildServiceProvider()!.GetService<IInitialConfigurator>();
-var init = await initialConfigurator!.GetInitialConfigurationAsync();
+
+
+builder.Services.AddScoped<IRuntimeConfigurator, RuntimeConfigurator>();
+builder.Services.AddScoped<IInitialConfigurator, InitialConfigurator>();
+
 builder.Services.AddReverseProxy()
-    .LoadFromMemory(init.Routes, init.Clusters);
+    .LoadFromMemory(PreConfiguration.GetRoutes(), PreConfiguration.GetClusters());
+
 
 builder.Services.AddOpenApi();
 
@@ -40,12 +47,21 @@ if (app.Environment.IsDevelopment())
     // app.ApplyMigrations();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var runtimeConfigurator = scope.ServiceProvider.GetRequiredService<IRuntimeConfigurator>();
+    await runtimeConfigurator.InitializeGateway();
+}
+
+app.UseHttpsRedirection();
+
+app.UseSerilogRequestLogging();
+
 app.MapEndpoints();
 
 app.UseCustomExceptionHandler();
 
 app.MapReverseProxy();
 
-app.UseHttpsRedirection();
-
 await app.RunAsync();
+
