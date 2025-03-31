@@ -55,6 +55,8 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 
+app.UseRequestContextLogging();
+
 app.UseSerilogRequestLogging();
 
 app.MapEndpoints();
