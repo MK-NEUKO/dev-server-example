@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{57737348-7C9E-4D33-817E-6445421303A5}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2C0D7649-FEBD-4140-A84D-18C997A1D7A2}"
 EndProject
@@ -25,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvironmentGateway.Infrastr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7E4EACBE-7679-46E3-AB55-E7E978B4653F}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
+		..\..\Templates\source-code-project-setup\ProjectSetup\.editorconfig = ..\..\Templates\source-code-project-setup\ProjectSetup\.editorconfig
 	EndProjectSection
 EndProject
 Global
