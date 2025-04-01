@@ -50,7 +50,7 @@ internal class InitialConfigurator : IInitialConfigurator
                 ClusterId = route.ClusterName,
                 Match = new RouteMatch()
                 {
-                    Path = route.MatchPath
+                    Path = route.Match.Path
                 }
             };
             routes.Add(routeConfig);
@@ -66,8 +66,8 @@ internal class InitialConfigurator : IInitialConfigurator
                 Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
                 {
                     {
-                        cluster.Destinatons[clusterConter].DestinationName,
-                        new DestinationConfig() { Address = cluster.Destinatons[clusterConter].Address }
+                        cluster.Destinations[clusterConter].DestinationName,
+                        new DestinationConfig() { Address = cluster.Destinations[clusterConter].Address }
 
                     }
                 }

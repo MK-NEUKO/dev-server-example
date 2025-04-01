@@ -47,29 +47,40 @@ internal sealed class GetStartConfigQueryHandler : IQueryHandler<GetStartConfigQ
             return Result.Failure<StartConfigResponse>(Error.NullValue);
         }
 
-        var response = new StartConfigResponse
+        var response = new StartConfigResponse()
         {
             Id = gatewayConfigSummery.GatewayConfigId,
             Name = gatewayConfigSummery.GatewayConfigName,
             IsCurrentConfig = gatewayConfigSummery.IsCurrentConfig,
             Routes =
             [
-                new RouteResponse(
-                    gatewayConfigSummery.RouteName,
-                    gatewayConfigSummery.RouteClusterName,
-                    gatewayConfigSummery.MatchPath)
+                new RouteResponse()
+                {
+                    RouteName = gatewayConfigSummery.RouteName,
+                    ClusterName = gatewayConfigSummery.RouteClusterName,
+                    Match = new RouteMatchResponse()
+                    {
+                        Path = gatewayConfigSummery.MatchPath
+                    }
+                }
             ],
             Clusters =
             [
-                new ClusterResponse(
-                    gatewayConfigSummery.ClusterName,
+                new ClusterResponse()
+                {
+                    ClusterName = gatewayConfigSummery.ClusterName,
+                    Destinations =
                     [
-                        new DestinationResponse(
-                            gatewayConfigSummery.DestinationName,
-                            gatewayConfigSummery.DestinationAddress)
-                    ])
+                        new DestinationResponse()
+                        {
+                            DestinationName = gatewayConfigSummery.DestinationName,
+                            Address = gatewayConfigSummery.DestinationAddress
+                        }
+                    ]
+                }
             ]
         };
+
 
         return response;
     }
