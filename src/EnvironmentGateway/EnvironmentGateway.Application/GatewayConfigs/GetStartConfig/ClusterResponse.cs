@@ -2,6 +2,6 @@
 
 public sealed record ClusterResponse
 {
-    public string ClusterName { get; init; }
-    public List<DestinationResponse> Destinations { get; init; }
+    public required string ClusterName { get; init; }
+    public required List<DestinationResponse> Destinations { get; init; }
 }

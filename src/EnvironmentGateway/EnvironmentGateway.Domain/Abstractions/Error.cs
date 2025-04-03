@@ -2,12 +2,12 @@
 
 public sealed record Error(string Code, string Name)
 {
-    public static Error None =
-        new(String.Empty, String.Empty);
+    public static readonly Error None =
+        new("", "");
 
-    public static Error NullValue = 
+    public static readonly Error NullValue = 
         new("Error.NullValue", "Null Value was provided");
 
-    public static Error CurrentConfigExists =
+    public static readonly Error CurrentConfigExists =
         new("Error.CurrentConfigExists", "A current gateway configuration is already available");
 }

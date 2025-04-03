@@ -8,10 +8,6 @@ namespace EnvironmentGateway.Domain.GatewayConfigs;
 
 public sealed class GatewayConfig : Entity
 {
-    private GatewayConfig()
-    {
-    }
-
     private GatewayConfig(
         Guid id,
         Name name,
@@ -26,15 +22,17 @@ public sealed class GatewayConfig : Entity
         Clusters.Add(cluster);
     }
 
-    public Name Name { get; private set; }
+    private GatewayConfig()
+    {
+    }
+
+    public Name? Name { get; private set; }
 
     public bool IsCurrentConfig { get; private set; }
-    
-    public Cluster Cluster { get; }
 
-    public List<Route> Routes { get; private set; } = new();
+    public List<Route> Routes { get; private set; } = [];
 
-    public List<Cluster> Clusters { get; private set; } = new();
+    public List<Cluster> Clusters { get; private set; } = [];
 
     public static GatewayConfig CreateInitialConfiguration(string configName)
     {

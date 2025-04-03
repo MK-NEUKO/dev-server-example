@@ -44,7 +44,9 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 
     // Apply migrations in development mode without using aspire.
+#pragma warning disable S125
     // app.ApplyMigrations();
+#pragma warning restore S125
 }
 
 using (var scope = app.Services.CreateScope())

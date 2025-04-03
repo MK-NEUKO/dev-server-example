@@ -17,13 +17,11 @@ public class ClusterConfiguration : IEntityTypeConfiguration<Cluster>
         builder.Property(cluster => cluster.GatewayConfigId)
             .IsRequired();
 
-        builder.Property(cluster => cluster.ClusterName)
-            .HasConversion(clusterName => clusterName.Value, value => new Name(value))
-            .HasMaxLength(200)
+        builder.ComplexProperty(cluster => cluster.ClusterName)
             .IsRequired();
 
         builder.HasMany(cluster => cluster.Destinations)
-            .WithOne()
+            .WithOne(destination => destination.Cluster)
             .HasForeignKey(destination => destination.ClusterId)
             .IsRequired();
     }

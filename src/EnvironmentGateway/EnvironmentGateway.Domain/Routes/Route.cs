@@ -7,10 +7,6 @@ namespace EnvironmentGateway.Domain.Routes;
 
 public sealed class Route : Entity
 {
-    private Route()
-    {
-    }
-
     private Route(Guid id, Name routeName, Name clusterName, RouteMatch match)
         : base(id)
     {
@@ -19,10 +15,15 @@ public sealed class Route : Entity
         Match = match;
     }
 
-    public Guid GatewayConfigId { get; private set; }
-    public Name RouteName { get; private set; }
-    public Name ClusterName { get; private set; }
-    public RouteMatch Match { get; private set; }
+    private Route()
+    {
+    }
+
+    public Guid GatewayConfigId { get; init; }
+    public GatewayConfig GatewayConfig { get; init; } = null!;
+    public Name RouteName { get; init; } = new Name("route1");
+    public Name ClusterName { get; init; } = new Name("cluster1");
+    public RouteMatch? Match { get; private set; }
 
     public static Route CreateInitialRoute(string routeName, string clusterName, string matchPath)
     {

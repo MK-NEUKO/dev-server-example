@@ -1,21 +1,23 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
+using EnvironmentGateway.Domain.Routes;
 
 namespace EnvironmentGateway.Domain.RouteMatches;
 
 public sealed class RouteMatch : Entity
 {
-    public RouteMatch()
-    {
-    }
-
     public RouteMatch(Guid id, Path path)
         : base(id)
     {
         Path = path;
     }
 
-    public Guid RouteId { get; private set; }
-    public Path Path { get; private set; }
+    private RouteMatch()
+    {
+    }
+
+    public Guid RouteId { get; init; }
+    public Route Route { get; init; } = null!;
+    public Path Path { get; init; } = new Path("null");
 
     public static RouteMatch CreateInitialRouteMatch(string path)
     {

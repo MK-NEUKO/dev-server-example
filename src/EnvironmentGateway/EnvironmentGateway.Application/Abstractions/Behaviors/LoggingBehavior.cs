@@ -45,7 +45,9 @@ public class LoggingBehavior<TRequest, TResponse>
 
             return result;
         }
+#pragma warning disable S2139
         catch (Exception exception)
+#pragma warning restore S2139
         {
             _logger.LogError(exception, "Request {Request} processing failed", name);
 

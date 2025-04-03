@@ -14,18 +14,20 @@ public class GatewayConfigConfiguration : IEntityTypeConfiguration<GatewayConfig
         builder.HasKey(gatewayConfig => gatewayConfig.Id);
 
         builder.ComplexProperty(gatewayConfig => gatewayConfig.Name)
+            .Property(name => name.Value)
+            .HasMaxLength(100)
             .IsRequired();
 
         builder.Property(gatewayConfig => gatewayConfig.IsCurrentConfig)
             .IsRequired();
 
         builder.HasMany(gatewayConfig => gatewayConfig.Routes)
-            .WithOne()
+            .WithOne(route => route.GatewayConfig)
             .HasForeignKey(route => route.GatewayConfigId)
             .IsRequired();
 
         builder.HasMany(gatewayConfig => gatewayConfig.Clusters)
-            .WithOne()
+            .WithOne(cluster => cluster.GatewayConfig)
             .HasForeignKey(cluster => cluster.GatewayConfigId)
             .IsRequired();
     }

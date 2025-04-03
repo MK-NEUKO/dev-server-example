@@ -2,7 +2,7 @@
 
 public sealed record RouteResponse
 {
-    public string RouteName { get; init; }
-    public string ClusterName { get; init; }
-    public RouteMatchResponse Match { get; init; }
+    public required string RouteName { get; init; }
+    public required string ClusterName { get; init; }
+    public required RouteMatchResponse Match { get; init; }
 }

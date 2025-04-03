@@ -2,6 +2,6 @@
 
 public sealed record DestinationResponse
 {
-    public string DestinationName { get; init; }
-    public string Address { get; init; }
+    public required string DestinationName { get; init; }
+    public required string Address { get; init; }
 }

@@ -2,7 +2,7 @@
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
-internal sealed class PreConfiguration
+internal static class PreConfiguration
 {
     internal static RouteConfig[] GetRoutes()
     {

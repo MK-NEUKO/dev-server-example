@@ -6,10 +6,6 @@ namespace EnvironmentGateway.Domain.Clusters;
 
 public sealed class Cluster : Entity
 {
-    private Cluster()
-    {
-    }
-
     private Cluster(Guid id, Name clusterName, Destination destination)
         : base(id)
     {
@@ -17,11 +13,14 @@ public sealed class Cluster : Entity
         Destinations.Add(destination);
     }
 
-    public Guid GatewayConfigId { get; private set; }
+    private Cluster()
+    {
+    }
 
-    public Name ClusterName { get; private set; }
-
-    public List<Destination> Destinations { get; private set; } = new();
+    public Guid GatewayConfigId { get; init; }
+    public GatewayConfig GatewayConfig { get; init; } = null!;
+    public Name ClusterName { get; init; } = new Name("cluster1");
+    public List<Destination> Destinations { get; } = [];
 
     public static Cluster CreateInitialCluster(string clusterName, string address)
     {

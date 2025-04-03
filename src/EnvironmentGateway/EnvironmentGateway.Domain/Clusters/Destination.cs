@@ -6,10 +6,6 @@ namespace EnvironmentGateway.Domain.Clusters;
 
 public sealed class Destination : Entity
 {
-    private Destination()
-    {
-    }
-
     private Destination(Guid id, Name destinationName, Url address)
         : base(id)
     {
@@ -17,9 +13,14 @@ public sealed class Destination : Entity
         Address = address;
     }
 
-    public Guid ClusterId { get; private set; }
-    public Name DestinationName { get; private set; }
-    public Url Address { get; private set; }
+    private Destination()
+    {
+    }
+
+    public Guid ClusterId { get; init; }
+    public Cluster Cluster { get; init; } = null!;
+    public Name DestinationName { get; init; } = new Name("null");
+    public Url Address { get; init; } = new Url("null");
 
     public static Destination CreateInitialDestination(string destinationName, string address)
     {
