@@ -1,9 +1,10 @@
-﻿using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
+﻿using EnvironmentGateway.Api.GatewayConfiguration;
+using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
 using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGatewayApi.GatewayConfiguration;
 
-public class RuntimeConfigurator(
+internal sealed class RuntimeConfigurator(IInitialConfigurator initialConfigurator,
     IProxyConfigProvider configurationProvider,
     InMemoryConfigProvider inMemoryConfigProvider) 
     : IRuntimeConfigurator
@@ -15,28 +16,39 @@ public class RuntimeConfigurator(
         var clusters = currentConfig?.Clusters;
 
         var newClusters = new List<ClusterConfig>();
-        foreach (var cluster in clusters)
-        {
-            var newDestinations = new Dictionary<string, DestinationConfig>(cluster.Destinations.Count);
-            foreach (var destination in cluster.Destinations)
+        if (clusters != null)
+            foreach (var cluster in clusters)
             {
-                var newDestination = new DestinationConfig
+                var newDestinations = new Dictionary<string, DestinationConfig>(cluster.Destinations!.Count);
+                foreach (var destination in cluster.Destinations)
                 {
-                    Address = address
+                    var newDestination = new DestinationConfig
+                    {
+                        Address = address
+                    };
+                    newDestinations[destination.Key] = newDestination;
+                }
+
+                var newCluster = new ClusterConfig
+                {
+                    ClusterId = cluster.ClusterId,
+                    Destinations = newDestinations
                 };
-                newDestinations[destination.Key] = newDestination;
+                newClusters.Add(newCluster);
             }
 
-            var newCluster = new ClusterConfig
-            {
-                ClusterId = cluster.ClusterId,
-                Destinations = newDestinations
-            };
-            newClusters.Add(newCluster);
-        }
-
-        inMemoryConfigProvider.Update(routes, newClusters);
+        if (routes != null) inMemoryConfigProvider.Update(routes, newClusters);
     }
 
+    public async Task InitializeGateway()
+    {
+        var initialConfiguration = await initialConfigurator.GetInitialConfigurationAsync();
 
+        UpdateConfiguration(initialConfiguration);
+    }
+
+    private void UpdateConfiguration(InitialConfiguration initialConfiguration)
+    {
+        inMemoryConfigProvider.Update(initialConfiguration.Routes, initialConfiguration.Clusters);
+    }
 }

@@ -1,49 +1,81 @@
-﻿using Yarp.ReverseProxy.Configuration;
+﻿using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
+using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
+using EnvironmentGateway.Domain.Abstractions;
+using MediatR;
+using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
+using Yarp.ReverseProxy.Configuration;
 
-namespace EnvironmentGatewayApi.GatewayConfiguration;
+namespace EnvironmentGateway.Api.GatewayConfiguration;
 
-internal class InitialConfigurator
+internal class InitialConfigurator : IInitialConfigurator
 {
-    public static InitialConfiguration GetInitialConfiguration()
+    private readonly ISender _sender;
+
+    public InitialConfigurator(ISender sender)
     {
-        var initialConfig = new InitialConfiguration
+        _sender = sender;
+    }
+
+    public async Task<InitialConfiguration> GetInitialConfigurationAsync(CancellationToken cancellationToken = default)
+    {
+        var command = new CreateInitialConfigCommand("initialConfiguration");
+
+        Result<Guid> result = await _sender.Send(command, CancellationToken.None);
+
+        if (result.IsFailure)
         {
-            Routes = GetRoutes(),
-            Clusters = GetClusters()
-        };
+            // TODO: handling the error through logs or exceptions
+        }
 
-        return initialConfig;
+        var query = new GetStartConfigQuery(true);
+
+        Result<StartConfigResponse> response = await _sender.Send(query, CancellationToken.None);
+
+        if (response.IsFailure)
+        {
+            // TODO: handling the error through logs or exceptions
+        }
+
+        return MapToInitialConfiguration(response);
     }
 
-    internal static RouteConfig[] GetRoutes()
+    private InitialConfiguration MapToInitialConfiguration(Result<StartConfigResponse> response)
     {
-        return
-        [
-            new RouteConfig()
+        var routes = new List<RouteConfig>();
+        foreach (var route in response.Value.Routes)
+        {
+            var routeConfig = new RouteConfig()
             {
-                RouteId = "route" + Random.Shared.Next(), // Forces a new route id each time GetRoutes is called.
-                ClusterId = "cluster1",
-                Match = new RouteMatch
+                RouteId = route.RouteName,
+                ClusterId = route.ClusterName,
+                Match = new RouteMatch()
                 {
-                    // Path or Hosts are required for each route. This catch-all pattern matches all request paths.
-                    Path = "{**catch-all}"
+                    Path = route.Match.Path
                 }
-            }
-        ];
-    }
+            };
+            routes.Add(routeConfig);
+        }
 
-    private static ClusterConfig[] GetClusters()
-    {
-        return
-        [
-            new ClusterConfig()
+        var clusters = new List<ClusterConfig>();
+        var clusterConter = 0;
+        foreach (var cluster in response.Value.Clusters)
+        {
+            var clusterConfig = new ClusterConfig()
             {
-                ClusterId = "cluster1",
+                ClusterId = cluster.ClusterName,
                 Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
                 {
-                    { "destination1", new DestinationConfig() { Address = "https://neuko-know-how.com" } },
+                    {
+                        cluster.Destinations[clusterConter].DestinationName,
+                        new DestinationConfig() { Address = cluster.Destinations[clusterConter].Address }
+
+                    }
                 }
-            }
-        ];
+            };
+            clusterConter++;
+            clusters.Add(clusterConfig);
+        }
+
+        return new InitialConfiguration(routes.ToArray(), clusters.ToArray());
     }
 }
