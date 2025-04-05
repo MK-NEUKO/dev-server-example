@@ -18,6 +18,8 @@ public class ClusterConfiguration : IEntityTypeConfiguration<Cluster>
             .IsRequired();
 
         builder.ComplexProperty(cluster => cluster.ClusterName)
+            .Property(name => name.Value)
+            .HasMaxLength(100)
             .IsRequired();
 
         builder.HasMany(cluster => cluster.Destinations)

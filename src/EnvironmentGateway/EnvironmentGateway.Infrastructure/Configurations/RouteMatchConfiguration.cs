@@ -16,6 +16,7 @@ public class RouteMatchConfiguration : IEntityTypeConfiguration<RouteMatch>
             .IsRequired();
 
         builder.ComplexProperty(routeMatch => routeMatch.Path)
+            .Property(path => path.Value)
             .IsRequired();
     }
 }

@@ -29,7 +29,7 @@ internal sealed class GetStartConfigQueryHandler : IQueryHandler<GetStartConfigQ
                     r.cluster_name_value AS route_cluster_name,
                     r.route_name_value AS route_name,
                     rm.path_value AS match_path,
-                    c.cluster_name AS cluster_name,
+                    c.cluster_name_value AS cluster_name,
                     d.destination_name_value AS destination_name,
                     d.address_value AS destination_address
                     
