@@ -1,4 +1,6 @@
-﻿using EnvironmentGateway.Domain.GatewayConfigs;
+﻿using System.ComponentModel;
+using EnvironmentGateway.Domain.GatewayConfigs;
+using EnvironmentGateway.Domain.GatewayConfigs.Events;
 using FluentAssertions;
 
 namespace EnvironmentGateway.Domain.UnitTests.GatewayConfigs;
@@ -10,12 +12,26 @@ public class GatewayConfigsTests
     {
         const string configName = "testConfig";
 
-        var initConfig = GatewayConfig.CreateInitialConfiguration(configName);
+        var initialConfig = GatewayConfig.CreateInitialConfiguration(configName);
 
-        initConfig.Name.Value.Should().Be(configName);
-        initConfig.IsCurrentConfig.Should().BeTrue();
-        initConfig.Routes.Count.Should().BeGreaterThanOrEqualTo(1);
-        initConfig.Clusters.Count.Should().BeGreaterThanOrEqualTo(1);
+        initialConfig.Name.Value.Should().Be(configName);
+        initialConfig.IsCurrentConfig.Should().BeTrue();
+        initialConfig.Routes.Count.Should().BeGreaterThanOrEqualTo(1);
+        initialConfig.Clusters.Count.Should().BeGreaterThanOrEqualTo(1);
+    }
+
+    [Fact]
+    public void CreateInitialConfig_Should_RaiseInitialConfigCreatedDomainEvent()
+    {
+        const string configName = "testConfig";
+
+        var initialConfig = GatewayConfig.CreateInitialConfiguration(configName);
+
+        var domainEvent = initialConfig.GetDomainEvents()
+            .OfType<InitialConfigCreatedDomainEvent>()
+            .SingleOrDefault();
+
+        domainEvent.ConfigurationId.Should().Be(initialConfig.Id);
     }
 
 }
