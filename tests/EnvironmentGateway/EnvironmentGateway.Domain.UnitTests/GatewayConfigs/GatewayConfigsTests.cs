@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Domain.GatewayConfigs.Events;
+using EnvironmentGateway.Domain.UnitTests.Infrastructure;
 using FluentAssertions;
 
 namespace EnvironmentGateway.Domain.UnitTests.GatewayConfigs;
 
-public class GatewayConfigsTests
+public class GatewayConfigsTests : BaseTest
 {
     [Fact]
     public void CreateInitialConfig_Should_SetPropertyValues()
@@ -27,9 +28,7 @@ public class GatewayConfigsTests
 
         var initialConfig = GatewayConfig.CreateInitialConfiguration(configName);
 
-        var domainEvent = initialConfig.GetDomainEvents()
-            .OfType<InitialConfigCreatedDomainEvent>()
-            .SingleOrDefault();
+        var domainEvent = AssertDomainEventWasPublished<InitialConfigCreatedDomainEvent>(initialConfig);
 
         domainEvent.ConfigurationId.Should().Be(initialConfig.Id);
     }
