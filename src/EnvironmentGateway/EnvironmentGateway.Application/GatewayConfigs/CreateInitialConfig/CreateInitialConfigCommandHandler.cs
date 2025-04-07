@@ -1,42 +1,37 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfigs;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
 
-internal sealed class CreateInitialConfigCommandHandler : ICommandHandler<CreateInitialConfigCommand>
+internal sealed class CreateInitialConfigCommandHandler(
+    IGatewayConfigRepository gatewayConfigRepository,
+    IUnitOfWork unitOfWork)
+    : ICommandHandler<CreateInitialConfigCommand, Guid>
 {
-    private readonly IGatewayConfigRepository _gatewayConfigRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CreateInitialConfigCommandHandler(
-        IGatewayConfigRepository gatewayConfigRepository,
-        IUnitOfWork unitOfWork)
+    public async Task<Result<Guid>> Handle(CreateInitialConfigCommand request, CancellationToken cancellationToken)
     {
-        _gatewayConfigRepository = gatewayConfigRepository;
-        _unitOfWork = unitOfWork;
-    }
+        var currentConfigGuid = await gatewayConfigRepository.GetCurrentConfigId(cancellationToken);
 
-    public async Task<Result> Handle(CreateInitialConfigCommand request, CancellationToken cancellationToken)
-    {
-        if (await _gatewayConfigRepository.IsCurrentConfigExists(cancellationToken))
+        if (currentConfigGuid is not null && currentConfigGuid.Value != Guid.Empty)
         {
-            return Result.Success();
+            return currentConfigGuid.Value;
         }
-
-        var configuration = GatewayConfig.CreateInitialConfiguration(request.Name);
 
         try
         {
-            _gatewayConfigRepository.Add(configuration);
+            var initialConfiguration = GatewayConfig.CreateInitialConfiguration(request.Name);
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            gatewayConfigRepository.Add(initialConfiguration);
 
-            return Result.Success();
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return initialConfiguration.Id;
         }
         catch (Exception)
         {
-            return Result.Failure(GatewayConfigErrors.CreateInitialConfigFailed);
+            return Result.Failure<Guid>(GatewayConfigErrors.CreateInitialConfigFailed);
         }
     }
 }

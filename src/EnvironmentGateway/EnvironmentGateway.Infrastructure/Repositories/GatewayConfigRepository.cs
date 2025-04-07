@@ -10,10 +10,12 @@ internal sealed class GatewayConfigRepository : Repository<GatewayConfig>, IGate
     {
     }
 
-    public async Task<bool> IsCurrentConfigExists(CancellationToken cancellationToken = default)
+    public async Task<Guid?> GetCurrentConfigId(CancellationToken cancellationToken = default)
     {
         return await DbContext
             .Set<GatewayConfig>()
-            .AnyAsync(gatewayConfig => gatewayConfig.IsCurrentConfig);
+            .Where(gatewayConfig => gatewayConfig.IsCurrentConfig)
+            .Select(gatewayConfig => gatewayConfig.Id)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

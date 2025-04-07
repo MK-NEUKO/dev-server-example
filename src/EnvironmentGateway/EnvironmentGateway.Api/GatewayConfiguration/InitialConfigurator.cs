@@ -7,29 +7,25 @@ using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
-internal class InitialConfigurator : IInitialConfigurator
+internal class InitialConfigurator(
+    ISender sender,
+    ILogger<IInitialConfigurator> logger) 
+    : IInitialConfigurator
 {
-    private readonly ISender _sender;
-
-    public InitialConfigurator(ISender sender)
-    {
-        _sender = sender;
-    }
-
     public async Task<InitialConfiguration> GetInitialConfigurationAsync(CancellationToken cancellationToken = default)
     {
         var command = new CreateInitialConfigCommand("initialConfiguration");
 
-        Result result = await _sender.Send(command, CancellationToken.None);
+        var result = await sender.Send(command, CancellationToken.None);
 
-        if (result.IsFailure)
+        if (result.IsSuccess)
         {
-            // TODO: handling the error through logs or exceptions
+            logger.LogInformation("Initial gateway configuration; Id: {Result} already exists, or was created.", result.Value);
         }
 
         var query = new GetStartConfigQuery(true);
 
-        Result<StartConfigResponse> response = await _sender.Send(query, CancellationToken.None);
+        Result<StartConfigResponse> response = await sender.Send(query, CancellationToken.None);
 
         if (response.IsFailure)
         {
