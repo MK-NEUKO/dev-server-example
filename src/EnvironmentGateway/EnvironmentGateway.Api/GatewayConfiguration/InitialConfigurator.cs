@@ -20,7 +20,7 @@ internal class InitialConfigurator : IInitialConfigurator
     {
         var command = new CreateInitialConfigCommand("initialConfiguration");
 
-        Result<Guid> result = await _sender.Send(command, CancellationToken.None);
+        Result result = await _sender.Send(command, CancellationToken.None);
 
         if (result.IsFailure)
         {

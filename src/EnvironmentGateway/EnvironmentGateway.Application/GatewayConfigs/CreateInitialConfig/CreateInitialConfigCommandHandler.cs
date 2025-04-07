@@ -4,7 +4,7 @@ using EnvironmentGateway.Domain.GatewayConfigs;
 
 namespace EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
 
-internal sealed class CreateInitialConfigCommandHandler : ICommandHandler<CreateInitialConfigCommand, Guid>
+internal sealed class CreateInitialConfigCommandHandler : ICommandHandler<CreateInitialConfigCommand>
 {
     private readonly IGatewayConfigRepository _gatewayConfigRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -17,11 +17,11 @@ internal sealed class CreateInitialConfigCommandHandler : ICommandHandler<Create
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<Guid>> Handle(CreateInitialConfigCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(CreateInitialConfigCommand request, CancellationToken cancellationToken)
     {
         if (await _gatewayConfigRepository.IsCurrentConfigExists(cancellationToken))
         {
-            return Result.Failure<Guid>(Error.CurrentConfigExists);
+            return Result.Success();
         }
 
         var configuration = GatewayConfig.CreateInitialConfiguration(request.Name);
@@ -32,11 +32,11 @@ internal sealed class CreateInitialConfigCommandHandler : ICommandHandler<Create
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Result.Success(configuration.Id);
+            return Result.Success();
         }
         catch (Exception)
         {
-            return Result.Failure<Guid>(GatewayConfigErrors.CreateInitialConfigFailed);
+            return Result.Failure(GatewayConfigErrors.CreateInitialConfigFailed);
         }
     }
 }
