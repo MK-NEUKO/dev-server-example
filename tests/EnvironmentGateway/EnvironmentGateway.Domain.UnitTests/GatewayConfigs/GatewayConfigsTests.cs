@@ -11,10 +11,13 @@ public class GatewayConfigsTests : BaseTest
     [Fact]
     public void CreateInitialConfig_Should_SetPropertyValues()
     {
-        const string configName = "testConfig";
+        // Arrange
+        var configName = "Initial Configuration";
 
-        var initialConfig = GatewayConfig.CreateInitialConfiguration(configName);
+        // Act
+        var initialConfig = GatewayConfig.CreateInitialConfiguration();
 
+        // Assert
         initialConfig.Name.Value.Should().Be(configName);
         initialConfig.IsCurrentConfig.Should().BeTrue();
         initialConfig.Routes.Count.Should().BeGreaterThanOrEqualTo(1);
@@ -24,10 +27,10 @@ public class GatewayConfigsTests : BaseTest
     [Fact]
     public void CreateInitialConfig_Should_RaiseInitialConfigCreatedDomainEvent()
     {
-        const string configName = "testConfig";
+        // Act
+        var initialConfig = GatewayConfig.CreateInitialConfiguration();
 
-        var initialConfig = GatewayConfig.CreateInitialConfiguration(configName);
-
+        // Assert
         var domainEvent = AssertDomainEventWasPublished<InitialConfigCreatedDomainEvent>(initialConfig);
 
         domainEvent.ConfigurationId.Should().Be(initialConfig.Id);

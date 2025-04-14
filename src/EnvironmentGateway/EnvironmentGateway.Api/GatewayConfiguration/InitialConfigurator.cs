@@ -14,7 +14,7 @@ internal class InitialConfigurator(
 {
     public async Task<InitialConfiguration> GetInitialConfigurationAsync(CancellationToken cancellationToken = default)
     {
-        var command = new CreateInitialConfigCommand("initialConfiguration");
+        var command = new CreateInitialConfigCommand();
 
         var result = await sender.Send(command, CancellationToken.None);
 
@@ -53,7 +53,7 @@ internal class InitialConfigurator(
         }
 
         var clusters = new List<ClusterConfig>();
-        var clusterConter = 0;
+        var clusterCounter = 0;
         foreach (var cluster in response.Value.Clusters)
         {
             var clusterConfig = new ClusterConfig()
@@ -62,13 +62,13 @@ internal class InitialConfigurator(
                 Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
                 {
                     {
-                        cluster.Destinations[clusterConter].DestinationName,
-                        new DestinationConfig() { Address = cluster.Destinations[clusterConter].Address }
+                        cluster.Destinations[clusterCounter].DestinationName,
+                        new DestinationConfig() { Address = cluster.Destinations[clusterCounter].Address }
 
                     }
                 }
             };
-            clusterConter++;
+            clusterCounter++;
             clusters.Add(clusterConfig);
         }
 

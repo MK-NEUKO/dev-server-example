@@ -34,14 +34,14 @@ public sealed class GatewayConfig : Entity
 
     public List<Cluster> Clusters { get; private set; } = [];
 
-    public static GatewayConfig CreateInitialConfiguration(string configName)
+    public static GatewayConfig CreateInitialConfiguration()
     {
         var initialRoute = Route.CreateInitialRoute("route1", "cluster1", "{**catch-all}");
         var initialCluster = Cluster.CreateInitialCluster("cluster1", "https://github.com");
 
         var initialConfiguration = new GatewayConfig(
             Guid.NewGuid(),
-            new Name(configName),
+            new Name("Initial Configuration"),
             true,
             initialRoute,
             initialCluster);

@@ -21,7 +21,7 @@ internal sealed class CreateInitialConfigCommandHandler(
 
         try
         {
-            var initialConfiguration = GatewayConfig.CreateInitialConfiguration(request.Name);
+            var initialConfiguration = GatewayConfig.CreateInitialConfiguration();
 
             gatewayConfigRepository.Add(initialConfiguration);
 

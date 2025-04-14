@@ -10,7 +10,7 @@ namespace EnvironmentGateway.Application.UnitTests.GatewayConfigs;
 
 public class CreateInitialConfigTests
 {
-    private static readonly CreateInitialConfigCommand Command = new("TestConfig");
+    private static readonly CreateInitialConfigCommand Command = new();
     private readonly CreateInitialConfigCommandHandler _handler;
 
     private readonly IGatewayConfigRepository _gatewayConfigRepositoryMock;
@@ -24,6 +24,21 @@ public class CreateInitialConfigTests
         _handler = new CreateInitialConfigCommandHandler(
             _gatewayConfigRepositoryMock,
             _unitOfWorkMock);
+    }
+
+    [Fact]
+    public async Task Handle_Should_ReturnFailure_WhenUnitOfWorkThrows()
+    {
+        // Arrange
+        _unitOfWorkMock
+            .SaveChangesAsync(Arg.Any<CancellationToken>())
+            .ThrowsAsync(new ConcurrencyException("Concurrency", new Exception()));
+
+        // Act
+        var result = await _handler.Handle(Command, default);
+
+        // Assert
+        result.Error.Should().Be(GatewayConfigErrors.CreateInitialConfigFailed);
     }
 
     [Fact]
@@ -55,20 +70,5 @@ public class CreateInitialConfigTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-    }
-
-    [Fact]
-    public async Task Handle_Should_ReturnFailure_WhenUnitOfWorkThrows()
-    {
-        // Arrange
-        _unitOfWorkMock
-            .SaveChangesAsync(Arg.Any<CancellationToken>())
-            .ThrowsAsync(new ConcurrencyException("Concurrency", new Exception()));
-
-        // Act
-        var result = await _handler.Handle(Command, default);
-
-        // Assert
-        result.Error.Should().Be(GatewayConfigErrors.CreateInitialConfigFailed);
     }
 }
