@@ -44,6 +44,11 @@ internal sealed class RuntimeConfigurator(IInitialConfigurator initialConfigurat
     {
         var initialConfiguration = await initialConfigurator.GetInitialConfigurationAsync();
 
+        if (initialConfiguration.Routes.IsNullOrEmpty() || initialConfiguration.Clusters.IsNullOrEmpty())
+        {
+            return;
+        }
+
         UpdateConfiguration(initialConfiguration);
     }
 

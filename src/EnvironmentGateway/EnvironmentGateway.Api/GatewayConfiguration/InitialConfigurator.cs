@@ -9,7 +9,7 @@ namespace EnvironmentGateway.Api.GatewayConfiguration;
 
 internal class InitialConfigurator(
     ISender sender,
-    ILogger<IInitialConfigurator> logger) 
+    ILogger<IInitialConfigurator> logger)
     : IInitialConfigurator
 {
     public async Task<InitialConfiguration> GetInitialConfigurationAsync(CancellationToken cancellationToken = default)
@@ -29,7 +29,8 @@ internal class InitialConfigurator(
 
         if (response.IsFailure)
         {
-            // TODO: handling the error through logs or exceptions
+            logger.LogError("Initial configuration loading failed {Response}", response.Error);
+            return new InitialConfiguration([], []);
         }
 
         return MapToInitialConfiguration(response);
@@ -60,13 +61,13 @@ internal class InitialConfigurator(
             {
                 ClusterId = cluster.ClusterName,
                 Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
-                {
                     {
-                        cluster.Destinations[clusterCounter].DestinationName,
-                        new DestinationConfig() { Address = cluster.Destinations[clusterCounter].Address }
+                        {
+                            cluster.Destinations[clusterCounter].DestinationName,
+                            new DestinationConfig() { Address = cluster.Destinations[clusterCounter].Address }
 
+                        }
                     }
-                }
             };
             clusterCounter++;
             clusters.Add(clusterConfig);
