@@ -13,6 +13,24 @@ public class GetStartConfig : BaseIntegrationTest
         : base(factory)
     {
     }
+
+    [Fact]
+    public async Task GetStartConfig_ShouldReturnSuccess_WhenCurrentGatewayConfigExists()
+    {
+        // Arrange
+        var isCurrentConfig = true;
+        var query = new GetStartConfigQuery(isCurrentConfig);
+        
+        DbContext.GatewayConfigs.Add(GatewayConfig.CreateInitialConfiguration());
+        await DbContext.SaveChangesAsync();
+
+        // Act
+        var result = await Sender.Send(query);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.Value.IsCurrentConfig.Should().BeTrue();
+    }
     
     [Fact]
     public async Task GetStartConfig_ShouldReturnFailure_WhenCurrentGatewayConfigNotExists()
@@ -33,20 +51,5 @@ public class GetStartConfig : BaseIntegrationTest
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be(Error.NullValue);
-    }
-
-    [Fact]
-    public async Task GetStartConfig_ShouldReturnSuccess_WhenCurrentGatewayConfigExists()
-    {
-        // Arrange
-        var isCurrentConfig = true;
-        var query = new GetStartConfigQuery(isCurrentConfig);
-
-        // Act
-        var result = await Sender.Send(query);
-
-        // Assert
-        result.IsSuccess.Should().BeTrue();
-        result.Value.IsCurrentConfig.Should().BeTrue();
     }
 }
