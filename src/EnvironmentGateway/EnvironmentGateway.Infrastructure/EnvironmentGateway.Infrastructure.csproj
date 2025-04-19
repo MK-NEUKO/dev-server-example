@@ -23,4 +23,8 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+	<InternalsVisibleTo Include="EnvironmentGateway.Application.IntegrationTests" />
+  </ItemGroup>
+
 </Project>

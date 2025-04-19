@@ -69,3 +69,4 @@ app.MapReverseProxy();
 
 await app.RunAsync();
 
+public partial class Program;
