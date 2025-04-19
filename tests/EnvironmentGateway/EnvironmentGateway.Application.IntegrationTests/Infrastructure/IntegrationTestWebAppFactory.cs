@@ -14,7 +14,7 @@ namespace EnvironmentGateway.Application.IntegrationTests.Infrastructure;
 public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-        .WithImage("Postgres:latest")
+        .WithImage("postgres:latest")
         .WithDatabase("test-db")
         .WithUsername("testUser")
         .WithPassword("password")

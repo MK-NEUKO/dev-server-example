@@ -45,7 +45,7 @@ if (app.Environment.IsDevelopment())
 
     // Apply migrations in development mode without using aspire.
 #pragma warning disable S125
-    // app.ApplyMigrations();
+    app.ApplyMigrations();
 #pragma warning restore S125
 }
 
