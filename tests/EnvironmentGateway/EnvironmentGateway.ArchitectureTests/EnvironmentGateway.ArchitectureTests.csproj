@@ -33,6 +33,7 @@
   <ItemGroup>
     <Folder Include="Infrastructure\" />
     <Folder Include="Layers\" />
+    <Folder Include="Domain\" />
   </ItemGroup>
 
   <ItemGroup>
