@@ -7,13 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnvironmentGateway.Application.IntegrationTests.GatewayConfigs;
 
-public class GetStartConfig : BaseIntegrationTest
+public class GetStartConfigTests(IntegrationTestWebAppFactory factory) 
+    : BaseIntegrationTest(factory)
 {
-    public GetStartConfig(IntegrationTestWebAppFactory factory) 
-        : base(factory)
-    {
-    }
-
     [Fact]
     public async Task GetStartConfig_ShouldReturnSuccess_WhenCurrentGatewayConfigExists()
     {
@@ -39,13 +35,22 @@ public class GetStartConfig : BaseIntegrationTest
         var isCurrentConfig = true; 
         var query = new GetStartConfigQuery(isCurrentConfig);
         var existingConfig = await DbContext.GatewayConfigs.FirstOrDefaultAsync();
+        var configStillExists = false;
         if (existingConfig != null)
         {
             DbContext.GatewayConfigs.Remove(existingConfig);
             await DbContext.SaveChangesAsync();
+
+            configStillExists = await DbContext.GatewayConfigs
+                .AnyAsync(c => c.Id == existingConfig.Id);
         }
 
-        // Act 
+        // Act
+        if (configStillExists)
+        {
+            await Task.Delay(100);
+        }
+
         var result = await Sender.Send(query);
 
         // Assert
