@@ -1,4 +1,4 @@
-﻿namespace EnvironmentGatewayApi.Endpoints;
+﻿namespace EnvironmentGateway.Api.Endpoints;
 
 public interface IEndpoint
 {

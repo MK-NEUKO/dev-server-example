@@ -1,39 +1,36 @@
-﻿using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
+﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
+using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
 using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
 using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
-using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
 using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
-internal class InitialConfigurator : IInitialConfigurator
+internal class InitialConfigurator(
+    ISender sender,
+    ILogger<IInitialConfigurator> logger)
+    : IInitialConfigurator
 {
-    private readonly ISender _sender;
-
-    public InitialConfigurator(ISender sender)
-    {
-        _sender = sender;
-    }
-
     public async Task<InitialConfiguration> GetInitialConfigurationAsync(CancellationToken cancellationToken = default)
     {
-        var command = new CreateInitialConfigCommand("initialConfiguration");
+        var command = new CreateInitialConfigCommand();
 
-        Result<Guid> result = await _sender.Send(command, CancellationToken.None);
+        var result = await sender.Send(command, CancellationToken.None);
 
-        if (result.IsFailure)
+        if (result.IsSuccess)
         {
-            // TODO: handling the error through logs or exceptions
+            logger.LogInformation("Initial gateway configuration; Id: {Result} already exists, or was created.", result.Value);
         }
 
         var query = new GetStartConfigQuery(true);
 
-        Result<StartConfigResponse> response = await _sender.Send(query, CancellationToken.None);
+        Result<StartConfigResponse> response = await sender.Send(query, CancellationToken.None);
 
         if (response.IsFailure)
         {
-            // TODO: handling the error through logs or exceptions
+            logger.LogError("Initial configuration loading failed {Response}", response.Error);
+            return new InitialConfiguration([], []);
         }
 
         return MapToInitialConfiguration(response);
@@ -57,22 +54,22 @@ internal class InitialConfigurator : IInitialConfigurator
         }
 
         var clusters = new List<ClusterConfig>();
-        var clusterConter = 0;
+        var clusterCounter = 0;
         foreach (var cluster in response.Value.Clusters)
         {
             var clusterConfig = new ClusterConfig()
             {
                 ClusterId = cluster.ClusterName,
                 Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
-                {
                     {
-                        cluster.Destinations[clusterConter].DestinationName,
-                        new DestinationConfig() { Address = cluster.Destinations[clusterConter].Address }
+                        {
+                            cluster.Destinations[clusterCounter].DestinationName,
+                            new DestinationConfig() { Address = cluster.Destinations[clusterCounter].Address }
 
+                        }
                     }
-                }
             };
-            clusterConter++;
+            clusterCounter++;
             clusters.Add(clusterConfig);
         }
 

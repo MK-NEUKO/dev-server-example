@@ -1,15 +1,11 @@
 using System.Reflection;
 using EnvironmentGateway.Api.Extensions;
 using EnvironmentGateway.Api.GatewayConfiguration;
-using EnvironmentGateway.Infrastructure;
+using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
 using EnvironmentGateway.Application;
-using EnvironmentGatewayApi.Extensions;
-using EnvironmentGatewayApi.GatewayConfiguration;
-using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
-using MediatR;
+using EnvironmentGateway.Infrastructure;
 using Scalar.AspNetCore;
 using Serilog;
-using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +41,7 @@ if (app.Environment.IsDevelopment())
 
     // Apply migrations in development mode without using aspire.
 #pragma warning disable S125
-    // app.ApplyMigrations();
+    app.ApplyMigrations();
 #pragma warning restore S125
 }
 
@@ -69,3 +65,7 @@ app.MapReverseProxy();
 
 await app.RunAsync();
 
+namespace EnvironmentGateway.Api
+{
+    public partial class Program;
+}

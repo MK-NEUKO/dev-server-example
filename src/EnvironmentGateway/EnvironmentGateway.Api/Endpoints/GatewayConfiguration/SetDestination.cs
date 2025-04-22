@@ -1,6 +1,6 @@
-﻿using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
+﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
 
-namespace EnvironmentGatewayApi.Endpoints.GatewayConfiguration;
+namespace EnvironmentGateway.Api.Endpoints.GatewayConfiguration;
 
 public class SetDestination : IEndpoint
 {

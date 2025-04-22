@@ -17,9 +17,12 @@ public class DestinationConfiguration : IEntityTypeConfiguration<Destination>
             .IsRequired();
 
         builder.ComplexProperty(destination => destination.DestinationName)
+            .Property(name => name.Value)
+            .HasMaxLength(100)
             .IsRequired();
 
         builder.ComplexProperty(destination => destination.Address)
+            .Property(address => address.Value)
             .IsRequired();
     }
 }

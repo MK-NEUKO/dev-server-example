@@ -17,4 +17,8 @@
     <Folder Include="Abstractions\Behaviors\" />
   </ItemGroup>
 
+  <ItemGroup>
+	<InternalsVisibleTo Include="EnvironmentGateway.Application.UnitTests" />
+  </ItemGroup>
+
 </Project>

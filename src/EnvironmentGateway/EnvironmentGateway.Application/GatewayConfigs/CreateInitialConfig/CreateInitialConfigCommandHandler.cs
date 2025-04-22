@@ -1,38 +1,33 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfigs;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
 
-internal sealed class CreateInitialConfigCommandHandler : ICommandHandler<CreateInitialConfigCommand, Guid>
+internal sealed class CreateInitialConfigCommandHandler(
+    IGatewayConfigRepository gatewayConfigRepository,
+    IUnitOfWork unitOfWork)
+    : ICommandHandler<CreateInitialConfigCommand, Guid>
 {
-    private readonly IGatewayConfigRepository _gatewayConfigRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CreateInitialConfigCommandHandler(
-        IGatewayConfigRepository gatewayConfigRepository,
-        IUnitOfWork unitOfWork)
-    {
-        _gatewayConfigRepository = gatewayConfigRepository;
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<Result<Guid>> Handle(CreateInitialConfigCommand request, CancellationToken cancellationToken)
     {
-        if (await _gatewayConfigRepository.IsCurrentConfigExists(cancellationToken))
-        {
-            return Result.Failure<Guid>(Error.CurrentConfigExists);
-        }
+        var currentConfigGuid = await gatewayConfigRepository.GetCurrentConfigId(cancellationToken);
 
-        var configuration = GatewayConfig.CreateInitialConfiguration(request.Name);
+        if (currentConfigGuid is not null && currentConfigGuid.Value != Guid.Empty)
+        {
+            return currentConfigGuid.Value;
+        }
 
         try
         {
-            _gatewayConfigRepository.Add(configuration);
+            var initialConfiguration = GatewayConfig.CreateInitialConfiguration();
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            gatewayConfigRepository.Add(initialConfiguration);
 
-            return Result.Success(configuration.Id);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return initialConfiguration.Id;
         }
         catch (Exception)
         {
