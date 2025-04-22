@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
-using System.Xml.Schema;
-using EnvironmentGatewayApi.Endpoints;
+using EnvironmentGateway.Api.Endpoints;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace EnvironmentGatewayApi.Extensions;
+namespace EnvironmentGateway.Api.Extensions;
 
 public static class EndpointExtensions
 {

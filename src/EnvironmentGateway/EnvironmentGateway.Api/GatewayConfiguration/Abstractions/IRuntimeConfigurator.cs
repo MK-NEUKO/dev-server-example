@@ -1,6 +1,4 @@
-﻿using EnvironmentGateway.Api.GatewayConfiguration;
-
-namespace EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
+﻿namespace EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
 
 public interface IRuntimeConfigurator
 {

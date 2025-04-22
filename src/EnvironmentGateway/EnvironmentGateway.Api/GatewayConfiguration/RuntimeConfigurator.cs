@@ -1,8 +1,7 @@
-﻿using EnvironmentGateway.Api.GatewayConfiguration;
-using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
+﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
 using Yarp.ReverseProxy.Configuration;
 
-namespace EnvironmentGatewayApi.GatewayConfiguration;
+namespace EnvironmentGateway.Api.GatewayConfiguration;
 
 internal sealed class RuntimeConfigurator(IInitialConfigurator initialConfigurator,
     IProxyConfigProvider configurationProvider,

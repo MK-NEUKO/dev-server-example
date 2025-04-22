@@ -1,6 +1,6 @@
 ﻿using Yarp.ReverseProxy.Configuration;
 
-namespace EnvironmentGatewayApi.Endpoints.GatewayConfiguration;
+namespace EnvironmentGateway.Api.Endpoints.GatewayConfiguration;
 
 public class Get(IProxyConfigProvider configProvider) : IEndpoint
 {

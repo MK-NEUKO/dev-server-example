@@ -1,8 +1,8 @@
-﻿using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
+﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
+using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
 using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
 using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
-using EnvironmentGatewayApi.GatewayConfiguration.Abstractions;
 using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;

@@ -1,4 +1,5 @@
-﻿using EnvironmentGateway.Application.Abstractions.Data;
+﻿using EnvironmentGateway.Api;
+using EnvironmentGateway.Application.Abstractions.Data;
 using EnvironmentGateway.Infrastructure;
 using EnvironmentGateway.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
