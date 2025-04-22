@@ -34,23 +34,17 @@ public class GetStartConfigTests(IntegrationTestWebAppFactory factory)
         // Arrange 
         var isCurrentConfig = true; 
         var query = new GetStartConfigQuery(isCurrentConfig);
-        var existingConfig = await DbContext.GatewayConfigs.FirstOrDefaultAsync();
-        var configStillExists = false;
-        if (existingConfig != null)
+        var existingConfigs = await DbContext.GatewayConfigs
+            .Where(gc => gc.IsCurrentConfig)
+            .ToListAsync();
+        foreach (var existingConfig in existingConfigs)
         {
+            if (!existingConfig.IsCurrentConfig) continue;
             DbContext.GatewayConfigs.Remove(existingConfig);
             await DbContext.SaveChangesAsync();
-
-            configStillExists = await DbContext.GatewayConfigs
-                .AnyAsync(c => c.Id == existingConfig.Id);
         }
 
         // Act
-        if (configStillExists)
-        {
-            await Task.Delay(100);
-        }
-
         var result = await Sender.Send(query);
 
         // Assert
