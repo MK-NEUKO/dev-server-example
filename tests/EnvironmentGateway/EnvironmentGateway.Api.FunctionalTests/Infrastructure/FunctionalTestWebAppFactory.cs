@@ -37,7 +37,6 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
         });
     }
 
-
     public async Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
