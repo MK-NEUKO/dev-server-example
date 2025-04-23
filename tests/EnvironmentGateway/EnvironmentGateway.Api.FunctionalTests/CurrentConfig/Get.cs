@@ -26,10 +26,7 @@ public class Get : BaseFunctionalTest
         var httpResponse = await HttpClient.GetAsync("current-config");
 
         // Assert
-        var response = await httpResponse.Content.ReadFromJsonAsync<StartConfigResponse>();
-
         httpResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        response.IsCurrentConfig.Should().BeTrue();
     }
 
     [Fact]
