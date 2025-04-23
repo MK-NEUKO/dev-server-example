@@ -9,7 +9,7 @@ import { GatewayInfo } from '../../models/environment-gateway/gatewayInfo';
 })
 export class EnvironmentGatewayService {
   private numberOfGateways: number = 2;
-  private gatewayAddressList: string[] = ['productionGateway', 'staingGateway'];
+  private gatewayAddressList: string[] = ['productionGateway', 'stagingGateway'];
 
   constructor(private http: HttpClient) { }
 

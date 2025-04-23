@@ -25,6 +25,7 @@
 
   <ItemGroup>
 	<InternalsVisibleTo Include="EnvironmentGateway.Application.IntegrationTests" />
+    <InternalsVisibleTo Include="EnvironmentGateway.Api.FunctionalTests"/>
   </ItemGroup>
 
 </Project>

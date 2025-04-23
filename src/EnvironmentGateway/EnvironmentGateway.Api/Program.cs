@@ -57,9 +57,9 @@ app.UseRequestContextLogging();
 
 app.UseSerilogRequestLogging();
 
-app.MapEndpoints();
-
 app.UseCustomExceptionHandler();
+
+app.MapEndpoints();
 
 app.MapReverseProxy();
 
