@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { GatewayConfiguration } from '../../../../../models/environment-gateway/gatewayConfiguration';
+import { GatewayConfiguration } from '../../../../../models/environment-gateway/gatewayConfig';
 import { EnvironmentGatewayDataService } from '../../../../../services/environment-gateway/environment-gateway-data.service';
 
 @Component({
@@ -21,8 +21,8 @@ export class RouteEditorComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subscription.add(this.environmentDataService.getGatewayConfiguration().subscribe(data => {
-      this.gatewayConfiguration = data ?? this.environmentDataService.getDefaultGatewayConfiguration();
+    this.subscription.add(this.environmentDataService.getGatewayConfig().subscribe(data => {
+      this.gatewayConfiguration = data ?? this.environmentDataService.getDefaultGatewayConfig();
       this.processRouteEditor();
     }));
 

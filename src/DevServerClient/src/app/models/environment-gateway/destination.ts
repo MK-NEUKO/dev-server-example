@@ -1,6 +1,4 @@
 export interface Destination {
+    destinationName: string;
     address: string;
-    health: string;
-    metadata: string;
-    host: string;
 }

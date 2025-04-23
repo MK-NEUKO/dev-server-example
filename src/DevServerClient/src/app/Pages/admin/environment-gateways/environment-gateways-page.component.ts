@@ -1,40 +1,36 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgFor } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { FormsModule } from '@angular/forms';
-import { GatewayComponent } from "./components/gateway/gateway.component";
 import { EnvironmentGatewayService } from '../../../services/environment-gateway/environment-gateway.service';
 import { EnvironmentGatewayDataService } from '../../../services/environment-gateway/environment-gateway-data.service';
-import { GatewayInfo } from '../../../models/environment-gateway/gatewayInfo';
+import { GatewayConfig } from '../../../models/environment-gateway/gatewayConfig';
 
 @Component({
   selector: 'app-environment-gateways',
   imports: [
-    GatewayComponent,
-    NgFor,
-    FormsModule,
   ],
   templateUrl: './environment-gateways-page.component.html',
   styleUrl: './environment-gateways-page.component.css'
 })
 export class EnvironmentGatewaysComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
-  public gateways: GatewayInfo[] = [];
+  public gatewayConfig: GatewayConfig = {} as GatewayConfig;
 
   constructor(
-    private environmentGatewaysService: EnvironmentGatewayService,
-    private environmentGatewaysDataService: EnvironmentGatewayDataService,
+    private environmentGatewayService: EnvironmentGatewayService,
+    private environmentGatewayDataService: EnvironmentGatewayDataService,
   ) { }
 
   ngOnInit() {
-    this.subscription.add(this.environmentGatewaysService.requestGateways().subscribe((data: GatewayInfo[]) => {
-      this.environmentGatewaysDataService.setGateways(data);
+    this.subscription.add(this.environmentGatewayService.getGatewayConfig().subscribe((data: GatewayConfig) => {
+      this.environmentGatewayDataService.setGatewayConfig(data);
       console.log(data);
 
     }));
 
-    this.subscription.add(this.environmentGatewaysDataService.getGateways().subscribe((data: GatewayInfo[]) => {
-      this.gateways = data;
+    this.subscription.add(this.environmentGatewayDataService.getGatewayConfig().subscribe((data: GatewayConfig | null) => {
+      if (data) {
+        this.gatewayConfig = data;
+      }
     }));
 
 
