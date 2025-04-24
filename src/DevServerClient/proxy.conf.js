@@ -11,21 +11,11 @@ module.exports = {
 
     "/productionGateway": {
       target:
-        process.env["services__productionGateway__https__0"] ||
-        process.env["services__productionGateway__http__0"],
+        process.env["services__envGateway__https__0"] ||
+        process.env["services__envGateway__http__0"],
       secure: process.env["NODE_ENV"] !== "development",
       pathRewrite: {
         "^/productionGateway": "",
-      },
-    },
-
-    "/stagingGateway": {
-      target:
-        process.env["services__stagingGateway__https__0"] ||
-        process.env["services__stagingGateway__http__0"],
-      secure: process.env["NODE_ENV"] !== "development",
-      pathRewrite: {
-        "^/stagingGateway": "",
       },
     },
   };

@@ -9,6 +9,16 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
@@ -50,6 +60,8 @@ using (var scope = app.Services.CreateScope())
     var runtimeConfigurator = scope.ServiceProvider.GetRequiredService<IRuntimeConfigurator>();
     await runtimeConfigurator.InitializeGateway();
 }
+
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
