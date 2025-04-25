@@ -3,11 +3,13 @@ import { Subscription } from 'rxjs';
 import { EnvironmentGatewayService } from '../../../services/environment-gateway/environment-gateway.service';
 import { EnvironmentGatewayDataService } from '../../../services/environment-gateway/environment-gateway-data.service';
 import { GatewayConfig } from '../../../models/environment-gateway/gatewayConfig';
+import { GatewayComponent } from './components/gateway/gateway.component';
+
 
 @Component({
   selector: 'app-environment-gateways',
   imports: [
-
+    GatewayComponent
   ],
   templateUrl: './environment-gateways-page.component.html',
   styleUrl: './environment-gateways-page.component.css'
