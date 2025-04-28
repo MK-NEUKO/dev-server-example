@@ -1,6 +1,9 @@
-<div>
-  <h1>Env Gateways</h1>
+<h1>Env Gateway home</h1>
 
-  <p>Name: {{ configName }}</p>
+<div *ngIf="config$ | async as config">
+  <h3>Env Gateways</h3>
+  <p>ID: {{ config.id }}</p>
+  <p>Name: {{ config.name }}</p>
 </div>
+
 <button (click)="getCurrentConfig()">Get Current Config</button>

@@ -1,21 +1,31 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { GatewayDataService } from '../../services/env-gateway/gateway-data.service';
+import { GatewayConfig } from '../../models/gateway-config/gateway-config.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-env-gateways',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './env-gateways.component.html',
   styleUrl: './env-gateways.component.css'
 })
-export class EnvGatewaysComponent {
+export class EnvGatewaysComponent implements OnInit {
   public configName: string = 'Configuration Name';
+  public config$!: Observable<GatewayConfig>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private gatewayDataService: GatewayDataService) { }
 
-  getCurrentConfig() {
-    this.http.get<unknown>('envGateway/current-config').subscribe(data => {
-      console.log(data);
-    });
+  ngOnInit(): void {
+    this.gatewayDataService.requestCurrentConfig();
+    this.getCurrentConfig();
+  }
+
+
+  public getCurrentConfig() {
+    this.config$ = this.gatewayDataService.getCurrentConfig();
+    console.log('Config:', this.config$);
   }
 }
+
 
