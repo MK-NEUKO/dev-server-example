@@ -1,4 +1,48 @@
-<h1>Env Gateway home</h1>
+<h1>Env Gateways of Dev Server Example</h1>
+
+<div *ngIf="error$ | async as error">
+  <div *ngIf="error.hasError">
+    <h3>{{ error.title }}</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Has Error</td>
+          <td>{{ error.hasError }}</td>
+        </tr>
+        <tr>
+          <td>Name</td>
+          <td>{{ error.name }}</td>
+        </tr>
+        <tr>
+          <td>Ok</td>
+          <td>{{ error.ok }}</td>
+        </tr>
+        <tr>
+          <td>Status Code</td>
+          <td>{{ error.status }}</td>
+        </tr>
+        <tr>
+          <td>Status Text</td>
+          <td>{{ error.statusText }}</td>
+        </tr>
+        <tr>
+          <td>Type</td>
+          <td>{{ error.type }}</td>
+        </tr>
+        <tr>
+          <td>Url</td>
+          <td>{{ error.url }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <ng-container *ngIf="!(isLoading$ | async); else loading">
   <div *ngIf="config$ | async as config">
