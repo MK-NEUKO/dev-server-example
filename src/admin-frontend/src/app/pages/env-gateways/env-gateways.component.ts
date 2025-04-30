@@ -11,18 +11,20 @@ import { Observable } from 'rxjs';
   styleUrl: './env-gateways.component.css'
 })
 export class EnvGatewaysComponent implements OnInit {
-  public configName: string = 'Configuration Name';
+  public configName: string = '';
   public config$!: Observable<GatewayConfig>;
+  public isLoading$!: Observable<boolean>;
 
   constructor(private gatewayDataService: GatewayDataService) { }
 
   ngOnInit(): void {
-    this.gatewayDataService.requestCurrentConfig();
     this.getCurrentConfig();
   }
 
 
   public getCurrentConfig() {
+    this.gatewayDataService.queryCurrentConfig();
+    this.isLoading$ = this.gatewayDataService.getLoadingState();
     this.config$ = this.gatewayDataService.getCurrentConfig();
     console.log('Config:', this.config$);
   }
