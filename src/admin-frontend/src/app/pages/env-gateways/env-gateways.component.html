@@ -1,81 +1,48 @@
-<h1>Env Gateways of Dev Server Example</h1>
+<section class="container">
+  <h1>Env Gateways of Dev Server Example</h1>
+  <div class="gateway-card">
+    <div
+      class="gateway-card__header"
+      [class.bg-success]="!currentConfig.error()"
+      [class.bg-danger]="currentConfig.error()"
+    >
+      <h2 class="gateway-card__heading">Gateway 1</h2>
+    </div>
 
-<div class="gateway-card">
-  <div
-    class="gateway-card__header"
-    [class.bg-success]="!currentConfig.error()"
-    [class.bg-danger]="currentConfig.error()"
-  >
-    <h2 class="gateway-card__heading">Gateway 1</h2>
-  </div>
-
-  @if(currentConfig.value()){
-  <p>super</p>
-  <p>{{ currentConfig.value()?.id }}</p>
-  } @if(currentConfig.isLoading()){
-  <p>Loading...</p>
-  }
-
-  <!--
-  <div class="gateway-card__body">
-    <ng-container *ngIf="!(isLoading$ | async); else loading">
-      <div *ngIf="error$ | async as error">
-        <div *ngIf="error.hasError">
-          <h3>{{ error.title }}</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Property</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Has Error</td>
-                <td>{{ error.hasError }}</td>
-              </tr>
-              <tr>
-                <td>Name</td>
-                <td>{{ error.name }}</td>
-              </tr>
-              <tr>
-                <td>Ok</td>
-                <td>{{ error.ok }}</td>
-              </tr>
-              <tr>
-                <td>Status Code</td>
-                <td>{{ error.status }}</td>
-              </tr>
-              <tr>
-                <td>Status Text</td>
-                <td>{{ error.statusText }}</td>
-              </tr>
-              <tr>
-                <td>Type</td>
-                <td>{{ error.type }}</td>
-              </tr>
-              <tr>
-                <td>Url</td>
-                <td>{{ error.url }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="gateway-card__body">
+      <ng-container *ngIf="!currentConfig.isLoading(); else loading">
+        <div
+          class="gateway-card__body-content bg-danger-emphasis"
+          *ngIf="currentConfig.error() as error"
+        >
+          <h3>Error</h3>
+          <pre class="gateway-card__code">{{
+            currentConfig.error() | json
+          }}</pre>
         </div>
-      </div>
-
-      <div *ngIf="config$ | async as config">
-        <h3>Env Gateways</h3>
-        <p>ID: {{ config.id }}</p>
-        <p>Name: {{ config.name }}</p>
-      </div>
-    </ng-container>
-
-    <ng-template #loading>
-      <p>Loading...</p>
-    </ng-template>
+        <div
+          class="gateway-card__body-content"
+          *ngIf="currentConfig.value() as config"
+        >
+          <h3>Name: {{ currentConfig.value()?.name }}</h3>
+          <pre class="gateway-card__code">{{
+            currentConfig.value() | json
+          }}</pre>
+        </div>
+      </ng-container>
+      <ng-template #loading>
+        <div class="spinner__container">
+          <div class="spinner">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <div class="gateway-card__footer">
+      <button class="button" (click)="currentConfig.reload()">Reloade</button>
+      <button class="button margin-start" (click)="destinationTest()">
+        Test
+      </button>
+    </div>
   </div>
--->
-  <div class="gateway-card__footer">
-    <button (click)="currentConfig.reload()">Get Current Config</button>
-  </div>
-</div>
+</section>

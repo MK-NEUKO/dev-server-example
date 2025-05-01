@@ -12,6 +12,13 @@ export class EnvGatewaysComponent {
 
   private gatewayDataService = inject(GatewayDataService);
   public currentConfig = this.gatewayDataService.getCurrentConfig();
+  private destinationUrl = 'https://localhost:5201/';
+
+  constructor() { }
+
+  destinationTest() {
+    window.open(this.destinationUrl, '_blank');
+  }
 }
 
 

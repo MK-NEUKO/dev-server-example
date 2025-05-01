@@ -1,7 +1,102 @@
+/** Breakpoint: 576px+ */
+@media (min-width: 36em) {
+}
+
+/** Breakpoint: 768px+ */
+@media (min-width: 48em) {
+}
+
+/** Breakpoint: 992px+ */
+@media (min-width: 62em) {
+}
+
+/** Breakpoint: 1200px+ */
+@media (min-width: 75em) {
+}
+
+/** Breakpoint: 1400px+ */
+@media (min-width: 87.5em) {
+}
+
+html {
+  font-size: 1em;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 75rem;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+@media (min-width: 62em) {
+  .container {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.margin-start {
+  margin-left: 1rem;
+}
+
 .bg-success {
   background-color: #28a745;
 }
 
 .bg-danger {
   background-color: #dc3545;
+}
+
+.button {
+  display: inline-block;
+  background-color: #57caff;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 0.075rem solid #57caff;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
+}
+.button:hover {
+  background-color: #4da3e6;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+}
+.button:active {
+  background-color: #3b8cc2;
+}
+
+.spinner {
+  display: inline-block;
+  width: 5rem;
+  height: 5rem;
+  vertical-align: -0.125em;
+  border-radius: 50%;
+  animation: 0.75s linear infinite spinner;
+  border: 0.5em solid gray;
+  border-right-color: transparent;
+}
+@keyframes spinner {
+  to {
+    transform: rotate(360deg) /* rtl:ignore */;
+  }
 }
