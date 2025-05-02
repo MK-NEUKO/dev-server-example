@@ -6,13 +6,19 @@
       [class.bg-success]="!currentConfig.error()"
       [class.bg-danger]="currentConfig.error()"
     >
-      <h2 class="gateway-card__heading">Gateway 1</h2>
+      <h2 class="gateway-card__heading">Production Gateway</h2>
+      <button class="button" (click)="changeCardBodyHeight()">
+        <span *ngIf="!isMaximized" class="icon icon--maximize">max</span>
+        <span *ngIf="isMaximized" class="icon icon--minimize">min</span>
+      </button>
     </div>
-
-    <div class="gateway-card__body">
+    <div
+      class="gateway-card__body"
+      [class.gateway-card__body--maximized]="isMaximized"
+    >
       <ng-container *ngIf="!currentConfig.isLoading(); else loading">
         <div
-          class="gateway-card__body-content bg-danger-emphasis"
+          class="gateway-card__body-content"
           *ngIf="currentConfig.error() as error"
         >
           <h3>Error</h3>
@@ -24,7 +30,10 @@
           class="gateway-card__body-content"
           *ngIf="currentConfig.value() as config"
         >
-          <h3>Name: {{ currentConfig.value()?.name }}</h3>
+          <h3>
+            Name:
+            <span class="text--cursive">{{ currentConfig.value()?.name }}</span>
+          </h3>
           <div *ngIf="currentConfig.value() as config">
             <pre>
               <code [highlight]="config | json" language="json" lineNumbers></code>

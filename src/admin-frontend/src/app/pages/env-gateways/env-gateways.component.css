@@ -26,6 +26,10 @@
   padding: 1rem;
 }
 
+.gateway-card__body--maximized {
+  height: 100%;
+}
+
 .gateway-card__code {
   font-family: monospace;
   font-size: 0.875rem;

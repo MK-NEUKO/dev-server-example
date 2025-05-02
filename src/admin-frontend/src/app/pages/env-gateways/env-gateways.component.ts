@@ -4,7 +4,7 @@ import { GatewayDataService } from '../../services/env-gateway/gateway-data.serv
 import { Highlight } from 'ngx-highlightjs';
 import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
 
-import 'highlight.js/styles/androidstudio.min.css';
+import 'highlight.js/styles/atom-one-light.min.css';
 
 @Component({
   selector: 'app-env-gateways',
@@ -22,6 +22,8 @@ export class EnvGatewaysComponent {
 
   private gatewayDataService = inject(GatewayDataService);
   public currentConfig = this.gatewayDataService.getCurrentConfig();
+  public isMaximized = false;
+
   private destinationUrl = 'https://localhost:5201/';
 
 
@@ -29,5 +31,13 @@ export class EnvGatewaysComponent {
 
   destinationTest() {
     window.open(this.destinationUrl, '_blank');
+  }
+
+  changeCardBodyHeight() {
+    if (this.isMaximized) {
+      this.isMaximized = false;
+    } else {
+      this.isMaximized = true;
+    }
   }
 }
