@@ -25,9 +25,11 @@
           *ngIf="currentConfig.value() as config"
         >
           <h3>Name: {{ currentConfig.value()?.name }}</h3>
-          <pre class="gateway-card__code">{{
-            currentConfig.value() | json
-          }}</pre>
+          <div *ngIf="currentConfig.value() as config">
+            <pre>
+              <code [highlight]="config | json" language="json" lineNumbers></code>
+            </pre>
+          </div>
         </div>
       </ng-container>
       <ng-template #loading>
