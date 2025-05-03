@@ -1,11 +1,11 @@
 <section class="container">
   <h1>Environment Gateways</h1>
   <div class="gateway-card">
-    <div
-      class="gateway-card__header"
-      [class.bg-success]="!currentConfig.error()"
-      [class.bg-danger]="currentConfig.error()"
-    >
+    <div class="gateway-card-status" [class]="processStatusClass()"></div>
+    <div class="gateway-card__header">
+      <div class="gateway-card__header-status" [class]="processStatusClass()">
+        {{ processStatusText() }}
+      </div>
       <h2 class="gateway-card__heading">Production Gateway</h2>
       <button class="button" (click)="changeCardBodyHeight()">
         <span *ngIf="!isMaximized" class="icon icon--maximize">max</span>
@@ -21,7 +21,7 @@
           class="gateway-card__body-content"
           *ngIf="currentConfig.error() as error"
         >
-          <h3>Error</h3>
+          <h3 class="text-danger">Error</h3>
           <pre>
             <code [highlight]="error | json" language="json" lineNumbers></code>
            

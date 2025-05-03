@@ -1,21 +1,64 @@
 .gateway-card {
+  position: relative;
   margin: 0;
   padding: 0;
   overflow: hidden;
   border: 0.075rem solid var(--neuko-border);
   border-radius: 0.5rem;
 }
+.gateway-card-status {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -24px;
+  width: 50%;
+  height: 2rem;
+  background-color: var(--neuko-bg-success);
+  border-radius: 9999rem;
+}
 
 .gateway-card__header {
+  display: flex;
+  justify-content: space-between;
   margin: 0;
   padding: 1rem;
   border-bottom: 0.075rem solid var(--neuko-border);
   background-color: var(--neuko-bg-secondary);
 }
 
+.gateway-card__header-status {
+  display: flex;
+  text-transform: uppercase;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  width: 7rem;
+  color: var(--neuko-text-body-quaternary);
+  background-color: var(--neuko-text-body-quaternary);
+  border-radius: 0.25rem;
+}
+.status--success {
+  background-color: var(--neuko-bg-success);
+  color: var(--neuko-text-body-highlight);
+}
+.status--loading {
+  background-color: var(--neuko-bg-body-quaternary);
+  color: var(--neuko-text-body-highlight);
+}
+.status--error {
+  background-color: var(--neuko-bg-danger);
+  color: var(--neuko-text-body-highlight);
+}
+
 .gateway-card__heading {
   margin: 0;
+  display: block;
+  text-align: center;
   font-size: 1.25rem;
+  color: var(--neuko-text-body-highlight);
 }
 
 .gateway-card__body {

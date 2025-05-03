@@ -39,4 +39,26 @@ export class EnvGatewaysComponent {
       this.isMaximized = true;
     }
   }
+
+  processStatusText(): string {
+    if (this.currentConfig.isLoading()) {
+      return 'LOADING';
+    } else if (this.currentConfig.hasValue()) {
+      return 'SUCCESS';
+    } else if (this.currentConfig.error()) {
+      return 'ERROR';
+    }
+    return 'WAITING';
+  }
+
+  processStatusClass(): string {
+    if (this.currentConfig.isLoading()) {
+      return 'status--loading';
+    } else if (this.currentConfig.hasValue()) {
+      return 'status--success';
+    } else if (this.currentConfig.error()) {
+      return 'status--error';
+    }
+    return 'status-waiting';
+  }
 }

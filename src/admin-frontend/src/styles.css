@@ -22,26 +22,36 @@
 [data-neuko-theme="light"] {
   --neuko-text-body: #31374a;
   --neuko-text-body-highlight: #222834;
+  --neuko-text-body-quaternary: #8a94ad;
+  --neuko-text-success: #25b003;
+  --neuko-text-warning: #e5780b;
+  --neuko-text-danger: #ec1f00;
   --neuko-bg-body: #f5f7fa;
   --neuko-bg-body-secondary: #e3e6ed;
-  --neuko-bg-highlight: #eff2f6;
+  --neuko-bg-body-highlight: #eff2f6;
   --neuko-bg-body-tertiary: #cbd0dd;
   --neuko-bg-body-quaternary: #9fa6bc;
   --neuko-bg-success: #90d67f;
-  --neuko-bg-danger: #f48270;
+  --neuko-bg-warning: #e5780b;
+  --neuko-bg-danger: #ff5b42;
   --neuko-border: #e3e6ed;
   --neuko-bg-card: #ffffff;
 }
 
 [data-neuko-theme="dark"] {
   --neuko-text-body: #9fa6bc;
-  --neuko-text-body-highlight: #cbd0dd;
+  --neuko-text-body-highlight: #dee2ec;
+  --neuko-text-body-quaternary: #5e677f;
+  --neuko-text-success: #90d67f;
+  --neuko-text-warning: #ffcc85;
+  --neuko-text-danger: #f48270;
   --neuko-bg-body: #0f111a;
   --neuko-bg-body-secondary: #31374a;
-  --neuko-bg-highlight: #222834;
+  --neuko-bg-body-highlight: #222834;
   --neuko-bg-body-tertiary: #373e53;
   --neuko-bg-body-quaternary: #3e465b;
   --neuko-bg-success: #25b003;
+  --neuko-bg-warning: #ffcc85;
   --neuko-bg-danger: #ec1f00;
   --neuko-border: #2f3549;
   --neuko-bg-card: #141824;
@@ -94,29 +104,42 @@ body {
 .bg-success {
   background-color: var(--neuko-bg-success);
 }
-
+.bg-warnig {
+  background-color: var(--neuko-bg-warning);
+}
 .bg-danger {
   background-color: var(--neuko-bg-danger);
 }
 
+.text-success {
+  color: var(--neuko-bg-success);
+}
+.text-warning {
+  color: var(--neuko-bg-warning);
+}
+.text-danger {
+  color: var(--neuko-bg-danger);
+}
+
 .button {
   display: inline-block;
-  background-color: #57caff;
+  background-color: var(--neuko-bg-body-highlight);
+  color: var(--neuko-text-body);
   padding: 0.5rem 1rem;
   font-size: 1rem;
   border-radius: 0.5rem;
-  border: 0.075rem solid #57caff;
+  border: 0.075rem solid var(--neuko-border);
   font-weight: bold;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
 }
 .button:hover {
-  background-color: #4da3e6;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+  background-color: var(--neuko-bg-body);
+  color: var(--neuko-text-body-highlight);
 }
 .button:active {
-  background-color: #3b8cc2;
+  color: var(--neuko-text-body);
+  border-color: var(--neuko-bg-body-highlight);
 }
 
 .spinner {
