@@ -4,14 +4,13 @@ import { GatewayDataService } from '../../services/env-gateway/gateway-data.serv
 import { Highlight } from 'ngx-highlightjs';
 import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
 
-import 'highlight.js/styles/atom-one-light.min.css';
 
 @Component({
   selector: 'app-env-gateways',
   imports: [
     CommonModule,
     Highlight,
-    HighlightLineNumbers
+    HighlightLineNumbers,
   ],
   templateUrl: './env-gateways.component.html',
   styleUrls: [

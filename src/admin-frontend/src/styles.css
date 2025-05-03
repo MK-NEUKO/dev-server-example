@@ -20,17 +20,31 @@
 
 :root,
 [data-neuko-theme="light"] {
-  --neuko-body-color: #212529;
-  --neuko-body-color-rgb: 33, 37, 41;
-  --neuko-body-bg: #fff;
-  --neuko-body-bg-rgb: 255, 255, 255;
+  --neuko-text-body: #31374a;
+  --neuko-text-body-highlight: #222834;
+  --neuko-bg-body: #f5f7fa;
+  --neuko-bg-body-secondary: #e3e6ed;
+  --neuko-bg-highlight: #eff2f6;
+  --neuko-bg-body-tertiary: #cbd0dd;
+  --neuko-bg-body-quaternary: #9fa6bc;
+  --neuko-bg-success: #90d67f;
+  --neuko-bg-danger: #f48270;
+  --neuko-border: #e3e6ed;
+  --neuko-bg-card: #ffffff;
 }
 
 [data-neuko-theme="dark"] {
-  --neuko-body-color: #dee2e6;
-  --neuko-body-color-rgb: 222, 226, 230;
-  --neuko-body-bg: #212529;
-  --neuko-body-bg-rgb: 33, 37, 41;
+  --neuko-text-body: #9fa6bc;
+  --neuko-text-body-highlight: #cbd0dd;
+  --neuko-bg-body: #0f111a;
+  --neuko-bg-body-secondary: #31374a;
+  --neuko-bg-highlight: #222834;
+  --neuko-bg-body-tertiary: #373e53;
+  --neuko-bg-body-quaternary: #3e465b;
+  --neuko-bg-success: #25b003;
+  --neuko-bg-danger: #ec1f00;
+  --neuko-border: #2f3549;
+  --neuko-bg-card: #141824;
 }
 
 html {
@@ -41,8 +55,8 @@ body {
   font-family: "Segoe UI", sans-serif;
   margin: 0;
   padding: 0;
-  color: var(--neuko-body-color);
-  background-color: var(--neuko-body-bg);
+  color: var(--neuko-text-body);
+  background-color: var(--neuko-bg-body);
 }
 
 /*########################################################################*/
@@ -78,11 +92,11 @@ body {
 }
 
 .bg-success {
-  background-color: #28a745;
+  background-color: var(--neuko-bg-success);
 }
 
 .bg-danger {
-  background-color: #dc3545;
+  background-color: var(--neuko-bg-danger);
 }
 
 .button {
@@ -186,8 +200,8 @@ td.hljs-ln-numbers {
   left: 0;
   user-select: none;
   text-align: center;
-  color: #cccccc6b;
-  border-right: 1px solid #cccccc1c;
+  color: var(--neuko-text-body);
+  border-right: 1px solid var(--neuko-border);
   vertical-align: top;
   padding-right: 10px !important;
   padding-left: 10px !important;

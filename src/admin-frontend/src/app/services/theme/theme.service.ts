@@ -1,9 +1,11 @@
-import { effect, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
+import { HighlightLoader } from 'ngx-highlightjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
+  private hljsLoader: HighlightLoader = inject(HighlightLoader);
 
   themeSignal = signal<string>(
     JSON.parse(window.localStorage.getItem('themeSignal') ?? 'null')
@@ -23,5 +25,6 @@ export class ThemeService {
   applyTheme() {
     const theme = this.themeSignal() === 'dark' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-neuko-theme', theme);
+    this.hljsLoader.setTheme(theme === 'dark' ? 'styles/highlightjs/github-dark.min.css' : 'styles/highlightjs/github.min.css');
   }
 }

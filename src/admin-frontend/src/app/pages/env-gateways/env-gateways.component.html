@@ -1,5 +1,5 @@
 <section class="container">
-  <h1>Env Gateways of Dev Server Example</h1>
+  <h1>Environment Gateways</h1>
   <div class="gateway-card">
     <div
       class="gateway-card__header"
@@ -22,9 +22,10 @@
           *ngIf="currentConfig.error() as error"
         >
           <h3>Error</h3>
-          <pre class="gateway-card__code">{{
-            currentConfig.error() | json
-          }}</pre>
+          <pre>
+            <code [highlight]="error | json" language="json" lineNumbers></code>
+           
+          </pre>
         </div>
         <div
           class="gateway-card__body-content"

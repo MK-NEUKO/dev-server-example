@@ -2,25 +2,27 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  border: 0.075rem solid #ccc;
+  border: 0.075rem solid var(--neuko-border);
   border-radius: 0.5rem;
 }
 
 .gateway-card__header {
   margin: 0;
   padding: 1rem;
-  border-bottom: 0.075rem solid #ccc;
+  border-bottom: 0.075rem solid var(--neuko-border);
+  background-color: var(--neuko-bg-secondary);
 }
 
 .gateway-card__heading {
   margin: 0;
+  font-size: 1.25rem;
 }
 
 .gateway-card__body {
   margin: 0;
   height: 20rem;
   overflow: auto;
-  background-color: #fff;
+  background-color: var(--neuko-bg-card);
 }
 .gateway-card__body-content {
   padding: 1rem;
@@ -50,6 +52,6 @@
 .gateway-card__footer {
   margin: 0;
   padding: 1rem;
-  background-color: #f9f9f9;
-  border-top: 0.075rem solid #ccc;
+  background-color: var(--neuko-bg-secondary);
+  border-top: 0.075rem solid var(--neuko-border);
 }
