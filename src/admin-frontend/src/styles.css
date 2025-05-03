@@ -18,6 +18,9 @@
 @media (min-width: 87.5em) {
 }
 
+/*########################################################################*/
+/* Color themes */
+/*########################################################################*/
 :root,
 [data-neuko-theme="light"] {
   --neuko-text-body: #31374a;
@@ -57,6 +60,38 @@
   --neuko-bg-card: #141824;
 }
 
+/*########################################################################*/
+/* Scrollbar styling */
+/*########################################################################*/
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--neuko-bg-body-quaternary)
+    var(--neuko-bg-body-secondary);
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--neuko-bg-body-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--neuko-bg-body-quaternary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--neuko-bg-body-tertiary);
+}
+
+/*########################################################################*/
+/* General classes */
+/*########################################################################*/
 html {
   font-size: 1em;
 }

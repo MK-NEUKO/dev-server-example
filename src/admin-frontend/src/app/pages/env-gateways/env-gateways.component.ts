@@ -59,6 +59,6 @@ export class EnvGatewaysComponent {
     } else if (this.currentConfig.error()) {
       return 'status--error';
     }
-    return 'status-waiting';
+    return 'status--waiting';
   }
 }

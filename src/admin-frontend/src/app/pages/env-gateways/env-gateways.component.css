@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
+  background-color: var(--neuko-bg-body-secondary);
   border: 0.075rem solid var(--neuko-border);
   border-radius: 0.5rem;
 }
