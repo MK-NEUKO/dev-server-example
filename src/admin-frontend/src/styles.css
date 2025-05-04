@@ -23,6 +23,10 @@
 /*########################################################################*/
 :root,
 [data-neuko-theme="light"] {
+  --neuko-bg-dark-nav: #222834;
+  --neuko-text-dark-nav: #9fa6bc;
+  --neuko-text-dark-nav-highlight: #dee2ec;
+  --neuko-border-dark-nav: #31374a;
   --neuko-text-body: #31374a;
   --neuko-text-body-highlight: #222834;
   --neuko-text-body-quaternary: #8a94ad;

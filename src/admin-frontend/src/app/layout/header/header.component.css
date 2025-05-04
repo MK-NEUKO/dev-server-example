@@ -3,14 +3,15 @@
   flex-direction: row;
   justify-content: space-between;
   padding: 1rem 2rem;
-  border-bottom: 0.125rem solid var(--neuko-border);
+  background-color: var(--neuko-bg-dark-nav);
+  border-bottom: 0.125rem solid var(--neuko-border-dark-nav);
 }
 
 .navbar__brand {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: var(--neuko-text-body);
+  color: var(--neuko-text-dark-nav);
 }
 .navbar__brand-heading {
   margin: 0;

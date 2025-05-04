@@ -11,7 +11,8 @@
   margin: 0;
   width: 10rem;
   height: 100vh;
-  border-right: 0.125rem solid var(--neuko-border);
+  border-right: 0.125rem solid var(--neuko-border-dark-nav);
+  background-color: var(--neuko-bg-dark-nav);
 }
 
 .layout__content {

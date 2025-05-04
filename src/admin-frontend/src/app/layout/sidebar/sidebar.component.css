@@ -1,5 +1,6 @@
 .sidebar__nav {
   padding: 1rem;
+  color: var(--neuko-text-dark-nav);
 }
 
 .sidebar__nav-admin {
@@ -15,13 +16,12 @@
 .sidbar__nav-admin-icon {
   width: 20px;
   height: 20px;
-  fill: var(--neuko-text-body);
+  fill: var(--neuko-text-dark-nav);
 }
 
 .sidebar__nav-admin-text {
   padding-left: 0.75rem;
   font-size: 1.25rem;
-  color: var(--neuko-text-body);
 }
 
 .sidebar__nav-list {
@@ -37,8 +37,8 @@
 
 .sidebar__nav-link {
   text-decoration: none;
-  color: var(--neuko-text-body);
+  color: var(--neuko-text-dark-nav);
 }
 .sidebar__nav-link:hover {
-  color: var(--neuko-text-body-highlight);
+  color: var(--neuko-text-dark-nav-highlight);
 }

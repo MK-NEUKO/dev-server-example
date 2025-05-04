@@ -1,6 +1,7 @@
 .theme-toggle svg {
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
+  fill: var(--neuko-text-dark-nav);
 }
 
 .theme-toggle svg:hover {
