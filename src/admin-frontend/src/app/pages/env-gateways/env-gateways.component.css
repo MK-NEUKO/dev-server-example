@@ -64,7 +64,7 @@
 
 .gateway-card__body {
   margin: 0;
-  height: 20rem;
+  height: 15rem;
   overflow: auto;
   background-color: var(--neuko-bg-card);
 }
