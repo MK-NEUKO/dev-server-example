@@ -1,0 +1,60 @@
+<section class="container">
+  <h1>Environment Gateways</h1>
+  <div class="gateway-card">
+    <div class="gateway-card-status" [class]="processStatusClass()"></div>
+    <div class="gateway-card__header">
+      <div class="gateway-card__header-status" [class]="processStatusClass()">
+        {{ processStatusText() }}
+      </div>
+      <h2 class="gateway-card__heading">Production Gateway</h2>
+      <button class="button" (click)="changeCardBodyHeight()">
+        <span *ngIf="!isMaximized" class="icon icon--maximize">max</span>
+        <span *ngIf="isMaximized" class="icon icon--minimize">min</span>
+      </button>
+    </div>
+    <div
+      class="gateway-card__body"
+      [class.gateway-card__body--maximized]="isMaximized"
+    >
+      <ng-container *ngIf="!currentConfig.isLoading(); else loading">
+        <div
+          class="gateway-card__body-content"
+          *ngIf="currentConfig.error() as error"
+        >
+          <h3 class="text-danger">Error</h3>
+          <pre>
+            <code [highlight]="error | json" language="json" lineNumbers></code>
+           
+          </pre>
+        </div>
+        <div
+          class="gateway-card__body-content"
+          *ngIf="currentConfig.value() as config"
+        >
+          <h3>
+            Name:
+            <span class="text--cursive">{{ currentConfig.value()?.name }}</span>
+          </h3>
+          <div *ngIf="currentConfig.value() as config">
+            <pre>
+              <code [highlight]="config | json" language="json" lineNumbers></code>
+            </pre>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #loading>
+        <div class="spinner__container">
+          <div class="spinner">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <div class="gateway-card__footer">
+      <button class="button" (click)="currentConfig.reload()">Reloade</button>
+      <button class="button margin-start" (click)="destinationTest()">
+        Test
+      </button>
+    </div>
+  </div>
+</section>

@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { EnvironmentGatewayDataService } from './environment-gateway-data.service';
 
 describe('EnvironmentGatewayDataService', () => {

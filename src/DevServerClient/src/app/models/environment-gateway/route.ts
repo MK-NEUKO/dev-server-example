@@ -1,17 +1,7 @@
-import { Match } from './match';
+import { RouteMatch } from './routeMatch';
 
 export interface Route {
-    routeId: string;
-    match: Match;
-    order: string;
-    clusterIs: string;
-    authorizationPolicy: string;
-    rateLimiterPolicy: string;
-    outputCachePolicy: string;
-    timeoutPolicy: string;
-    timeout: string;
-    corsPolicy: string;
-    maxRequestBodySize: string;
-    metadata: string;
-    transforms: string;
+    routeName: string;
+    clusterName: string;
+    match: RouteMatch;
 }

@@ -1,0 +1,10 @@
+.theme-toggle svg {
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+  fill: var(--neuko-text-dark-nav);
+}
+
+.theme-toggle svg:hover {
+  transform: scale(1.1);
+  transform: scale(1.1) rotate(10deg);
+}

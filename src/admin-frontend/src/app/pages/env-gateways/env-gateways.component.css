@@ -1,0 +1,101 @@
+.gateway-card {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--neuko-bg-body-secondary);
+  border: 0.075rem solid var(--neuko-border);
+  border-radius: 0.5rem;
+}
+.gateway-card-status {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -24px;
+  width: 50%;
+  height: 2rem;
+  background-color: var(--neuko-bg-success);
+  border-radius: 9999rem;
+}
+
+.gateway-card__header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 1rem;
+  border-bottom: 0.075rem solid var(--neuko-border);
+  background-color: var(--neuko-bg-secondary);
+}
+
+.gateway-card__header-status {
+  display: flex;
+  text-transform: uppercase;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  width: 7rem;
+  color: var(--neuko-text-body-quaternary);
+  background-color: var(--neuko-text-body-quaternary);
+  border-radius: 0.25rem;
+}
+.status--success {
+  background-color: var(--neuko-bg-success);
+  color: var(--neuko-text-body-highlight);
+}
+.status--loading {
+  background-color: var(--neuko-bg-body-quaternary);
+  color: var(--neuko-text-body-highlight);
+}
+.status--error {
+  background-color: var(--neuko-bg-danger);
+  color: var(--neuko-text-body-highlight);
+}
+
+.gateway-card__heading {
+  margin: 0;
+  display: block;
+  text-align: center;
+  font-size: 1.25rem;
+  color: var(--neuko-text-body-highlight);
+}
+
+.gateway-card__body {
+  margin: 0;
+  height: 15rem;
+  overflow: auto;
+  background-color: var(--neuko-bg-card);
+}
+.gateway-card__body-content {
+  padding: 1rem;
+}
+
+.gateway-card__body--maximized {
+  height: 100%;
+}
+
+.gateway-card__code {
+  font-family: monospace;
+  font-size: 0.875rem;
+  background-color: #e7e7e7;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+.spinner__container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.gateway-card__footer {
+  margin: 0;
+  padding: 1rem;
+  background-color: var(--neuko-bg-secondary);
+  border-top: 0.075rem solid var(--neuko-border);
+}
