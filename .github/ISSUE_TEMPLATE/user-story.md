@@ -11,8 +11,8 @@ assignees: ''
 
 **Acceptance criteria**
 
--[] Assume [precondition] if [action] then [result].
--[] Assume [precondition] if [action] then [result].
--[] Assume [precondition] if [action] then [result].
--[] Assume [precondition] if [action] then [result].
--[] Assume [precondition] if [action] then [result].
+- [] Assume [precondition] if [action] then [result].
+- [] Assume [precondition] if [action] then [result].
+- [] Assume [precondition] if [action] then [result].
+- [] Assume [precondition] if [action] then [result].
+- [] Assume [precondition] if [action] then [result].
