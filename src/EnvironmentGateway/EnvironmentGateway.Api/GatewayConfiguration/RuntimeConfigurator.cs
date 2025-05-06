@@ -1,42 +1,66 @@
 ﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
+using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
+using EnvironmentGateway.Domain.GatewayConfigs;
+using MediatR;
 using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
-internal sealed class RuntimeConfigurator(IInitialConfigurator initialConfigurator,
+internal sealed class RuntimeConfigurator(
+    IInitialConfigurator initialConfigurator,
     IProxyConfigProvider configurationProvider,
-    InMemoryConfigProvider inMemoryConfigProvider) 
+    InMemoryConfigProvider inMemoryConfigProvider,
+    ISender sender) 
     : IRuntimeConfigurator
 {
-    public void ChangeDestinationAddress(string address)
+    public async Task UpdateConfig()
     {
-        var currentConfig = configurationProvider.GetConfig();
-        var routes = currentConfig?.Routes;
-        var clusters = currentConfig?.Clusters;
+        var query = new GetStartConfigQuery(true);
+        var result = await sender.Send(query, CancellationToken.None);
 
-        var newClusters = new List<ClusterConfig>();
-        if (clusters != null)
-            foreach (var cluster in clusters)
+        var currentConfig = MapToProxyConfig(result.Value);
+
+        UpdateConfiguration(currentConfig);
+    }
+
+    private InitialConfiguration MapToProxyConfig(StartConfigResponse resultValue)
+    {
+        var routes = new List<RouteConfig>();
+        foreach (var route in resultValue.Routes)
+        {
+            var routeConfig = new RouteConfig()
             {
-                var newDestinations = new Dictionary<string, DestinationConfig>(cluster.Destinations!.Count);
-                foreach (var destination in cluster.Destinations)
+                RouteId = route.RouteName,
+                ClusterId = route.ClusterName,
+                Match = new RouteMatch()
                 {
-                    var newDestination = new DestinationConfig
-                    {
-                        Address = address
-                    };
-                    newDestinations[destination.Key] = newDestination;
+                    Path = route.Match.Path
                 }
+            };
+            routes.Add(routeConfig);
+        }
 
-                var newCluster = new ClusterConfig
+        var clusters = new List<ClusterConfig>();
+        var clusterCounter = 0;
+        foreach (var cluster in resultValue.Clusters)
+        {
+            var clusterConfig = new ClusterConfig()
+            {
+                ClusterId = cluster.ClusterName,
+                Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
                 {
-                    ClusterId = cluster.ClusterId,
-                    Destinations = newDestinations
-                };
-                newClusters.Add(newCluster);
-            }
+                    {
+                        cluster.Destinations[clusterCounter].DestinationName,
+                        new DestinationConfig() { Address = cluster.Destinations[clusterCounter].Address }
 
-        if (routes != null) inMemoryConfigProvider.Update(routes, newClusters);
+                    }
+                }
+            };
+            clusterCounter++;
+            clusters.Add(clusterConfig);
+        }
+
+        return new InitialConfiguration(routes.ToArray(), clusters.ToArray());
     }
 
     public async Task InitializeGateway()
@@ -51,8 +75,8 @@ internal sealed class RuntimeConfigurator(IInitialConfigurator initialConfigurat
         UpdateConfiguration(initialConfiguration);
     }
 
-    private void UpdateConfiguration(InitialConfiguration initialConfiguration)
+    private void UpdateConfiguration(InitialConfiguration configuration)
     {
-        inMemoryConfigProvider.Update(initialConfiguration.Routes, initialConfiguration.Clusters);
+        inMemoryConfigProvider.Update(configuration.Routes, configuration.Clusters);
     }
 }

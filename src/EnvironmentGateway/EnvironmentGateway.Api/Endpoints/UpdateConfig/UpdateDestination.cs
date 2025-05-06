@@ -1,17 +1,18 @@
-﻿using EnvironmentGateway.Application.Destinations.UpdateDestination;
+﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
+using EnvironmentGateway.Application.Destinations.UpdateDestination;
 using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace EnvironmentGateway.Api.Endpoints.ChangeConfig;
+namespace EnvironmentGateway.Api.Endpoints.UpdateConfig;
 
-public class ChangeDestination : IEndpoint
+public class UpdateDestination : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPut("change-destination", async (
-            ChangeDestinationRequest request,
+            UpdateDestinationRequest request,
             ISender sender,
+            IRuntimeConfigurator runtimeConfigurator,
             CancellationToken cancellationToken) =>
         {
             var command = new UpdateDestinationCommand(
@@ -24,6 +25,8 @@ public class ChangeDestination : IEndpoint
             {
                 return Results.BadRequest(result.Error);
             }
+
+            await runtimeConfigurator.UpdateConfig();
 
             return Results.Ok();
         });
