@@ -1,7 +1,6 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Destinations;
-using EnvironmentGateway.Domain.GatewayConfigs;
 
 namespace EnvironmentGateway.Application.Destinations.UpdateDestination;
 
@@ -16,7 +15,7 @@ internal sealed class UpdateDestinationCommandHandler(
 
         if (destination is null)
         {
-            return Result.Failure(Error.NullValue);
+            return Result.Failure(DestinationErrors.NotFound);
         }
 
         destination.Update(request.Address);
