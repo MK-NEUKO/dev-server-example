@@ -2,7 +2,6 @@
 
 public interface IRuntimeConfigurator
 {
-    void ChangeDestinationAddress(string address);
-
     Task InitializeGateway();
+    Task UpdateConfig();
 }

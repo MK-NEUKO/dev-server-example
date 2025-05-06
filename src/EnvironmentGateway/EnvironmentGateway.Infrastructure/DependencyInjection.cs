@@ -1,6 +1,7 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Data;
 using EnvironmentGateway.Application.Abstractions.Email;
 using EnvironmentGateway.Domain.Abstractions;
+using EnvironmentGateway.Domain.Destinations;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Infrastructure.Data;
 using EnvironmentGateway.Infrastructure.Email;
@@ -28,6 +29,7 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IGatewayConfigRepository, GatewayConfigRepository>();
+        services.AddScoped<IDestinationRepository, DestinationRepository>();
 
 
 

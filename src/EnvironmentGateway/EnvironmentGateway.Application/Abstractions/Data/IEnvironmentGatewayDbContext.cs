@@ -1,4 +1,5 @@
 ﻿using EnvironmentGateway.Domain.Clusters;
+using EnvironmentGateway.Domain.Destinations;
 using Microsoft.EntityFrameworkCore;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Domain.RouteMatches;
