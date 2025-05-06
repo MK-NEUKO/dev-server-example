@@ -2,6 +2,7 @@
 using EnvironmentGateway.Application.Exceptions;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Clusters;
+using EnvironmentGateway.Domain.Destinations;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Domain.RouteMatches;
 using EnvironmentGateway.Domain.Routes;
