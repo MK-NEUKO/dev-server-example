@@ -23,9 +23,9 @@ public sealed class Cluster : Entity
     public Name ClusterName { get; init; } = new Name("cluster1");
     public List<Destination> Destinations { get; } = [];
 
-    public static Cluster CreateInitialCluster(string clusterName, string address)
+    public static Cluster CreateNewCluster(string clusterName, string address)
     {
-        var initialDestination = Destination.CreateInitialDestination("destination1", address);
+        var initialDestination = Destination.CreateNewDestination("destination1", address);
 
         var initialCluster = new Cluster(Guid.NewGuid(), new Name(clusterName), initialDestination);
 

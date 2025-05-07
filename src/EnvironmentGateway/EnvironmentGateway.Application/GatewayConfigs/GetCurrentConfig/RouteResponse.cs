@@ -1,4 +1,4 @@
-﻿namespace EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
+﻿namespace EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
 
 public sealed record RouteResponse
 {

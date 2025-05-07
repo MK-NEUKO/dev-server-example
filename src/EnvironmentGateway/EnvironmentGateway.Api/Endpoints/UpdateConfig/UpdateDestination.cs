@@ -9,7 +9,7 @@ public class UpdateDestination : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("change-destination", async (
+        app.MapPut("update-destination", async (
             UpdateDestinationRequest request,
             ISender sender,
             IRuntimeConfigurator runtimeConfigurator,
@@ -19,16 +19,16 @@ public class UpdateDestination : IEndpoint
                 request.Id,
                 request.Address);
 
-            Result result = await sender.Send(command, cancellationToken);
+            var result = await sender.Send(command, cancellationToken);
 
             if (result.IsFailure)
             {
                 return Results.BadRequest(result.Error);
             }
 
-            await runtimeConfigurator.UpdateConfig();
+            var updateResult = await runtimeConfigurator.UpdateProxyConfig();
 
-            return Results.Ok();
+            return Results.Ok(updateResult.IsSuccess);
         });
     }
 }

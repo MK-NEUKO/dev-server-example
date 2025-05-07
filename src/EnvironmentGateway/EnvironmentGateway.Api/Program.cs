@@ -31,10 +31,10 @@ builder.Services
 
 
 builder.Services.AddScoped<IRuntimeConfigurator, RuntimeConfigurator>();
-builder.Services.AddScoped<IInitialConfigurator, InitialConfigurator>();
+builder.Services.AddScoped<ICurrentConfigProvider, CurrentConfigProvider>();
 
 builder.Services.AddReverseProxy()
-    .LoadFromMemory(PreConfiguration.GetRoutes(), PreConfiguration.GetClusters());
+    .LoadFromMemory(DefaultProxyConfigProvider.GetRoutes(), DefaultProxyConfigProvider.GetClusters());
 
 
 builder.Services.AddOpenApi();
@@ -58,7 +58,13 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var runtimeConfigurator = scope.ServiceProvider.GetRequiredService<IRuntimeConfigurator>();
-    await runtimeConfigurator.InitializeGateway();
+
+    var result = await runtimeConfigurator.UpdateDefaultProxyConfig();
+
+    if (result.IsFailure)
+    {
+        // TODO: Throw event to notify the admin frontend!
+    }
 }
 
 app.UseCors("AllowAll");

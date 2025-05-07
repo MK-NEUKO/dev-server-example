@@ -1,4 +1,4 @@
-﻿using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
+﻿using EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
 using EnvironmentGateway.Application.IntegrationTests.Infrastructure;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfigs;
@@ -15,9 +15,9 @@ public class GetStartConfigTests(IntegrationTestWebAppFactory factory)
     {
         // Arrange
         var isCurrentConfig = true;
-        var query = new GetStartConfigQuery(isCurrentConfig);
+        var query = new GetCurrentConfigQuery();
         
-        DbContext.GatewayConfigs.Add(GatewayConfig.CreateInitialConfiguration());
+        DbContext.GatewayConfigs.Add(GatewayConfig.CreateNewConfig());
         await DbContext.SaveChangesAsync();
 
         // Act
@@ -33,7 +33,7 @@ public class GetStartConfigTests(IntegrationTestWebAppFactory factory)
     {
         // Arrange 
         var isCurrentConfig = true; 
-        var query = new GetStartConfigQuery(isCurrentConfig);
+        var query = new GetCurrentConfigQuery();
         var existingConfigs = await DbContext.GatewayConfigs
             .Where(gc => gc.IsCurrentConfig)
             .ToListAsync();

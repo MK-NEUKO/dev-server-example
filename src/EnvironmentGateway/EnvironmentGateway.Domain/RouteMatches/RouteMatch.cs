@@ -19,7 +19,7 @@ public sealed class RouteMatch : Entity
     public Route Route { get; init; } = null!;
     public Path Path { get; init; } = new Path("null");
 
-    public static RouteMatch CreateInitialRouteMatch(string path)
+    public static RouteMatch CreateNewRouteMatch(string path)
     {
         var routeMatch = new RouteMatch(Guid.NewGuid(), new Path(path));
        

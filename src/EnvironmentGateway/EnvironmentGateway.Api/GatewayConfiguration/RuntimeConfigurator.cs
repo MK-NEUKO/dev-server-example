@@ -1,82 +1,63 @@
 ﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
-using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
-using EnvironmentGateway.Domain.GatewayConfigs;
-using MediatR;
+using EnvironmentGateway.Domain.Abstractions;
 using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
 internal sealed class RuntimeConfigurator(
-    IInitialConfigurator initialConfigurator,
-    IProxyConfigProvider configurationProvider,
     InMemoryConfigProvider inMemoryConfigProvider,
-    ISender sender) 
+    ICurrentConfigProvider currentConfigProvider,
+    ILogger<RuntimeConfigurator> logger) 
     : IRuntimeConfigurator
 {
-    public async Task UpdateConfig()
+    public async Task<Result> UpdateDefaultProxyConfig()
     {
-        var query = new GetStartConfigQuery(true);
-        var result = await sender.Send(query, CancellationToken.None);
+        var currentConfigResult = await currentConfigProvider.GetCurrentConfig();
 
-        var currentConfig = MapToProxyConfig(result.Value);
-
-        UpdateConfiguration(currentConfig);
-    }
-
-    private InitialConfiguration MapToProxyConfig(StartConfigResponse resultValue)
-    {
-        var routes = new List<RouteConfig>();
-        foreach (var route in resultValue.Routes)
+        if (currentConfigResult.IsFailure)
         {
-            var routeConfig = new RouteConfig()
+            var createConfigResult = await currentConfigProvider.CreateCurrentConfig();
+
+            if (createConfigResult.IsFailure)
             {
-                RouteId = route.RouteName,
-                ClusterId = route.ClusterName,
-                Match = new RouteMatch()
-                {
-                    Path = route.Match.Path
-                }
-            };
-            routes.Add(routeConfig);
+                logger.LogError("Error in UpdateDefaultProxyConfig, unable to create current configuration; {CreateCurrentConfig}", createConfigResult.Error);
+                logger.LogError("Error in UpdateDefaultProxyConfig, unable to create current configuration; {GetCurrentConfig}", currentConfigResult.Error );
+                return Result.Failure(GatewayErrors.UpdateDefaultProxyConfigFailed);
+            }
+
+            currentConfigResult = await currentConfigProvider.GetCurrentConfig();
         }
 
-        var clusters = new List<ClusterConfig>();
-        var clusterCounter = 0;
-        foreach (var cluster in resultValue.Clusters)
-        {
-            var clusterConfig = new ClusterConfig()
-            {
-                ClusterId = cluster.ClusterName,
-                Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
-                {
-                    {
-                        cluster.Destinations[clusterCounter].DestinationName,
-                        new DestinationConfig() { Address = cluster.Destinations[clusterCounter].Address }
+        var proxyConfig = ProxyConfigMapper.Map(currentConfigResult.Value);
 
-                    }
-                }
-            };
-            clusterCounter++;
-            clusters.Add(clusterConfig);
-        }
+        UpdateConfig(proxyConfig);
 
-        return new InitialConfiguration(routes.ToArray(), clusters.ToArray());
+        logger.LogInformation("The proxy is successfully updated with current config from Database. {CurrentConfig}", currentConfigResult.Value );
+
+        return Result.Success("Success: default proxy config ist successfully updated.");
     }
 
-    public async Task InitializeGateway()
+    public async Task<Result> UpdateProxyConfig()
     {
-        var initialConfiguration = await initialConfigurator.GetInitialConfigurationAsync();
+        var result = await currentConfigProvider.GetCurrentConfig();
 
-        if (initialConfiguration.Routes.IsNullOrEmpty() || initialConfiguration.Clusters.IsNullOrEmpty())
+        if (result.IsFailure)
         {
-            return;
+            logger.LogError("UpdateProxyConfig: ´Get current config is failed {Result}", result.Error);
+            return Result.Failure(GatewayErrors.UpdateProxyConfigFailed);
         }
 
-        UpdateConfiguration(initialConfiguration);
+        var proxyConfig = ProxyConfigMapper.Map(result.Value);
+
+        UpdateConfig(proxyConfig);
+
+        logger.LogInformation("UpdateProxyConfig: Proxy Config updated successfully.");
+
+        return Result.Success();
     }
 
-    private void UpdateConfiguration(InitialConfiguration configuration)
+    private void UpdateConfig(ProxyConfig config)
     {
-        inMemoryConfigProvider.Update(configuration.Routes, configuration.Clusters);
+        inMemoryConfigProvider.Update(config.Routes, config.Clusters);
     }
 }
