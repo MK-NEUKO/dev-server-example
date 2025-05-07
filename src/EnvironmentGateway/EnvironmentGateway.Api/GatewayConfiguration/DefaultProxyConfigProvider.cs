@@ -2,7 +2,7 @@
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
-internal static class PreConfiguration
+internal static class DefaultProxyConfigProvider
 {
     internal static RouteConfig[] GetRoutes()
     {

@@ -9,7 +9,7 @@ public class UpdateDestination : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("change-destination", async (
+        app.MapPut("update-destination", async (
             UpdateDestinationRequest request,
             ISender sender,
             IRuntimeConfigurator runtimeConfigurator,
@@ -26,7 +26,7 @@ public class UpdateDestination : IEndpoint
                 return Results.BadRequest(result.Error);
             }
 
-            await runtimeConfigurator.UpdateConfig();
+            await runtimeConfigurator.UpdateYarpProxy();
 
             return Results.Ok();
         });

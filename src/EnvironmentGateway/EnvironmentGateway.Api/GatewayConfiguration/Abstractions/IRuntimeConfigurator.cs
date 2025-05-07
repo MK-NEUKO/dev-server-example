@@ -2,6 +2,6 @@
 
 public interface IRuntimeConfigurator
 {
-    Task InitializeGateway();
-    Task UpdateConfig();
+    Task UpdateDefaultProxyConfig();
+    Task UpdateYarpProxy();
 }

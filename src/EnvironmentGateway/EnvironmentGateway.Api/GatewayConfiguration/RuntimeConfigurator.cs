@@ -1,82 +1,61 @@
 ﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
+using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
 using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
+using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
 internal sealed class RuntimeConfigurator(
-    IInitialConfigurator initialConfigurator,
-    IProxyConfigProvider configurationProvider,
     InMemoryConfigProvider inMemoryConfigProvider,
-    ISender sender) 
+    ICurrentConfigProvider currentConfigProvider,
+    ILogger<RuntimeConfigurator> logger) 
     : IRuntimeConfigurator
 {
-    public async Task UpdateConfig()
+    public async Task UpdateDefaultProxyConfig()
     {
-        var query = new GetStartConfigQuery(true);
-        var result = await sender.Send(query, CancellationToken.None);
+        var loadConfigResult = await currentConfigProvider.LoadCurrentConfig();
 
-        var currentConfig = MapToProxyConfig(result.Value);
-
-        UpdateConfiguration(currentConfig);
-    }
-
-    private InitialConfiguration MapToProxyConfig(StartConfigResponse resultValue)
-    {
-        var routes = new List<RouteConfig>();
-        foreach (var route in resultValue.Routes)
+        if (loadConfigResult.IsSuccess)
         {
-            var routeConfig = new RouteConfig()
-            {
-                RouteId = route.RouteName,
-                ClusterId = route.ClusterName,
-                Match = new RouteMatch()
-                {
-                    Path = route.Match.Path
-                }
-            };
-            routes.Add(routeConfig);
-        }
-
-        var clusters = new List<ClusterConfig>();
-        var clusterCounter = 0;
-        foreach (var cluster in resultValue.Clusters)
-        {
-            var clusterConfig = new ClusterConfig()
-            {
-                ClusterId = cluster.ClusterName,
-                Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
-                {
-                    {
-                        cluster.Destinations[clusterCounter].DestinationName,
-                        new DestinationConfig() { Address = cluster.Destinations[clusterCounter].Address }
-
-                    }
-                }
-            };
-            clusterCounter++;
-            clusters.Add(clusterConfig);
-        }
-
-        return new InitialConfiguration(routes.ToArray(), clusters.ToArray());
-    }
-
-    public async Task InitializeGateway()
-    {
-        var initialConfiguration = await initialConfigurator.GetInitialConfigurationAsync();
-
-        if (initialConfiguration.Routes.IsNullOrEmpty() || initialConfiguration.Clusters.IsNullOrEmpty())
-        {
+            var proxyConfig = ProxyConfigMapper.Map(loadConfigResult.Value);
+            UpdateConfig(proxyConfig);
             return;
         }
 
-        UpdateConfiguration(initialConfiguration);
+        var createConfigResult = await currentConfigProvider.CreateCurrentConfig();
+
+        if (createConfigResult.IsSuccess)
+        {
+            loadConfigResult = await currentConfigProvider.LoadCurrentConfig();
+
+            if (loadConfigResult.IsSuccess)
+            {
+                var proxyConfig = ProxyConfigMapper.Map(loadConfigResult.Value);
+                UpdateConfig(proxyConfig);
+            }
+        }
+
+
     }
 
-    private void UpdateConfiguration(InitialConfiguration configuration)
+    public async Task UpdateYarpProxy()
     {
-        inMemoryConfigProvider.Update(configuration.Routes, configuration.Clusters);
+        var loadConfigResult = await currentConfigProvider.LoadCurrentConfig();
+
+        if (loadConfigResult.IsSuccess)
+        {
+            var proxyConfig = ProxyConfigMapper.Map(loadConfigResult.Value);
+            UpdateConfig(proxyConfig);
+        }
+    }
+
+    private void UpdateConfig(ProxyConfig config)
+    {
+        inMemoryConfigProvider.Update(config.Routes, config.Clusters);
     }
 }

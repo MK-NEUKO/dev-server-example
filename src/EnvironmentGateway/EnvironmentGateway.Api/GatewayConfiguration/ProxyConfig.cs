@@ -2,6 +2,6 @@
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
-internal sealed record InitialConfiguration(
+public record ProxyConfig(
     RouteConfig[] Routes,
     ClusterConfig[] Clusters);
