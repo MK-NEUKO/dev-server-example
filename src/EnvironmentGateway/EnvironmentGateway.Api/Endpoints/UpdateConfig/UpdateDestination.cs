@@ -26,7 +26,7 @@ public class UpdateDestination : IEndpoint
                 return Results.BadRequest(result.Error);
             }
 
-            await runtimeConfigurator.UpdateYarpProxy();
+            await runtimeConfigurator.UpdateProxyConfig();
 
             return Results.Ok();
         });

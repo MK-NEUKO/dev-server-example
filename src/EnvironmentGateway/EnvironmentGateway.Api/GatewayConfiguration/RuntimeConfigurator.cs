@@ -16,40 +16,37 @@ internal sealed class RuntimeConfigurator(
     ILogger<RuntimeConfigurator> logger) 
     : IRuntimeConfigurator
 {
-    public async Task UpdateDefaultProxyConfig()
+    public async Task<Result> UpdateDefaultProxyConfig()
     {
-        var loadConfigResult = await currentConfigProvider.LoadCurrentConfig();
+        var currentConfigResult = await currentConfigProvider.GetCurrentConfig();
 
-        if (loadConfigResult.IsSuccess)
+        if (currentConfigResult.IsFailure)
         {
-            var proxyConfig = ProxyConfigMapper.Map(loadConfigResult.Value);
-            UpdateConfig(proxyConfig);
-            return;
-        }
+            var createConfigResult = await currentConfigProvider.CreateCurrentConfig();
 
-        var createConfigResult = await currentConfigProvider.CreateCurrentConfig();
-
-        if (createConfigResult.IsSuccess)
-        {
-            loadConfigResult = await currentConfigProvider.LoadCurrentConfig();
-
-            if (loadConfigResult.IsSuccess)
+            if (createConfigResult.IsFailure)
             {
-                var proxyConfig = ProxyConfigMapper.Map(loadConfigResult.Value);
-                UpdateConfig(proxyConfig);
+                logger.LogError("Error in UpdateDefaultProxyConfig, unable to create current configuration; {Error}", createConfigResult.Error);
+                return Result.Failure(GatewayErrors.UpdateDefaultProxyConfigFailed);
             }
+
+            currentConfigResult = await currentConfigProvider.GetCurrentConfig();
         }
 
+        var proxyConfig = ProxyConfigMapper.Map(currentConfigResult.Value);
 
+        UpdateConfig(proxyConfig);
+
+        return Result.Success("Success: default proxy config ist successfully updated.");
     }
 
-    public async Task UpdateYarpProxy()
+    public async Task UpdateProxyConfig()
     {
-        var loadConfigResult = await currentConfigProvider.LoadCurrentConfig();
+        var result = await currentConfigProvider.GetCurrentConfig();
 
-        if (loadConfigResult.IsSuccess)
+        if (result.IsSuccess)
         {
-            var proxyConfig = ProxyConfigMapper.Map(loadConfigResult.Value);
+            var proxyConfig = ProxyConfigMapper.Map(result.Value);
             UpdateConfig(proxyConfig);
         }
     }

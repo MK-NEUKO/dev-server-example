@@ -59,7 +59,12 @@ using (var scope = app.Services.CreateScope())
 {
     var runtimeConfigurator = scope.ServiceProvider.GetRequiredService<IRuntimeConfigurator>();
 
-    await runtimeConfigurator.UpdateDefaultProxyConfig();
+    var result = await runtimeConfigurator.UpdateDefaultProxyConfig();
+
+    if (result.IsFailure)
+    {
+        // TODO: Throw event to notify the admin frontend!
+    }
 }
 
 app.UseCors("AllowAll");

@@ -5,6 +5,6 @@ namespace EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
 
 public interface ICurrentConfigProvider
 {
-    Task<Result<StartConfigResponse>> LoadCurrentConfig();
+    Task<Result<StartConfigResponse>> GetCurrentConfig();
     Task<Result> CreateCurrentConfig();
 }
