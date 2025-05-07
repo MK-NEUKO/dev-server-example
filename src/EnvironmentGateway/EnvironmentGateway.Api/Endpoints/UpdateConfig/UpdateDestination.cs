@@ -19,16 +19,16 @@ public class UpdateDestination : IEndpoint
                 request.Id,
                 request.Address);
 
-            Result result = await sender.Send(command, cancellationToken);
+            var result = await sender.Send(command, cancellationToken);
 
             if (result.IsFailure)
             {
                 return Results.BadRequest(result.Error);
             }
 
-            await runtimeConfigurator.UpdateProxyConfig();
+            var updateResult = await runtimeConfigurator.UpdateProxyConfig();
 
-            return Results.Ok();
+            return Results.Ok(updateResult.IsSuccess);
         });
     }
 }

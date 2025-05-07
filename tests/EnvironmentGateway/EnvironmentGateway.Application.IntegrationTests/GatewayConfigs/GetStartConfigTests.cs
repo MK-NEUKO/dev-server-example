@@ -15,7 +15,7 @@ public class GetStartConfigTests(IntegrationTestWebAppFactory factory)
     {
         // Arrange
         var isCurrentConfig = true;
-        var query = new GetCurrentConfigQuery(isCurrentConfig);
+        var query = new GetCurrentConfigQuery();
         
         DbContext.GatewayConfigs.Add(GatewayConfig.CreateNewConfig());
         await DbContext.SaveChangesAsync();
@@ -33,7 +33,7 @@ public class GetStartConfigTests(IntegrationTestWebAppFactory factory)
     {
         // Arrange 
         var isCurrentConfig = true; 
-        var query = new GetCurrentConfigQuery(isCurrentConfig);
+        var query = new GetCurrentConfigQuery();
         var existingConfigs = await DbContext.GatewayConfigs
             .Where(gc => gc.IsCurrentConfig)
             .ToListAsync();

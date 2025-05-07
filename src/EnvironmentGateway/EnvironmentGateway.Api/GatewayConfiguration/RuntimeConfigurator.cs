@@ -37,15 +37,23 @@ internal sealed class RuntimeConfigurator(
         return Result.Success("Success: default proxy config ist successfully updated.");
     }
 
-    public async Task UpdateProxyConfig()
+    public async Task<Result> UpdateProxyConfig()
     {
         var result = await currentConfigProvider.GetCurrentConfig();
 
-        if (result.IsSuccess)
+        if (result.IsFailure)
         {
-            var proxyConfig = ProxyConfigMapper.Map(result.Value);
-            UpdateConfig(proxyConfig);
+            logger.LogError("UpdateProxyConfig: ´Get current config is failed {Result}", result.Error);
+            return Result.Failure(GatewayErrors.UpdateProxyConfigFailed);
         }
+
+        var proxyConfig = ProxyConfigMapper.Map(result.Value);
+
+        UpdateConfig(proxyConfig);
+
+        logger.LogInformation("UpdateProxyConfig: Proxy Config updated successfully.");
+
+        return Result.Success();
     }
 
     private void UpdateConfig(ProxyConfig config)

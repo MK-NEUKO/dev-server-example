@@ -5,5 +5,5 @@ namespace EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
 public interface IRuntimeConfigurator
 {
     Task<Result> UpdateDefaultProxyConfig();
-    Task UpdateProxyConfig();
+    Task<Result> UpdateProxyConfig();
 }
