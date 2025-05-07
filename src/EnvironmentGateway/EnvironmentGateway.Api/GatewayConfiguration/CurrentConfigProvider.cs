@@ -1,6 +1,6 @@
 ﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
-using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
-using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
+using EnvironmentGateway.Application.GatewayConfigs.CreateNewConfig;
+using EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
 using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
 
@@ -11,30 +11,28 @@ internal sealed class CurrentConfigProvider(
     ILogger<CurrentConfigProvider> logger) 
     : ICurrentConfigProvider
 {
-    public async Task<Result<StartConfigResponse>> GetCurrentConfig()
+    public async Task<Result<CurrentConfigResponse>> GetCurrentConfig()
     {
-        var query = new GetStartConfigQuery(true);
+        var query = new GetCurrentConfigQuery();
 
-        Result<StartConfigResponse> result = await sender.Send(query, CancellationToken.None);
+        var result = await sender.Send(query, CancellationToken.None);
 
-        if (result.IsFailure)
-        {
-            logger.LogError("Current configuration loading failed {Result}.", result.Error);
-            return result;
-        }
+        if (!result.IsFailure) return result;
 
+        logger.LogError("Get current configuration failed {Result}.", result.Error);
         return result;
+
     }
 
     public async Task<Result> CreateCurrentConfig()
     {
-        var command = new CreateInitialConfigCommand();
+        var command = new CreateNewConfigCommand();
 
         var result = await sender.Send(command, CancellationToken.None);
 
         if (result.IsSuccess) return result;
 
-        logger.LogInformation("Current configuration loading failed {Result}.", result.Error);
+        logger.LogError("Create current configuration failed {Result}.", result.Error);
         return result;
     }
 }

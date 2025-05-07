@@ -34,10 +34,10 @@ public sealed class GatewayConfig : Entity
 
     public List<Cluster> Clusters { get; private set; } = [];
 
-    public static GatewayConfig CreateInitialConfiguration()
+    public static GatewayConfig CreateNewConfig()
     {
-        var initialRoute = Route.CreateInitialRoute("route1", "cluster1", "{**catch-all}");
-        var initialCluster = Cluster.CreateInitialCluster("cluster1", "https://github.com");
+        var initialRoute = Route.CreateNewRoute("route1", "cluster1", "{**catch-all}");
+        var initialCluster = Cluster.CreateNewCluster("cluster1", "https://github.com");
 
         var initialConfiguration = new GatewayConfig(
             Guid.NewGuid(),
@@ -46,7 +46,7 @@ public sealed class GatewayConfig : Entity
             initialRoute,
             initialCluster);
         
-        initialConfiguration.RaiseDomainEvent(new InitialConfigCreatedDomainEvent(initialConfiguration.Id));
+        initialConfiguration.RaiseDomainEvent(new NewConfigCreatedDomainEvent(initialConfiguration.Id));
 
         return initialConfiguration;
     }

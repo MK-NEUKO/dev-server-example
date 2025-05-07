@@ -1,11 +1,11 @@
-﻿using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
+﻿using EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
 using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
 internal static class ProxyConfigMapper
 {
-    public static ProxyConfig Map(StartConfigResponse config)
+    public static ProxyConfig Map(CurrentConfigResponse config)
     {
         var routes = new List<RouteConfig>();
         foreach (var route in config.Routes)

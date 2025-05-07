@@ -3,23 +3,16 @@ using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
-namespace EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
+namespace EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
 
-internal sealed class GetStartConfigQueryHandler : IQueryHandler<GetStartConfigQuery, StartConfigResponse>
+internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext context)
+    : IQueryHandler<GetCurrentConfigQuery, CurrentConfigResponse>
 {
-    private readonly IEnvironmentGatewayDbContext _context;
-
-    public GetStartConfigQueryHandler(
-        IEnvironmentGatewayDbContext context)
-    {
-        _context = context;
-    }
-
-    public async Task<Result<StartConfigResponse>> Handle(
-        GetStartConfigQuery request,
+    public async Task<Result<CurrentConfigResponse>> Handle(
+        GetCurrentConfigQuery request,
         CancellationToken cancellationToken)
     {
-        var gatewayConfigSummery = await _context
+        var gatewayConfigSummery = await context
             .Database
             .SqlQuery<GatewayConfigSummery>($"""
                 SELECT 
@@ -44,10 +37,10 @@ internal sealed class GetStartConfigQueryHandler : IQueryHandler<GetStartConfigQ
 
         if (gatewayConfigSummery is null)
         {
-            return Result.Failure<StartConfigResponse>(Error.NullValue);
+            return Result.Failure<CurrentConfigResponse>(Error.NullValue);
         }
 
-        var response = new StartConfigResponse()
+        var response = new CurrentConfigResponse()
         {
             Id = gatewayConfigSummery.GatewayConfigId,
             Name = gatewayConfigSummery.GatewayConfigName,

@@ -25,9 +25,9 @@ public sealed class Route : Entity
     public Name ClusterName { get; init; } = new Name("cluster1");
     public RouteMatch? Match { get; private set; }
 
-    public static Route CreateInitialRoute(string routeName, string clusterName, string matchPath)
+    public static Route CreateNewRoute(string routeName, string clusterName, string matchPath)
     {
-        var match = RouteMatch.CreateInitialRouteMatch(matchPath);
+        var match = RouteMatch.CreateNewRouteMatch(matchPath);
 
         var route = new Route(Guid.NewGuid(), new Name(routeName), new Name(clusterName), match);
         

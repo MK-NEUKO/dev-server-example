@@ -1,4 +1,4 @@
-﻿using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
+﻿using EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
 using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
 
@@ -12,9 +12,9 @@ public class Get : IEndpoint
             ISender sender,
             CancellationToken cancelationToken) =>
         {
-            var query = new GetStartConfigQuery(true);
+            var query = new GetCurrentConfigQuery();
 
-            Result<StartConfigResponse> result = await sender.Send(query, cancelationToken);
+            var result = await sender.Send(query, cancelationToken);
 
             return result.IsSuccess ? Results.Ok(result.Value) : Results.NotFound();
         });

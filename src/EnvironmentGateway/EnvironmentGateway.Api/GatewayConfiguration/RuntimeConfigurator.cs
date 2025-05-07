@@ -1,11 +1,5 @@
 ﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
-using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
-using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
 using EnvironmentGateway.Domain.Abstractions;
-using EnvironmentGateway.Domain.GatewayConfigs;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Yarp.ReverseProxy.Configuration;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
@@ -26,7 +20,8 @@ internal sealed class RuntimeConfigurator(
 
             if (createConfigResult.IsFailure)
             {
-                logger.LogError("Error in UpdateDefaultProxyConfig, unable to create current configuration; {Error}", createConfigResult.Error);
+                logger.LogError("Error in UpdateDefaultProxyConfig, unable to create current configuration; {CreateCurrentConfig}", createConfigResult.Error);
+                logger.LogError("Error in UpdateDefaultProxyConfig, unable to create current configuration; {GetCurrentConfig}", currentConfigResult.Error );
                 return Result.Failure(GatewayErrors.UpdateDefaultProxyConfigFailed);
             }
 
@@ -36,6 +31,8 @@ internal sealed class RuntimeConfigurator(
         var proxyConfig = ProxyConfigMapper.Map(currentConfigResult.Value);
 
         UpdateConfig(proxyConfig);
+
+        logger.LogInformation("The proxy is successfully updated with current config from Database. {CurrentConfig}", currentConfigResult.Value );
 
         return Result.Success("Success: default proxy config ist successfully updated.");
     }

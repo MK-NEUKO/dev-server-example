@@ -4,7 +4,7 @@ namespace EnvironmentGateway.Domain.GatewayConfigs;
 
 public static class GatewayConfigErrors
 {
-    public static readonly Error CreateInitialConfigFailed = new(
-        "CreateInitialConfigFailed", 
-        "Failed to create initial configuration.");
+    public static readonly Error CreateNewConfigFailed = new(
+        "CreateNewConfigFailed", 
+        "Failed to create new configuration.");
 }

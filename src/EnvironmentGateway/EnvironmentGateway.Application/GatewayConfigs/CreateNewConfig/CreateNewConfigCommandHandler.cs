@@ -1,16 +1,15 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfigs;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
-namespace EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
+namespace EnvironmentGateway.Application.GatewayConfigs.CreateNewConfig;
 
-internal sealed class CreateInitialConfigCommandHandler(
+internal sealed class CreateNewConfigCommandHandler(
     IGatewayConfigRepository gatewayConfigRepository,
     IUnitOfWork unitOfWork)
-    : ICommandHandler<CreateInitialConfigCommand, Guid>
+    : ICommandHandler<CreateNewConfigCommand, Guid>
 {
-    public async Task<Result<Guid>> Handle(CreateInitialConfigCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateNewConfigCommand request, CancellationToken cancellationToken)
     {
         var currentConfigGuid = await gatewayConfigRepository.GetCurrentConfigId(cancellationToken);
 
@@ -21,17 +20,17 @@ internal sealed class CreateInitialConfigCommandHandler(
 
         try
         {
-            var initialConfiguration = GatewayConfig.CreateInitialConfiguration();
+            var newConfiguration = GatewayConfig.CreateNewConfig();
 
-            gatewayConfigRepository.Add(initialConfiguration);
+            gatewayConfigRepository.Add(newConfiguration);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return initialConfiguration.Id;
+            return newConfiguration.Id;
         }
         catch (Exception)
         {
-            return Result.Failure<Guid>(GatewayConfigErrors.CreateInitialConfigFailed);
+            return Result.Failure<Guid>(GatewayConfigErrors.CreateNewConfigFailed);
         }
     }
 }

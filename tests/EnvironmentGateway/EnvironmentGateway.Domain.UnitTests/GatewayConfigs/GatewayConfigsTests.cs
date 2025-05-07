@@ -15,7 +15,7 @@ public class GatewayConfigsTests : BaseTest
         var configName = "Initial Configuration";
 
         // Act
-        var initialConfig = GatewayConfig.CreateInitialConfiguration();
+        var initialConfig = GatewayConfig.CreateNewConfig();
 
         // Assert
         initialConfig.Name.Value.Should().Be(configName);
@@ -28,10 +28,10 @@ public class GatewayConfigsTests : BaseTest
     public void CreateInitialConfig_Should_RaiseInitialConfigCreatedDomainEvent()
     {
         // Act
-        var initialConfig = GatewayConfig.CreateInitialConfiguration();
+        var initialConfig = GatewayConfig.CreateNewConfig();
 
         // Assert
-        var domainEvent = AssertDomainEventWasPublished<InitialConfigCreatedDomainEvent>(initialConfig);
+        var domainEvent = AssertDomainEventWasPublished<NewConfigCreatedDomainEvent>(initialConfig);
 
         domainEvent.ConfigurationId.Should().Be(initialConfig.Id);
     }

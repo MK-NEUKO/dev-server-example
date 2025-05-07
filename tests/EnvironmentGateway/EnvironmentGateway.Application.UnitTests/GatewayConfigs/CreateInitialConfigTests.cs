@@ -1,5 +1,5 @@
 ﻿using EnvironmentGateway.Application.Exceptions;
-using EnvironmentGateway.Application.GatewayConfigs.CreateInitialConfig;
+using EnvironmentGateway.Application.GatewayConfigs.CreateNewConfig;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using FluentAssertions;
@@ -10,8 +10,8 @@ namespace EnvironmentGateway.Application.UnitTests.GatewayConfigs;
 
 public class CreateInitialConfigTests
 {
-    private static readonly CreateInitialConfigCommand Command = new();
-    private readonly CreateInitialConfigCommandHandler _handler;
+    private static readonly CreateNewConfigCommand Command = new();
+    private readonly CreateNewConfigCommandHandler _handler;
 
     private readonly IGatewayConfigRepository _gatewayConfigRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
@@ -21,7 +21,7 @@ public class CreateInitialConfigTests
         _gatewayConfigRepositoryMock = Substitute.For<IGatewayConfigRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
 
-        _handler = new CreateInitialConfigCommandHandler(
+        _handler = new CreateNewConfigCommandHandler(
             _gatewayConfigRepositoryMock,
             _unitOfWorkMock);
     }
@@ -38,7 +38,7 @@ public class CreateInitialConfigTests
         var result = await _handler.Handle(Command, default);
 
         // Assert
-        result.Error.Should().Be(GatewayConfigErrors.CreateInitialConfigFailed);
+        result.Error.Should().Be(GatewayConfigErrors.CreateNewConfigFailed);
     }
 
     [Fact]

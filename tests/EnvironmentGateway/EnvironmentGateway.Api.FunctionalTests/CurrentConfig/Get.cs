@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using EnvironmentGateway.Api.FunctionalTests.Infrastructure;
-using EnvironmentGateway.Application.GatewayConfigs.GetStartConfig;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -20,7 +19,7 @@ public class Get : BaseFunctionalTest
     public async Task GetCurrentConfig_ShouldReturnCurrentConfig_WhenRequestIsValid()
     {
         // Arrange
-        DbContext.GatewayConfigs.Add(GatewayConfig.CreateInitialConfiguration());
+        DbContext.GatewayConfigs.Add(GatewayConfig.CreateNewConfig());
         await DbContext.SaveChangesAsync();
         // Act
         var httpResponse = await HttpClient.GetAsync("current-config");
