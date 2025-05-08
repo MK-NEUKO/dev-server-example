@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using ValidationException = EnvironmentGateway.Application.Exceptions.ValidationException;
 
 namespace EnvironmentGateway.Api.Middleware;
 
@@ -53,7 +53,7 @@ public class ExceptionHandlingMiddleware
         {
             ValidationException validationException => new ExceptionDetails(
                 StatusCodes.Status400BadRequest,
-                "ValidationFaliure",
+                "ValidationFailure",
                 "Validation error",
                 "One or more validation errors has occurred",
                 validationException.Errors),
