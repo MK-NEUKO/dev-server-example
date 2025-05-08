@@ -12,7 +12,7 @@ public class GatewayConfigsTests : BaseTest
     public void CreateInitialConfig_Should_SetPropertyValues()
     {
         // Arrange
-        var configName = "Initial Configuration";
+        var configName = "New Configuration";
 
         // Act
         var initialConfig = GatewayConfig.CreateNewConfig();
