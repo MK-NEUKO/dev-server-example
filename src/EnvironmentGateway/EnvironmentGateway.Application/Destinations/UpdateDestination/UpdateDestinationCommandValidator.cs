@@ -18,7 +18,6 @@ public class UpdateDestinationCommandValidator : AbstractValidator<UpdateDestina
     {
         RuleFor(c => c.Address)
             .NotEmpty()
-            .Must(address => Uri.IsWellFormedUriString(address, UriKind.RelativeOrAbsolute))
             .Matches(UrlPattern, RegexOptions.IgnoreCase);
     }
 }
