@@ -4,6 +4,7 @@ using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Destinations;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace EnvironmentGateway.Application.UnitTests.Destinations;
 
@@ -30,21 +31,32 @@ public class UpdateDestinationTests
             _destinationRepositoryMock,
             _unitOfWorkMock);
     }
-
-
+    
     [Fact]
-    public async Task Handle_Should_ReturnFailure_WhenAddressIsNotValid()
+    public async Task Handle_Should_ReturnFailure_WhenDestinationDoesNotExist()
     {
         // Arrange
-        _testAddress = "Htps://example.com";
-        _command = new UpdateDestinationCommand(
-            Id,
-            _testAddress);
+        _destinationRepositoryMock.GetByIdAsync(Id, Arg.Any<CancellationToken>()).Returns((Destination?)null);
 
         // Act
         var result = await _handler.Handle(_command, default);
 
         // Assert
         result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(DestinationErrors.NotFound);
     }
+
+    [Fact]
+    public async Task Handle_Should_ReturnFailure_WhenUnitOfWorkThrowsException()
+    {
+        // Arrange
+        _unitOfWorkMock.SaveChangesAsync(Arg.Any<CancellationToken>()).Throws(new Exception());
+        
+        // Act
+        var result = await _handler.Handle(_command, default);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+    }
+
 }

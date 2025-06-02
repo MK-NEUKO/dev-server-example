@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
 namespace EnvironmentGateway.Application.Destinations.UpdateDestination;
