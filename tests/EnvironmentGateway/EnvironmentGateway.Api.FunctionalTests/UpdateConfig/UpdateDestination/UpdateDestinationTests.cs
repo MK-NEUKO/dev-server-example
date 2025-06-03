@@ -29,4 +29,30 @@ public class UpdateDestinationTests(FunctionalTestWebAppFactory factory) : BaseF
         updatedDestination.Should().NotBeNull();
         updatedDestination!.Address.Value.Should().Be(testAddress);
     }
+    
+    [Theory]
+    [InlineData("htps://example.com")]
+    [InlineData("example.com")]
+    [InlineData("//example.com")]
+    [InlineData("https:/example.com")]
+    [InlineData("https//example.com")]
+    [InlineData("https://example")]
+    [InlineData("https://example..com")]
+    [InlineData("https://.com")]
+    [InlineData("https://exam ple.com")]
+    [InlineData("https://example!.com")]
+    public async Task UpdateDestination_ShouldReturnBadRequest_WhenDestinationAddressIsInvalid(string testAddress)
+    {
+        // Arrange
+        var destinationId = await DbContext.Destinations
+            .Select(d => d.Id)
+            .FirstOrDefaultAsync();
+        var request = new UpdateDestinationRequest(destinationId, testAddress);
+
+        // Act
+        var response = await HttpClient.PutAsJsonAsync("update-destination", request);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
 }
