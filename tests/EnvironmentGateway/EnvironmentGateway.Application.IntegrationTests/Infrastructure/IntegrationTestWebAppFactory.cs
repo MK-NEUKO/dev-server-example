@@ -1,5 +1,6 @@
 ﻿using EnvironmentGateway.Api;
 using EnvironmentGateway.Application.Abstractions.Data;
+using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Infrastructure;
 using EnvironmentGateway.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +48,22 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
     public async Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
+
+        await InitializeTestConfig();
+    }
+
+    private async Task InitializeTestConfig()
+    {
+        using var scope = Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<EnvironmentGatewayDbContext>();
+
+        await dbContext.Database.EnsureDeletedAsync();
+        await dbContext.Database.EnsureCreatedAsync();
+
+        var initialConfig = GatewayConfig.CreateNewConfig();
+        dbContext.GatewayConfigs.Add(initialConfig);
+
+        await dbContext.SaveChangesAsync();
     }
 
     public new async Task DisposeAsync()

@@ -7,18 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnvironmentGateway.Application.IntegrationTests.GatewayConfigs;
 
-public class GetStartConfigTests(IntegrationTestWebAppFactory factory) 
+public class GetCurrentConfigTests(IntegrationTestWebAppFactory factory) 
     : BaseIntegrationTest(factory)
 {
     [Fact]
-    public async Task GetStartConfig_ShouldReturnSuccess_WhenCurrentGatewayConfigExists()
+    public async Task GetCurrentConfig_ShouldReturnSuccess_WhenCurrentGatewayConfigExists()
     {
         // Arrange
-        var isCurrentConfig = true;
         var query = new GetCurrentConfigQuery();
-        
-        DbContext.GatewayConfigs.Add(GatewayConfig.CreateNewConfig());
-        await DbContext.SaveChangesAsync();
 
         // Act
         var result = await Sender.Send(query);
@@ -29,10 +25,9 @@ public class GetStartConfigTests(IntegrationTestWebAppFactory factory)
     }
     
     [Fact]
-    public async Task GetStartConfig_ShouldReturnFailure_WhenCurrentGatewayConfigNotExists()
+    public async Task GetCurrentConfig_ShouldReturnFailure_WhenCurrentGatewayConfigNotExists()
     {
         // Arrange 
-        var isCurrentConfig = true; 
         var query = new GetCurrentConfigQuery();
         var existingConfigs = await DbContext.GatewayConfigs
             .Where(gc => gc.IsCurrentConfig)
