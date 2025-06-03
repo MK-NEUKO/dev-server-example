@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnvironmentGateway.Api.FunctionalTests.CurrentConfig;
 
-public class Get : BaseFunctionalTest
+public class GetTests : BaseFunctionalTest
 {
-    public Get(FunctionalTestWebAppFactory factory) 
+    public GetTests(FunctionalTestWebAppFactory factory) 
         : base(factory)
     {
     }

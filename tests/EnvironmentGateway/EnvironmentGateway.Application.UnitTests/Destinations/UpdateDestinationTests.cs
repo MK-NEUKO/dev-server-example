@@ -1,5 +1,4 @@
 ﻿using EnvironmentGateway.Application.Destinations.UpdateDestination;
-using EnvironmentGateway.Application.Exceptions;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Destinations;
 using FluentAssertions;
