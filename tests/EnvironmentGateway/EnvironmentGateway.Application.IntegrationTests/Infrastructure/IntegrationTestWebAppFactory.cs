@@ -52,6 +52,11 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
         await InitializeTestConfig();
     }
 
+    public new async Task DisposeAsync()
+    {
+        await _dbContainer.StopAsync();
+    }
+    
     private async Task InitializeTestConfig()
     {
         using var scope = Services.CreateScope();
@@ -64,10 +69,5 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
         dbContext.GatewayConfigs.Add(initialConfig);
 
         await dbContext.SaveChangesAsync();
-    }
-
-    public new async Task DisposeAsync()
-    {
-        await _dbContainer.StopAsync();
     }
 }
