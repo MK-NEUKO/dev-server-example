@@ -14,6 +14,7 @@ public class GetCurrentConfigTests(IntegrationTestWebAppFactory factory)
     public async Task GetCurrentConfig_ShouldReturnSuccess_WhenCurrentGatewayConfigExists()
     {
         // Arrange
+        await InitializeTestConfigAsync();
         var query = new GetCurrentConfigQuery();
 
         // Act

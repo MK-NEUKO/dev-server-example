@@ -49,7 +49,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
     {
         await _dbContainer.StartAsync();
 
-        await InitializeTestConfig();
+        await InitializeTestConfigAsync();
     }
 
     public new async Task DisposeAsync()
@@ -57,7 +57,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
         await _dbContainer.StopAsync();
     }
     
-    private async Task InitializeTestConfig()
+    public async Task InitializeTestConfigAsync()
     {
         using var scope = Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<EnvironmentGatewayDbContext>();
