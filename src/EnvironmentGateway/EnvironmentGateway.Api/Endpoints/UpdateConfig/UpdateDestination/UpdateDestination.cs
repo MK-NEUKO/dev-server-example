@@ -1,9 +1,8 @@
 ﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
 using EnvironmentGateway.Application.Destinations.UpdateDestination;
-using EnvironmentGateway.Domain.Abstractions;
 using MediatR;
 
-namespace EnvironmentGateway.Api.Endpoints.UpdateConfig;
+namespace EnvironmentGateway.Api.Endpoints.UpdateConfig.UpdateDestination;
 
 public class UpdateDestination : IEndpoint
 {

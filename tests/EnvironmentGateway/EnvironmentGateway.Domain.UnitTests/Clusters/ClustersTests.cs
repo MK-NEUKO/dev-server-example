@@ -8,12 +8,15 @@ public class ClustersTests
     [Fact]
     public void CreateInitialCluster_Should_SetPropertyValues()
     {
-        const string clusterName = "testName";
+        // Arrange
+        const string clusterName = "TestName";
         const string destinationAddress = "https://tests.test";
 
-        var initialCluster = Cluster.CreateNewCluster(clusterName, destinationAddress);
+        // Act
+        var newCluster = Cluster.CreateNewCluster(clusterName, destinationAddress);
 
-        initialCluster.ClusterName.Value.Should().Be(clusterName);
-        initialCluster.Destinations[0].Address.Value.Should().Be(destinationAddress);
+        // Assert
+        newCluster.ClusterName.Value.Should().Be(clusterName);
+        newCluster.Destinations[0].Address.Value.Should().Be(destinationAddress);
     }
 }

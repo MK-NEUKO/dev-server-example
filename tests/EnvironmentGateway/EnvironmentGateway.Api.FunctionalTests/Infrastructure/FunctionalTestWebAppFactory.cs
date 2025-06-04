@@ -1,5 +1,5 @@
-﻿using System.Net.Http.Json;
-using EnvironmentGateway.Application.Abstractions.Data;
+﻿using EnvironmentGateway.Application.Abstractions.Data;
+using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Infrastructure;
 using EnvironmentGateway.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Net.Http.Json;
+using EnvironmentGateway.Application.GatewayConfigs.CreateNewConfig;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
 using Testcontainers.PostgreSql;
 
 namespace EnvironmentGateway.Api.FunctionalTests.Infrastructure;
@@ -40,10 +43,26 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
     public async Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
+
+        await InitializeTestConfigAsync();
     }
 
     public new async Task DisposeAsync()
     {
         await _dbContainer.StopAsync();
+    }
+    
+    private async Task InitializeTestConfigAsync()
+    {
+        using var scope = Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<EnvironmentGatewayDbContext>();
+
+        await dbContext.Database.EnsureDeletedAsync();
+        await dbContext.Database.EnsureCreatedAsync();
+
+        var initialConfig = GatewayConfig.CreateNewConfig();
+        dbContext.GatewayConfigs.Add(initialConfig);
+
+        await dbContext.SaveChangesAsync();
     }
 }

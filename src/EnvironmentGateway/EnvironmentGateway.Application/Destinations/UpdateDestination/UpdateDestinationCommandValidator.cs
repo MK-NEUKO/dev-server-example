@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
 namespace EnvironmentGateway.Application.Destinations.UpdateDestination;
@@ -18,7 +16,6 @@ public class UpdateDestinationCommandValidator : AbstractValidator<UpdateDestina
     {
         RuleFor(c => c.Address)
             .NotEmpty()
-            .Must(address => Uri.IsWellFormedUriString(address, UriKind.RelativeOrAbsolute))
             .Matches(UrlPattern, RegexOptions.IgnoreCase);
     }
 }

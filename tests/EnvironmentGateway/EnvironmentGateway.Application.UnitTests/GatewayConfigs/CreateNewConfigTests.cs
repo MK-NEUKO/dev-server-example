@@ -8,7 +8,7 @@ using NSubstitute.ExceptionExtensions;
 
 namespace EnvironmentGateway.Application.UnitTests.GatewayConfigs;
 
-public class CreateInitialConfigTests
+public class CreateNewConfigTests
 {
     private static readonly CreateNewConfigCommand Command = new();
     private readonly CreateNewConfigCommandHandler _handler;
@@ -16,7 +16,7 @@ public class CreateInitialConfigTests
     private readonly IGatewayConfigRepository _gatewayConfigRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
 
-    public CreateInitialConfigTests()
+    public CreateNewConfigTests()
     {
         _gatewayConfigRepositoryMock = Substitute.For<IGatewayConfigRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
@@ -59,7 +59,7 @@ public class CreateInitialConfigTests
     }
 
     [Fact]
-    public async Task Handle_Should_ReturnSuccess_WhenCreateInitialConfiguration()
+    public async Task Handle_Should_ReturnSuccess_WhenCreateNewConfiguration()
     {
         // Arrange
         await _unitOfWorkMock

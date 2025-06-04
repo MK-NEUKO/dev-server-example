@@ -35,4 +35,8 @@
     <ProjectReference Include="..\..\..\src\EnvironmentGateway\EnvironmentGateway.Api\EnvironmentGateway.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UpdateConfig\UpdateDestination\" />
+  </ItemGroup>
+
 </Project>

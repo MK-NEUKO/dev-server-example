@@ -12,16 +12,16 @@ public class GatewayConfigsTests : BaseTest
     public void CreateInitialConfig_Should_SetPropertyValues()
     {
         // Arrange
-        var configName = "Initial Configuration";
+        const string configName = "New Configuration";
 
         // Act
-        var initialConfig = GatewayConfig.CreateNewConfig();
+        var newConfig = GatewayConfig.CreateNewConfig();
 
         // Assert
-        initialConfig.Name.Value.Should().Be(configName);
-        initialConfig.IsCurrentConfig.Should().BeTrue();
-        initialConfig.Routes.Count.Should().BeGreaterThanOrEqualTo(1);
-        initialConfig.Clusters.Count.Should().BeGreaterThanOrEqualTo(1);
+        newConfig.Name.Value.Should().Be(configName);
+        newConfig.IsCurrentConfig.Should().BeTrue();
+        newConfig.Routes.Count.Should().BeGreaterThanOrEqualTo(1);
+        newConfig.Clusters.Count.Should().BeGreaterThanOrEqualTo(1);
     }
 
     [Fact]
@@ -32,7 +32,6 @@ public class GatewayConfigsTests : BaseTest
 
         // Assert
         var domainEvent = AssertDomainEventWasPublished<NewConfigCreatedDomainEvent>(initialConfig);
-
         domainEvent.ConfigurationId.Should().Be(initialConfig.Id);
     }
 
