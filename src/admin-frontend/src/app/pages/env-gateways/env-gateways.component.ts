@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { GatewayDataService } from '../../services/env-gateway/gateway-data.service';
 import { Highlight } from 'ngx-highlightjs';
 import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
@@ -20,6 +21,7 @@ import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
 export class EnvGatewaysComponent {
 
   private gatewayDataService = inject(GatewayDataService);
+  private router = inject(Router);
   public currentConfig = this.gatewayDataService.getCurrentConfig();
   public isMaximized = false;
 
@@ -30,6 +32,11 @@ export class EnvGatewaysComponent {
 
   destinationTest() {
     window.open(this.destinationUrl, '_blank');
+  }
+
+  public editConfig() {
+    console.log('Edit config clicked');
+    this.router.navigate(['/config-editor']);
   }
 
   changeCardBodyHeight() {
