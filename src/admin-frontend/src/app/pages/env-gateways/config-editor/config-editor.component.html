@@ -1,1 +1,42 @@
-<p>config-editor works!</p>
+<section class="container">
+  <h2>Gateway configuration editor</h2>
+
+  <form [formGroup]="config">
+    <div>
+      "
+      <input id="configName" type="text" formControlName="configName" />
+      ": {{ "{" }}
+      <div style="padding-left: 2ch">
+        <label for="configId">"ConfigId": </label>
+        <input id="configId" type="text" formControlName="configId" /><br />
+        <div formGroupName="routes">"Routes": [],</div>
+        <div formGroupName="clusters">
+          "Clusters": [
+          <div style="padding-left: 2ch">
+            "
+            <input id="clusterName" type="text" formControlName="clusterName" />
+            ": {{ "{" }}
+            <div style="padding-left: 2ch" formGroupName="destination">
+              "
+              <input
+                id="destinationName"
+                type="text"
+                formControlName="destinationName"
+              />
+              ": {{ "{" }}
+              <div style="padding-left: 2ch">
+                <label for="address">"Destination address": </label>
+                <input id="address" type="text" formControlName="address" />
+              </div>
+              {{ "}" }}
+            </div>
+            {{ "}" }}
+          </div>
+
+          ],
+        </div>
+      </div>
+    </div>
+    {{ "}" }}
+  </form>
+</section>

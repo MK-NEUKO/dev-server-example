@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { GatewayDataService } from '../../services/env-gateway/gateway-data.service';
 import { Highlight } from 'ngx-highlightjs';
 import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
+import { GatewayConfig } from '../../models/gateway-config/gateway-config.model';
 
 
 @Component({
@@ -18,24 +19,37 @@ import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
     './env-gateways.component.css'
   ]
 })
-export class EnvGatewaysComponent {
+export class EnvGatewaysComponent implements OnInit {
 
   private gatewayDataService = inject(GatewayDataService);
   private router = inject(Router);
   public currentConfig = this.gatewayDataService.getCurrentConfig();
+  public configData!: GatewayConfig;
   public isMaximized = false;
 
   private destinationUrl = 'https://localhost:5201/';
 
 
-  constructor() { }
+  constructor() {
+    effect(() => {
+      const value = this.currentConfig.value();
+      if (value !== undefined) {
+        this.configData = value;
+        console.log(`Config updated: ${value.id}`);
+        console.log(`Config data: ${this.configData.clusters[0].destinations[0].address}`);
+
+      }
+    });
+  }
+  ngOnInit(): void {
+
+  }
 
   destinationTest() {
     window.open(this.destinationUrl, '_blank');
   }
 
   public editConfig() {
-    console.log('Edit config clicked');
     this.router.navigate(['/config-editor']);
   }
 
