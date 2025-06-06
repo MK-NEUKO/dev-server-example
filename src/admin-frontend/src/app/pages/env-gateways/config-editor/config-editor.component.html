@@ -8,12 +8,18 @@
       ": {{ "{" }}
       <div style="padding-left: 2ch">
         "ConfigId": "{{ currentConfig.value()?.id }}",<br />
-        <div formGroupName="routes">
+
+        <!-- Routes section -->
+        <div formArrayName="routes">
           "Routes": [
-          <div style="padding-left: 2ch">
+          <div
+            *ngFor="let route of currentConfig.value()?.routes; let i = index"
+            [formGroupName]="i"
+            style="padding-left: 2ch"
+          >
             "
-            <input id="routeName" type="text" formControlName="routeName" />
-            ": {{ "{" }}
+            <input id="routeName" type="text" formControlName="routeName" />":
+            {{ "{" }}
             <div style="padding-left: 2ch">
               <label for="clusterName">"ClusterId": </label>
               <input
@@ -22,6 +28,8 @@
                 formControlName="clusterName"
               /><br />
             </div>
+
+            <!-- Match section -->
             <div style="padding-left: 2ch" formGroupName="match">
               "Match": {{ "{" }}
               <div style="padding-left: 2ch">
@@ -30,16 +38,22 @@
               </div>
               {{ "}" }}
             </div>
-            {{ "}" }}
           </div>
-          ],
+          "
+
+          {{ "}" }}
         </div>
+        <!-- end Routes section -->
+
+        <!-- Clusters section -->
         <div formGroupName="clusters">
           "Clusters": [
           <div style="padding-left: 2ch">
             "
             <input id="clusterName" type="text" formControlName="clusterName" />
             ": {{ "{" }}
+
+            <!-- Destination section -->
             <div style="padding-left: 2ch" formGroupName="destination">
               "
               <input
@@ -54,9 +68,10 @@
               </div>
               {{ "}" }}
             </div>
+            <!-- end Destination section -->
+
             {{ "}" }}
           </div>
-
           ]
         </div>
       </div>
