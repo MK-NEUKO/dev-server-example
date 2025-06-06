@@ -7,9 +7,33 @@
       <input id="configName" type="text" formControlName="configName" />
       ": {{ "{" }}
       <div style="padding-left: 2ch">
-        <label for="configId">"ConfigId": </label>
-        <input id="configId" type="text" formControlName="configId" /><br />
-        <div formGroupName="routes">"Routes": [],</div>
+        "ConfigId": "{{ currentConfig.value()?.id }}",<br />
+        <div formGroupName="routes">
+          "Routes": [
+          <div style="padding-left: 2ch">
+            "
+            <input id="routeName" type="text" formControlName="routeName" />
+            ": {{ "{" }}
+            <div style="padding-left: 2ch">
+              <label for="clusterName">"ClusterId": </label>
+              <input
+                id="clusterName"
+                type="text"
+                formControlName="clusterName"
+              /><br />
+            </div>
+            <div style="padding-left: 2ch" formGroupName="match">
+              "Match": {{ "{" }}
+              <div style="padding-left: 2ch">
+                <label for="path">"Path": </label>
+                <input id="path" type="text" formControlName="path" /><br />
+              </div>
+              {{ "}" }}
+            </div>
+            {{ "}" }}
+          </div>
+          ],
+        </div>
         <div formGroupName="clusters">
           "Clusters": [
           <div style="padding-left: 2ch">
@@ -33,7 +57,7 @@
             {{ "}" }}
           </div>
 
-          ],
+          ]
         </div>
       </div>
     </div>

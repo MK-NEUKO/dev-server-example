@@ -29,8 +29,13 @@ export class ConfigEditorComponent {
 
   config = new FormGroup({
     configName: new FormControl('not init'),
-    configId: new FormControl('not init'),
-    routes: new FormGroup({}),
+    routes: new FormGroup({
+      routeName: new FormControl('not init'),
+      clusterName: new FormControl('not init'),
+      match: new FormGroup({
+        path: new FormControl('not init'),
+      }),
+    }),
     clusters: new FormGroup({
       clusterName: new FormControl('not init'),
       destination: new FormGroup({
@@ -44,10 +49,12 @@ export class ConfigEditorComponent {
 
   updateConfigForm() {
     this.config.get('configName')?.setValue(this.configData?.name || 'error');
-    this.config.get('configId')?.setValue(this.configData?.id || 'error');
     this.config.get('clusters.clusterName')?.setValue(this.configData?.clusters[0].clusterName || 'error');
     this.config.get('clusters.destination.destinationName')?.setValue(this.configData?.clusters[0].destinations[0].destinationName || 'error');
     this.config.get('clusters.destination.address')?.setValue(this.configData?.clusters[0].destinations[0].address || 'error');
+    this.config.get('routes.routeName')?.setValue(this.configData?.routes[0].routeName || 'error');
+    this.config.get('routes.clusterName')?.setValue(this.configData?.routes[0].clusterName || 'error');
+    this.config.get('routes.match.path')?.setValue(this.configData?.routes[0].match.path || 'error');
   }
 
 }
