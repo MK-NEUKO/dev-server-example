@@ -10,41 +10,9 @@
         "ConfigId": "{{ currentConfig.value()?.id }}",<br />
 
         <!-- Routes section -->
-        <div formArrayName="routes">
-          "Routes": [
-          <div
-            *ngFor="let route of currentConfig.value()?.routes; let i = index"
-            [formGroupName]="i"
-            style="padding-left: 2ch"
-          >
-            "
-            <input id="routeName" type="text" formControlName="routeName" />":
-            {{ "{" }}
-            <div style="padding-left: 2ch">
-              <label for="clusterName">"ClusterId": </label>
-              <input
-                id="clusterName"
-                type="text"
-                formControlName="clusterName"
-              /><br />
-            </div>
-
-            <!-- Match section -->
-            <div style="padding-left: 2ch" formGroupName="match">
-              "Match": {{ "{" }}
-              <div style="padding-left: 2ch">
-                <label for="path">"Path": </label>
-                <input id="path" type="text" formControlName="path" /><br />
-              </div>
-              {{ "}" }}
-            </div>
-            <!-- end Match section -->
-
-            {{ "}" }}
-          </div>
-          ],
-        </div>
-        <!-- end Routes section -->
+        <section class="routes-section">
+          <app-routes></app-routes>
+        </section>
 
         <!-- Clusters section -->
         <div formGroupName="clusters">

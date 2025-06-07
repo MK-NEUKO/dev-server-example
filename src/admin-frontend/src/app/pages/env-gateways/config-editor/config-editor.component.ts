@@ -3,12 +3,14 @@ import { NgFor } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { GatewayDataService } from '../../../services/env-gateway/gateway-data.service';
 import { GatewayConfig } from '../../../models/gateway-config/gateway-config.model';
+import { RoutesComponent } from "./routes/routes.component";
 
 @Component({
   selector: 'app-config-editor',
   imports: [
     ReactiveFormsModule,
-    NgFor
+    NgFor,
+    RoutesComponent
   ],
   templateUrl: './config-editor.component.html',
   styleUrl: './config-editor.component.css'
