@@ -15,6 +15,9 @@ public class Get : IEndpoint
             var query = new GetCurrentConfigQuery();
 
             var result = await sender.Send(query, cancelationToken);
+            
+            // TODO: remove, only for test
+            await Task.Delay(2000);
 
             return result.IsSuccess ? Results.Ok(result.Value) : Results.NotFound();
         });

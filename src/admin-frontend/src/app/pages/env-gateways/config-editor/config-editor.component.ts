@@ -1,15 +1,13 @@
 import { Component, effect, inject } from '@angular/core';
-import { NgFor } from '@angular/common';
-import { FormGroup, FormControl, ReactiveFormsModule, FormArray } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { GatewayDataService } from '../../../services/env-gateway/gateway-data.service';
 import { GatewayConfig } from '../../../models/gateway-config/gateway-config.model';
-import { RoutesComponent } from "./routes/routes.component";
+import { RoutesComponent } from "./routes/routes-editor.component";
 
 @Component({
   selector: 'app-config-editor',
   imports: [
     ReactiveFormsModule,
-    NgFor,
     RoutesComponent
   ],
   templateUrl: './config-editor.component.html',
@@ -18,52 +16,45 @@ import { RoutesComponent } from "./routes/routes.component";
 export class ConfigEditorComponent {
 
   private gatewayDataService = inject(GatewayDataService);
-  public currentConfig = this.gatewayDataService.getCurrentConfig();
-  public configData!: GatewayConfig;
+  private formBuilder = inject(FormBuilder);
+  public currentConfigResource = this.gatewayDataService.getCurrentConfig();
+  public currentConfigData!: GatewayConfig;
+  public gatewayConfigForm!: FormGroup;
 
   constructor() {
     effect(() => {
-      const value = this.currentConfig.value();
+      const value = this.currentConfigResource.value();
       if (value !== undefined) {
-        this.configData = value;
-        this.updateConfigForm();
+        this.currentConfigData = value;
+        this.buildGatewayConfigForm();
       }
     });
   }
 
-  config = new FormGroup({
-    configName: new FormControl('not init'),
-    routes: new FormArray([
-      new FormGroup({
-        routeName: new FormControl('not init'),
-        clusterName: new FormControl('not init'),
-        match: new FormGroup({
-          path: new FormControl('not init'),
-        }),
-      }),
-    ]),
-
-    clusters: new FormGroup({
-      clusterName: new FormControl('not init'),
-      destination: new FormGroup({
-        destinationName: new FormControl('not init'),
-        address: new FormControl(),
-      })
-    }),
-  });
-
-
-
-  updateConfigForm() {
-    this.config.get('configName')?.setValue(this.configData?.name || 'error');
-    this.config.get('clusters.clusterName')?.setValue(this.configData?.clusters[0].clusterName || 'error');
-    this.config.get('clusters.destination.destinationName')?.setValue(this.configData?.clusters[0].destinations[0].destinationName || 'error');
-    this.config.get('clusters.destination.address')?.setValue(this.configData?.clusters[0].destinations[0].address || 'error');
-    const routesArray = this.config.get('routes') as FormArray;
-    const firstRoute = routesArray.at(0) as FormGroup;
-    firstRoute.get('routeName')?.setValue(this.configData?.routes[0].routeName || 'error');
-    firstRoute.get('clusterName')?.setValue(this.configData?.routes[0].clusterName || 'error');
-    firstRoute.get('match.path')?.setValue(this.configData?.routes[0].match.path || 'error');
+  buildGatewayConfigForm() {
+    this.gatewayConfigForm = this.formBuilder.group({
+      configName: this.formBuilder.control(this.currentConfigData.name || 'build error'),
+      routes: this.formBuilder.array([
+        this.formBuilder.group({
+          routeName: this.formBuilder.control(this.currentConfigData.routes[0].routeName || 'build error'),
+          clusterName: this.formBuilder.control(this.currentConfigData.routes[0].clusterName || 'build error'),
+          match: this.formBuilder.group({
+            path: this.formBuilder.control(this.currentConfigData.routes[0].match.path || 'build error'),
+          })
+        })
+      ]),
+      clusters: this.formBuilder.array([
+        this.formBuilder.group({
+          clusterName: this.formBuilder.control(this.currentConfigData.clusters[0].clusterName || 'build error'),
+          detinations: this.formBuilder.array([
+            this.formBuilder.group({
+              destinationName: this.formBuilder.control(this.currentConfigData.clusters[0].destinations[0].destinationName || 'build error'),
+              address: this.formBuilder.control(this.currentConfigData.clusters[0].destinations[0].address || 'build error'),
+            })
+          ])
+        })
+      ]),
+    });
   }
 
 }

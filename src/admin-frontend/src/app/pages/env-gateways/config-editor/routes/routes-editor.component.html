@@ -1,0 +1,10 @@
+<div [formGroup]="form">
+  <h3>Routes</h3>
+  <ng-container formArrayName="routes">
+    @for (route of formArray.controls; track $index; let i = $index) {
+    <div [formGroupName]="i">
+      <input type="text" formControlName="routeName" />
+    </div>
+    }
+  </ng-container>
+</div>

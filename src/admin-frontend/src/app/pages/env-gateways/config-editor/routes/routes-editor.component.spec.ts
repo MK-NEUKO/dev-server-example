@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RoutesComponent } from './routes.component';
+import { RoutesComponent } from './routes-editor.component';
 
 describe('RoutesComponent', () => {
   let component: RoutesComponent;
@@ -10,7 +10,7 @@ describe('RoutesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RoutesComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(RoutesComponent);
     component = fixture.componentInstance;

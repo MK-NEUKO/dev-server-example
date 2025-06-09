@@ -1,50 +1,20 @@
 <section class="container">
   <h2>Gateway configuration editor</h2>
 
-  <form [formGroup]="config">
+  @if (currentConfigResource.isLoading()) {
+  <p>Loading...</p>
+  }@else {
+  <ng-container [formGroup]="gatewayConfigForm">
     <div>
-      "
+      <span>"</span>
       <input id="configName" type="text" formControlName="configName" />
-      ": {{ "{" }}
+      <span>": {{ "{" }}</span>
       <div style="padding-left: 2ch">
-        "ConfigId": "{{ currentConfig.value()?.id }}",<br />
-
-        <!-- Routes section -->
-        <section class="routes-section">
-          <app-routes></app-routes>
-        </section>
-
-        <!-- Clusters section -->
-        <div formGroupName="clusters">
-          "Clusters": [
-          <div style="padding-left: 2ch">
-            "
-            <input id="clusterName" type="text" formControlName="clusterName" />
-            ": {{ "{" }}
-
-            <!-- Destination section -->
-            <div style="padding-left: 2ch" formGroupName="destination">
-              "
-              <input
-                id="destinationName"
-                type="text"
-                formControlName="destinationName"
-              />
-              ": {{ "{" }}
-              <div style="padding-left: 2ch">
-                <label for="address">"Destination address": </label>
-                <input id="address" type="text" formControlName="address" />
-              </div>
-              {{ "}" }}
-            </div>
-            <!-- end Destination section -->
-
-            {{ "}" }}
-          </div>
-          ]
-        </div>
+        <span>"ConfigId": "{{ currentConfigResource.value()?.id }}",</span
+        ><br />
+        <app-routes-editor formArrayName="routes"></app-routes-editor>
       </div>
     </div>
-    {{ "}" }}
-  </form>
+  </ng-container>
+  }
 </section>
