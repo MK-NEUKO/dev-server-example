@@ -4,17 +4,20 @@
   @if (currentConfigResource.isLoading()) {
   <p>Loading...</p>
   }@else {
-  <ng-container [formGroup]="gatewayConfigForm">
-    <div>
-      <span>"</span>
-      <input id="configName" type="text" formControlName="configName" />
-      <span>": {{ "{" }}</span>
-      <div style="padding-left: 2ch">
-        <span>"ConfigId": "{{ currentConfigResource.value()?.id }}",</span
-        ><br />
-        <app-routes-editor formArrayName="routes"></app-routes-editor>
+  <div class="config-form">
+    <ng-container [formGroup]="gatewayConfigForm">
+      <div>
+        <span>"</span>
+        <input id="configName" type="text" formControlName="configName" />
+        <span>": {{ "{" }}</span>
+        <div style="padding-left: 2ch">
+          <span>"ConfigId": "{{ currentConfigResource.value()?.id }}",</span
+          ><br />
+          <app-routes-editor formArrayName="routes"></app-routes-editor>
+        </div>
       </div>
-    </div>
-  </ng-container>
+    </ng-container>
+  </div>
+
   }
 </section>

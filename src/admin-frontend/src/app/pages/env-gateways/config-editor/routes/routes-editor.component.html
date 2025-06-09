@@ -1,10 +1,30 @@
-<div [formGroup]="form">
-  <h3>Routes</h3>
+<div class="routes-form" [formGroup]="form">
+  <h3 class="routes__heading">Routes: [</h3>
   <ng-container formArrayName="routes">
     @for (route of formArray.controls; track $index; let i = $index) {
-    <div [formGroupName]="i">
+    <div class="tab-2ch" [formGroupName]="i">
+      <span>"</span>
       <input type="text" formControlName="routeName" />
+      <span>": {{ "{" }}</span>
+      <div class="tab-2ch">
+        <label for="clusterName">ClusterId: </label>
+        <input
+          id="clusterName"
+          type="text"
+          formControlName="clusterName"
+        /><br />
+        <span>Match: {{ "{" }}</span>
+        <div class="tab-2ch" formGroupName="match">
+          <label for="path">Path: </label>
+          <input id="path" type="text" formControlName="path" />
+        </div>
+        <span>{{ "}" }}</span>
+      </div>
+      <span>{{ "}" }}</span>
     </div>
     }
   </ng-container>
+  <div class="routes__footer">
+    <span class="routes__footer-closing-bracket">],</span>
+  </div>
 </div>

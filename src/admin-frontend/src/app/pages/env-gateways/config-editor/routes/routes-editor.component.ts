@@ -7,7 +7,10 @@ import { Form, FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirectiv
     ReactiveFormsModule,
   ],
   templateUrl: './routes-editor.component.html',
-  styleUrl: './routes-editor.component.css'
+  styleUrls: [
+    './routes-editor.component.css',
+    '../config-editor.component.css'
+  ]
 })
 export class RoutesComponent implements OnInit {
 

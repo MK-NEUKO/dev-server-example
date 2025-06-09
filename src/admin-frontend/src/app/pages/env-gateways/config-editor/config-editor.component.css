@@ -1,0 +1,10 @@
+.config-form {
+  border: 0.1rem solid var(--neuko-border);
+  border-radius: 0.25rem;
+  background-color: var(--neuko-bg-card);
+  padding: 0.25rem;
+}
+
+.tab-2ch {
+  padding-left: 2ch;
+}

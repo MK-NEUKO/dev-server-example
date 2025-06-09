@@ -1,0 +1,17 @@
+.routes-form {
+  border: 0.1rem solid var(--neuko-border);
+  border-radius: 0.25rem;
+  background-color: var(--neuko-bg-body);
+  padding: 0.25rem;
+  margin-top: 0.2rem;
+}
+
+.routes__heading {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.routes__footer-closing-bracket {
+  font-size: 1rem;
+  font-weight: bold;
+}
