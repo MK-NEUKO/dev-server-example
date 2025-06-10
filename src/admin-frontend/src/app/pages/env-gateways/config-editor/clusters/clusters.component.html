@@ -1,10 +1,10 @@
-<div class="form-container form-container--child" [formGroup]="form">
+<div class="form-container form-container--child" [formGroup]="parentForm">
   <h3 class="form__heading">Clusters: [</h3>
   <ng-container formArrayName="clusters">
     @for (cluster of formArray.controls; track $index; let i = $index) {
     <div class="tab-2ch" [formGroupName]="i">
       <span>"</span>
-      <input type="text" formControlName="clusterName" />
+      <input type="text" formControlName="clusterName" name="clusterName" />
       <span>": {{ "{" }}</span>
       <div class="tab-2ch">
         <app-destinations

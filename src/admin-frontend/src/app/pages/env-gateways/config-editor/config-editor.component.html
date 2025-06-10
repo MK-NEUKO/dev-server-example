@@ -7,19 +7,21 @@
   <div class="form-container">
     <ng-container [formGroup]="gatewayConfigForm">
       <div>
-        <span>"</span>
-        <input id="configName" type="text" formControlName="configName" />
-        <span>": {{ "{" }}</span>
+        <h3 class="form__heading">
+          <span>"</span>
+          <input id="configName" type="text" formControlName="configName" />
+          <span>": {{ "{" }}</span>
+        </h3>
         <div class="tab-2ch">
           <span>"ConfigId": "{{ currentConfigResource.value()?.id }}",</span
           ><br />
           <app-routes formArrayName="routes"></app-routes>
-          <app-clusters-editor formArrayName="clusters"></app-clusters-editor>
+          <app-clusters formArrayName="clusters"></app-clusters>
         </div>
       </div>
     </ng-container>
-    <div class="base-form__footer">
-      <span class="base-form__footer-closing-bracket">{{ "}" }}</span>
+    <div class="form__footer">
+      <span class="form__footer-closing-bracket">{{ "}" }}</span>
     </div>
   </div>
 

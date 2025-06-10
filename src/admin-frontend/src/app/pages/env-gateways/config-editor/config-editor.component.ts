@@ -3,14 +3,14 @@ import { FormGroup, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { GatewayDataService } from '../../../services/env-gateway/gateway-data.service';
 import { GatewayConfig } from '../../../models/gateway-config/gateway-config.model';
 import { RoutesComponent } from './routes/routes.component';
-import { ClustersEditorComponent } from './clusters-editor/clusters-editor.component';
+import { ClustersComponent } from './clusters/clusters.component';
 
 @Component({
   selector: 'app-config-editor',
   imports: [
     ReactiveFormsModule,
     RoutesComponent,
-    ClustersEditorComponent,
+    ClustersComponent,
   ],
   templateUrl: './config-editor.component.html',
   styleUrl: './config-editor.component.css'

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClustersEditorComponent } from './clusters-editor.component';
+import { ClustersComponent } from './clusters.component';
 
 describe('ClustersEditorComponent', () => {
-  let component: ClustersEditorComponent;
-  let fixture: ComponentFixture<ClustersEditorComponent>;
+  let component: ClustersComponent;
+  let fixture: ComponentFixture<ClustersComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ClustersEditorComponent]
+      imports: [ClustersComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(ClustersEditorComponent);
+    fixture = TestBed.createComponent(ClustersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

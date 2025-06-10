@@ -1,29 +1,29 @@
-import { Component, inject, OnInit, Input } from '@angular/core';
+import { Component, inject, OnInit, input } from '@angular/core';
 import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { DestinationsComponent } from "./destinations/destinations.component";
 
 
 @Component({
-  selector: 'app-clusters-editor',
+  selector: 'app-clusters',
   imports: [
     ReactiveFormsModule,
     DestinationsComponent
   ],
-  templateUrl: './clusters-editor.component.html',
+  templateUrl: './clusters.component.html',
   styleUrls: [
-    './clusters-editor.component.css',
+    './clusters.component.css',
     '../config-editor.component.css'
   ]
 })
-export class ClustersEditorComponent implements OnInit {
+export class ClustersComponent implements OnInit {
 
-  @Input() formArrayName!: string;
+  readonly formArrayName = input.required<string>();
   private rootFormGroup = inject(FormGroupDirective);
   formArray!: FormArray;
-  form!: FormGroup;
+  parentForm!: FormGroup;
 
   ngOnInit(): void {
-    this.form = this.rootFormGroup.control;
-    this.formArray = this.form.get(this.formArrayName) as FormArray;
+    this.parentForm = this.rootFormGroup.control;
+    this.formArray = this.parentForm.get(this.formArrayName()) as FormArray;
   };
 }

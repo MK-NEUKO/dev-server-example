@@ -4,11 +4,20 @@
     @for (destination of formArray.controls; track $index; let i = $index) {
     <div class="tab-2ch" [formGroupName]="i">
       <span>"</span>
-      <input type="text" formControlName="destinationName" />
+      <input
+        type="text"
+        formControlName="destinationName"
+        name="destinationName"
+      />
       <span>": {{ "{" }}</span>
       <div class="tab-2ch">
         <label for="address">Address: </label>
-        <input id="address" type="text" formControlName="address" /><br />
+        <input
+          id="address"
+          type="text"
+          formControlName="address"
+          name="destinationAddress"
+        /><br />
       </div>
       <div class="tab-2ch"></div>
       <span>{{ "}" }}</span>

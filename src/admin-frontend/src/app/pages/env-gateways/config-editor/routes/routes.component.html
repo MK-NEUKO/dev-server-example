@@ -1,10 +1,10 @@
-<div class="form-container form-container--child" [formGroup]="form">
+<div class="form-container form-container--child" [formGroup]="parentForm">
   <h3 class="form__heading">Routes: [</h3>
   <ng-container formArrayName="routes">
     @for (route of formArray.controls; track $index; let i = $index) {
     <div class="tab-2ch" [formGroupName]="i">
       <span>"</span>
-      <input type="text" formControlName="routeName" />
+      <input type="text" formControlName="routeName" name="routeName" />
       <span>": {{ "{" }}</span>
       <div class="tab-2ch">
         <label for="clusterName">ClusterId: </label>
@@ -12,11 +12,17 @@
           id="clusterName"
           type="text"
           formControlName="clusterName"
+          name="clusterName"
         /><br />
         <span>Match: {{ "{" }}</span>
         <div class="tab-2ch" formGroupName="match">
           <label for="path">Path: </label>
-          <input id="path" type="text" formControlName="path" />
+          <input
+            id="path"
+            type="text"
+            formControlName="path"
+            name="matchPath"
+          />
         </div>
         <span>{{ "}" }}</span>
       </div>
