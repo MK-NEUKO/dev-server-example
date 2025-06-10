@@ -22,17 +22,27 @@ export class DestinationsComponent implements OnInit {
   formArray!: FormArray;
   parentForm!: FormGroup;
 
+  get address() {
+    const destination = this.formArray.at(0) as FormGroup;
+    return destination.get('address');
+  }
+
   ngOnInit(): void {
     const rootForm = this.rootFormGroup.control;
     const parentArray = rootForm.get(this.parentArrayName()) as FormArray;
     this.parentForm = parentArray.at(0) as FormGroup;
     this.formArray = this.parentForm.get(this.formArrayName()) as FormArray;
+
+    const destination = this.formArray.at(0) as FormGroup;
+    const address = destination.get('address');
+    console.log('Address:', address);
+
+
   }
 
   public updateDestination(): void {
     const destination = this.formArray.at(0) as FormGroup;
     const destinationId = destination.get('destinationId')?.value;
-    const destinationName = destination.get('destinationName')?.value;
     const address = destination.get('address')?.value;
     const updatedDestination = {
       id: destinationId,

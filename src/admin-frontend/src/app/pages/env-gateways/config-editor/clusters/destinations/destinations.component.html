@@ -16,8 +16,13 @@
           id="address"
           type="text"
           formControlName="address"
-          name="destinationAddress"
-        /><br />
+          name="address"
+        />
+        @if(address?.hasError('required') && address?.touched) {
+        <div class="alert alert-danger">
+          <div>Address is required</div>
+        </div>
+        }
       </div>
       <div class="tab-2ch"></div>
       <div class="form__footer">

@@ -35,8 +35,6 @@ export class EnvGatewaysComponent implements OnInit {
       const value = this.currentConfig.value();
       if (value !== undefined) {
         this.configData = value;
-        console.log('Config data updated:', this.configData);
-
       }
     });
   }
