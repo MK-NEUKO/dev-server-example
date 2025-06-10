@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, input } from '@angular/core';
 import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { DestinationsComponent } from "./destinations/destinations.component";
-
+import { CONFIG_EDITOR_CONTROL_NAMES } from '../shared/config-editor-control-names';
 
 @Component({
   selector: 'app-clusters',
@@ -18,6 +18,8 @@ import { DestinationsComponent } from "./destinations/destinations.component";
 export class ClustersComponent implements OnInit {
 
   readonly formArrayName = input.required<string>();
+  readonly childArrayControlName = CONFIG_EDITOR_CONTROL_NAMES.DESTINATIONS;
+  readonly parentArrayControlName = CONFIG_EDITOR_CONTROL_NAMES.CLUSTERS;
   private rootFormGroup = inject(FormGroupDirective);
   formArray!: FormArray;
   parentForm!: FormGroup;

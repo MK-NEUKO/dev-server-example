@@ -8,8 +8,8 @@
       <span>": {{ "{" }}</span>
       <div class="tab-2ch">
         <app-destinations
-          formArrayName="destinations"
-          parentArrayName="clusters"
+          [formArrayName]="childArrayControlName"
+          [parentArrayName]="parentArrayControlName"
         ></app-destinations>
       </div>
       <span>{{ "}" }}</span>

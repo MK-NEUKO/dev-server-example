@@ -15,8 +15,8 @@
         <div class="tab-2ch">
           <span>"ConfigId": "{{ currentConfigResource.value()?.id }}",</span
           ><br />
-          <app-routes formArrayName="routes"></app-routes>
-          <app-clusters formArrayName="clusters"></app-clusters>
+          <app-routes [formArrayName]="routesControlName"></app-routes>
+          <app-clusters [formArrayName]="clustersControlName"></app-clusters>
         </div>
       </div>
     </ng-container>

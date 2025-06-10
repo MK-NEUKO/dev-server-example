@@ -4,6 +4,7 @@ import { GatewayDataService } from '../../../services/env-gateway/gateway-data.s
 import { GatewayConfig } from '../../../models/gateway-config/gateway-config.model';
 import { RoutesComponent } from './routes/routes.component';
 import { ClustersComponent } from './clusters/clusters.component';
+import { CONFIG_EDITOR_CONTROL_NAMES } from './shared/config-editor-control-names';
 
 @Component({
   selector: 'app-config-editor',
@@ -19,6 +20,8 @@ export class ConfigEditorComponent {
 
   private gatewayDataService = inject(GatewayDataService);
   private formBuilder = inject(FormBuilder);
+  readonly routesControlName = CONFIG_EDITOR_CONTROL_NAMES.ROUTES;
+  readonly clustersControlName = CONFIG_EDITOR_CONTROL_NAMES.CLUSTERS;
   public currentConfigResource = this.gatewayDataService.getCurrentConfig();
   public currentConfigData!: GatewayConfig;
   public gatewayConfigForm!: FormGroup;
@@ -35,23 +38,23 @@ export class ConfigEditorComponent {
 
   buildGatewayConfigForm() {
     this.gatewayConfigForm = this.formBuilder.group({
-      configName: this.formBuilder.control(this.currentConfigData.name || 'build error'),
-      routes: this.formBuilder.array([
+      [CONFIG_EDITOR_CONTROL_NAMES.CONFIG_NAME]: this.formBuilder.control(this.currentConfigData.name || 'build error'),
+      [CONFIG_EDITOR_CONTROL_NAMES.ROUTES]: this.formBuilder.array([
         this.formBuilder.group({
-          routeName: this.formBuilder.control(this.currentConfigData.routes[0].routeName || 'build error'),
-          clusterName: this.formBuilder.control(this.currentConfigData.routes[0].clusterName || 'build error'),
-          match: this.formBuilder.group({
-            path: this.formBuilder.control(this.currentConfigData.routes[0].match.path || 'build error'),
+          [CONFIG_EDITOR_CONTROL_NAMES.ROUTE_NAME]: this.formBuilder.control(this.currentConfigData.routes[0].routeName || 'build error'),
+          [CONFIG_EDITOR_CONTROL_NAMES.CLUSTER_NAME]: this.formBuilder.control(this.currentConfigData.routes[0].clusterName || 'build error'),
+          [CONFIG_EDITOR_CONTROL_NAMES.MATCH]: this.formBuilder.group({
+            [CONFIG_EDITOR_CONTROL_NAMES.MATCH_PATH]: this.formBuilder.control(this.currentConfigData.routes[0].match.path || 'build error'),
           })
         })
       ]),
-      clusters: this.formBuilder.array([
+      [CONFIG_EDITOR_CONTROL_NAMES.CLUSTERS]: this.formBuilder.array([
         this.formBuilder.group({
-          clusterName: this.formBuilder.control(this.currentConfigData.clusters[0].clusterName || 'build error'),
-          destinations: this.formBuilder.array([
+          [CONFIG_EDITOR_CONTROL_NAMES.CLUSTER_NAME]: this.formBuilder.control(this.currentConfigData.clusters[0].clusterName || 'build error'),
+          [CONFIG_EDITOR_CONTROL_NAMES.DESTINATIONS]: this.formBuilder.array([
             this.formBuilder.group({
-              destinationName: this.formBuilder.control(this.currentConfigData.clusters[0].destinations[0].destinationName || 'build error'),
-              address: this.formBuilder.control(this.currentConfigData.clusters[0].destinations[0].address || 'build error'),
+              [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME]: this.formBuilder.control(this.currentConfigData.clusters[0].destinations[0].destinationName || 'build error'),
+              [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS]: this.formBuilder.control(this.currentConfigData.clusters[0].destinations[0].address || 'build error'),
             })
           ])
         })
