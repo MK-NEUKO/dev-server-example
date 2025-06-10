@@ -7,6 +7,7 @@ export const CONFIG_EDITOR_CONTROL_NAMES = {
     CLUSTER_NAME: 'clusterName',
     MATCH: 'match',
     MATCH_PATH: 'path',
+    DESTINATION_ID: 'destinationId',
     DESTINATION_NAME: 'destinationName',
     DESTINATION_ADDRESS: 'address'
 } as const;

@@ -24,6 +24,7 @@ export function defaultGatewayConfig(): GatewayConfig {
                 clusterName: 'default-cluster',
                 destinations: [
                     {
+                        id: 'default',
                         destinationName: 'default-destination',
                         address: 'default-address',
                     } as Destination

@@ -31,7 +31,18 @@ export class DestinationsComponent implements OnInit {
 
   public updateDestination(): void {
     const destination = this.formArray.at(0) as FormGroup;
-    console.log('Updating destination:', destination.value);
-
+    const destinationId = destination.get('destinationId')?.value;
+    const destinationName = destination.get('destinationName')?.value;
+    const address = destination.get('address')?.value;
+    const updatedDestination = {
+      id: destinationId,
+      address: address
+    };
+    this.httpClient.put(`envGateway/update-destination`, updatedDestination).subscribe({
+      next: (response) => {
+        console.log('Destination updated successfully:', response);
+      }
+    });
   }
+
 }
