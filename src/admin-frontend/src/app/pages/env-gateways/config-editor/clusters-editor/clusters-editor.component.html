@@ -1,0 +1,22 @@
+<div class="form-container form-container--child" [formGroup]="form">
+  <h3 class="form__heading">Clusters: [</h3>
+  <ng-container formArrayName="clusters">
+    @for (cluster of formArray.controls; track $index; let i = $index) {
+    <div class="tab-2ch" [formGroupName]="i">
+      <span>"</span>
+      <input type="text" formControlName="clusterName" />
+      <span>": {{ "{" }}</span>
+      <div class="tab-2ch">
+        <app-destinations
+          formArrayName="destinations"
+          parentArrayName="clusters"
+        ></app-destinations>
+      </div>
+      <span>{{ "}" }}</span>
+    </div>
+    }
+  </ng-container>
+  <div class="form__footer">
+    <span class="form__footer-closing-bracket">]</span>
+  </div>
+</div>

@@ -1,18 +1,21 @@
 import { Component, inject, OnInit, Input } from '@angular/core';
-import { Form, FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { DestinationsComponent } from "./destinations/destinations.component";
+
 
 @Component({
-  selector: 'app-routes-editor',
+  selector: 'app-clusters-editor',
   imports: [
     ReactiveFormsModule,
+    DestinationsComponent
   ],
-  templateUrl: './routes-editor.component.html',
+  templateUrl: './clusters-editor.component.html',
   styleUrls: [
-    './routes-editor.component.css',
+    './clusters-editor.component.css',
     '../config-editor.component.css'
   ]
 })
-export class RoutesComponent implements OnInit {
+export class ClustersEditorComponent implements OnInit {
 
   @Input() formArrayName!: string;
   private rootFormGroup = inject(FormGroupDirective);

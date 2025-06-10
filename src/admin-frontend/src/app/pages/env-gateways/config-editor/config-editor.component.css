@@ -1,8 +1,23 @@
-.config-form {
+.form-container {
   border: 0.1rem solid var(--neuko-border);
   border-radius: 0.25rem;
   background-color: var(--neuko-bg-card);
   padding: 0.25rem;
+  margin-top: 0.3rem;
+}
+
+.form-container--child {
+  background-color: var(--neuko-bg-body);
+}
+
+.form__heading {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.form__footer-closing-bracket {
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .tab-2ch {

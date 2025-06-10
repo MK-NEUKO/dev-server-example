@@ -1,5 +1,5 @@
-<div class="routes-form" [formGroup]="form">
-  <h3 class="routes__heading">Routes: [</h3>
+<div class="form-container form-container--child" [formGroup]="form">
+  <h3 class="form__heading">Routes: [</h3>
   <ng-container formArrayName="routes">
     @for (route of formArray.controls; track $index; let i = $index) {
     <div class="tab-2ch" [formGroupName]="i">
@@ -24,7 +24,7 @@
     </div>
     }
   </ng-container>
-  <div class="routes__footer">
-    <span class="routes__footer-closing-bracket">],</span>
+  <div class="form__footer">
+    <span class="form__footer-closing-bracket">],</span>
   </div>
 </div>
