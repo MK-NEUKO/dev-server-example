@@ -2,14 +2,14 @@ import { Component, effect, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { GatewayDataService } from '../../../services/env-gateway/gateway-data.service';
 import { GatewayConfig } from '../../../models/gateway-config/gateway-config.model';
-import { RoutesEditorComponent } from './routes-editor/routes-editor.component';
+import { RoutesComponent } from './routes/routes.component';
 import { ClustersEditorComponent } from './clusters-editor/clusters-editor.component';
 
 @Component({
   selector: 'app-config-editor',
   imports: [
     ReactiveFormsModule,
-    RoutesEditorComponent,
+    RoutesComponent,
     ClustersEditorComponent,
   ],
   templateUrl: './config-editor.component.html',

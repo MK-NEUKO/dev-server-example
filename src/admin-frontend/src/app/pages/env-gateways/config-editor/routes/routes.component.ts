@@ -2,17 +2,17 @@ import { Component, inject, OnInit, Input } from '@angular/core';
 import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-routes-editor',
+  selector: 'app-routes',
   imports: [
     ReactiveFormsModule,
   ],
-  templateUrl: './routes-editor.component.html',
+  templateUrl: './routes.component.html',
   styleUrls: [
-    './routes-editor.component.css',
+    './routes.component.css',
     '../config-editor.component.css'
   ]
 })
-export class RoutesEditorComponent implements OnInit {
+export class RoutesComponent implements OnInit {
 
   @Input() formArrayName!: string;
   private rootFormGroup = inject(FormGroupDirective);
