@@ -13,11 +13,14 @@
 .form__heading {
   margin: 0;
   font-size: 1rem;
-}
-
-.form__footer-closing-bracket {
-  font-size: 1rem;
   font-weight: bold;
+  color: var(--neuko-text-body-highlight);
+}
+.form__heading--second {
+  color: var(--neuko-text-config-editor-second);
+}
+.form__heading--third {
+  color: var(--neuko-text-config-editor-third);
 }
 
 .tab-2ch {

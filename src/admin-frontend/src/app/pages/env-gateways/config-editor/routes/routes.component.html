@@ -1,8 +1,11 @@
-<div class="form-container form-container--child" [formGroup]="parentForm">
-  <h3 class="form__heading">Routes: [</h3>
+<div [formGroup]="parentForm">
+  <h3 class="form__heading form__heading--second">"Routes": [</h3>
   <ng-container formArrayName="routes">
     @for (route of formArray.controls; track $index; let i = $index) {
-    <div class="tab-2ch" [formGroupName]="i">
+    <div
+      class="tab-2ch form-container form-container--child"
+      [formGroupName]="i"
+    >
       <span>"</span>
       <input type="text" formControlName="routeName" name="routeName" />
       <span>": {{ "{" }}</span>
@@ -30,7 +33,5 @@
     </div>
     }
   </ng-container>
-  <div class="form__footer">
-    <span class="form__footer-closing-bracket">],</span>
-  </div>
+  <span class="form__heading form__heading--second">],</span>
 </div>

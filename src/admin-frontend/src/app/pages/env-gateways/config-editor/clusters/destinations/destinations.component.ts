@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, input } from '@angular/core';
 import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 
@@ -17,6 +18,7 @@ export class DestinationsComponent implements OnInit {
   readonly formArrayName = input.required<string>();
   readonly parentArrayName = input.required<string>();
   private rootFormGroup = inject(FormGroupDirective);
+  private httpClient = inject(HttpClient);
   formArray!: FormArray;
   parentForm!: FormGroup;
 
@@ -25,5 +27,11 @@ export class DestinationsComponent implements OnInit {
     const parentArray = rootForm.get(this.parentArrayName()) as FormArray;
     this.parentForm = parentArray.at(0) as FormGroup;
     this.formArray = this.parentForm.get(this.formArrayName()) as FormArray;
+  }
+
+  public updateDestination(): void {
+    const destination = this.formArray.at(0) as FormGroup;
+    console.log('Updating destination:', destination.value);
+
   }
 }
