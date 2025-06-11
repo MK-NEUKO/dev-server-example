@@ -6,9 +6,24 @@
       class="tab-2ch form-container form-container--child"
       [formGroupName]="i"
     >
-      <span>"</span>
-      <input type="text" formControlName="clusterName" name="clusterName" />
-      <span>": {{ "{" }}</span>
+      <div class="control-field">
+        <span>"</span>
+        @if(clusterName?.hasError("required")) {
+        <label class="control__label" for="clusterName">Cluster Id:</label>
+        }
+        <div class="control__input-wrapper">
+          <input
+            class="control__input"
+            type="text"
+            formControlName="clusterName"
+            name="clusterName"
+            autocomplete="off"
+            [required]="true"
+          />
+          <span class="control-required"></span>
+        </div>
+        <span>": {{ "{" }}</span>
+      </div>
       <div class="tab-2ch">
         <app-destinations
           [formArrayName]="childArrayControlName"

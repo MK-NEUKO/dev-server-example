@@ -6,26 +6,68 @@
       class="tab-2ch form-container form-container--child"
       [formGroupName]="i"
     >
-      <span>"</span>
-      <input type="text" formControlName="routeName" name="routeName" />
-      <span>": {{ "{" }}</span>
+      <div class="control-field">
+        <span>"</span>
+        @if (routeName?.invalid) {
+        <label class="control__label" for="routeName">Route Name:</label>
+        }
+        <div class="control__input-wrapper">
+          <input
+            class="control__input"
+            id="routeName"
+            type="text"
+            formControlName="routeName"
+            name="routeName"
+            autocomplete="off"
+            [required]="true"
+          />
+          <span class="control-required"></span>
+          @if (routeName?.hasError('required')) {
+          <span class="control-feedback">Required</span>
+          }
+        </div>
+        <span>": {{ "{" }}</span>
+      </div>
       <div class="tab-2ch">
-        <label for="clusterName">ClusterId: </label>
-        <input
-          id="clusterName"
-          type="text"
-          formControlName="clusterName"
-          name="clusterName"
-        /><br />
+        <div class="control-field">
+          <label for="clusterName">ClusterId: </label>
+          <div class="control__input-wrapper">
+            <input
+              class="control__input"
+              id="clusterName"
+              type="text"
+              formControlName="clusterName"
+              name="clusterName"
+              autocomplete="off"
+              [required]="true"
+            />
+            <span class="control-required"></span>
+            @if (clusterName?.hasError('required')) {
+            <span class="control-feedback">Required</span>
+            }
+          </div>
+        </div>
+
         <span>Match: {{ "{" }}</span>
         <div class="tab-2ch" formGroupName="match">
-          <label for="path">Path: </label>
-          <input
-            id="path"
-            type="text"
-            formControlName="path"
-            name="matchPath"
-          />
+          <div class="control-field">
+            <label for="path">Path: </label>
+            <div class="control__input-wrapper">
+              <input
+                class="control__input"
+                id="path"
+                type="text"
+                formControlName="path"
+                name="matchPath"
+                autocomplete="off"
+                [required]="true"
+              />
+              <span class="control-required"></span>
+              @if (path?.hasError('required')) {
+              <span class="control-feedback">Required</span>
+              }
+            </div>
+          </div>
         </div>
         <span>{{ "}" }}</span>
       </div>

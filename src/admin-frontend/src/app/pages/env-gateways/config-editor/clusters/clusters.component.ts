@@ -24,6 +24,11 @@ export class ClustersComponent implements OnInit {
   formArray!: FormArray;
   parentForm!: FormGroup;
 
+  get clusterName() {
+    const cluster = this.formArray.at(0) as FormGroup;
+    return cluster.get(CONFIG_EDITOR_CONTROL_NAMES.CLUSTER_NAME);
+  }
+
   ngOnInit(): void {
     this.parentForm = this.rootFormGroup.control;
     this.formArray = this.parentForm.get(this.formArrayName()) as FormArray;

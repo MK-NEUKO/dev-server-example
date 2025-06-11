@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, input } from '@angular/core';
 import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
 
 @Component({
   selector: 'app-destinations',
@@ -24,7 +25,12 @@ export class DestinationsComponent implements OnInit {
 
   get address() {
     const destination = this.formArray.at(0) as FormGroup;
-    return destination.get('address');
+    return destination.get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS);
+  }
+
+  get destinationName() {
+    const destination = this.formArray.at(0) as FormGroup;
+    return destination.get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME);
   }
 
   ngOnInit(): void {

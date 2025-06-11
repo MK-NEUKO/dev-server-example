@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, input } from '@angular/core';
 import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { CONFIG_EDITOR_CONTROL_NAMES } from '../shared/config-editor-control-names';
 
 @Component({
   selector: 'app-routes',
@@ -18,6 +19,21 @@ export class RoutesComponent implements OnInit {
   private rootFormGroup = inject(FormGroupDirective);
   formArray!: FormArray;
   parentForm!: FormGroup;
+
+  get routeName() {
+    const route = this.formArray.at(0) as FormGroup;
+    return route.get(CONFIG_EDITOR_CONTROL_NAMES.ROUTE_NAME);
+  }
+
+  get clusterName() {
+    const route = this.formArray.at(0) as FormGroup;
+    return route.get(CONFIG_EDITOR_CONTROL_NAMES.CLUSTER_NAME);
+  }
+
+  get path() {
+    const route = this.formArray.at(0) as FormGroup;
+    return route.get(CONFIG_EDITOR_CONTROL_NAMES.MATCH_PATH);
+  }
 
   ngOnInit(): void {
     this.parentForm = this.rootFormGroup.control;

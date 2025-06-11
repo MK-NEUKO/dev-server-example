@@ -26,6 +26,10 @@ export class ConfigEditorComponent {
   public currentConfigData!: GatewayConfig;
   public gatewayConfigForm!: FormGroup;
 
+  get configName() {
+    return this.gatewayConfigForm.get(CONFIG_EDITOR_CONTROL_NAMES.CONFIG_NAME);
+  }
+
   constructor() {
     effect(() => {
       const value = this.currentConfigResource.value();
@@ -54,7 +58,10 @@ export class ConfigEditorComponent {
           [CONFIG_EDITOR_CONTROL_NAMES.DESTINATIONS]: this.formBuilder.array([
             this.formBuilder.group({
               [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ID]: this.formBuilder.control({ value: this.currentConfigData.clusters[0].destinations[0].id || 'build error', disabled: true }),
-              [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME]: this.formBuilder.control({ value: this.currentConfigData.clusters[0].destinations[0].destinationName || 'build error', disabled: true }),
+              [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME]: this.formBuilder.control(
+                this.currentConfigData.clusters[0].destinations[0].destinationName || 'build error',
+                Validators.required,),
+
               [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS]: this.formBuilder.control(
                 this.currentConfigData.clusters[0].destinations[0].address || 'build error',
                 Validators.required),

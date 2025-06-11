@@ -56,13 +56,22 @@
   width: fit-content;
   align-items: flex-start;
 }
+.control__input:focus {
+  outline: none;
+  border-color: var(--neuko-text-body-highlight);
+  box-shadow: 0 0 0.25rem var(--neuko-text-body-highlight);
+}
+.control__input:hover {
+  background-color: var(--neuko-bg-body-highlight);
+  color: var(--neuko-text-body-highlight);
+}
 .control__input.ng-invalid.ng-dirty {
   border-color: var(--neuko-text-danger);
   padding: 0.125rem 1rem 0.25rem 0.25rem;
 }
 .control__input ~ .control-required {
   display: none;
-  color: var(--neuko-text-danger);
+  color: var(--neuko-text-body);
   font-weight: bold;
   position: absolute;
   top: 0;
@@ -71,9 +80,13 @@
     content: "*";
   }
 }
+.control__input.ng-invalid.ng-dirty ~ .control-required {
+  color: var(--neuko-text-danger);
+}
 .control__input[required] ~ .control-required {
   display: inline-block;
 }
+
 .control-feedback {
   margin: -0.3rem 0 0 1rem;
   top: 1.5rem;

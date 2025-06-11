@@ -3,13 +3,30 @@
   <ng-container formArrayName="destinations">
     @for (destination of formArray.controls; track $index; let i = $index) {
     <div class="tab-2ch form-container" [formGroupName]="i">
-      <span>"</span>
-      <input
-        type="text"
-        formControlName="destinationName"
-        name="destinationName"
-      />
-      <span>": {{ "{" }}</span>
+      <div class="control-field">
+        <span>"</span>
+        @if (destinationName?.invalid) {
+        <label class="control__label" for="destinationName"
+          >Destination Name:
+        </label>
+        }
+
+        <div class="control__input-wrapper">
+          <input
+            class="control__input"
+            type="text"
+            formControlName="destinationName"
+            name="destinationName"
+            autocomplete="off"
+            [required]="true"
+          />
+          <span class="control-required"></span>
+          @if (destinationName?.hasError('required')) {
+          <span class="control-feedback">Required</span>
+          }
+        </div>
+        <span>": {{ "{" }}</span>
+      </div>
       <div class="tab-2ch">
         <div class="control-field">
           <label class="control__label" for="address">Address: </label>
@@ -20,6 +37,7 @@
               type="text"
               formControlName="address"
               name="address"
+              autocomplete="off"
               [required]="true"
             />
             <span class="control-required"></span>
