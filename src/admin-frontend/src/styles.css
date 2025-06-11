@@ -170,7 +170,7 @@ body {
   display: inline-block;
   background-color: var(--neuko-bg-body-highlight);
   color: var(--neuko-text-body);
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
   font-size: 1rem;
   border-radius: 0.5rem;
   border: 0.075rem solid var(--neuko-border);

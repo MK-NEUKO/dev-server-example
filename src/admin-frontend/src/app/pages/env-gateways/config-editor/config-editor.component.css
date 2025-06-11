@@ -23,6 +23,18 @@
   color: var(--neuko-text-config-editor-third);
 }
 
+.form__footer {
+  display: flex;
+  flex-direction: row;
+  padding: 0.5rem 1rem 0.25rem 0;
+  gap: 0.75rem;
+}
+.form__footer-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
 .tab-2ch {
   padding-left: 2ch;
 }

@@ -62,12 +62,19 @@
       </div>
       <div class="tab-2ch"></div>
       <div class="form__footer">
-        <span class="margin-end-2">{{ "}" }}</span>
+        <span>{{ "}" }}</span>
+        <div class="form__footer-buttons"></div>
         <button
           class="button button--primary button--small"
           (click)="updateDestination()"
         >
           Update
+        </button>
+        <button
+          class="button button--secondary button--small"
+          (click)="resetDestination()"
+        >
+          Reset
         </button>
       </div>
     </div>
