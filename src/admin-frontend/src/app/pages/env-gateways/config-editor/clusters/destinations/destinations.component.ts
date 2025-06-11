@@ -62,7 +62,7 @@ export class DestinationsComponent implements OnInit {
   }
 
   public resetDestination(): void {
-    console.log('Resetting destination form');
+    this.address?.reset();
   }
 
 }
