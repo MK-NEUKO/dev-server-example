@@ -11,18 +11,23 @@
       />
       <span>": {{ "{" }}</span>
       <div class="tab-2ch">
-        <label for="address">Address: </label>
-        <input
-          id="address"
-          type="text"
-          formControlName="address"
-          name="address"
-        />
-        @if(address?.hasError('required') && address?.touched) {
-        <div class="alert alert-danger">
-          <div>Address is required</div>
+        <div class="control-field">
+          <label class="control__label" for="address">Address: </label>
+          <div class="control__input-wrapper">
+            <input
+              class="control__input"
+              id="address"
+              type="text"
+              formControlName="address"
+              name="address"
+              [required]="true"
+            />
+            <span class="control-required"></span>
+            @if (address?.hasError('required')) {
+            <span class="control-feedback">Required</span>
+            }
+          </div>
         </div>
-        }
       </div>
       <div class="tab-2ch"></div>
       <div class="form__footer">
