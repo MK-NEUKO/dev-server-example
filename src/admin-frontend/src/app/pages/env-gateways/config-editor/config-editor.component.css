@@ -91,7 +91,7 @@
   margin: -0.3rem 0 0 1rem;
   top: 1.5rem;
   left: 1rem;
-  padding: 0 0.25rem 0.15rem 0.25rem;
+  padding: 0.25rem 0.5rem;
   background-color: var(--neuko-bg-danger);
   color: var(--neuko-bg-body);
   z-index: 100;
@@ -99,4 +99,38 @@
   width: fit-content;
   font-size: 85%;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.control-feedback__info {
+  background: none;
+  border: 0.1rem solid var(--neuko-text-body-highlight);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+
+  cursor: help;
+  color: var(--neuko-text-body-highlight);
+  font-size: 0.75rem;
+  font-weight: bold;
+  font-family: serif;
+  transition: all 0.2s ease;
+}
+.control-feedback__info:before {
+  content: "i";
+  padding-top: auto;
+  padding-bottom: auto;
+  font-weight: bold;
+}
+
+.control-feedback__info:hover {
+  background-color: var(--neuko-text-info);
+  color: var(--neuko-bg-body);
+  transform: scale(1.1);
+}
+
+.control-feedback__info:focus {
+  outline: 1px solid var(--neuko-text-info);
+  outline-offset: 2px;
 }

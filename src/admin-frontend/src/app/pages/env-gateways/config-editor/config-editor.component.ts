@@ -5,6 +5,7 @@ import { GatewayConfig } from '../../../models/gateway-config/gateway-config.mod
 import { RoutesComponent } from './routes/routes.component';
 import { ClustersComponent } from './clusters/clusters.component';
 import { CONFIG_EDITOR_CONTROL_NAMES } from './shared/config-editor-control-names';
+import { DestinationAddressValidator } from './shared/destination-address-validator';
 
 @Component({
   selector: 'app-config-editor',
@@ -59,12 +60,18 @@ export class ConfigEditorComponent {
             this.formBuilder.group({
               [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ID]: this.formBuilder.control({ value: this.currentConfigData.clusters[0].destinations[0].id || 'build error', disabled: true }),
               [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME]: this.formBuilder.control(
-                this.currentConfigData.clusters[0].destinations[0].destinationName || 'build error',
-                Validators.required,),
+                {
+                  value: this.currentConfigData.clusters[0].destinations[0].destinationName || 'build error',
+                  disabled: true
+                },
+                Validators.required),
 
               [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS]: this.formBuilder.control(
                 this.currentConfigData.clusters[0].destinations[0].address || 'build error',
-                Validators.required),
+                [
+                  Validators.required,
+                  DestinationAddressValidator.validate()
+                ]),
             })
           ])
         })

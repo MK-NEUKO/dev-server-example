@@ -41,9 +41,22 @@
               [required]="true"
             />
             <span class="control-required"></span>
-            @if (address?.hasError('required')) {
+            @if (address?.invalid && (address?.dirty || address?.touched)) { @if
+            (address?.hasError('required')) {
             <span class="control-feedback">Required</span>
-            }
+            } @if (address?.hasError('invalidDestinationAddress')) {
+            <span class="control-feedback"
+              >Invalid URL
+              <button
+                type="button"
+                class="control-feedback__info"
+                [title]="
+                  address?.getError('invalidDestinationAddress')?.message
+                "
+                tabindex="-1"
+              ></button>
+            </span>
+            } }
           </div>
         </div>
       </div>
