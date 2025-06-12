@@ -179,6 +179,12 @@ body {
   text-decoration: none;
   cursor: pointer;
 }
+.button:disabled {
+  background-color: var(--neuko-bg-body-secondary);
+  color: var(--neuko-text-body-quaternary);
+  border-color: var(--neuko-bg-body-secondary);
+  cursor: not-allowed;
+}
 .button:hover {
   background-color: var(--neuko-bg-body);
   color: var(--neuko-text-body-highlight);

@@ -64,9 +64,11 @@
       <div class="form__footer">
         <span>{{ "}" }}</span>
         <div class="form__footer-buttons"></div>
+
         <button
           class="button button--primary button--small"
           (click)="updateDestination()"
+          [disabled]="canUpdate()"
         >
           Update
         </button>

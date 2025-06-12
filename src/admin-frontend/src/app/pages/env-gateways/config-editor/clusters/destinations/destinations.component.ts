@@ -22,6 +22,7 @@ export class DestinationsComponent implements OnInit {
   private httpClient = inject(HttpClient);
   formArray!: FormArray;
   parentForm!: FormGroup;
+  destination!: FormGroup;
 
   get address() {
     const destination = this.formArray.at(0) as FormGroup;
@@ -38,18 +39,19 @@ export class DestinationsComponent implements OnInit {
     const parentArray = rootForm.get(this.parentArrayName()) as FormArray;
     this.parentForm = parentArray.at(0) as FormGroup;
     this.formArray = this.parentForm.get(this.formArrayName()) as FormArray;
+    this.destination = this.formArray.at(0) as FormGroup;
+  }
 
-    const destination = this.formArray.at(0) as FormGroup;
-    const address = destination.get('address');
-    console.log('Address:', address);
-
+  public canUpdate(): boolean {
+    const address = this.destination.get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS);
+    const result = !(address?.valid && (address?.dirty || address?.touched));
+    return result;
 
   }
 
   public updateDestination(): void {
-    const destination = this.formArray.at(0) as FormGroup;
-    const destinationId = destination.get('destinationId')?.value;
-    const address = destination.get('address')?.value;
+    const destinationId = this.destination.get('destinationId')?.value;
+    const address = this.destination.get('address')?.value;
     const updatedDestination = {
       id: destinationId,
       address: address
@@ -63,6 +65,8 @@ export class DestinationsComponent implements OnInit {
 
   public resetDestination(): void {
     this.address?.reset();
+    this.address?.markAsTouched();
+    this.address?.markAsDirty();
   }
 
 }
