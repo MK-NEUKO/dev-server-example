@@ -10,11 +10,18 @@ export class DestinationService {
 
   constructor() { }
 
-  public SaveChanges(request: any): void {
-    this.httpClient.put(`envGateway/update-destination`, request).subscribe({
-      next: (response) => {
-        console.log('Destination updated successfully:', response);
-      }
+  public SaveChanges(request: any): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.httpClient.put(`envGateway/update-destination`, request).subscribe({
+        next: (response) => {
+          console.log('Destination updated successfully:', response);
+          resolve(`Destination updated successfully: ${JSON.stringify(response)}`);
+        },
+        error: (error) => {
+          console.error('Error updating destination:', error);
+          reject(`Error updating destination: ${JSON.stringify(error.message)}`);
+        }
+      });
     });
   }
 }
