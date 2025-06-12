@@ -1,21 +1,36 @@
-.layout__sidebar-content {
+.layout__container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.layout__sidebar-content-wrapper {
   margin: 0;
   display: flex;
   flex-direction: row;
   justify-content: start;
-  width: 100%;
-  height: 100%;
+  flex: 1;
+  overflow: hidden;
 }
 
 .layout__sidebar {
   margin: 0;
   width: 10rem;
-  height: 100vh;
+  overflow-y: auto;
   border-right: 0.125rem solid var(--neuko-border-dark-nav);
   background-color: var(--neuko-bg-dark-nav);
 }
 
+.layout__content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+  margin: 0;
+  flex: 1;
+}
+
 .layout__content {
   margin: 0;
-  flex-grow: 3;
 }

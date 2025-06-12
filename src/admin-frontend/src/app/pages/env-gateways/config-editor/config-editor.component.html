@@ -1,0 +1,48 @@
+<section class="container">
+  <h2>Gateway configuration editor</h2>
+
+  @if (currentConfigResource.isLoading()) {
+  <p>Loading...</p>
+  }@else {
+  <div class="form-container">
+    <ng-container [formGroup]="gatewayConfigForm">
+      <div>
+        <h3 class="form__heading">
+          <div class="control-field">
+            <span>"</span>
+            @if (configName?.invalid) {
+            <label class="control__label" for="configName">Config Name:</label>
+            }
+            <div class="control__input-wrapper">
+              <input
+                class="control__input"
+                id="configName"
+                type="text"
+                name="configName"
+                formControlName="configName"
+                autocomplete="off"
+                [required]="true"
+              />
+              <span class="control-required"></span>
+              @if (configName?.hasError('required')) {
+              <span class="control-feedback">Required</span>
+              }
+            </div>
+            <span>": {{ "{" }}</span>
+          </div>
+        </h3>
+        <div class="tab-2ch">
+          <span>"ConfigId": "{{ currentConfigResource.value()?.id }}",</span
+          ><br />
+          <app-routes [formArrayName]="routesControlName"></app-routes>
+          <app-clusters [formArrayName]="clustersControlName"></app-clusters>
+        </div>
+      </div>
+    </ng-container>
+    <div class="form__footer">
+      <span class="form__heading">{{ "}" }}</span>
+    </div>
+  </div>
+
+  }
+</section>

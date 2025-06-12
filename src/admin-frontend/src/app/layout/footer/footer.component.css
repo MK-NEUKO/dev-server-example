@@ -1,0 +1,12 @@
+.footer__container {
+  border-top: 0.125rem solid var(--neuko-border);
+  text-align: center;
+  padding: 20px;
+  background-color: var(--neuko-bg-body-secondary);
+  margin-top: auto;
+  color: var (--neuko-text-body);
+}
+
+.footer__content-italic {
+  font-style: italic;
+}

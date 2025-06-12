@@ -1,0 +1,13 @@
+@if (visible()) {
+<div class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">{{ title() }}</span>
+      <button class="modal-close" (click)="onClose()">&#x2716;</button>
+    </div>
+    <div class="modal-body">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
+}

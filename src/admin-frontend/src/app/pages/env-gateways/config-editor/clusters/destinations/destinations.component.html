@@ -1,0 +1,95 @@
+<div [formGroup]="parentForm">
+  <h3 class="form__heading form__heading--third">Destinations: [</h3>
+  <ng-container formArrayName="destinations">
+    @for (destination of formArray.controls; track $index; let i = $index) {
+    <div class="tab-2ch form-container" [formGroupName]="i">
+      <div class="control-field">
+        <span>"</span>
+        @if (destinationName?.invalid) {
+        <label class="control__label" for="destinationName"
+          >Destination Name:
+        </label>
+        }
+
+        <div class="control__input-wrapper">
+          <input
+            class="control__input"
+            type="text"
+            formControlName="destinationName"
+            name="destinationName"
+            autocomplete="off"
+            [required]="true"
+          />
+          <span class="control-required"></span>
+          @if (destinationName?.hasError('required')) {
+          <span class="control-feedback">Required</span>
+          }
+        </div>
+        <span>": {{ "{" }}</span>
+      </div>
+      <div class="tab-2ch">
+        <div class="control-field">
+          <label class="control__label" for="address">Address: </label>
+          <div class="control__input-wrapper">
+            <input
+              class="control__input"
+              id="address"
+              type="text"
+              formControlName="address"
+              name="address"
+              autocomplete="off"
+              [required]="true"
+            />
+            <span class="control-required"></span>
+            @if (address?.invalid && (address?.dirty || address?.touched)) { @if
+            (address?.hasError('required')) {
+            <span class="control-feedback">Required</span>
+            } @if (address?.hasError('invalidDestinationAddress')) {
+            <span class="control-feedback"
+              >Invalid URL
+              <button
+                type="button"
+                class="control-feedback__info"
+                [title]="
+                  address?.getError('invalidDestinationAddress')?.message
+                "
+                tabindex="-1"
+              ></button>
+            </span>
+            } }
+          </div>
+        </div>
+      </div>
+      <div class="tab-2ch"></div>
+      <div class="form__footer">
+        <span>{{ "}" }}</span>
+        <div class="form__footer-buttons"></div>
+
+        <button
+          class="button button--primary button--small"
+          (click)="updateDestination()"
+          [disabled]="canUpdate()"
+        >
+          Update
+        </button>
+        <button
+          class="button button--secondary button--small"
+          (click)="resetDestination()"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+    }
+  </ng-container>
+  <span class="form__heading form__heading--third">],</span>
+  <div>
+    <app-modal-dialog
+      [title]="modalTitle"
+      [visible]="showDialog"
+      (close)="showDialog = false"
+    >
+      <p>{{ modalMessage }}</p>
+    </app-modal-dialog>
+  </div>
+</div>
