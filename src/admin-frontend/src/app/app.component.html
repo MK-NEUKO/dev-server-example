@@ -2,12 +2,15 @@
   <div class="layout__header">
     <app-header></app-header>
   </div>
-  <div class="layout__sidebar-content">
+  <div class="layout__sidebar-content-wrapper">
     <div class="layout__sidebar">
       <app-sidebar></app-sidebar>
     </div>
-    <div class="layout__content">
-      <router-outlet></router-outlet>
+    <div class="layout__content-wrapper">
+      <div class="layout__content">
+        <router-outlet></router-outlet>
+      </div>
+      <app-footer class="layout__footer"></app-footer>
     </div>
   </div>
 </div>

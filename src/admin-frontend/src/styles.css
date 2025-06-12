@@ -123,6 +123,7 @@ body {
   margin-left: auto;
   padding-right: 1rem;
   padding-left: 1rem;
+  padding-bottom: 3rem;
 }
 @media (min-width: 62em) {
   .container {

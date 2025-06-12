@@ -17,6 +17,7 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: bold;
+  font-style: italic;
 }
 .navbar__brand-logo {
   width: 3rem;
