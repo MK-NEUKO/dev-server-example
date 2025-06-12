@@ -83,4 +83,13 @@
     }
   </ng-container>
   <span class="form__heading form__heading--third">],</span>
+  <div>
+    <app-modal-dialog
+      [title]="modalTitle"
+      [visible]="showDialog"
+      (close)="showDialog = false"
+    >
+      <p>{{ modalMessage }}</p>
+    </app-modal-dialog>
+  </div>
 </div>

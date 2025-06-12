@@ -1,13 +1,15 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, input } from '@angular/core';
 import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
 import { DestinationService } from '../../../../../services/env-gateway/destination/destination.service';
+import { ClustersComponent } from '../clusters.component';
+import { ModalDialogComponent } from "../../../../../dialogues/modal-dialog/modal-dialog.component";
 
 @Component({
   selector: 'app-destinations',
   imports: [
     ReactiveFormsModule,
+    ModalDialogComponent
   ],
   templateUrl: './destinations.component.html',
   styleUrls: [
@@ -24,6 +26,16 @@ export class DestinationsComponent implements OnInit {
   formArray!: FormArray;
   parentForm!: FormGroup;
   destination!: FormGroup;
+
+  showDialog = false;
+  public modalTitle: string = '';
+  public modalMessage: string = '';
+
+  openDialog(title: string, message: string): void {
+    this.modalTitle = title;
+    this.modalMessage = message;
+    this.showDialog = true;
+  }
 
   get address() {
     const destination = this.formArray.at(0) as FormGroup;
@@ -58,6 +70,7 @@ export class DestinationsComponent implements OnInit {
       address: address
     };
     this.destinationService.SaveChanges(request);
+    this.openDialog('Destination Updated', `Destination ${this.destinationName?.value} has been updated successfully.`);
   }
 
   public resetDestination(): void {
