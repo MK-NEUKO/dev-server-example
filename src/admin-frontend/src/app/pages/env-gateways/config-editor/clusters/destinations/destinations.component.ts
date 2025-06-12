@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, input } from '@angular/core';
 import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
+import { DestinationService } from '../../../../../services/env-gateway/destination/destination.service';
 
 @Component({
   selector: 'app-destinations',
@@ -19,7 +20,7 @@ export class DestinationsComponent implements OnInit {
   readonly formArrayName = input.required<string>();
   readonly parentArrayName = input.required<string>();
   private rootFormGroup = inject(FormGroupDirective);
-  private httpClient = inject(HttpClient);
+  private destinationService = inject(DestinationService);
   formArray!: FormArray;
   parentForm!: FormGroup;
   destination!: FormGroup;
@@ -52,15 +53,11 @@ export class DestinationsComponent implements OnInit {
   public updateDestination(): void {
     const destinationId = this.destination.get('destinationId')?.value;
     const address = this.destination.get('address')?.value;
-    const updatedDestination = {
+    const request = {
       id: destinationId,
       address: address
     };
-    this.httpClient.put(`envGateway/update-destination`, updatedDestination).subscribe({
-      next: (response) => {
-        console.log('Destination updated successfully:', response);
-      }
-    });
+    this.destinationService.SaveChanges(request);
   }
 
   public resetDestination(): void {
