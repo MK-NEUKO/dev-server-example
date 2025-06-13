@@ -16,9 +16,6 @@ public static class DependencyInjection
         {
             configuration.RegisterServicesFromAssembly(assembly);
 
-            configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
-
-            configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
         services.Scan(scan => scan.FromAssembliesOf(typeof(DependencyInjection))
@@ -28,6 +25,9 @@ public static class DependencyInjection
                 .AsImplementedInterfaces().WithScopedLifetime()
                 .AddClasses(classes => classes.AssignableTo(typeof(ICommandHandler<,>)), publicOnly: false)
                 .AsImplementedInterfaces().WithScopedLifetime());
+        
+        services.Decorate(typeof(ICommandHandler<,>), typeof(ValidationDecorator.CommandHandler<,>));
+        services.Decorate(typeof(ICommandHandler<>), typeof(ValidationDecorator.CommandBaseHandler<>));
 
         services.Decorate(typeof(IQueryHandler<,>), typeof(LoggingDecorator.QueryHandler<,>));
         services.Decorate(typeof(ICommandHandler<,>), typeof(LoggingDecorator.CommandHandler<,>));
