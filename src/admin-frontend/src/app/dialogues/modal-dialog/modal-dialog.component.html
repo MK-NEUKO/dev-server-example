@@ -8,6 +8,11 @@
     <div class="modal-body">
       <ng-content></ng-content>
     </div>
+    <div class="modal-footer">
+      <button class="button button--secondary" (click)="onClose()">
+        Close
+      </button>
+    </div>
   </div>
 </div>
 }

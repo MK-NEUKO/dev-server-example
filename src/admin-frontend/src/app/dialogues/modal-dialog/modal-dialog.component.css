@@ -41,3 +41,9 @@
   color: var(--neuko-text-body);
   cursor: pointer;
 }
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-top: 0.125rem solid var(--neuko-border);
+}

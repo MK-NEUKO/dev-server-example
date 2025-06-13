@@ -23,19 +23,12 @@ export class DestinationsComponent implements OnInit {
   readonly parentArrayName = input.required<string>();
   private rootFormGroup = inject(FormGroupDirective);
   private destinationService = inject(DestinationService);
-  formArray!: FormArray;
-  parentForm!: FormGroup;
-  destination!: FormGroup;
-
-  showDialog = false;
+  public showDialog: boolean = false;
   public modalTitle: string = '';
   public modalMessage: string = '';
-
-  openDialog(title: string, message: string): void {
-    this.modalTitle = title;
-    this.modalMessage = message;
-    this.showDialog = true;
-  }
+  public formArray!: FormArray;
+  public parentForm!: FormGroup;
+  public destination!: FormGroup;
 
   get address() {
     const destination = this.formArray.at(0) as FormGroup;
@@ -62,15 +55,27 @@ export class DestinationsComponent implements OnInit {
 
   }
 
-  public updateDestination(): void {
+  public async updateDestination(): Promise<void> {
     const destinationId = this.destination.get('destinationId')?.value;
     const address = this.destination.get('address')?.value;
     const request = {
       id: destinationId,
       address: address
     };
-    this.destinationService.SaveChanges(request);
-    this.openDialog('Destination Updated', `Destination ${this.destinationName?.value} has been updated successfully.`);
+
+    var message = '';
+    try {
+      message = await this.destinationService.SaveChanges(request);
+
+    } catch (error: any) {
+      console.error('Error updating destination:', error.message);
+      message = error.message || 'An error occurred while updating the destination.';
+    }
+
+    this.openDialog(
+      'Destination update response',
+      `HttpClient - response: ${message}`
+    );
   }
 
   public resetDestination(): void {
@@ -79,4 +84,9 @@ export class DestinationsComponent implements OnInit {
     this.address?.markAsDirty();
   }
 
+  openDialog(title: string, message: string): void {
+    this.modalTitle = title;
+    this.modalMessage = message;
+    this.showDialog = true;
+  }
 }
