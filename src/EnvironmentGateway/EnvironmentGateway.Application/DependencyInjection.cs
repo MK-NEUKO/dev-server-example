@@ -1,4 +1,6 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Behaviors;
+using EnvironmentGateway.Application.Abstractions.Messaging;
+using EnvironmentGateway.Application.Destinations.UpdateDestination;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +20,14 @@ public static class DependencyInjection
 
             configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
+
+        services.Scan(scan => scan.FromAssembliesOf(typeof(DependencyInjection))
+                .AddClasses(classes => classes.AssignableTo(typeof(IQueryHandler<,>)), publicOnly: false)
+                .AsImplementedInterfaces().WithScopedLifetime()
+                .AddClasses(classes => classes.AssignableTo(typeof(ICommandHandler<>)), publicOnly: false)
+                .AsImplementedInterfaces().WithScopedLifetime()
+                .AddClasses(classes => classes.AssignableTo(typeof(ICommandHandler<,>)), publicOnly: false)
+                .AsImplementedInterfaces().WithScopedLifetime());
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly, includeInternalTypes: true);
 

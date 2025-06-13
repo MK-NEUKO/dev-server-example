@@ -14,7 +14,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
     {
         var gatewayConfigSummery = await context
             .Database
-            .SqlQuery<GatewayConfigSummery>($"""
+            .SqlQuery<GatewayConfigSummary>($"""
                 SELECT 
                     gc.id AS gateway_config_id,
                     gc.name_value AS gateway_config_name,
@@ -80,7 +80,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
         return response;
     }
 
-    private sealed record GatewayConfigSummery(
+    private sealed record GatewayConfigSummary(
         Guid GatewayConfigId,
         string GatewayConfigName,
         bool IsCurrentConfig,

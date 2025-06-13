@@ -1,6 +1,6 @@
 ﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
+using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Application.Destinations.UpdateDestination;
-using MediatR;
 
 namespace EnvironmentGateway.Api.Endpoints.UpdateConfig.UpdateDestination;
 
@@ -8,9 +8,10 @@ public class UpdateDestination : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("update-destination", async (
+        app.MapPut("update-destination", 
+            async (
             UpdateDestinationRequest request,
-            ISender sender,
+            ICommandHandler<UpdateDestinationCommand> handler,
             IRuntimeConfigurator runtimeConfigurator,
             CancellationToken cancellationToken) =>
         {
@@ -18,7 +19,7 @@ public class UpdateDestination : IEndpoint
                 request.Id,
                 request.Address);
 
-            var result = await sender.Send(command, cancellationToken);
+            var result = await handler.Handle(command, cancellationToken);
 
             if (result.IsFailure)
             {

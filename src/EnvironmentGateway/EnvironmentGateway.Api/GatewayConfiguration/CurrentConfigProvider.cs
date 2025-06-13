@@ -1,13 +1,14 @@
 ﻿using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
+using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Application.GatewayConfigs.CreateNewConfig;
 using EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
 using EnvironmentGateway.Domain.Abstractions;
-using MediatR;
 
 namespace EnvironmentGateway.Api.GatewayConfiguration;
 
 internal sealed class CurrentConfigProvider(
-    ISender sender,
+    ICommandHandler<CreateNewConfigCommand, Guid> handler,
+    IQueryHandler<GetCurrentConfigQuery, CurrentConfigResponse> queryHandler,
     ILogger<CurrentConfigProvider> logger) 
     : ICurrentConfigProvider
 {
@@ -15,7 +16,7 @@ internal sealed class CurrentConfigProvider(
     {
         var query = new GetCurrentConfigQuery();
 
-        var result = await sender.Send(query, CancellationToken.None);
+        var result = await queryHandler.Handle(query, CancellationToken.None);
 
         if (!result.IsFailure) return result;
 
@@ -28,7 +29,7 @@ internal sealed class CurrentConfigProvider(
     {
         var command = new CreateNewConfigCommand();
 
-        var result = await sender.Send(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
 
         if (result.IsSuccess) return result;
 

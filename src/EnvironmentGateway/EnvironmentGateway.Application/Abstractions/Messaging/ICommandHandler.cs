@@ -1,14 +1,15 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
-using MediatR;
 
 namespace EnvironmentGateway.Application.Abstractions.Messaging;
 
-public interface ICommandHandler<TCommand> : IRequestHandler<TCommand, Result>
+public interface ICommandHandler<in TCommand> 
     where TCommand : ICommand
 {
+    Task<Result> Handle(TCommand command, CancellationToken cancellationToken);
 }
 
-public interface ICommandHandler<TCommand, TResponse> : IRequestHandler<TCommand, Result<TResponse>>
+public interface ICommandHandler<in TCommand, TResponse> 
     where TCommand : ICommand<TResponse>
 {
+    Task<Result<TResponse>> Handle(TCommand command, CancellationToken cancellationToken);
 }
