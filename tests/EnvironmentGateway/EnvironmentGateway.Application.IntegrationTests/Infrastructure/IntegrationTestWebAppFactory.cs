@@ -1,5 +1,6 @@
 ﻿using EnvironmentGateway.Api;
 using EnvironmentGateway.Application.Abstractions.Data;
+using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Infrastructure;
 using EnvironmentGateway.Infrastructure.Data;
@@ -39,7 +40,6 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
 
             services.AddSingleton<ISqlConnectionFactory>(_ =>
                 new SqlConnectionFactory(_dbContainer.GetConnectionString()));
-
         });
 
 

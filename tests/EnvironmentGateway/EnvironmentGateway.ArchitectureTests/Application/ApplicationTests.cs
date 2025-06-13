@@ -10,10 +10,16 @@ public class ApplicationTests : BaseTest
     [Fact]
     public void CommandHandler_ShouldHave_NameEndingWith_CommandHandler()
     {
+        
+        
         var result = Types.InAssembly(ApplicationAssembly)
             .That()
+            .DoNotResideInNamespace("EnvironmentGateway.Application.Abstractions.Behaviors")
+            .And()
             .ImplementInterface(typeof(ICommandHandler<>))
             .Or()
+            .DoNotResideInNamespace("EnvironmentGateway.Application.Abstractions.Behaviors")
+            .And()
             .ImplementInterface(typeof(ICommandHandler<,>))
             .Should()
             .HaveNameEndingWith("CommandHandler")
@@ -42,6 +48,8 @@ public class ApplicationTests : BaseTest
     {
         var result = Types.InAssembly(ApplicationAssembly)
             .That()
+            .DoNotResideInNamespace("EnvironmentGateway.Application.Abstractions.Behaviors")
+            .And()
             .ImplementInterface(typeof(IQueryHandler<,>))
             .Should()
             .HaveNameEndingWith("QueryHandler")

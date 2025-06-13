@@ -9,13 +9,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EnvironmentGateway.Application.IntegrationTests.GatewayConfigs;
 
-public class GetCurrentConfigTests(
-    IntegrationTestWebAppFactory factory)
-    : BaseIntegrationTest(factory)
+public class GetCurrentConfigTests : BaseIntegrationTest
 {
-    private readonly IQueryHandler<GetCurrentConfigQuery, CurrentConfigResponse> _handler 
-        = factory.Services.GetRequiredService<IQueryHandler<GetCurrentConfigQuery, CurrentConfigResponse>>();
-
+    private readonly IQueryHandler<GetCurrentConfigQuery, CurrentConfigResponse> _handler;
+    
+    public GetCurrentConfigTests(IntegrationTestWebAppFactory factory) : base(factory)
+    {
+        _handler = Scope.ServiceProvider.GetRequiredService<IQueryHandler<GetCurrentConfigQuery, CurrentConfigResponse>>();
+    }
+    
+    
     [Fact]
     public async Task GetCurrentConfig_ShouldReturnSuccess_WhenCurrentGatewayConfigExists()
     {

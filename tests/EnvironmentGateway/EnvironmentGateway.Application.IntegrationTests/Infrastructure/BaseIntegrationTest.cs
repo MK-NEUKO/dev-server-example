@@ -5,16 +5,16 @@ namespace EnvironmentGateway.Application.IntegrationTests.Infrastructure;
 
 public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>
 {
-    private readonly IServiceScope _scope;
+    protected readonly IServiceScope Scope;
     protected readonly EnvironmentGatewayDbContext DbContext;
     protected readonly IntegrationTestWebAppFactory Factory;
 
     protected BaseIntegrationTest(IntegrationTestWebAppFactory factory)
     {
         Factory = factory;
-        _scope = factory.Services.CreateScope();
+        Scope = factory.Services.CreateScope();
 
-        DbContext = _scope.ServiceProvider.GetRequiredService<EnvironmentGatewayDbContext>();
+        DbContext = Scope.ServiceProvider.GetRequiredService<EnvironmentGatewayDbContext>();
     }
 
     public async Task InitializeTestConfigAsync()

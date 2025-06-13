@@ -8,13 +8,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EnvironmentGateway.Application.IntegrationTests.UpdateConfig.UpdateDestination;
 
-public class UpdateDestinationTests(
-    IntegrationTestWebAppFactory factory) 
-    : BaseIntegrationTest(factory)
+public class UpdateDestinationTests : BaseIntegrationTest
 {
-    private readonly ICommandHandler<UpdateDestinationCommand> _handler 
-        = factory.Services.GetRequiredService<ICommandHandler<UpdateDestinationCommand>>();
-
+    private readonly ICommandHandler<UpdateDestinationCommand> _handler;
+    
+    public UpdateDestinationTests(IntegrationTestWebAppFactory factory) 
+        : base(factory)
+    {
+        _handler = Scope.ServiceProvider.GetRequiredService<ICommandHandler<UpdateDestinationCommand>>();
+    }
+    
+    
     [Fact]
     public async Task UpdateDestination_ShouldReturnSuccess_WhenDestinationAddressUpdated()
     {
