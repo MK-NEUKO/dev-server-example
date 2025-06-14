@@ -1,8 +1,3 @@
-﻿using MediatR;
+﻿namespace EnvironmentGateway.Domain.Abstractions;
 
-namespace EnvironmentGateway.Domain.Abstractions;
-
-public interface IDomainEvent : INotification
-{
-    
-}
+public interface IDomainEvent;
