@@ -1,15 +1,24 @@
-﻿using EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
+﻿using EnvironmentGateway.Application.Abstractions.Messaging;
+using EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
 using EnvironmentGateway.Application.IntegrationTests.Infrastructure;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EnvironmentGateway.Application.IntegrationTests.GatewayConfigs;
 
-public class GetCurrentConfigTests(IntegrationTestWebAppFactory factory) 
-    : BaseIntegrationTest(factory)
+public class GetCurrentConfigTests : BaseIntegrationTest
 {
+    private readonly IQueryHandler<GetCurrentConfigQuery, CurrentConfigResponse> _handler;
+    
+    public GetCurrentConfigTests(IntegrationTestWebAppFactory factory) : base(factory)
+    {
+        _handler = Scope.ServiceProvider.GetRequiredService<IQueryHandler<GetCurrentConfigQuery, CurrentConfigResponse>>();
+    }
+    
+    
     [Fact]
     public async Task GetCurrentConfig_ShouldReturnSuccess_WhenCurrentGatewayConfigExists()
     {
@@ -18,7 +27,7 @@ public class GetCurrentConfigTests(IntegrationTestWebAppFactory factory)
         var query = new GetCurrentConfigQuery();
 
         // Act
-        var result = await Sender.Send(query);
+        var result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -41,7 +50,7 @@ public class GetCurrentConfigTests(IntegrationTestWebAppFactory factory)
         }
 
         // Act
-        var result = await Sender.Send(query);
+        var result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeFalse();

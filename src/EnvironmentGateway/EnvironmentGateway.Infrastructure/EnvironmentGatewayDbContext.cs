@@ -6,27 +6,22 @@ using EnvironmentGateway.Domain.Destinations;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Domain.RouteMatches;
 using EnvironmentGateway.Domain.Routes;
-using MediatR;
+using EnvironmentGateway.Infrastructure.DomainEvents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EnvironmentGateway.Infrastructure;
 
-public sealed class EnvironmentGatewayDbContext : DbContext, IUnitOfWork, IEnvironmentGatewayDbContext
+public sealed class EnvironmentGatewayDbContext(
+    DbContextOptions options,
+    IDomainEventsDispatcher domainEventsDispatcher)
+    : DbContext(options), IUnitOfWork, IEnvironmentGatewayDbContext
 {
     public DbSet<GatewayConfig> GatewayConfigs { get; private set; }
     public DbSet<Route> Routes { get; private set; }
     public DbSet<Cluster> Clusters { get; private set; }
     public DbSet<RouteMatch> RouteMatches { get; private set; }
     public DbSet<Destination> Destinations { get; private set; }
-
-    private readonly IPublisher _publisher;
-
-    public EnvironmentGatewayDbContext(DbContextOptions options, IPublisher publisher)
-        : base(options)
-    {
-        _publisher = publisher;
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -65,10 +60,8 @@ public sealed class EnvironmentGatewayDbContext : DbContext, IUnitOfWork, IEnvir
                 return domainEvents;
             }).ToList();
 
-        foreach (var domainEvent in domainEvents)
-        {
-            await _publisher.Publish(domainEvent);
-        }
+
+        await domainEventsDispatcher.DispatchAsync(domainEvents);
     }
 
     

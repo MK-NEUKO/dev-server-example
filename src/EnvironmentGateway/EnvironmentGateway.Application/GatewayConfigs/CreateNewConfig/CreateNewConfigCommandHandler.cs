@@ -17,7 +17,7 @@ internal sealed class CreateNewConfigCommandHandler(
         {
             return currentConfigGuid.Value;
         }
-
+        
         try
         {
             var newConfiguration = GatewayConfig.CreateNewConfig();

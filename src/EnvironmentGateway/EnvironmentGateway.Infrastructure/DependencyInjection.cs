@@ -4,6 +4,7 @@ using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Destinations;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Infrastructure.Data;
+using EnvironmentGateway.Infrastructure.DomainEvents;
 using EnvironmentGateway.Infrastructure.Email;
 using EnvironmentGateway.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddTransient<IEmailService, EmailService>();
+        services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
 
         var connectionString = configuration.GetConnectionString("EnvironmentGatewayDev") ??
                                 throw new ArgumentException(nameof(configuration));

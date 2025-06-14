@@ -1,14 +1,24 @@
-﻿using EnvironmentGateway.Application.Destinations.UpdateDestination;
+﻿using EnvironmentGateway.Application.Abstractions.Messaging;
+using EnvironmentGateway.Application.Destinations.UpdateDestination;
 using EnvironmentGateway.Application.IntegrationTests.Infrastructure;
 using EnvironmentGateway.Domain.Destinations;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EnvironmentGateway.Application.IntegrationTests.UpdateConfig.UpdateDestination;
 
-public class UpdateDestinationTests(IntegrationTestWebAppFactory factory) : BaseIntegrationTest(factory)
-
+public class UpdateDestinationTests : BaseIntegrationTest
 {
+    private readonly ICommandHandler<UpdateDestinationCommand> _handler;
+    
+    public UpdateDestinationTests(IntegrationTestWebAppFactory factory) 
+        : base(factory)
+    {
+        _handler = Scope.ServiceProvider.GetRequiredService<ICommandHandler<UpdateDestinationCommand>>();
+    }
+    
+    
     [Fact]
     public async Task UpdateDestination_ShouldReturnSuccess_WhenDestinationAddressUpdated()
     {
@@ -20,7 +30,7 @@ public class UpdateDestinationTests(IntegrationTestWebAppFactory factory) : Base
         var request = new UpdateDestinationCommand(destinationId, testAddress);
 
         // Act
-        var result = await Sender.Send(request);
+        var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -37,7 +47,7 @@ public class UpdateDestinationTests(IntegrationTestWebAppFactory factory) : Base
         var request = new UpdateDestinationCommand(Guid.NewGuid(), testAddress);
 
         // Act
-        var result = await Sender.Send(request);
+        var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeFalse();
