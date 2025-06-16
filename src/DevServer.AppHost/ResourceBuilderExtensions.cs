@@ -26,9 +26,9 @@ internal static class ResourceBuilderExtensions
             {
                 try
                 {
-                    var endpoint = builder.GetEndpoint("https");
+                    EndpointReference endpoint = builder.GetEndpoint("https");
 
-                    var url = $"{endpoint.Url}/{openApiUiPath}";
+                    string url = $"{endpoint.Url}/{openApiUiPath}";
 
                     Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
 
