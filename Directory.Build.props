@@ -10,7 +10,7 @@
 		<!--<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>-->
 	</PropertyGroup>
 	<ItemGroup Condition="'$(MSBuildProjectExtension)' != '.dcproj'">
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="10.7.0.110445">
+		<PackageReference Include="SonarAnalyzer.CSharp" >
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

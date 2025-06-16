@@ -31,7 +31,7 @@ public class GatewayConfigsTests : BaseTest
         var initialConfig = GatewayConfig.CreateNewConfig();
 
         // Assert
-        var domainEvent = AssertDomainEventWasPublished<NewConfigCreatedDomainEvent>(initialConfig);
+        NewConfigCreatedDomainEvent domainEvent = AssertDomainEventWasPublished<NewConfigCreatedDomainEvent>(initialConfig);
         domainEvent.ConfigurationId.Should().Be(initialConfig.Id);
     }
 

@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevServer.AppHost", "src\De
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevServer.ServiceDefaults", "src\DevServer.ServiceDefaults\DevServer.ServiceDefaults.csproj", "{32C8CCC3-DD11-4460-B14E-B2F73BD2E22D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherForecastApi", "src\WeatherForecastApi\WeatherForecastApi.csproj", "{C5E05F52-07B6-44C2-A63E-79CF2BEBAF43}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EnvironmentGateway", "EnvironmentGateway", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvironmentGateway.Api", "src\EnvironmentGateway\EnvironmentGateway.Api\EnvironmentGateway.Api.csproj", "{F34D70E9-56D8-2594-B45E-B5B60582C7B2}"
@@ -24,6 +22,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvironmentGateway.Infrastructure", "src\EnvironmentGateway\EnvironmentGateway.Infrastructure\EnvironmentGateway.Infrastructure.csproj", "{E1917368-655C-4BC8-B2BC-A46780FA89EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7E4EACBE-7679-46E3-AB55-E7E978B4653F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EnvironmentGateway", "EnvironmentGateway", "{37DF71A3-1BA1-44AE-9700-40C293CBC80D}"
 EndProject
@@ -51,10 +54,6 @@ Global
 		{32C8CCC3-DD11-4460-B14E-B2F73BD2E22D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32C8CCC3-DD11-4460-B14E-B2F73BD2E22D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32C8CCC3-DD11-4460-B14E-B2F73BD2E22D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C5E05F52-07B6-44C2-A63E-79CF2BEBAF43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5E05F52-07B6-44C2-A63E-79CF2BEBAF43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5E05F52-07B6-44C2-A63E-79CF2BEBAF43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5E05F52-07B6-44C2-A63E-79CF2BEBAF43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F34D70E9-56D8-2594-B45E-B5B60582C7B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F34D70E9-56D8-2594-B45E-B5B60582C7B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F34D70E9-56D8-2594-B45E-B5B60582C7B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -98,7 +97,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9CF48C3E-469C-4B9D-8193-EE8A14C51B0C} = {57737348-7C9E-4D33-817E-6445421303A5}
 		{32C8CCC3-DD11-4460-B14E-B2F73BD2E22D} = {57737348-7C9E-4D33-817E-6445421303A5}
-		{C5E05F52-07B6-44C2-A63E-79CF2BEBAF43} = {57737348-7C9E-4D33-817E-6445421303A5}
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {57737348-7C9E-4D33-817E-6445421303A5}
 		{F34D70E9-56D8-2594-B45E-B5B60582C7B2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{3C7CDEF9-79E8-4136-9429-BC20110E3F42} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
