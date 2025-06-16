@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EnvironmentGateway\EnvironmentGateway.Api\EnvironmentGateway.Api.csproj" />
-    <ProjectReference Include="..\WeatherForecastApi\WeatherForecastApi.csproj" />
   </ItemGroup>
 
   <Target Name="RestoreNpm" BeforeTargets="Build" Condition=" '$(DesignTimeBuild)' != 'true' ">
