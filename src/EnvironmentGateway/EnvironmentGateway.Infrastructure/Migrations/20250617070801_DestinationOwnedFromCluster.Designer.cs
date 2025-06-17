@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using EnvironmentGateway.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace environmentgateway.infrastructure.Migrations
 {
     [DbContext(typeof(EnvironmentGatewayDbContext))]
-    partial class EnvironmentGatewayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250617070801_DestinationOwnedFromCluster")]
+    partial class DestinationOwnedFromCluster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,8 +175,7 @@ namespace environmentgateway.infrastructure.Migrations
 
                             b1.Property<string>("Address")
                                 .IsRequired()
-                                .HasMaxLength(255)
-                                .HasColumnType("character varying(255)")
+                                .HasColumnType("text")
                                 .HasColumnName("address");
 
                             b1.Property<Guid>("ClusterId")
@@ -182,25 +184,20 @@ namespace environmentgateway.infrastructure.Migrations
 
                             b1.Property<string>("DestinationName")
                                 .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
+                                .HasColumnType("text")
                                 .HasColumnName("destination_name");
 
                             b1.HasKey("Id")
-                                .HasName("pk_destinations");
+                                .HasName("pk_destination");
 
                             b1.HasIndex("ClusterId")
-                                .HasDatabaseName("ix_destinations_cluster_id");
+                                .HasDatabaseName("ix_destination_cluster_id");
 
-                            b1.HasIndex("DestinationName")
-                                .IsUnique()
-                                .HasDatabaseName("ix_destinations_destination_name");
-
-                            b1.ToTable("destinations", (string)null);
+                            b1.ToTable("destination", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("ClusterId")
-                                .HasConstraintName("fk_destinations_clusters_cluster_id");
+                                .HasConstraintName("fk_destination_clusters_cluster_id");
                         });
 
                     b.Navigation("Destinations");

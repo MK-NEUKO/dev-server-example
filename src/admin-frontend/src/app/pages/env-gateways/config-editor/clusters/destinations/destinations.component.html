@@ -1,5 +1,5 @@
 <div [formGroup]="parentForm">
-  <h3 class="form__heading form__heading--third">Destinations: [</h3>
+  <h3 class="form__heading form__heading--third">Destinations: {{ "{" }}</h3>
   <ng-container formArrayName="destinations">
     @for (destination of formArray.controls; track $index; let i = $index) {
     <div class="tab-2ch form-container" [formGroupName]="i">
@@ -82,7 +82,7 @@
     </div>
     }
   </ng-container>
-  <span class="form__heading form__heading--third">],</span>
+  <span class="form__heading form__heading--third">{{ "}" }},</span>
   <div>
     <app-modal-dialog
       [title]="modalTitle"

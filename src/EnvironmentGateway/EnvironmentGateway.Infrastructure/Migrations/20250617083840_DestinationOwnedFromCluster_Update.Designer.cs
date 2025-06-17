@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using EnvironmentGateway.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace environmentgateway.infrastructure.Migrations
 {
     [DbContext(typeof(EnvironmentGatewayDbContext))]
-    partial class EnvironmentGatewayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250617083840_DestinationOwnedFromCluster_Update")]
+    partial class DestinationOwnedFromCluster_Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

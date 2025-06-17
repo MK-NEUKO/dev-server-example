@@ -1,5 +1,4 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
-using EnvironmentGateway.Domain.Clusters;
 using EnvironmentGateway.Domain.Shared;
 
 namespace EnvironmentGateway.Domain.Destinations;
@@ -18,7 +17,6 @@ public sealed class Destination : Entity
     }
 
     public Guid ClusterId { get; init; }
-    public Cluster Cluster { get; init; } = null!;
     public Name DestinationName { get; init; } = new Name("null");
     public Address Address { get; private set; } = new Address("null");
 
