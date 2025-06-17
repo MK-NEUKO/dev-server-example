@@ -21,7 +21,7 @@ public sealed class EnvironmentGatewayDbContext(
     public DbSet<Route> Routes { get; private set; }
     public DbSet<Cluster> Clusters { get; private set; }
     public DbSet<RouteMatch> RouteMatches { get; private set; }
-    public DbSet<Destination> Destinations { get; private set; }
+    //public DbSet<Destination> Destinations { get; private set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,7 +34,7 @@ public sealed class EnvironmentGatewayDbContext(
     {
         try
         {
-            var result = await base.SaveChangesAsync(cancellationToken);
+            int result = await base.SaveChangesAsync(cancellationToken);
 
             await PublishDomainEventsAsync();
 
@@ -53,7 +53,7 @@ public sealed class EnvironmentGatewayDbContext(
             .Select(entry => entry.Entity)
             .SelectMany(entity =>
             {
-                var domainEvents = entity.GetDomainEvents();
+                IReadOnlyList<IDomainEvent> domainEvents = entity.GetDomainEvents();
 
                 entity.ClearDomainEvents();
 

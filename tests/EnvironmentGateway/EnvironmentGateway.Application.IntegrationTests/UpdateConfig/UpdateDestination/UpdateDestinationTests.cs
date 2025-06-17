@@ -1,6 +1,7 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Application.Destinations.UpdateDestination;
 using EnvironmentGateway.Application.IntegrationTests.Infrastructure;
+using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Destinations;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -24,17 +25,20 @@ public class UpdateDestinationTests : BaseIntegrationTest
     {
         // Arrange
         const string testAddress = "https://example.com";
-        var destinationId = await DbContext.Destinations
+        Guid destinationId = await DbContext.Clusters
+            .SelectMany(c => c.Destinations)
             .Select(d => d.Id)
             .FirstOrDefaultAsync();
         var request = new UpdateDestinationCommand(destinationId, testAddress);
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        Result result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        var updatedDestination = await DbContext.Destinations.FirstOrDefaultAsync(d => d.Id == destinationId);
+        Destination? updatedDestination = await DbContext.Clusters
+            .SelectMany(c => c.Destinations)
+            .FirstOrDefaultAsync(d => d.Id == destinationId);
         updatedDestination.Should().NotBeNull();
         updatedDestination.Address.Value.Should().Be(testAddress);
     }
@@ -47,11 +51,13 @@ public class UpdateDestinationTests : BaseIntegrationTest
         var request = new UpdateDestinationCommand(Guid.NewGuid(), testAddress);
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        Result result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        var testDestination = await DbContext.Destinations.FirstOrDefaultAsync();
+        Destination? testDestination = await DbContext.Clusters
+            .SelectMany(c => c.Destinations)
+            .FirstOrDefaultAsync();
         testDestination.Should().NotBeNull();
         testDestination.Address.Value.Should().NotBe(testAddress);
     }

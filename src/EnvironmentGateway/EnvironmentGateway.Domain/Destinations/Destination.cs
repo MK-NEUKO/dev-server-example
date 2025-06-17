@@ -18,7 +18,7 @@ public sealed class Destination : Entity
     }
 
     public Guid ClusterId { get; init; }
-    public Cluster Cluster { get; init; } = null!;
+    //public Cluster Cluster { get; init; } = null!;
     public Name DestinationName { get; init; } = new Name("null");
     public Address Address { get; private set; } = new Address("null");
 

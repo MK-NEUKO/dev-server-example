@@ -18,7 +18,7 @@ public interface IEnvironmentGatewayDbContext
 
     DbSet<RouteMatch> RouteMatches { get; }
 
-    DbSet<Destination> Destinations { get; }
+    //DbSet<Destination> Destinations { get; }
 
     DatabaseFacade Database { get; }
 }

@@ -12,7 +12,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
         GetCurrentConfigQuery request,
         CancellationToken cancellationToken)
     {
-        var gatewayConfigSummery = await context
+        GatewayConfigSummary? gatewayConfigSummery = await context
             .Database
             .SqlQuery<GatewayConfigSummary>($"""
                 SELECT 
@@ -24,14 +24,14 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                     rm.path_value AS match_path,
                     c.cluster_name_value AS cluster_name,
                     d.id AS destination_id,
-                    d.destination_name_value AS destination_name,
-                    d.address_value AS destination_address
+                    d.destination_name AS destination_name,
+                    d.address AS destination_address
                     
                 FROM gateway_configs gc
                 LEFT JOIN routes r ON gc.id = r.gateway_config_id
                 LEFT JOIN route_matches rm ON r.id = rm.route_id
                 LEFT JOIN clusters c ON gc.id = c.gateway_config_id
-                LEFT JOIN destinations d ON c.id = d.cluster_id
+                LEFT JOIN destination d ON c.id = d.cluster_id
                 WHERE gc.is_current_config = true
                 """)
             .FirstOrDefaultAsync(cancellationToken);
