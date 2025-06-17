@@ -10,11 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
+	<InternalsVisibleTo Include="ArchitectureTests" />
   </ItemGroup>
 
   <ItemGroup>
-	<InternalsVisibleTo Include="ArchitectureTests" />
+    <ProjectReference Include="..\UserManager.Application\UserManager.Application.csproj" />
   </ItemGroup>
 
 </Project>

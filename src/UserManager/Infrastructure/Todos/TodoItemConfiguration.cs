@@ -1,7 +1,7 @@
-﻿using Domain.Todos;
-using Domain.Users;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using UserManager.Domain.Todos;
+using UserManager.Domain.Users;
 
 namespace Infrastructure.Todos;
 

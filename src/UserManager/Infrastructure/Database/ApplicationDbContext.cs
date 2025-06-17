@@ -1,9 +1,9 @@
-﻿using Application.Abstractions.Data;
-using Domain.Todos;
-using Domain.Users;
+﻿using UserManager.Application.Abstractions.Data;
 using Infrastructure.DomainEvents;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
+using UserManager.Domain.Todos;
+using UserManager.Domain.Users;
 
 namespace Infrastructure.Database;
 

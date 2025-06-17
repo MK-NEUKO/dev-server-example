@@ -1,5 +1,5 @@
-﻿using Application.Abstractions.Messaging;
-using Application.Todos.Delete;
+﻿using UserManager.Application.Abstractions.Messaging;
+using UserManager.Application.Todos.Delete;
 using SharedKernel;
 using Web.Api.Extensions;
 using Web.Api.Infrastructure;

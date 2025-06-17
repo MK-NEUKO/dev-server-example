@@ -1,7 +1,7 @@
-﻿using Application.Abstractions.Messaging;
-using Application.Todos.Create;
-using Domain.Todos;
+﻿using UserManager.Application.Abstractions.Messaging;
+using UserManager.Application.Todos.Create;
 using SharedKernel;
+using UserManager.Domain.Todos;
 using Web.Api.Extensions;
 using Web.Api.Infrastructure;
 

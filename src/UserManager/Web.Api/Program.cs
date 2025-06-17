@@ -1,5 +1,5 @@
 using System.Reflection;
-using Application;
+using UserManager.Application;
 using HealthChecks.UI.Client;
 using Infrastructure;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;

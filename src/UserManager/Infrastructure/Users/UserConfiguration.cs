@@ -1,6 +1,6 @@
-﻿using Domain.Users;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using UserManager.Domain.Users;
 
 namespace Infrastructure.Users;
 

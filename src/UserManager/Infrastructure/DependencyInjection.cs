@@ -1,6 +1,6 @@
 ﻿using System.Text;
-using Application.Abstractions.Authentication;
-using Application.Abstractions.Data;
+using UserManager.Application.Abstractions.Authentication;
+using UserManager.Application.Abstractions.Data;
 using Infrastructure.Authentication;
 using Infrastructure.Authorization;
 using Infrastructure.Database;
