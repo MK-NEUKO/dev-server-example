@@ -1,5 +1,4 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
-using EnvironmentGateway.Domain.Clusters;
 using EnvironmentGateway.Domain.Shared;
 
 namespace EnvironmentGateway.Domain.Destinations;
