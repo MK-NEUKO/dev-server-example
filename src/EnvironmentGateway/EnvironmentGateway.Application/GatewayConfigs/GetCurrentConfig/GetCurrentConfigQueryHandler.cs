@@ -31,7 +31,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                 LEFT JOIN routes r ON gc.id = r.gateway_config_id
                 LEFT JOIN route_matches rm ON r.id = rm.route_id
                 LEFT JOIN clusters c ON gc.id = c.gateway_config_id
-                LEFT JOIN destination d ON c.id = d.cluster_id
+                LEFT JOIN destinations d ON c.id = d.cluster_id
                 WHERE gc.is_current_config = true
                 """)
             .FirstOrDefaultAsync(cancellationToken);

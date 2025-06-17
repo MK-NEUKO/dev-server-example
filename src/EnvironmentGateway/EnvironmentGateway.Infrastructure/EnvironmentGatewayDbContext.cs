@@ -21,7 +21,6 @@ public sealed class EnvironmentGatewayDbContext(
     public DbSet<Route> Routes { get; private set; }
     public DbSet<Cluster> Clusters { get; private set; }
     public DbSet<RouteMatch> RouteMatches { get; private set; }
-    //public DbSet<Destination> Destinations { get; private set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

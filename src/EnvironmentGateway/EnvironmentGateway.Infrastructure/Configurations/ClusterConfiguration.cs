@@ -23,27 +23,29 @@ public class ClusterConfiguration : IEntityTypeConfiguration<Cluster>
             .HasMaxLength(100)
             .IsRequired();
 
-        //builder.HasMany(cluster => cluster.Destinations)
-        //    .WithOne(destination => destination.Cluster)
-        //    .HasForeignKey(destination => destination.ClusterId)
-        //    .IsRequired();
-
         builder.OwnsMany(
             cluster => cluster.Destinations,
             destination =>
             {
+                destination.ToTable("destinations");
                 destination.WithOwner().HasForeignKey(dest => dest.ClusterId);
                 destination.HasKey(dest => dest.Id);
                 destination.Property(dest => dest.DestinationName)
                     .HasConversion(
                         name => name.Value,
-                        name => new Name(name));
+                        name => new Name(name))
+                    .HasMaxLength(100)
+                    .IsRequired();
+
+                destination.HasIndex(dest => dest.DestinationName)
+                    .IsUnique();
                     
                 destination.Property(dest => dest.Address)
                     .HasConversion(
                         address => address.Value,
-                        address => new Address(address));
-
+                        address => new Address(address))
+                    .HasMaxLength(255)
+                    .IsRequired();
             });
     }
 }
