@@ -29,7 +29,8 @@ var userManagerDbServer = builder.AddPostgres(
 var userManagerDb = userManagerDbServer.AddDatabase("UserManagerDb");
 
 var keycloak = builder.AddKeycloak("Keycloak")
-    .WithDataBindMount(builder.Configuration.GetValue<string>("Keycloak:DataBindMount")!);
+    .WithDataBindMount(builder.Configuration.GetValue<string>("Keycloak:DataBindMount")!)
+    .WithHttpEndpoint(port: 6001, name: "Keycloak", isProxied: false);
 
 var productionGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("ProductionGateway")
     .WithScalar()

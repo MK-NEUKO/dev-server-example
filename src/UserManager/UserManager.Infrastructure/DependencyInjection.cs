@@ -70,19 +70,21 @@ public static class DependencyInjection
             .AddJwtBearer(o =>
             {
                 o.RequireHttpsMetadata = false;
+                o.Audience = configuration["Jwt:Audience"];
+                o.MetadataAddress = configuration["Jwt:MetadataAddress"]!;
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!)),
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!)),
                     ValidIssuer = configuration["Jwt:Issuer"],
-                    ValidAudience = configuration["Jwt:Audience"],
-                    ClockSkew = TimeSpan.Zero
+                    //ValidAudience = configuration["Jwt:Audience"],
+                    //ClockSkew = TimeSpan.Zero
                 };
             });
 
-        services.AddHttpContextAccessor();
-        services.AddScoped<IUserContext, UserContext>();
-        services.AddSingleton<IPasswordHasher, PasswordHasher>();
-        services.AddSingleton<ITokenProvider, TokenProvider>();
+        //services.AddHttpContextAccessor();
+        //services.AddScoped<IUserContext, UserContext>();
+        //services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        // services.AddSingleton<ITokenProvider, TokenProvider>();
 
         return services;
     }
@@ -91,11 +93,11 @@ public static class DependencyInjection
     {
         services.AddAuthorization();
 
-        services.AddScoped<PermissionProvider>();
+        //services.AddScoped<PermissionProvider>();
 
-        services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        //services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
-        services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+        //services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
         return services;
     }

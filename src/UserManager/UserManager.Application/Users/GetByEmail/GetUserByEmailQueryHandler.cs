@@ -7,7 +7,7 @@ using UserManager.Domain.Users;
 
 namespace UserManager.Application.Users.GetByEmail;
 
-internal sealed class GetUserByEmailQueryHandler(IApplicationDbContext context, IUserContext userContext)
+internal sealed class GetUserByEmailQueryHandler(IApplicationDbContext context)
     : IQueryHandler<GetUserByEmailQuery, UserResponse>
 {
     public async Task<Result<UserResponse>> Handle(GetUserByEmailQuery query, CancellationToken cancellationToken)
@@ -28,10 +28,10 @@ internal sealed class GetUserByEmailQueryHandler(IApplicationDbContext context, 
             return Result.Failure<UserResponse>(UserErrors.NotFoundByEmail);
         }
 
-        if (user.Id != userContext.UserId)
-        {
-            return Result.Failure<UserResponse>(UserErrors.Unauthorized());
-        }
+        //if (user.Id != userContext.UserId)
+        //{
+        //    return Result.Failure<UserResponse>(UserErrors.Unauthorized());
+        //}
 
         return user;
     }

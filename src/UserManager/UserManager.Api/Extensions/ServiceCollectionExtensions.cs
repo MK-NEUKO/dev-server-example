@@ -5,23 +5,30 @@ namespace Web.Api.Extensions;
 
 internal static class ServiceCollectionExtensions
 {
-    internal static IServiceCollection AddSwaggerGenWithAuth(this IServiceCollection services)
+    internal static IServiceCollection AddSwaggerGenWithAuth(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddSwaggerGen(o =>
         {
             o.CustomSchemaIds(id => id.FullName!.Replace('+', '-'));
 
-            var securityScheme = new OpenApiSecurityScheme
+            o.AddSecurityDefinition("Keycloak", new OpenApiSecurityScheme
             {
-                Name = "JWT Authentication",
-                Description = "Enter your JWT token in this field",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.Http,
-                Scheme = JwtBearerDefaults.AuthenticationScheme,
-                BearerFormat = "JWT"
-            };
-
-            o.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+                Type = SecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows
+                {
+                    Implicit = new OpenApiOAuthFlow
+                    {
+                        AuthorizationUrl = new Uri(configuration["Keycloak:AuthorizationUrl"]!),
+                        Scopes = new Dictionary<string, string>
+                        {
+                            { "openid", "openid" },
+                            { "profile", "profile" }
+                        }
+                    }
+                }
+            });
 
             var securityRequirement = new OpenApiSecurityRequirement
             {
@@ -30,9 +37,12 @@ internal static class ServiceCollectionExtensions
                     {
                         Reference = new OpenApiReference
                         {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = JwtBearerDefaults.AuthenticationScheme
-                        }
+                            Id = "Keycloak",
+                            Type = ReferenceType.SecurityScheme
+                        },
+                        In = ParameterLocation.Header,
+                        Name = "Bearer",
+                        Scheme = "Bearer"
                     },
                     []
                 }
