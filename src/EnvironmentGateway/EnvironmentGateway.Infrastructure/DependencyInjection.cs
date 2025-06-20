@@ -21,10 +21,14 @@ public static class DependencyInjection
     {
         services.AddTransient<IEmailService, EmailService>();
         services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
-
-        var connectionString = configuration.GetConnectionString("EnvironmentGatewayDev") ??
+        
+        
+        var connectionString = configuration.GetConnectionString("ProductionGatewayDb") ??
                                 throw new ArgumentException(nameof(configuration));
+        
+        
 
+        
         services.AddDbContext<EnvironmentGatewayDbContext>(options =>
         {
             options.UseNpgsql(connectionString).UseSnakeCaseNamingConvention();
