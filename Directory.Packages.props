@@ -34,6 +34,7 @@
     <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageVersion Include="Serilog.Sinks.Seq" Version="9.0.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.1" />
     <PackageVersion Include="Yarp.ReverseProxy" Version="2.3.0" />
     <!-- DevServer.AppHost -->
     <PackageVersion Include="Aspire.Hosting.Keycloak" Version="9.3.1-preview.1.25305.6" />

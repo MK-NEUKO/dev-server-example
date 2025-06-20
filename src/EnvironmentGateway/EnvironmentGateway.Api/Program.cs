@@ -24,6 +24,8 @@ builder.Host.UseSerilog((context, configuration) =>
 
 builder.AddServiceDefaults();
 
+builder.Services.AddOpenApiWithDocumentTransformer(builder.Configuration);
+
 builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
@@ -37,19 +39,17 @@ builder.Services.AddReverseProxy()
     .LoadFromMemory(DefaultProxyConfigProvider.GetRoutes(), DefaultProxyConfigProvider.GetClusters());
 
 
-builder.Services.AddOpenApi();
+
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
     
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
 
-    // Apply migrations in development mode without using aspire.
 #pragma warning disable S125
     app.ApplyMigrations();
 #pragma warning restore S125
