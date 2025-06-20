@@ -34,14 +34,12 @@ var keycloak = builder.AddKeycloak("Keycloak")
 var productionGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("ProductionGateway")
     .WithScalar()
     .WithReference(productionGatewayDb)
-    .WaitFor(productionGatewayDb)
-    .WithExternalHttpEndpoints();
+    .WaitFor(productionGatewayDb);
 
 var userManagerApi = builder.AddProject<Projects.UserManager_Api>("UserManager")
     .WithScalar()
     .WithReference(userManagerDb)
-    .WaitFor(userManagerDb)
-    .WithExternalHttpEndpoints();
+    .WaitFor(userManagerDb);
 
 
 builder.AddNpmApp("adminFrontend","../admin-frontend")
