@@ -11,7 +11,9 @@ using Web.Api.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+
 builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
+
 
 builder.Services.AddSwaggerGenWithAuth(builder.Configuration);
 

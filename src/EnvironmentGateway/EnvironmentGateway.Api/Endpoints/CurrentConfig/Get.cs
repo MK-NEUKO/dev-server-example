@@ -16,6 +16,6 @@ public class Get : IEndpoint
             var result = await handler.Handle(query, cancelationToken);
 
             return result.IsSuccess ? Results.Ok(result.Value) : Results.NotFound();
-        });
+        }).RequireAuthorization();
     }
 }
