@@ -9,11 +9,11 @@ public class Get : IEndpoint
     {
         app.MapGet("current-config", async (
             IQueryHandler<GetCurrentConfigQuery, CurrentConfigResponse> handler,
-            CancellationToken cancelationToken) =>
+            CancellationToken cancellationToken) =>
         {
             var query = new GetCurrentConfigQuery();
 
-            var result = await handler.Handle(query, cancelationToken);
+            var result = await handler.Handle(query, cancellationToken);
 
             return result.IsSuccess ? Results.Ok(result.Value) : Results.NotFound();
         }).RequireAuthorization();
