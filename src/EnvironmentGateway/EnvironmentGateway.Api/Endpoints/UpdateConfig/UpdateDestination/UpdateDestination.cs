@@ -16,7 +16,8 @@ public class UpdateDestination : IEndpoint
             CancellationToken cancellationToken) =>
         {
             var command = new UpdateDestinationCommand(
-                request.Id,
+                request.ClusterId,
+                request.DestinationId,
                 request.Address);
 
             var result = await handler.Handle(command, cancellationToken);
@@ -29,6 +30,6 @@ public class UpdateDestination : IEndpoint
             var updateResult = await runtimeConfigurator.UpdateProxyConfig();
 
             return Results.Ok(updateResult.IsSuccess);
-        });
+        }).RequireAuthorization();
     }
 }

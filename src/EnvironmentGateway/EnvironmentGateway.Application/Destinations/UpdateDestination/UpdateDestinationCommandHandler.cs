@@ -11,7 +11,7 @@ internal sealed class UpdateDestinationCommandHandler(
 {
     public async Task<Result> Handle(UpdateDestinationCommand request, CancellationToken cancellationToken)
     {
-        var destination = await destinationRepository.GetByIdAsync(request.Id, cancellationToken);
+        var destination = await destinationRepository.GetByIdAsync(request.ClusterId, request.DestinationId, cancellationToken);
 
         if (destination is null)
         {

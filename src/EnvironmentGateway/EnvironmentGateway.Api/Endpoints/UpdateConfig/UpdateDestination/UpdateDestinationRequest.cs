@@ -1,5 +1,6 @@
 ﻿namespace EnvironmentGateway.Api.Endpoints.UpdateConfig.UpdateDestination;
 
 public sealed record UpdateDestinationRequest(
-    Guid Id,
+    Guid ClusterId,
+    Guid DestinationId,
     string Address);

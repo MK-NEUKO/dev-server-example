@@ -1,11 +1,9 @@
 using System.Reflection;
 using EnvironmentGateway.Api.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using EnvironmentGateway.Api.GatewayConfiguration;
 using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
 using EnvironmentGateway.Application;
 using EnvironmentGateway.Infrastructure;
-using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -28,33 +26,15 @@ builder.AddServiceDefaults();
 
 builder.Services.AddOpenApiWithDocumentTransformer(builder.Configuration);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(o =>
-    {
-        o.RequireHttpsMetadata = false;
-        o.Audience = builder.Configuration["Keycloak:Audience"];
-        o.MetadataAddress = builder.Configuration["Keycloak:MetadataAddress"]!;
-        o.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidIssuer = builder.Configuration["Keycloak:Issuer"],
-        };
-    });
-builder.Services.AddAuthentication();
-
 builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
-
-
 
 builder.Services.AddScoped<IRuntimeConfigurator, RuntimeConfigurator>();
 builder.Services.AddScoped<ICurrentConfigProvider, CurrentConfigProvider>();
 
 builder.Services.AddReverseProxy()
     .LoadFromMemory(DefaultProxyConfigProvider.GetRoutes(), DefaultProxyConfigProvider.GetClusters());
-
-
-
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
     
@@ -95,6 +75,7 @@ app.UseSerilogRequestLogging();
 app.UseCustomExceptionHandler();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapReverseProxy();
