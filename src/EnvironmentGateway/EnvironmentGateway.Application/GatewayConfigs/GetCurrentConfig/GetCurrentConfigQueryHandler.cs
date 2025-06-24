@@ -23,6 +23,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                     r.route_name_value AS route_name,
                     rm.path_value AS match_path,
                     c.cluster_name_value AS cluster_name,
+                    c.id AS cluster_id,
                     d.id AS destination_id,
                     d.destination_name AS destination_name,
                     d.address AS destination_address
@@ -62,6 +63,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
             [
                 new ClusterResponse()
                 {
+                    Id = gatewayConfigSummery.ClusterId,
                     ClusterName = gatewayConfigSummery.ClusterName,
                     Destinations =
                     [
@@ -87,6 +89,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
         string RouteClusterName,
         string RouteName,
         string MatchPath,
+        Guid ClusterId,
         string ClusterName,
         Guid DestinationId,
         string DestinationName,

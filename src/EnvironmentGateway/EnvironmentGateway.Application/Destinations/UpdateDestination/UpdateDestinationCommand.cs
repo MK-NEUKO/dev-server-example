@@ -3,6 +3,7 @@
 namespace EnvironmentGateway.Application.Destinations.UpdateDestination;
 
 public sealed record UpdateDestinationCommand(
-    Guid Id,
+    Guid ClusterId,
+    Guid DestinationId,
     string Address)
     : ICommand;

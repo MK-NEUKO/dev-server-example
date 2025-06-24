@@ -24,11 +24,11 @@ builder.Host.UseSerilog((context, configuration) =>
 
 builder.AddServiceDefaults();
 
+builder.Services.AddOpenApiWithSecuritySchemeTransformer(builder.Configuration);
+
 builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
-
-
 
 builder.Services.AddScoped<IRuntimeConfigurator, RuntimeConfigurator>();
 builder.Services.AddScoped<ICurrentConfigProvider, CurrentConfigProvider>();
@@ -36,20 +36,15 @@ builder.Services.AddScoped<ICurrentConfigProvider, CurrentConfigProvider>();
 builder.Services.AddReverseProxy()
     .LoadFromMemory(DefaultProxyConfigProvider.GetRoutes(), DefaultProxyConfigProvider.GetClusters());
 
-
-builder.Services.AddOpenApi();
-
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
     
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
 
-    // Apply migrations in development mode without using aspire.
 #pragma warning disable S125
     app.ApplyMigrations();
 #pragma warning restore S125
@@ -67,6 +62,8 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+app.MapEndpoints();
+
 app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
@@ -77,7 +74,9 @@ app.UseSerilogRequestLogging();
 
 app.UseCustomExceptionHandler();
 
-app.MapEndpoints();
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapReverseProxy();
 
