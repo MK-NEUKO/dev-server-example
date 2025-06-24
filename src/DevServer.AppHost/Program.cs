@@ -41,6 +41,12 @@ var userManagerApi = builder.AddProject<Projects.UserManager_Api>("UserManager")
     .WithReference(userManagerDb)
     .WaitFor(userManagerDb);
 
+builder.AddNpmApp("serviceFrontend", "../service-frontend")
+    .WaitFor(keycloak)
+    .WaitFor(productionGateway)
+    .WaitFor(userManagerApi)
+    .WithHttpEndpoint(env: "SERVICE_FRONTEND_PORT")
+    .WithExternalHttpEndpoints();
 
 builder.AddNpmApp("adminFrontend","../admin-frontend")
     .WithReference(productionGateway)
