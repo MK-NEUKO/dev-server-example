@@ -43,9 +43,8 @@ var userManagerApi = builder.AddProject<Projects.UserManager_Api>("UserManager")
 
 builder.AddNpmApp("serviceFrontend", "../service-frontend")
     .WaitFor(keycloak)
-    .WaitFor(productionGateway)
     .WaitFor(userManagerApi)
-    .WithHttpEndpoint(env: "SERVICE_FRONTEND_PORT")
+    .WithHttpEndpoint(port: 4200, name: "service-frontend", isProxied:false, env: "SERVICE_FRONTEND_PORT")
     .WithExternalHttpEndpoints();
 
 builder.AddNpmApp("adminFrontend","../admin-frontend")
