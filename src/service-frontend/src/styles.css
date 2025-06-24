@@ -227,6 +227,10 @@ body {
   font-style: italic;
 }
 
+.text--center {
+  text-align: center;
+}
+
 .margin-end-2 {
   margin-right: 1rem;
 }
