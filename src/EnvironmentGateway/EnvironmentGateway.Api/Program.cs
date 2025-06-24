@@ -24,7 +24,7 @@ builder.Host.UseSerilog((context, configuration) =>
 
 builder.AddServiceDefaults();
 
-builder.Services.AddOpenApiWithDocumentTransformer(builder.Configuration);
+builder.Services.AddOpenApiWithSecuritySchemeTransformer(builder.Configuration);
 
 builder.Services
     .AddApplication()

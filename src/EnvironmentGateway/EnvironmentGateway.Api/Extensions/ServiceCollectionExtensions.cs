@@ -5,7 +5,7 @@ namespace EnvironmentGateway.Api.Extensions;
 
 internal static class ServiceCollectionExtensions
 {
-    internal static IServiceCollection AddOpenApiWithDocumentTransformer(
+    internal static IServiceCollection AddOpenApiWithSecuritySchemeTransformer(
         this IServiceCollection services,
         IConfiguration configuration)
     {

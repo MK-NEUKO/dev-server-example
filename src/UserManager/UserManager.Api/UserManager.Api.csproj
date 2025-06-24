@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\DevServer.ServiceDefaults\DevServer.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\UserManager.Application\UserManager.Application.csproj" />
     <ProjectReference Include="..\UserManager.Infrastructure\UserManager.Infrastructure.csproj" />
   </ItemGroup>
 
