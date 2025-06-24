@@ -1,0 +1,33 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: var(--neuko-bg-dark-nav);
+  border-bottom: 0.125rem solid var(--neuko-border-dark-nav);
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--neuko-text-dark-nav);
+}
+.navbar__brand-heading {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-style: italic;
+  text-transform: uppercase;
+}
+.navbar__brand-logo {
+  width: 3rem;
+  height: 3rem;
+  margin-right: 0.5rem;
+}
+
+.navbar__utilities {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
