@@ -44,6 +44,7 @@ internal sealed class OpenApiSecuritySchemeTransformer(
                     Scheme = "Bearer",
                 },
                 []
+                
             }
         };
 
@@ -52,7 +53,7 @@ internal sealed class OpenApiSecuritySchemeTransformer(
         {
             SecuritySchemes = new Dictionary<string, OpenApiSecurityScheme>()
             {
-                { "Bearer", securitySchema }
+                { "Keycloak", securitySchema }
             }
         };
 

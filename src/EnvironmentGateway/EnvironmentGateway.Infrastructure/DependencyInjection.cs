@@ -71,8 +71,9 @@ public static class DependencyInjection
                     ValidIssuer = configuration["Keycloak:Issuer"],
                 };
             });
-        services.AddAuthentication();
 
+        services.AddAuthorization();
+        
         return services;
     }
 }
