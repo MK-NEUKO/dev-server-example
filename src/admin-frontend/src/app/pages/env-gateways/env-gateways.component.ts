@@ -27,7 +27,7 @@ export class EnvGatewaysComponent implements OnInit {
   public configData!: GatewayConfig;
   public isMaximized = false;
 
-  private destinationUrl = 'https://localhost:5201/';
+  private destinationUrl = 'https://localhost:9101/';
 
 
   constructor() {

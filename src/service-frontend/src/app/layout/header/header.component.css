@@ -31,3 +31,7 @@
   align-items: center;
   gap: 1rem;
 }
+
+.navbar__user-info {
+  color: var(--neuko-text-dark-nav-highlight);
+}

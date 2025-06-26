@@ -47,12 +47,11 @@ builder.AddNpmApp("serviceFrontend", "../service-frontend")
     .WithHttpEndpoint(port: 4200, name: "service-frontend", isProxied:false, env: "SERVICE_FRONTEND_PORT")
     .WithExternalHttpEndpoints();
 
-builder.AddNpmApp("adminFrontend","../admin-frontend")
+builder.AddNpmApp("adminFrontend", "../admin-frontend")
     .WithReference(productionGateway)
     .WaitFor(productionGateway)
-    .WithHttpEndpoint(env: "ADMIN_FRONTEND_PORT")
-    .WithExternalHttpEndpoints()
-    .PublishAsDockerFile();
+    .WithHttpEndpoint(port: 4300, name: "service-frontend", isProxied:false, env: "ADMIN_FRONTEND_PORT")
+    .WithExternalHttpEndpoints();
 
 
 
