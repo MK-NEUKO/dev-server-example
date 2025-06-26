@@ -4,7 +4,6 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideKeycloak } from 'keycloak-angular';
 
 import { routes } from './app.routes';
-import { config } from 'rxjs';
 
 export const appConfig: ApplicationConfig = {
   providers: [
