@@ -1,0 +1,27 @@
+<nav class="navbar">
+  <div class="navbar__brand">
+    <img
+      src="/images/neuko-logo-bulb.svg"
+      alt="NeuKo logo"
+      class="navbar__brand-logo"
+    />
+    <h1 class="navbar__brand-heading">dev - server - example</h1>
+  </div>
+  <div class="navbar__utilities">
+    @if (authenticated) {
+    <div>
+      <button class="button" (click)="openAdminFrontend()">
+        Admin-Frontend
+      </button>
+      <span class="navbar__user-info"> Roll: {{ userInfo?.roll }}</span>
+      <span class="navbar__user-info"> | </span>
+      <span class="navbar__user-info">
+        Username: {{ userInfo?.username }}
+      </span>
+    </div>
+    }
+    <button class="button" (click)="manageAccess()">{{ logSwitch }}</button>
+    <button class="button" (click)="printTokenAndUserInfo()">Print</button>
+    <app-theme-toggler></app-theme-toggler>
+  </div>
+</nav>

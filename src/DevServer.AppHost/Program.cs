@@ -41,13 +41,17 @@ var userManagerApi = builder.AddProject<Projects.UserManager_Api>("UserManager")
     .WithReference(userManagerDb)
     .WaitFor(userManagerDb);
 
+builder.AddNpmApp("serviceFrontend", "../service-frontend")
+    .WaitFor(keycloak)
+    .WaitFor(userManagerApi)
+    .WithHttpEndpoint(port: 4200, name: "service-frontend", isProxied:false, env: "SERVICE_FRONTEND_PORT")
+    .WithExternalHttpEndpoints();
 
-builder.AddNpmApp("adminFrontend","../admin-frontend")
+builder.AddNpmApp("adminFrontend", "../admin-frontend")
     .WithReference(productionGateway)
     .WaitFor(productionGateway)
-    .WithHttpEndpoint(env: "ADMIN_FRONTEND_PORT")
-    .WithExternalHttpEndpoints()
-    .PublishAsDockerFile();
+    .WithHttpEndpoint(port: 4300, name: "service-frontend", isProxied:false, env: "ADMIN_FRONTEND_PORT")
+    .WithExternalHttpEndpoints();
 
 
 

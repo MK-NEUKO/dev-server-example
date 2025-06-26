@@ -56,10 +56,12 @@ export class DestinationsComponent implements OnInit {
   }
 
   public async updateDestination(): Promise<void> {
+    const clusterId = this.parentForm.get('clusterId')?.value;
     const destinationId = this.destination.get('destinationId')?.value;
     const address = this.destination.get('address')?.value;
     const request = {
-      id: destinationId,
+      clusterId: clusterId,
+      destinationId: destinationId,
       address: address
     };
 

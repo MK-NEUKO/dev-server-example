@@ -150,7 +150,7 @@ body {
 .bg-success {
   background-color: var(--neuko-bg-success);
 }
-.bg-warnig {
+.bg-warning {
   background-color: var(--neuko-bg-warning);
 }
 .bg-danger {

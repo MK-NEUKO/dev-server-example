@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { GatewayConfig } from '../../models/gateway-config/gateway-config.model';
 import { httpResource } from '@angular/common/http';
+import Keycloak from 'keycloak-js';
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +9,21 @@ import { httpResource } from '@angular/common/http';
 export class GatewayDataService {
 
   private url = 'envGateway/current-config';
+  private readonly keycloak = inject(Keycloak);
+  private readonly token = this.keycloak.token;
 
   public getCurrentConfig() {
     return httpResource<GatewayConfig>(
-      () => this.url
+      () => ({
+        url: this.url,
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${this.token}`,
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true,
+        responseType: 'json'
+      })
     );
   }
 }

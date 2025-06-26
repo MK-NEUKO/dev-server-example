@@ -1,0 +1,316 @@
+/* You can add global styles to this file, and also import other style files */
+/** Breakpoint: 576px+ */
+@media (min-width: 36em) {
+}
+
+/** Breakpoint: 768px+ */
+@media (min-width: 48em) {
+}
+
+/** Breakpoint: 992px+ */
+@media (min-width: 62em) {
+}
+
+/** Breakpoint: 1200px+ */
+@media (min-width: 75em) {
+}
+
+/** Breakpoint: 1400px+ */
+@media (min-width: 87.5em) {
+}
+
+/*########################################################################*/
+/* Color themes */
+/*########################################################################*/
+:root,
+[data-neuko-theme="light"] {
+  --neuko-bg-dark-nav: #222834;
+  --neuko-text-dark-nav: #9fa6bc;
+  --neuko-text-dark-nav-highlight: #dee2ec;
+  --neuko-border-dark-nav: #31374a;
+  --neuko-text-body: #31374a;
+  --neuko-text-body-highlight: #222834;
+  --neuko-text-body-quaternary: #8a94ad;
+  --neuko-text-success: #25b003;
+  --neuko-text-warning: #e5780b;
+  --neuko-text-danger: #ec1f00;
+  --neuko-text-info: #0097eb;
+  --neuko-text-config-editor-second: #24a000;
+  --neuko-text-config-editor-third: #0068e5;
+  --neuko-bg-body: #f5f7fa;
+  --neuko-bg-body-secondary: #e3e6ed;
+  --neuko-bg-body-highlight: #eff2f6;
+  --neuko-bg-body-tertiary: #cbd0dd;
+  --neuko-bg-body-quaternary: #9fa6bc;
+  --neuko-bg-success: #90d67f;
+  --neuko-bg-warning: #e5780b;
+  --neuko-bg-danger: #ff5b42;
+  --neuko-border: #e3e6ed;
+  --neuko-bg-card: #ffffff;
+}
+
+[data-neuko-theme="dark"] {
+  --neuko-text-body: #9fa6bc;
+  --neuko-text-body-highlight: #dee2ec;
+  --neuko-text-body-quaternary: #5e677f;
+  --neuko-text-success: #90d67f;
+  --neuko-text-warning: #ffcc85;
+  --neuko-text-danger: #f48270;
+  --neuko-text-info: #0097eb;
+  --neuko-text-config-editor-second: #2fcf00;
+  --neuko-text-config-editor-third: #05e6ff;
+  --neuko-bg-body: #0f111a;
+  --neuko-bg-body-secondary: #31374a;
+  --neuko-bg-body-highlight: #222834;
+  --neuko-bg-body-tertiary: #373e53;
+  --neuko-bg-body-quaternary: #3e465b;
+  --neuko-bg-success: #25b003;
+  --neuko-bg-warning: #ffcc85;
+  --neuko-bg-danger: #ec1f00;
+  --neuko-border: #2f3549;
+  --neuko-bg-card: #141824;
+}
+
+/*########################################################################*/
+/* Scrollbar styling */
+/*########################################################################*/
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--neuko-bg-body-quaternary)
+    var(--neuko-bg-body-secondary);
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--neuko-bg-body-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--neuko-bg-body-quaternary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--neuko-bg-body-tertiary);
+}
+
+/*########################################################################*/
+/* General classes */
+/*########################################################################*/
+html {
+  font-size: 1em;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--neuko-text-body);
+  background-color: var(--neuko-bg-body);
+}
+
+/*########################################################################*/
+/* Utility classes */
+/*########################################################################*/
+.container {
+  max-width: 75rem;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  padding-bottom: 3rem;
+}
+@media (min-width: 62em) {
+  .container {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.margin-start {
+  margin-left: 1rem;
+}
+
+.bg-success {
+  background-color: var(--neuko-bg-success);
+}
+.bg-warning {
+  background-color: var(--neuko-bg-warning);
+}
+.bg-danger {
+  background-color: var(--neuko-bg-danger);
+}
+
+.text-success {
+  color: var(--neuko-bg-success);
+}
+.text-warning {
+  color: var(--neuko-bg-warning);
+}
+.text-danger {
+  color: var(--neuko-bg-danger);
+}
+
+.button {
+  display: inline-block;
+  background-color: var(--neuko-bg-body-highlight);
+  color: var(--neuko-text-body);
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 0.075rem solid var(--neuko-border);
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button:disabled {
+  background-color: var(--neuko-bg-body-secondary);
+  color: var(--neuko-text-body-quaternary);
+  border-color: var(--neuko-bg-body-secondary);
+  cursor: not-allowed;
+}
+.button:hover {
+  background-color: var(--neuko-bg-body);
+  color: var(--neuko-text-body-highlight);
+}
+.button:active {
+  color: var(--neuko-text-body);
+  border-color: var(--neuko-bg-body-highlight);
+}
+
+.button--primary {
+  background-color: var(--neuko-bg-success);
+  color: var(--neuko-bg-body-highlight);
+  border-color: var(--neuko-bg-success);
+}
+
+.button--small {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 5rem;
+  height: 5rem;
+  vertical-align: -0.125em;
+  border-radius: 50%;
+  animation: 0.75s linear infinite spinner;
+  border: 0.5em solid gray;
+  border-right-color: transparent;
+}
+@keyframes spinner {
+  to {
+    transform: rotate(360deg) /* rtl:ignore */;
+  }
+}
+
+.text--cursive {
+  font-style: italic;
+}
+
+.text--center {
+  text-align: center;
+}
+
+.margin-end-2 {
+  margin-right: 1rem;
+}
+
+.alert {
+  background-color: #fed3d3;
+  color: #820000;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+/*########################################################################*/
+/* Code highlighting styles */
+/*########################################################################*/
+pre {
+  display: flex;
+  margin-top: 0;
+  margin-bottom: 0;
+  word-wrap: break-word;
+}
+
+code {
+  flex: 1;
+  line-height: 1.8em;
+  font-size: 14px;
+  min-height: 100%;
+  padding: 1em 1.2em;
+  overflow-x: unset;
+  overflow-y: unset;
+  border-radius: 0.5rem;
+}
+
+.hljs.hljs-line-numbers {
+  padding: 0 !important;
+}
+
+pre .hljs {
+  border: none;
+  transition: border ease 1s;
+}
+
+.hljs-ln {
+  tr {
+    &:first-child td {
+      padding-top: 10px !important;
+    }
+
+    &:last-child td {
+      padding-bottom: 10px !important;
+    }
+  }
+}
+
+table,
+tbody,
+tr,
+td {
+  background: inherit;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  background: inherit;
+}
+
+/* for block of numbers */
+td.hljs-ln-numbers {
+  position: sticky;
+  left: 0;
+  user-select: none;
+  text-align: center;
+  color: var(--neuko-text-body);
+  border-right: 1px solid var(--neuko-border);
+  vertical-align: top;
+  padding-right: 10px !important;
+  padding-left: 10px !important;
+}
+
+/* for block of code */
+td.hljs-ln-code {
+  padding-left: 10px !important;
+}

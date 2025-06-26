@@ -8,6 +8,16 @@
     <h1 class="navbar__brand-heading">dev - server - example</h1>
   </div>
   <div class="navbar__utilities">
+    @if (authenticated) {
+    <div>
+      <span class="navbar__user-info"> Roll: {{ userInfo?.roll }}</span>
+      <span class="navbar__user-info"> | </span>
+      <span class="navbar__user-info">
+        Username: {{ userInfo?.username }}
+      </span>
+    </div>
+    }
+
     <app-theme-toggler></app-theme-toggler>
   </div>
 </nav>

@@ -12,7 +12,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
         GetCurrentConfigQuery request,
         CancellationToken cancellationToken)
     {
-        GatewayConfigSummary? gatewayConfigSummery = await context
+        GatewayConfigSummary? gatewayConfigSummary = await context
             .Database
             .SqlQuery<GatewayConfigSummary>($"""
                 SELECT 
@@ -37,25 +37,25 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                 """)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (gatewayConfigSummery is null)
+        if (gatewayConfigSummary is null)
         {
             return Result.Failure<CurrentConfigResponse>(Error.NullValue);
         }
 
         var response = new CurrentConfigResponse()
         {
-            Id = gatewayConfigSummery.GatewayConfigId,
-            Name = gatewayConfigSummery.GatewayConfigName,
-            IsCurrentConfig = gatewayConfigSummery.IsCurrentConfig,
+            Id = gatewayConfigSummary.GatewayConfigId,
+            Name = gatewayConfigSummary.GatewayConfigName,
+            IsCurrentConfig = gatewayConfigSummary.IsCurrentConfig,
             Routes =
             [
                 new RouteResponse()
                 {
-                    RouteName = gatewayConfigSummery.RouteName,
-                    ClusterName = gatewayConfigSummery.RouteClusterName,
+                    RouteName = gatewayConfigSummary.RouteName,
+                    ClusterName = gatewayConfigSummary.RouteClusterName,
                     Match = new RouteMatchResponse()
                     {
-                        Path = gatewayConfigSummery.MatchPath
+                        Path = gatewayConfigSummary.MatchPath
                     }
                 }
             ],
@@ -63,15 +63,15 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
             [
                 new ClusterResponse()
                 {
-                    Id = gatewayConfigSummery.ClusterId,
-                    ClusterName = gatewayConfigSummery.ClusterName,
+                    Id = gatewayConfigSummary.ClusterId,
+                    ClusterName = gatewayConfigSummary.ClusterName,
                     Destinations =
                     [
                         new DestinationResponse()
                         {
-                            Id = gatewayConfigSummery.DestinationId,
-                            DestinationName = gatewayConfigSummery.DestinationName,
-                            Address = gatewayConfigSummery.DestinationAddress
+                            Id = gatewayConfigSummary.DestinationId,
+                            DestinationName = gatewayConfigSummary.DestinationName,
+                            Address = gatewayConfigSummary.DestinationAddress
                         }
                     ]
                 }
