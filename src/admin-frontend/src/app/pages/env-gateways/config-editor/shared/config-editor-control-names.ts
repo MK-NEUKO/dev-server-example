@@ -5,6 +5,7 @@ export const CONFIG_EDITOR_CONTROL_NAMES = {
     DESTINATIONS: 'destinations',
     ROUTE_NAME: 'routeName',
     CLUSTER_NAME: 'clusterName',
+    CLUSTER_ID: 'clusterId',
     MATCH: 'match',
     MATCH_PATH: 'path',
     DESTINATION_ID: 'destinationId',
