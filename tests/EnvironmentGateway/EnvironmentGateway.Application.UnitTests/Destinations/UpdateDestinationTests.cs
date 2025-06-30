@@ -63,7 +63,7 @@ public class UpdateDestinationTests
     public async Task Handle_Should_UpdateDestination_WhenDestinationExists()
     {
         // Arrange
-        var destination = Destination.CreateNewDestination("test", "http://test.com");
+        var destination = Destination.Create("test", "http://test.com");
         _destinationRepositoryMock.GetByIdAsync(Id, Arg.Any<CancellationToken>()).Returns(destination);
 
         // Act

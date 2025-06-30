@@ -20,7 +20,7 @@ public sealed class Destination : Entity
     public Name DestinationName { get; init; } = new Name("null");
     public Address Address { get; private set; } = new Address("null");
 
-    public static Destination CreateNewDestination(string destinationName, string address)
+    public static Destination Create(string destinationName, string address)
     {
         var destination = new Destination(Guid.NewGuid(), new Name(destinationName), new Address(address));
         return destination;

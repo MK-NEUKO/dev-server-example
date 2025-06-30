@@ -34,10 +34,10 @@ public sealed class GatewayConfig : Entity
 
     public List<Cluster> Clusters { get; private set; } = [];
 
-    public static GatewayConfig CreateNewConfig()
+    public static GatewayConfig Create()
     {
         var newRoute = Route.CreateNewRoute("route1", "cluster1", "{**catch-all}");
-        var newCluster = Cluster.CreateNewCluster("cluster1", "https://neuko-know-how.com");
+        var newCluster = Cluster.CreateNewCluster("cluster1");
 
         var newConfig = new GatewayConfig(
             Guid.NewGuid(),

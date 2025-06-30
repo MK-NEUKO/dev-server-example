@@ -60,7 +60,7 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
         await dbContext.Database.EnsureDeletedAsync();
         await dbContext.Database.EnsureCreatedAsync();
 
-        var initialConfig = GatewayConfig.CreateNewConfig();
+        var initialConfig = GatewayConfig.Create();
         dbContext.GatewayConfigs.Add(initialConfig);
 
         await dbContext.SaveChangesAsync();

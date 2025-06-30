@@ -13,7 +13,7 @@ public class DestinationsTests
         const string destinationAddress = "https://example.com";
         
         // Act
-        var newDestination = Destination.CreateNewDestination(destinationName, destinationAddress);
+        var newDestination = Destination.Create(destinationName, destinationAddress);
 
         // Assert
         newDestination.DestinationName.Value.Should().Be(destinationName);

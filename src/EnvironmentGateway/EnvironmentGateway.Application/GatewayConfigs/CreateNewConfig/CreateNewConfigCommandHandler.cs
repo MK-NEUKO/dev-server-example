@@ -20,7 +20,7 @@ internal sealed class CreateNewConfigCommandHandler(
         
         try
         {
-            var newConfiguration = GatewayConfig.CreateNewConfig();
+            var newConfiguration = GatewayConfig.Create();
 
             gatewayConfigRepository.Add(newConfiguration);
 
