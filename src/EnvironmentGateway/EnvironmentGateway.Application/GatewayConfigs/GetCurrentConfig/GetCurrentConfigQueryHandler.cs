@@ -24,6 +24,11 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                 """)
             .FirstOrDefaultAsync(cancellationToken);
         
+        if (currentConfig is null)
+        {
+            return Result.Failure<CurrentConfigResponse>(Error.NullValue);
+        }
+        
         var currentRoutes = await context
             .Database
             .SqlQuery<CurrentRoutes>($"""
@@ -54,19 +59,12 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
             .SqlQuery<CurrentDestinations>($"""
                 SELECT 
                     d.id AS id,
-                    d.destination_name AS Name,
+                    d.destination_name AS destination_name,
                     d.address AS Address
                 FROM destinations d
-                WHERE d.cluster_id = {currentClusters[0].Id}
+                WHERE d.cluster_id = {currentClusters[0]?.Id}
                 """)
             .ToListAsync(cancellationToken);
-
-        var test = currentRoutes;
-
-        if (currentConfig is null)
-        {
-            return Result.Failure<CurrentConfigResponse>(Error.NullValue);
-        }
 
         var response = new CurrentConfigResponse()
         {
@@ -91,13 +89,17 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
         
         currentClusters.ForEach(cluster =>
         {
-            var destinations = new List<DestinationResponse>();
+            var destinations = new Dictionary<string, DestinationResponse>();
             currentDestinations.ForEach(destination =>
             {
-                destinations.Add(new DestinationResponse()
+                var key = destination.DestinationName;
+                var value = new DestinationResponse()
                 {
-                    Id = destination.Id, DestinationName = destination.Name, Address = destination.Address
-                });
+                    Id = destination.Id,
+                    DestinationName = destination.DestinationName,
+                    Address = destination.Address
+                };
+                destinations.Add(key, value);
             });
             response.Clusters.Add(new ClusterResponse()
             {
@@ -105,7 +107,6 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                 ClusterName = cluster.ClusterName,
                 Destinations = destinations
             });
-            
         });
 
 
@@ -129,6 +130,6 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
 
     private sealed record CurrentDestinations(
         Guid Id,
-        string Name,
+        string DestinationName,
         string Address);
 }
