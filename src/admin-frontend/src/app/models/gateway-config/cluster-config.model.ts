@@ -3,5 +3,5 @@ import { Destination } from "./destination.model";
 export interface ClusterConfig {
     clusterName: string;
     id: string;
-    destinations: Destination[];
+    destinations: Record<string, Destination>[];
 }
