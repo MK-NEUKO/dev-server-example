@@ -107,7 +107,7 @@ export class ConfigEditorComponent {
         }),
         [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME]: this.formBuilder.control({
           value: destinationName || 'build error',
-          disabled: true
+          disabled: false
         }, Validators.required),
         [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS]: this.formBuilder.control(
           destinationData['address'] || 'build error',

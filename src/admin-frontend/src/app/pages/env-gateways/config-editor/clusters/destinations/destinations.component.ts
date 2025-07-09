@@ -28,41 +28,30 @@ export class DestinationsComponent implements OnInit {
   public modalMessage: string = '';
   public formArray!: FormArray;
   public parentForm!: FormGroup;
-  public destination!: FormGroup;
-
-  get address() {
-    const destination = this.formArray.at(0) as FormGroup;
-    return destination.get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS);
-  }
-
-  get destinationName() {
-    const destination = this.formArray.at(0) as FormGroup;
-    return destination.get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME);
-  }
 
   ngOnInit(): void {
     const rootForm = this.rootFormGroup.control;
     const parentArray = rootForm.get(this.parentArrayName()) as FormArray;
     this.parentForm = parentArray.at(0) as FormGroup;
     this.formArray = this.parentForm.get(this.formArrayName()) as FormArray;
-    this.destination = this.formArray.at(0) as FormGroup;
   }
 
-  public canUpdate(): boolean {
-    const address = this.destination.get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS);
+  public canUpdate(index: number): boolean {
+    const address = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS);
     const result = !(address?.valid && (address?.dirty || address?.touched));
     return result;
-
   }
 
-  public async updateDestination(): Promise<void> {
+  public async updateDestination(index: number): Promise<void> {
     const clusterId = this.parentForm.get('clusterId')?.value;
-    const destinationId = this.destination.get('destinationId')?.value;
-    const address = this.destination.get('address')?.value;
+    const destinationId = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ID)?.value;
+    const address = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS)?.value;
+    const destinationName = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME)?.value;
     const request = {
       clusterId: clusterId,
       destinationId: destinationId,
-      address: address
+      address: address,
+      destinationName: destinationName
     };
 
     var message = '';
@@ -80,10 +69,11 @@ export class DestinationsComponent implements OnInit {
     );
   }
 
-  public resetDestination(): void {
-    this.address?.reset();
-    this.address?.markAsTouched();
-    this.address?.markAsDirty();
+  public resetDestination(index: number): void {
+    const address = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS);
+    address?.reset();
+    address?.markAsTouched();
+    address?.markAsDirty();
   }
 
   openDialog(title: string, message: string): void {

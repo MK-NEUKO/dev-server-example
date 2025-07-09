@@ -12,14 +12,14 @@ public sealed class GatewayConfig : Entity
         Guid id,
         Name name,
         bool isCurrentConfig,
-        Route route,
-        Cluster cluster)
+        List<Route> routes,
+        List<Cluster> clusters)
         : base(id)
     {
         Name = name;
         IsCurrentConfig = isCurrentConfig;
-        Routes.Add(route);
-        Clusters.Add(cluster);
+        Routes = routes;
+        Clusters = clusters;
     }
 
     private GatewayConfig()
@@ -36,15 +36,22 @@ public sealed class GatewayConfig : Entity
 
     public static GatewayConfig Create()
     {
-        var newRoute = Route.CreateNewRoute("route1", "cluster1", "{**catch-all}");
-        var newCluster = Cluster.CreateNewCluster("cluster1");
+        var routes = new List<Route>();
+        var clusters = new List<Cluster>();
+        for (var i = 1; i < 2; i++)
+        {
+            var newRoute = Route.CreateNewRoute($"route{i}", $"cluster1{i}", "{**catch-all}");
+            var newCluster = Cluster.CreateNewCluster($"cluster{i}");
+            routes.Add(newRoute);
+            clusters.Add(newCluster);
+        }
 
         var newConfig = new GatewayConfig(
             Guid.NewGuid(),
             new Name("New Configuration"),
             true,
-            newRoute,
-            newCluster);
+            routes,
+            clusters);
         
         newConfig.RaiseDomainEvent(new NewConfigCreatedDomainEvent(newConfig.Id));
 

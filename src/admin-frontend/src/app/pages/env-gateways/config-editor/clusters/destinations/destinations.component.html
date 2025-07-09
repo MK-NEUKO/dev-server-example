@@ -5,8 +5,8 @@
     <div class="tab-2ch form-container" [formGroupName]="i">
       <div class="control-field">
         <span>"</span>
-        @if (destinationName?.invalid) {
-        <label class="control__label" for="destinationName"
+        @if (destination.get('destinationName')?.invalid) {
+        <label class="control__label" for="destinationName-{{ i }}"
           >Destination Name:
         </label>
         }
@@ -15,13 +15,14 @@
           <input
             class="control__input"
             type="text"
+            id="destinationName-{{ i }}"
             formControlName="destinationName"
-            name="destinationName"
+            name="destinationName-{{ i }}"
             autocomplete="off"
             [required]="true"
           />
           <span class="control-required"></span>
-          @if (destinationName?.hasError('required')) {
+          @if (destination.get('destinationName')?.errors?.['required']) {
           <span class="control-feedback">Required</span>
           }
         </div>
@@ -29,29 +30,35 @@
       </div>
       <div class="tab-2ch">
         <div class="control-field">
-          <label class="control__label" for="address">Address: </label>
+          <label class="control__label" for="address-{{ i }}">Address: </label>
           <div class="control__input-wrapper">
             <input
               class="control__input"
-              id="address"
+              id="address-{{ i }}"
               type="text"
               formControlName="address"
-              name="address"
+              name="address-{{ i }}"
               autocomplete="off"
               [required]="true"
             />
             <span class="control-required"></span>
-            @if (address?.invalid && (address?.dirty || address?.touched)) { @if
-            (address?.hasError('required')) {
+            @if (destination.get('address')?.invalid &&
+            (destination.get('address')?.dirty ||
+            destination.get('address')?.touched)) { @if
+            (destination.get('address')?.hasError('required')) {
             <span class="control-feedback">Required</span>
-            } @if (address?.hasError('invalidDestinationAddress')) {
+            } @if
+            (destination.get('address')?.hasError('invalidDestinationAddress'))
+            {
             <span class="control-feedback"
               >Invalid URL
               <button
                 type="button"
                 class="control-feedback__info"
                 [title]="
-                  address?.getError('invalidDestinationAddress')?.message
+                  destination
+                    .get('address')
+                    ?.getError('invalidDestinationAddress')?.message
                 "
                 tabindex="-1"
               ></button>
@@ -67,14 +74,14 @@
 
         <button
           class="button button--primary button--small"
-          (click)="updateDestination()"
-          [disabled]="canUpdate()"
+          (click)="updateDestination(i)"
+          [disabled]="canUpdate(i)"
         >
           Update
         </button>
         <button
           class="button button--secondary button--small"
-          (click)="resetDestination()"
+          (click)="resetDestination(i)"
         >
           Reset
         </button>
