@@ -23,9 +23,9 @@ internal static class ProxyConfigMapper
         }
 
         var clusters = new List<ClusterConfig>();
-        var destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase);
         config.Clusters.ForEach(cluster =>
         {
+            var destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase);
             foreach (var keyValuePair in cluster.Destinations)
             {
                 var destinationConfig = new DestinationConfig()

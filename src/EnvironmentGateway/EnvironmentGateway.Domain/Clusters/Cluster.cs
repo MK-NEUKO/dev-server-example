@@ -27,13 +27,13 @@ public sealed class Cluster : Entity
     public Name ClusterName { get; init; } = new Name("cluster1");
     public List<Destination> Destinations { get; } = [];
 
-    public static Cluster CreateNewCluster(string clusterName)
+    public static Cluster CreateNewCluster(string clusterName, int index)
     {
         var initialDestinations = new List<Destination>();
         var addresses = new List<string>() { "https://example.com", "https://neuko-know-how.com", "https://cneb.de" };
         for (var i = 0; i <= 2; i++)
         {
-            var destination = Destination.Create($"destination{i+1}", addresses[i]);
+            var destination = Destination.Create($"destination{i+1}{index}", addresses[i]);
             initialDestinations.Add(destination);
         }
 
