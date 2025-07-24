@@ -23,24 +23,25 @@ internal static class ProxyConfigMapper
         }
 
         var clusters = new List<ClusterConfig>();
-        var clusterCounter = 0;
-        foreach (var cluster in config.Clusters)
+        config.Clusters.ForEach(cluster =>
         {
+            var destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase);
+            foreach (var keyValuePair in cluster.Destinations)
+            {
+                var destinationConfig = new DestinationConfig()
+                {
+                    Address = keyValuePair.Value.Address
+                };
+                destinations.Add(keyValuePair.Key, destinationConfig);
+            }
+
             var clusterConfig = new ClusterConfig()
             {
                 ClusterId = cluster.ClusterName,
-                Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
-                {
-                    {
-                        cluster.Destinations[clusterCounter].DestinationName,
-                        new DestinationConfig() { Address = cluster.Destinations[clusterCounter].Address }
-
-                    }
-                }
+                Destinations = destinations
             };
-            clusterCounter++;
             clusters.Add(clusterConfig);
-        }
+        });
 
         return new ProxyConfig(routes.ToArray(), clusters.ToArray());
     }

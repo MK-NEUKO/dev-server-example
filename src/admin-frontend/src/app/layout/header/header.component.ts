@@ -22,7 +22,6 @@ export class HeaderComponent implements OnInit {
       username: this.keycloak.tokenParsed?.['preferred_username'] || '',
       roll: this.keycloak.tokenParsed?.['realm_access']?.['roles']?.[0] || ''
     }
-    console.log('User Info:', this.keycloak.tokenParsed);
   }
 
 }

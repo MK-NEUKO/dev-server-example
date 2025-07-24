@@ -24,7 +24,7 @@ internal sealed class RuntimeConfigurator(
                 logger.LogError("Error in UpdateDefaultProxyConfig, unable to create current configuration; {GetCurrentConfig}", currentConfigResult.Error );
                 return Result.Failure(GatewayErrors.UpdateDefaultProxyConfigFailed);
             }
-
+            
             currentConfigResult = await currentConfigProvider.GetCurrentConfig();
         }
 

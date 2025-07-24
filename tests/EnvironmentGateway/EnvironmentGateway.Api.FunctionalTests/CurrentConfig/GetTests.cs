@@ -19,7 +19,7 @@ public class GetTests : BaseFunctionalTest
     public async Task GetCurrentConfig_ShouldReturnCurrentConfig_WhenRequestIsValid()
     {
         // Arrange
-        DbContext.GatewayConfigs.Add(GatewayConfig.CreateNewConfig());
+        DbContext.GatewayConfigs.Add(GatewayConfig.Create());
         await DbContext.SaveChangesAsync();
         // Act
         var httpResponse = await HttpClient.GetAsync("current-config");

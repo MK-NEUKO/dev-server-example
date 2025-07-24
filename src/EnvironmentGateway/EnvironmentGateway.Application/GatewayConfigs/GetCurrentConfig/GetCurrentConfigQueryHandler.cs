@@ -12,86 +12,131 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
         GetCurrentConfigQuery request,
         CancellationToken cancellationToken)
     {
-        GatewayConfigSummary? gatewayConfigSummary = await context
+        CurrentConfig? currentConfig = await context
             .Database
-            .SqlQuery<GatewayConfigSummary>($"""
+            .SqlQuery<CurrentConfig>($"""
                 SELECT 
-                    gc.id AS gateway_config_id,
+                    gc.id AS id,
                     gc.name_value AS gateway_config_name,
-                    gc.is_current_config AS is_current_config,
-                    r.cluster_name_value AS route_cluster_name,
-                    r.route_name_value AS route_name,
-                    rm.path_value AS match_path,
-                    c.cluster_name_value AS cluster_name,
-                    c.id AS cluster_id,
-                    d.id AS destination_id,
-                    d.destination_name AS destination_name,
-                    d.address AS destination_address
-                    
+                    gc.is_current_config AS is_current_config
                 FROM gateway_configs gc
-                LEFT JOIN routes r ON gc.id = r.gateway_config_id
-                LEFT JOIN route_matches rm ON r.id = rm.route_id
-                LEFT JOIN clusters c ON gc.id = c.gateway_config_id
-                LEFT JOIN destinations d ON c.id = d.cluster_id
                 WHERE gc.is_current_config = true
                 """)
             .FirstOrDefaultAsync(cancellationToken);
-
-        if (gatewayConfigSummary is null)
+        
+        if (currentConfig is null)
         {
             return Result.Failure<CurrentConfigResponse>(Error.NullValue);
+        }
+        
+        var currentRoutes = await context
+            .Database
+            .SqlQuery<CurrentRoutes>($"""
+                SELECT 
+                    r.id AS id,
+                    r.route_name_value AS route_name,
+                    r.cluster_name_value AS cluster_name,
+                    rm.path_value AS match_path
+                FROM routes r
+                LEFT JOIN route_matches rm ON r.id = rm.route_id
+                WHERE r.gateway_config_id = {currentConfig?.Id}
+                """)
+            .ToListAsync(cancellationToken);
+        
+        var currentClusters = await context
+            .Database
+            .SqlQuery<Cluster>($"""
+                SELECT 
+                    c.id AS id,
+                    c.cluster_name_value AS cluster_name
+                FROM clusters c
+                WHERE c.gateway_config_id = {currentConfig?.Id}
+                """)
+            .ToListAsync(cancellationToken);
+
+        var currentDestinations = new List<List<Destination>>();
+        foreach (var cluster in currentClusters)
+        {
+            var destinations = await context
+                .Database
+                .SqlQuery<Destination>($"""
+                    SELECT 
+                        d.id AS id,
+                        d.destination_name AS destination_name,
+                        d.address AS Address
+                    FROM destinations d
+                    WHERE d.cluster_id = {cluster.Id}
+                    """)
+                .ToListAsync(cancellationToken);
+            currentDestinations.Add(destinations);
         }
 
         var response = new CurrentConfigResponse()
         {
-            Id = gatewayConfigSummary.GatewayConfigId,
-            Name = gatewayConfigSummary.GatewayConfigName,
-            IsCurrentConfig = gatewayConfigSummary.IsCurrentConfig,
-            Routes =
-            [
-                new RouteResponse()
+            Id = currentConfig.Id,
+            Name = currentConfig.GatewayConfigName,
+            IsCurrentConfig = currentConfig.IsCurrentConfig,
+            Routes = new List<RouteResponse>(),
+            Clusters = new List<ClusterResponse>()
+        }; 
+        
+        currentRoutes.ForEach(route =>
+        {
+            response.Routes.Add(new RouteResponse()
+            {
+                Id = route.Id,
+                RouteName = route.RouteName,
+                ClusterName = route.ClusterName,
+                Match = new RouteMatchResponse(){ Path = route.MatchPath }
+                
+            });
+        });
+
+        var clusterIndex = 0;
+        currentClusters.ForEach(cluster =>
+        {
+            var destinations = new Dictionary<string, DestinationResponse>();
+            currentDestinations[clusterIndex].ForEach(destination =>
+            {
+                var key = destination.DestinationName;
+                var value = new DestinationResponse()
                 {
-                    RouteName = gatewayConfigSummary.RouteName,
-                    ClusterName = gatewayConfigSummary.RouteClusterName,
-                    Match = new RouteMatchResponse()
-                    {
-                        Path = gatewayConfigSummary.MatchPath
-                    }
-                }
-            ],
-            Clusters =
-            [
-                new ClusterResponse()
-                {
-                    Id = gatewayConfigSummary.ClusterId,
-                    ClusterName = gatewayConfigSummary.ClusterName,
-                    Destinations =
-                    [
-                        new DestinationResponse()
-                        {
-                            Id = gatewayConfigSummary.DestinationId,
-                            DestinationName = gatewayConfigSummary.DestinationName,
-                            Address = gatewayConfigSummary.DestinationAddress
-                        }
-                    ]
-                }
-            ]
-        };
+                    Id = destination.Id,
+                    DestinationName = destination.DestinationName,
+                    Address = destination.Address
+                };
+                destinations.Add(key, value);
+            });
+            response.Clusters.Add(new ClusterResponse()
+            {
+                Id = cluster.Id,
+                ClusterName = cluster.ClusterName,
+                Destinations = destinations
+            });
+            clusterIndex++;
+        });
 
 
         return response;
     }
 
-    private sealed record GatewayConfigSummary(
-        Guid GatewayConfigId,
+    private sealed record CurrentConfig(
+        Guid Id,
         string GatewayConfigName,
-        bool IsCurrentConfig,
-        string RouteClusterName,
+        bool IsCurrentConfig);
+
+    private sealed record CurrentRoutes(
+        Guid Id,
         string RouteName,
-        string MatchPath,
-        Guid ClusterId,
         string ClusterName,
-        Guid DestinationId,
+        string MatchPath);
+    
+    private sealed record Cluster(
+        Guid Id,
+        string ClusterName);
+
+    private sealed record Destination(
+        Guid Id,
         string DestinationName,
-        string DestinationAddress);
+        string Address);
 }

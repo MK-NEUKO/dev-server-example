@@ -16,9 +16,12 @@ internal sealed class CurrentConfigProvider(
     {
         var query = new GetCurrentConfigQuery();
 
-        var result = await queryHandler.Handle(query, CancellationToken.None);
+        Result<CurrentConfigResponse> result = await queryHandler.Handle(query, CancellationToken.None);
 
-        if (!result.IsFailure) return result;
+        if (!result.IsFailure)
+        {
+            return result;
+        }
 
         logger.LogError("Get current configuration failed {Result}.", result.Error);
         return result;
@@ -29,9 +32,12 @@ internal sealed class CurrentConfigProvider(
     {
         var command = new CreateNewConfigCommand();
 
-        var result = await handler.Handle(command, CancellationToken.None);
+        Result<Guid> result = await handler.Handle(command, CancellationToken.None);
 
-        if (result.IsSuccess) return result;
+        if (result.IsSuccess)
+        {
+            return result;
+        }
 
         logger.LogError("Create current configuration failed {Result}.", result.Error);
         return result;

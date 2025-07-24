@@ -1,5 +1,5 @@
 <div [formGroup]="parentForm">
-  <h3 class="form__heading form__heading--second">"Clusters": [</h3>
+  <h3 class="form__heading form__heading--second">"Clusters": {{ "{" }}</h3>
   <ng-container formArrayName="clusters">
     @for (cluster of formArray.controls; track $index; let i = $index) {
     <div
@@ -34,5 +34,5 @@
     </div>
     }
   </ng-container>
-  <span class="form__heading form__heading--second">]</span>
+  <span class="form__heading form__heading--second">{{ "}" }}</span>
 </div>
