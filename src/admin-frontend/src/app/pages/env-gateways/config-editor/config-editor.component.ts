@@ -93,7 +93,7 @@ export class ConfigEditorComponent {
     )
   }
 
-  private buildDestinationsConfigForm(destinations: Record<string, Destination>[]): FormArray {
+  private buildDestinationsConfigForm(destinations: Record<string, Destination>): FormArray {
     const formGroups: FormGroup[] = [];
 
     Object.entries(destinations).forEach(destination => {

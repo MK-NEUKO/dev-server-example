@@ -45,7 +45,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
         
         var currentClusters = await context
             .Database
-            .SqlQuery<CurrentClusters>($"""
+            .SqlQuery<Cluster>($"""
                 SELECT 
                     c.id AS id,
                     c.cluster_name_value AS cluster_name
@@ -53,18 +53,23 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                 WHERE c.gateway_config_id = {currentConfig?.Id}
                 """)
             .ToListAsync(cancellationToken);
-        
-        var currentDestinations = await context
-            .Database
-            .SqlQuery<CurrentDestinations>($"""
-                SELECT 
-                    d.id AS id,
-                    d.destination_name AS destination_name,
-                    d.address AS Address
-                FROM destinations d
-                WHERE d.cluster_id = {currentClusters[0]?.Id}
-                """)
-            .ToListAsync(cancellationToken);
+
+        var currentDestinations = new List<List<Destination>>();
+        foreach (var cluster in currentClusters)
+        {
+            var destinations = await context
+                .Database
+                .SqlQuery<Destination>($"""
+                    SELECT 
+                        d.id AS id,
+                        d.destination_name AS destination_name,
+                        d.address AS Address
+                    FROM destinations d
+                    WHERE d.cluster_id = {cluster.Id}
+                    """)
+                .ToListAsync(cancellationToken);
+            currentDestinations.Add(destinations);
+        }
 
         var response = new CurrentConfigResponse()
         {
@@ -86,11 +91,12 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                 
             });
         });
-        
+
+        var clusterIndex = 0;
         currentClusters.ForEach(cluster =>
         {
             var destinations = new Dictionary<string, DestinationResponse>();
-            currentDestinations.ForEach(destination =>
+            currentDestinations[clusterIndex].ForEach(destination =>
             {
                 var key = destination.DestinationName;
                 var value = new DestinationResponse()
@@ -107,6 +113,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                 ClusterName = cluster.ClusterName,
                 Destinations = destinations
             });
+            clusterIndex++;
         });
 
 
@@ -124,11 +131,11 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
         string ClusterName,
         string MatchPath);
     
-    private sealed record CurrentClusters(
+    private sealed record Cluster(
         Guid Id,
         string ClusterName);
 
-    private sealed record CurrentDestinations(
+    private sealed record Destination(
         Guid Id,
         string DestinationName,
         string Address);
