@@ -11,9 +11,7 @@ using Web.Api.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-
-builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
-
+builder.AddServiceDefaults();
 
 builder.Services.AddSwaggerGenWithAuth(builder.Configuration);
 
@@ -25,6 +23,8 @@ builder.Services
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
 WebApplication app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.MapEndpoints();
 
@@ -46,8 +46,6 @@ app.MapGet("user/me", (ClaimsPrincipal claimsPrincipal) =>
 }).RequireAuthorization();
 
 app.UseRequestContextLogging();
-
-app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
 

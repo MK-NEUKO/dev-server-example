@@ -9,6 +9,8 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -18,11 +20,6 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
-
-builder.Host.UseSerilog((context, configuration) =>
-    configuration.ReadFrom.Configuration(context.Configuration));
-
-builder.AddServiceDefaults();
 
 builder.Services.AddOpenApiWithSecuritySchemeTransformer(builder.Configuration);
 
@@ -39,6 +36,8 @@ builder.Services.AddReverseProxy()
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
     
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
@@ -69,8 +68,6 @@ app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
 app.UseRequestContextLogging();
-
-app.UseSerilogRequestLogging();
 
 app.UseCustomExceptionHandler();
 
