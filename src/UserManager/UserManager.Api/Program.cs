@@ -1,10 +1,6 @@
 using System.Reflection;
-using System.Security.Claims;
 using UserManager.Application;
-using HealthChecks.UI.Client;
 using UserManager.Infrastructure;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Serilog;
 using UserManager.Api.Extensions;
 using Web.Api;
 using Web.Api.Extensions;
@@ -35,16 +31,6 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations();
 }
 
-app.MapHealthChecks("health", new HealthCheckOptions
-{
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
-
-app.MapGet("user/me", (ClaimsPrincipal claimsPrincipal) =>
-{
-    return claimsPrincipal.Claims.ToDictionary(c => c.Type, c => c.Value);
-}).RequireAuthorization();
-
 app.UseRequestContextLogging();
 
 app.UseExceptionHandler();
@@ -55,7 +41,6 @@ app.UseAuthorization();
 
 await app.RunAsync();
 
-// REMARK: Required for functional and integration tests to work.
 namespace Web.Api
 {
     public partial class Program;
