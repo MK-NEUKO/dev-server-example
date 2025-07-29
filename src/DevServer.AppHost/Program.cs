@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using Aspire.Hosting;
 using Aspire.Hosting.Postgres;
-using DevServer.AppHost;
 using k8s.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -43,12 +42,10 @@ var keycloak = builder.AddKeycloak("Keycloak", 6001)
     .WithDataBindMount(builder.Configuration.GetValue<string>("Keycloak:DataBindMount")!);
 
 var productionGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("ProductionGateway")
-    .WithScalar()
     .WithReference(productionGatewayDb)
     .WaitFor(productionGatewayDb);
 
 var userManagerApi = builder.AddProject<Projects.UserManager_Api>("UserManager")
-    .WithScalar()
     .WithReference(userManagerDb)
     .WaitFor(userManagerDb);
 
