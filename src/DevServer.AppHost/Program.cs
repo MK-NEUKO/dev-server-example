@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
+using Aspire.Hosting;
+using Aspire.Hosting.Postgres;
 using DevServer.AppHost;
 using k8s.Models;
 using Microsoft.Extensions.Configuration;
@@ -8,9 +10,19 @@ using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+var pgAdmin = builder.AddContainer(
+        name: "pgadmin",
+        image: "dpage/pgadmin4")
+    .WithBindMount(
+        source: builder.Configuration.GetValue<string>("PgAdmin:DataBindMount")!,
+        target: "/var/lib/pgadmin",
+        isReadOnly: false)
+    .WithEnvironment("PGADMIN_DEFAULT_EMAIL", builder.Configuration.GetValue<string>("PgAdmin:UserEmail")!)
+    .WithEnvironment("PGADMIN_DEFAULT_PASSWORD", builder.Configuration.GetValue<string>("PgAdmin:UserPassword"))
+    .WithHttpEndpoint(port: 9105, targetPort: 80, name: "pgadmin", isProxied: false);
+
 var gatewaysDbServer = builder.AddPostgres(
         name: "GatewaysDbServer")
-    .WithPgAdmin()
     .WithDataBindMount(
         source: builder.Configuration.GetValue<string>("GatewayDbServer:DataBindMount")!,
         isReadOnly: false)
@@ -20,7 +32,6 @@ var productionGatewayDb = gatewaysDbServer.AddDatabase("ProductionGatewayDb");
 
 var userManagerDbServer = builder.AddPostgres(
     name: "UserManagerDbServer")
-    .WithPgAdmin()
     .WithDataBindMount(
         source: builder.Configuration.GetValue<string>("UserManagerDbServer:DataBindMount")!,
         isReadOnly: false)
