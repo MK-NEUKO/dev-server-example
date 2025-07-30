@@ -8,8 +8,7 @@
       },
       "launchUrl": "scalar",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "http://localhost:9100"
+      "launchBrowser": true
     },
     "https": {
       "commandName": "Project",
@@ -17,9 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "https://localhost:9101/scalar",
-      "applicationUrl": "https://localhost:9101;http://localhost:9100"
+      "launchBrowser": true
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",

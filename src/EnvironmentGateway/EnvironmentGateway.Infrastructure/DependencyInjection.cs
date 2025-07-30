@@ -35,7 +35,9 @@ public static class DependencyInjection
     
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("ProductionGatewayDb") ??
+        var dbName = configuration["DB_NAME"];
+        
+        var connectionString = configuration.GetConnectionString(dbName ?? throw new InvalidOperationException("DB_NAME is not provided! AddDatabase()")) ??
                                throw new ArgumentException(nameof(configuration));
         
         services.AddDbContext<EnvironmentGatewayDbContext>(options =>
