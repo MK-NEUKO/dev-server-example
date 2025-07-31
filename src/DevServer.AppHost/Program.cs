@@ -63,20 +63,20 @@ var keycloak = builder.AddKeycloak("Keycloak", 6001)
 var productionGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("ProductionGateway")
     .WithReference(productionGatewayDb)
     .WithEnvironment("DB_NAME", nameof(productionGatewayDb))
+    .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Development")
     .WaitFor(productionGatewayDb)
     .WaitFor(keycloak)
     .WithHttpEndpoint(port: 9100, name: "ProductionGatewayHttp", isProxied: false)
-    .WithHttpsEndpoint(port: 9101, name: "ProductionGatewayHttps", isProxied: false)
-    .WithUrlForEndpoint("ProductionGatewayHttps", url => url.Url = "/scalar");
+    .WithHttpsEndpoint(port: 9101, name: "ProductionGatewayHttps", isProxied: false);
 
 var customerGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("CustomerGateway")
     .WithReference(customerGatewayDb)
     .WithEnvironment("DB_NAME", nameof(customerGatewayDb))
+    .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Development")
     .WaitFor(customerGatewayDb)
     .WaitFor(keycloak)
     .WithHttpEndpoint(port: 9200, name: "CustomerGatewayHttp", isProxied: false)
-    .WithHttpsEndpoint(port: 9201, name: "CustomerGatewayHttps", isProxied: false)
-    .WithUrlForEndpoint("CustomerGatewayHttps", url => url.Url = "/scalar");
+    .WithHttpsEndpoint(port: 9201, name: "CustomerGatewayHttps", isProxied: false);
 
 var userManagerApi = builder.AddProject<Projects.UserManager_Api>("UserManager")
     .WithReference(userManagerDb)
@@ -90,14 +90,14 @@ var userManagerApi = builder.AddProject<Projects.UserManager_Api>("UserManager")
 #region FrontendConfig
 
 builder.AddNpmApp("ServiceFrontend", "../service-frontend")
-.WaitFor(userManagerApi)
-.WaitFor(keycloak)
-.WithHttpEndpoint(port: 4200, name: "ServiceFrontendHttp", isProxied: false, env: "SERVICE_FRONTEND_PORT")
-.WithExternalHttpEndpoints();
+    .WaitFor(userManagerApi)
+    .WaitFor(keycloak)
+    .WithHttpEndpoint(port: 4200, name: "ServiceFrontendHttp", isProxied: false, env: "SERVICE_FRONTEND_PORT")
+    .WithExternalHttpEndpoints();
 
 builder.AddNpmApp("AdminFrontend", "../admin-frontend")
-    .WithReference(productionGateway)
     .WaitFor(productionGateway)
+    .WaitFor(customerGateway)
     .WaitFor(keycloak)
     .WithHttpEndpoint(port: 4300, name: "AdminFrontendHttp", isProxied: false, env: "ADMIN_FRONTEND_PORT")
     .WithExternalHttpEndpoints();

@@ -1,12 +1,9 @@
 using System.Reflection;
 using EnvironmentGateway.Api;
 using EnvironmentGateway.Api.Extensions;
-using EnvironmentGateway.Api.GatewayConfiguration;
 using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
 using EnvironmentGateway.Application;
 using EnvironmentGateway.Infrastructure;
-using Scalar.AspNetCore;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,11 +13,13 @@ builder.Services.AddOpenApiWithAuth(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin()
+        policy
+            .WithOrigins("http://localhost:4300") // AdminFrontend-Port
+            .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowAnyHeader();
+            .AllowCredentials();
     });
 });
 
@@ -32,6 +31,8 @@ builder.Services
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
     
 var app = builder.Build();
+
+app.UseCors();
 
 app.MapDefaultEndpoints();
 
@@ -57,8 +58,6 @@ using (var scope = app.Services.CreateScope())
         // TODO: Throw event to notify the admin frontend!
     }
 }
-
-app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 

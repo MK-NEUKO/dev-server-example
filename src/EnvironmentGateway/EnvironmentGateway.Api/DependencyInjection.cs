@@ -7,7 +7,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
-        services.AddEndpointsApiExplorer();
+        //services.AddEndpointsApiExplorer();
         
 
         services.AddScoped<IRuntimeConfigurator, RuntimeConfigurator>();
