@@ -11,7 +11,7 @@ export class DestinationService {
 
   public SaveChanges(request: any): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.httpClient.put(`/envGateway/update-destination`, request, {
+      this.httpClient.put(`https://localhost:9201/update-destination`, request, {
 
       }).subscribe({
         next: (response) => {

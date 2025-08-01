@@ -1,49 +1,47 @@
 using System.Reflection;
+using DevServer.ServiceDefaults;
+using EnvironmentGateway.Api;
 using EnvironmentGateway.Api.Extensions;
-using EnvironmentGateway.Api.GatewayConfiguration;
 using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
 using EnvironmentGateway.Application;
 using EnvironmentGateway.Infrastructure;
-using Scalar.AspNetCore;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
+builder.Services.AddOpenApiWithAuth(builder.Configuration);
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin()
+        policy
+            .WithOrigins("http://localhost:4300") // AdminFrontend-Port
+            .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowAnyHeader();
+            .AllowCredentials();
     });
 });
 
-builder.Host.UseSerilog((context, configuration) =>
-    configuration.ReadFrom.Configuration(context.Configuration));
-
-builder.AddServiceDefaults();
-
-builder.Services.AddOpenApiWithSecuritySchemeTransformer(builder.Configuration);
-
 builder.Services
     .AddApplication()
+    .AddPresentation()
     .AddInfrastructure(builder.Configuration);
-
-builder.Services.AddScoped<IRuntimeConfigurator, RuntimeConfigurator>();
-builder.Services.AddScoped<ICurrentConfigProvider, CurrentConfigProvider>();
-
-builder.Services.AddReverseProxy()
-    .LoadFromMemory(DefaultProxyConfigProvider.GetRoutes(), DefaultProxyConfigProvider.GetClusters());
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
     
 var app = builder.Build();
 
+app.UseCors();
+
+app.MapDefaultEndpoints();
+
+app.MapEndpoints();
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.UseScalarWithUi();
 
 #pragma warning disable S125
     app.ApplyMigrations();
@@ -62,15 +60,9 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.MapEndpoints();
-
-app.UseCors("AllowAll");
-
 app.UseHttpsRedirection();
 
 app.UseRequestContextLogging();
-
-app.UseSerilogRequestLogging();
 
 app.UseCustomExceptionHandler();
 

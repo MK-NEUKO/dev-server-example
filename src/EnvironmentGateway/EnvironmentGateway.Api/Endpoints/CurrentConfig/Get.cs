@@ -8,14 +8,15 @@ public class Get : IEndpoint
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapGet("current-config", async (
-            IQueryHandler<GetCurrentConfigQuery, CurrentConfigResponse> handler,
-            CancellationToken cancellationToken) =>
-        {
-            var query = new GetCurrentConfigQuery();
+                IQueryHandler<GetCurrentConfigQuery, CurrentConfigResponse> handler,
+                CancellationToken cancellationToken) =>
+            {
+                var query = new GetCurrentConfigQuery();
 
-            var result = await handler.Handle(query, cancellationToken);
+                var result = await handler.Handle(query, cancellationToken);
 
-            return result.IsSuccess ? Results.Ok(result.Value) : Results.NotFound();
-        }).RequireAuthorization();
+                return result.IsSuccess ? Results.Ok(result.Value) : Results.NotFound();
+            })
+            .RequireAuthorization();
     }
 }

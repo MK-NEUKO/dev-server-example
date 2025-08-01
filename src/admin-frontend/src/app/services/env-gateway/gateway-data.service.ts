@@ -8,7 +8,7 @@ import Keycloak from 'keycloak-js';
 })
 export class GatewayDataService {
 
-  private url = 'envGateway/current-config';
+  private url = 'https://localhost:9201/current-config';
   private readonly keycloak = inject(Keycloak);
   private readonly token = this.keycloak.token;
 

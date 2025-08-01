@@ -30,6 +30,7 @@ public class UpdateDestination : IEndpoint
             var updateResult = await runtimeConfigurator.UpdateProxyConfig();
 
             return Results.Ok(updateResult.IsSuccess);
-        }).RequireAuthorization();
+        })
+        .RequireAuthorization();
     }
 }

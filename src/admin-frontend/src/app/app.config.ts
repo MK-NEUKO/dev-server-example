@@ -12,8 +12,8 @@ import {
 } from 'keycloak-angular';
 
 
-const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
-  urlPattern: /^\/envGateway\//i,
+const allUrlsCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
+  urlPattern: new RegExp('.*'),
   bearerPrefix: 'Bearer'
 });
 
@@ -32,7 +32,7 @@ export const appConfig: ApplicationConfig = {
     }),
     {
       provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
-      useValue: [urlCondition] // <-- Note that multiple conditions might be added.
+      useValue: [allUrlsCondition] // <-- Note that multiple conditions might be added.
     },
     provideHighlightOptions({
       fullLibraryLoader: () => import('highlight.js'),
