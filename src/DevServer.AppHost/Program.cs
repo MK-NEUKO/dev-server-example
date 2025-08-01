@@ -32,7 +32,7 @@ var gatewaysDbServer = builder.AddPostgres(
     .WithDataBindMount(
         source: builder.Configuration.GetValue<string>("GatewayDbServer:DataBindMount")!,
         isReadOnly: false)
-    .WithHttpEndpoint(port: 9001, name: "GatewaysDbServerHttp", isProxied: false);
+    .WithHttpsEndpoint(port: 9001, name: "GatewaysDbServerHttp", isProxied: false);
 
 var productionGatewayDb = gatewaysDbServer.AddDatabase("ProductionGatewayDb");
 var customerGatewayDb = gatewaysDbServer.AddDatabase("CustomerGatewayDb");
@@ -42,7 +42,7 @@ var userManagerDbServer = builder.AddPostgres(
     .WithDataBindMount(
         source: builder.Configuration.GetValue<string>("UserManagerDbServer:DataBindMount")!,
         isReadOnly: false)
-    .WithHttpEndpoint(port: 9501, name: "UserManagerDbServerHttp", isProxied: false);
+    .WithHttpsEndpoint(port: 9501, name: "UserManagerDbServerHttp", isProxied: false);
 
 var userManagerDb = userManagerDbServer.AddDatabase("UserManagerDb");
 
@@ -66,8 +66,9 @@ var productionGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("Pro
     .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Development")
     .WaitFor(productionGatewayDb)
     .WaitFor(keycloak)
-    .WithHttpEndpoint(port: 9100, name: "ProductionGatewayHttp", isProxied: false)
-    .WithHttpsEndpoint(port: 9101, name: "ProductionGatewayHttps", isProxied: false);
+    .WithHttpsEndpoint(port: 9100, name: "ProductionGatewayHttps", isProxied: false)
+    .WithHttpsEndpoint(port: 9102, name: "ProductionGatewayHttpsScalar", isProxied: false)
+    .WithUrlForEndpoint("ProductionGatewayHttpsScalar", url => url.Url = "/scalar" );
 
 var customerGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("CustomerGateway")
     .WithReference(customerGatewayDb)
@@ -75,8 +76,9 @@ var customerGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("Custo
     .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Development")
     .WaitFor(customerGatewayDb)
     .WaitFor(keycloak)
-    .WithHttpEndpoint(port: 9200, name: "CustomerGatewayHttp", isProxied: false)
-    .WithHttpsEndpoint(port: 9201, name: "CustomerGatewayHttps", isProxied: false);
+    .WithHttpsEndpoint(port: 9110, name: "CustomerGatewayHttp", isProxied: false)
+    .WithHttpsEndpoint(port: 9112, name: "CustomerGatewayHttps", isProxied: false)
+    .WithUrlForEndpoint("ProductionGatewayHttpsScalar", url => url.Url = "/scalar" );
 
 var userManagerApi = builder.AddProject<Projects.UserManager_Api>("UserManager")
     .WithReference(userManagerDb)
