@@ -37,7 +37,7 @@ public static class DependencyInjection
     {
         var dbName = configuration["DB_NAME"];
         
-        var connectionString = configuration.GetConnectionString(dbName ?? throw new InvalidOperationException("DB_NAME is not provided! AddDatabase()")) ??
+        var connectionString = configuration.GetConnectionString(dbName ?? throw new InvalidOperationException("DB_NAME environment variable is required but not provided")) ??
                                throw new ArgumentException(nameof(configuration));
         
         services.AddDbContext<EnvironmentGatewayDbContext>(options =>
