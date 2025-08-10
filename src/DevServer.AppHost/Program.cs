@@ -67,6 +67,7 @@ var productionGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("Pro
     .WaitFor(productionGatewayDb)
     .WaitFor(keycloak)
     .WithHttpsEndpoint(port: 9100, name: "ProductionGatewayHttps", isProxied: false)
+    .WithUrlForEndpoint("ProductionGatewayHttps", url => url.Url = "/service1")
     .WithHttpsEndpoint(port: 9102, name: "ProductionGatewayHttpsScalar", isProxied: false)
     .WithUrlForEndpoint("ProductionGatewayHttpsScalar", url => url.Url = "/scalar" );
 

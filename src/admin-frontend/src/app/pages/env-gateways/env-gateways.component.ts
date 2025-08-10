@@ -5,6 +5,8 @@ import { GatewayDataService } from '../../services/env-gateway/gateway-data.serv
 import { Highlight } from 'ngx-highlightjs';
 import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
 import { GatewayConfig } from '../../models/gateway-config/gateway-config.model';
+import { HttpClient } from '@angular/common/http';
+import Keycloak from 'keycloak-js';
 
 
 @Component({
@@ -23,12 +25,13 @@ export class EnvGatewaysComponent implements OnInit {
 
   private gatewayDataService = inject(GatewayDataService);
   private router = inject(Router);
+  private keycloak = inject(Keycloak);
   public currentConfig = this.gatewayDataService.getCurrentConfig();
   public configData!: GatewayConfig;
   public isMaximized = false;
 
-  private destinationUrl = 'https://localhost:9101/';
-
+  private destinationUrl = 'https://localhost:9100/service2/test';
+  private http = inject(HttpClient);
 
   constructor() {
     effect(() => {
@@ -43,7 +46,21 @@ export class EnvGatewaysComponent implements OnInit {
   }
 
   destinationTest() {
-    window.open(this.destinationUrl, '_blank');
+    this.http.get(this.destinationUrl, {
+      headers: {
+        'Authorization': `Bearer ${this.keycloak.token}`,
+        'Content-Type': 'application/json'
+      },
+      withCredentials: true,
+      responseType: 'json'
+    }).subscribe({
+      next: (response) => {
+        console.log('Destination test successful:', response);
+      },
+      error: (error) => {
+        console.error('Error testing destination:', error);
+      }
+    });
   }
 
   public editConfig() {

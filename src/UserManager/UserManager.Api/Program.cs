@@ -1,5 +1,4 @@
 using System.Reflection;
-using DevServer.ServiceDefaults;
 using UserManager.Application;
 using UserManager.Infrastructure;
 using UserManager.Api.Extensions;
