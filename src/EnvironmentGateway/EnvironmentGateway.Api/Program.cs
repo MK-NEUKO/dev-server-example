@@ -1,5 +1,4 @@
 using System.Reflection;
-using DevServer.ServiceDefaults;
 using EnvironmentGateway.Api;
 using EnvironmentGateway.Api.Extensions;
 using EnvironmentGateway.Api.GatewayConfiguration.Abstractions;
@@ -17,7 +16,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
     {
         policy
-            .WithOrigins("http://localhost:4300") // AdminFrontend-Port
+            .WithOrigins("http://localhost:4300")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -70,7 +69,19 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapReverseProxy();
+app.MapReverseProxy(proxyPipeline =>
+{
+    proxyPipeline.Use(async (context, next) =>
+    {
+        context.Response.Headers["Access-Control-Allow-Origin"] = "http://localhost:4300";
+        context.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization";
+        context.Response.Headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS";
+        context.Response.Headers["Access-Control-Allow-Credentials"] = "true";
+        await next();
+    });
+
+    proxyPipeline.UseAuthentication();
+});
 
 await app.RunAsync();
 

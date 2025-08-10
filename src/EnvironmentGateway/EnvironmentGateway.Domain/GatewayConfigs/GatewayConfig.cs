@@ -1,4 +1,5 @@
-﻿using EnvironmentGateway.Domain.Abstractions;
+﻿using System.Linq.Expressions;
+using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Clusters;
 using EnvironmentGateway.Domain.GatewayConfigs.Events;
 using EnvironmentGateway.Domain.Routes;
