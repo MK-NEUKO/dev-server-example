@@ -10,6 +10,11 @@ internal static class ProxyConfigMapper
         var routes = new List<RouteConfig>();
         foreach (var route in config.Routes)
         {
+            var Transforms = new List<Dictionary<string, string>>();
+            foreach (var transform in route.Transforms.Transforms)
+            {
+                Transforms.Add(transform);
+            }
             var routeConfig = new RouteConfig()
             {
                 RouteId = route.RouteName,
@@ -17,7 +22,9 @@ internal static class ProxyConfigMapper
                 Match = new RouteMatch()
                 {
                     Path = route.Match.Path
-                }
+                },
+                Transforms = Transforms
+                    
             };
             routes.Add(routeConfig);
         }

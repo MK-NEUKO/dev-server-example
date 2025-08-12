@@ -12,7 +12,7 @@ public class RoutesTests
         const string clusterName = "testClusterName";
         const string matchPath = "{**catch-all}";
 
-        var initRoute = Route.CreateNewRoute(routeName, clusterName, matchPath);
+        var initRoute = Route.CreateNewRoute(routeName, clusterName, matchPath, "test");
 
         initRoute.RouteName.Value.Should().Be(routeName);
         initRoute.ClusterName.Value.Should().Be(clusterName);

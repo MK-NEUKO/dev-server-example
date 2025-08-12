@@ -9,11 +9,13 @@ namespace EnvironmentGateway.Application.UnitTests.Destinations;
 
 public class UpdateDestinationTests
 {
-    private static readonly Guid Id = Guid.NewGuid();
+    private static readonly Guid ClusterId = Guid.NewGuid();
+    private static readonly Guid DestinationId = Guid.NewGuid();
     private const string TestAddress = "Https://example.com";
 
     private static readonly UpdateDestinationCommand Command = new(
-        Id,
+        ClusterId,
+        DestinationId,
         TestAddress);
 
     private readonly UpdateDestinationCommandHandler _handler;
@@ -35,7 +37,7 @@ public class UpdateDestinationTests
     public async Task Handle_Should_ReturnFailure_WhenDestinationDoesNotExist()
     {
         // Arrange
-        _destinationRepositoryMock.GetByIdAsync(Id, Arg.Any<CancellationToken>()).Returns((Destination?)null);
+        _destinationRepositoryMock.GetByIdAsync(DestinationId, Arg.Any<CancellationToken>()).Returns((Destination?)null);
 
         // Act
         var result = await _handler.Handle(Command, default);
@@ -64,14 +66,14 @@ public class UpdateDestinationTests
     {
         // Arrange
         var destination = Destination.Create("test", "http://test.com");
-        _destinationRepositoryMock.GetByIdAsync(Id, Arg.Any<CancellationToken>()).Returns(destination);
+        _destinationRepositoryMock.GetByIdAsync(DestinationId, Arg.Any<CancellationToken>()).Returns(destination);
 
         // Act
         var result = await _handler.Handle(Command, default);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        await _destinationRepositoryMock.Received(1).GetByIdAsync(Id, Arg.Any<CancellationToken>());
+        await _destinationRepositoryMock.Received(1).GetByIdAsync(DestinationId, Arg.Any<CancellationToken>());
         await _unitOfWorkMock.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
         destination.Address.Value.Should().Be(TestAddress);
     }

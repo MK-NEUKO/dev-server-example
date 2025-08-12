@@ -41,7 +41,7 @@ public sealed class GatewayConfig : Entity
         var clusters = new List<Cluster>();
         for (var i = 1; i < 3; i++)
         {
-            var newRoute = Route.CreateNewRoute($"route{i}", $"cluster{i}", $"/service{i}");
+            var newRoute = Route.CreateNewRoute($"route{i}", $"cluster{i}", $"/service{i}", $"/service{i}");
             var newCluster = Cluster.CreateNewCluster($"cluster{i}", i);
             routes.Add(newRoute);
             clusters.Add(newCluster);

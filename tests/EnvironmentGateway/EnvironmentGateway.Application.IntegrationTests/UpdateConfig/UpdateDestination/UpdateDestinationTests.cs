@@ -29,7 +29,10 @@ public class UpdateDestinationTests : BaseIntegrationTest
             .SelectMany(c => c.Destinations)
             .Select(d => d.Id)
             .FirstOrDefaultAsync();
-        var request = new UpdateDestinationCommand(destinationId, testAddress);
+        Guid clusterId = await DbContext.Clusters
+            .Select(c => c.Id)
+            .FirstOrDefaultAsync();
+        var request = new UpdateDestinationCommand(destinationId, clusterId, testAddress);
 
         // Act
         Result result = await _handler.Handle(request, CancellationToken.None);
@@ -48,7 +51,7 @@ public class UpdateDestinationTests : BaseIntegrationTest
     {
         // Arrange
         const string testAddress = "https://example.com";
-        var request = new UpdateDestinationCommand(Guid.NewGuid(), testAddress);
+        var request = new UpdateDestinationCommand(Guid.NewGuid(), Guid.NewGuid(), testAddress);
 
         // Act
         Result result = await _handler.Handle(request, CancellationToken.None);

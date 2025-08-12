@@ -13,7 +13,7 @@ public class ClustersTests
         const string destinationAddress = "https://tests.test";
 
         // Act
-        var newCluster = Cluster.CreateNewCluster(clusterName, destinationAddress);
+        var newCluster = Cluster.CreateNewCluster(clusterName, 1);
 
         // Assert
         newCluster.ClusterName.Value.Should().Be(clusterName);

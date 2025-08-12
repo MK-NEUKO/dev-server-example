@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Domain.RouteMatches;
 using EnvironmentGateway.Domain.Routes;
+using EnvironmentGateway.Domain.Routes.Transforms;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace EnvironmentGateway.Application.Abstractions.Data;
@@ -15,4 +16,6 @@ public interface IEnvironmentGatewayDbContext
     DbSet<Cluster> Clusters { get; }
     DbSet<RouteMatch> RouteMatches { get; }
     DatabaseFacade Database { get; }
+    DbSet<RouteTransforms> RouteTransforms { get; }
+    DbSet<Destination> Destinations { get; }
 }
