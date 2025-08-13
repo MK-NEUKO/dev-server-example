@@ -14,7 +14,7 @@ public sealed class RouteTransforms : Entity
     
     public Guid RouteId { get; init; }
     public Route Route { get; init; } = null!;
-    public List<Transform> Transforms { get; private set; } = new();
+    public List<TransformsItem> Transforms { get; private set; } = new();
 
     public static RouteTransforms Create()
     {
@@ -23,7 +23,7 @@ public sealed class RouteTransforms : Entity
     
     public void AddTransform(string key, string value)
     {
-        var transform = new Transform(key, value);
+        var transform = new TransformsItem(key, value);
         Transforms.Add(transform);
     }
 }

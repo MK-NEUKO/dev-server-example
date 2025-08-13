@@ -2,6 +2,7 @@
 using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfigs;
+using EnvironmentGateway.Domain.Routes;
 using EnvironmentGateway.Domain.Routes.Transforms;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,59 +24,34 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
             return Result.Failure<CurrentConfigResponse>(GatewayConfigErrors.CurrentConfigNotFound);
         }
 
-        CurrentConfig? currentConfig = await context
-            .Database
-            .SqlQuery<CurrentConfig>($"""
-                SELECT 
-                    gc.id AS id,
-                    gc.name_value AS gateway_config_name,
-                    gc.is_current_config AS is_current_config
-                FROM gateway_configs gc
-                WHERE gc.is_current_config = true
-                """)
-            .FirstOrDefaultAsync(cancellationToken);
+        CurrentConfigBaseData currentConfigBaseData = await GetCurrentConfigBaseData(cancellationToken);
         
         var currentRoutes = await context
-            .Database
-            .SqlQuery<CurrentRoutes>($"""
-                SELECT 
-                    r.id AS id,
-                    r.route_name_value AS route_name,
-                    r.cluster_name_value AS cluster_name,
-                    rm.path_value AS match_path
-                FROM routes r
-                LEFT JOIN route_matches rm ON r.id = rm.route_id
-                WHERE r.gateway_config_id = {currentConfig?.Id}
-                """)
+            .Routes
+            .Where(route => route.GatewayConfigId == currentConfigBaseData.Id)
+            .Select(route => new CurrentRoute(
+                    route.Id,
+                    route.RouteName.Value,
+                    route.ClusterName.Value,
+                    route.Match.Path.Value,
+                    new Transforms(
+                        route.Transforms.Id,
+                        route.Transforms.Transforms
+                            .Select(item => new Dictionary<string, string>{{item.Key, item.Value}})
+                            .ToList()
+                        )
+            ))
             .ToListAsync(cancellationToken);
+
         
-        var currentTransformsList = new List<Transforms>();
-        foreach (var route in currentRoutes)
-        {
-            var transforms = await context.RouteTransforms
-                .Where(transforms => transforms.RouteId == route.Id)
-                .Select(transforms => new Transforms(
-                    transforms.Id,
-                    transforms.Transforms
-                        .Select(transformsItem => new Dictionary<string, string> { { transformsItem.Key, transformsItem.Value } })
-                        .ToList()
-                ))
-                .FirstOrDefaultAsync(cancellationToken);
-            
-            if (transforms is not null)
-            {
-                currentTransformsList.Add(transforms);
-            }
-        }
-        
-        var currentClusters = await context
+        List<CurrentClusters> currentClusters = await context
             .Database
-            .SqlQuery<Cluster>($"""
+            .SqlQuery<CurrentClusters>($"""
                 SELECT 
                     c.id AS id,
                     c.cluster_name_value AS cluster_name
                 FROM clusters c
-                WHERE c.gateway_config_id = {currentConfig?.Id}
+                WHERE c.gateway_config_id = {currentConfigBaseData?.Id}
                 """)
             .ToListAsync(cancellationToken);
 
@@ -98,32 +74,29 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
 
         var response = new CurrentConfigResponse()
         {
-            Id = currentConfig.Id,
-            Name = currentConfig.GatewayConfigName,
-            IsCurrentConfig = currentConfig.IsCurrentConfig,
+            Id = currentConfigBaseData.Id,
+            Name = currentConfigBaseData.GatewayConfigName,
+            IsCurrentConfig = currentConfigBaseData.IsCurrentConfig,
             Routes = new List<RouteResponse>(),
             Clusters = new List<ClusterResponse>()
         };
         
-        var counter = 0;
         currentRoutes.ForEach(route =>
         {
+            var transforms = new RouteTransformsResponse()
+            {
+                Id = route.Transforms.Id, 
+                Transforms = route.Transforms.TransformItems
+            };
             response.Routes.Add(new RouteResponse()
             {
                 Id = route.Id,
                 RouteName = route.RouteName,
                 ClusterName = route.ClusterName,
                 Match = new RouteMatchResponse(){ Path = route.MatchPath },
-                Transforms = new RouteTransformsResponse()
-                {
-                    Id = currentTransformsList[counter].Id,
-                    Transforms = currentTransformsList[counter].TransformItems
-                }
-                
+                Transforms = transforms
             });
-            counter++;
         });
-        counter = 0;
 
         var clusterIndex = 0;
         currentClusters.ForEach(cluster =>
@@ -153,16 +126,33 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
         return response;
     }
 
-    private sealed record CurrentConfig(
+    private async Task<CurrentConfigBaseData?> GetCurrentConfigBaseData(CancellationToken cancellationToken)
+    {
+        CurrentConfigBaseData? currentConfigBaseData = await context
+            .Database
+            .SqlQuery<CurrentConfigBaseData>($"""
+                                      SELECT 
+                                          gc.id AS id,
+                                          gc.name_value AS gateway_config_name,
+                                          gc.is_current_config AS is_current_config
+                                      FROM gateway_configs gc
+                                      WHERE gc.is_current_config = true
+                                      """)
+            .SingleOrDefaultAsync(cancellationToken);
+        return currentConfigBaseData;
+    }
+
+    private sealed record CurrentConfigBaseData(
         Guid Id,
         string GatewayConfigName,
         bool IsCurrentConfig);
 
-    private sealed record CurrentRoutes(
+    private sealed record CurrentRoute(
         Guid Id,
         string RouteName,
         string ClusterName,
-        string MatchPath);
+        string MatchPath,
+        Transforms Transforms);
     
     private sealed record Transforms(
         Guid Id,
@@ -170,7 +160,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
     
     private sealed record TransformItem(string Key, string Value);
 
-    private sealed record Cluster(
+    private sealed record CurrentClusters(
         Guid Id,
         string ClusterName);
 
