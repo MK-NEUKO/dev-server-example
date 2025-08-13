@@ -5,7 +5,7 @@ namespace EnvironmentGateway.Domain.RouteMatches;
 
 public sealed class RouteMatch : Entity
 {
-    public RouteMatch(Guid id, Path path)
+    private RouteMatch(Guid id, Path path)
         : base(id)
     {
         Path = path;
@@ -19,7 +19,7 @@ public sealed class RouteMatch : Entity
     public Route Route { get; init; } = null!;
     public Path Path { get; init; } = new Path("null");
 
-    public static RouteMatch CreateNewRouteMatch(string path)
+    public static RouteMatch Create(string path)
     {
         var routeMatch = new RouteMatch(Guid.NewGuid(), new Path(path));
        

@@ -1,6 +1,7 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Data;
 using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.Abstractions;
+using EnvironmentGateway.Domain.Routes.Transforms;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
@@ -43,6 +44,25 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                 """)
             .ToListAsync(cancellationToken);
         
+        var currentTransformsList = new List<Transforms>();
+        foreach (var route in currentRoutes)
+        {
+            var transforms = await context.RouteTransforms
+                .Where(transforms => transforms.RouteId == route.Id)
+                .Select(transforms => new Transforms(
+                    transforms.Id,
+                    transforms.Transforms
+                        .Select(transformsItem => new Dictionary<string, string> { { transformsItem.Key, transformsItem.Value } })
+                        .ToList()
+                ))
+                .FirstOrDefaultAsync(cancellationToken);
+            
+            if (transforms is not null)
+            {
+                currentTransformsList.Add(transforms);
+            }
+        }
+        
         var currentClusters = await context
             .Database
             .SqlQuery<Cluster>($"""
@@ -78,8 +98,9 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
             IsCurrentConfig = currentConfig.IsCurrentConfig,
             Routes = new List<RouteResponse>(),
             Clusters = new List<ClusterResponse>()
-        }; 
+        };
         
+        var counter = 0;
         currentRoutes.ForEach(route =>
         {
             response.Routes.Add(new RouteResponse()
@@ -87,10 +108,17 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                 Id = route.Id,
                 RouteName = route.RouteName,
                 ClusterName = route.ClusterName,
-                Match = new RouteMatchResponse(){ Path = route.MatchPath }
+                Match = new RouteMatchResponse(){ Path = route.MatchPath },
+                Transforms = new RouteTransformsResponse()
+                {
+                    Id = currentTransformsList[counter].Id,
+                    Transforms = currentTransformsList[counter].TransformItems
+                }
                 
             });
+            counter++;
         });
+        counter = 0;
 
         var clusterIndex = 0;
         currentClusters.ForEach(cluster =>
@@ -131,6 +159,12 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
         string ClusterName,
         string MatchPath);
     
+    private sealed record Transforms(
+        Guid Id,
+        List<Dictionary<string, string>> TransformItems);
+    
+    private sealed record TransformItem(string Key, string Value);
+
     private sealed record Cluster(
         Guid Id,
         string ClusterName);

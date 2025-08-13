@@ -30,7 +30,7 @@ export class EnvGatewaysComponent implements OnInit {
   public configData!: GatewayConfig;
   public isMaximized = false;
 
-  private destinationUrl = 'https://localhost:9100/service2/test';
+  private destinationUrl = 'https://localhost:9100/service2';
   private http = inject(HttpClient);
 
   constructor() {

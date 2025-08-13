@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using EnvironmentGateway.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace environmentgateway.infrastructure.Migrations
 {
     [DbContext(typeof(EnvironmentGatewayDbContext))]
-    partial class EnvironmentGatewayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250810214639_AddTransforms")]
+    partial class AddTransforms
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,6 +126,11 @@ namespace environmentgateway.infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("gateway_config_id");
 
+                    b.Property<string>("Transforms")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("transforms");
+
                     b.ComplexProperty<Dictionary<string, object>>("ClusterName", "EnvironmentGateway.Domain.Routes.Route.ClusterName#Name", b1 =>
                         {
                             b1.IsRequired();
@@ -152,27 +160,6 @@ namespace environmentgateway.infrastructure.Migrations
                         .HasDatabaseName("ix_routes_gateway_config_id");
 
                     b.ToTable("routes", (string)null);
-                });
-
-            modelBuilder.Entity("EnvironmentGateway.Domain.Routes.Transforms.RouteTransforms", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("RouteId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("route_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_route_transforms");
-
-                    b.HasIndex("RouteId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_route_transforms_route_id");
-
-                    b.ToTable("route_transforms", (string)null);
                 });
 
             modelBuilder.Entity("EnvironmentGateway.Domain.Clusters.Cluster", b =>
@@ -253,53 +240,6 @@ namespace environmentgateway.infrastructure.Migrations
                     b.Navigation("GatewayConfig");
                 });
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.Routes.Transforms.RouteTransforms", b =>
-                {
-                    b.HasOne("EnvironmentGateway.Domain.Routes.Route", "Route")
-                        .WithOne("Transforms")
-                        .HasForeignKey("EnvironmentGateway.Domain.Routes.Transforms.RouteTransforms", "RouteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_route_transforms_routes_route_id");
-
-                    b.OwnsMany("EnvironmentGateway.Domain.Routes.Transforms.Transform", "Transforms", b1 =>
-                        {
-                            b1.Property<Guid>("RouteTransformsId")
-                                .HasColumnType("uuid")
-                                .HasColumnName("route_transforms_id");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasColumnName("id");
-
-                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
-
-                            b1.Property<string>("Key")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("key");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("value");
-
-                            b1.HasKey("RouteTransformsId", "Id")
-                                .HasName("pk_route_transform_items");
-
-                            b1.ToTable("route_transform_items", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("RouteTransformsId")
-                                .HasConstraintName("fk_route_transform_items_route_transforms_route_transforms_id");
-                        });
-
-                    b.Navigation("Route");
-
-                    b.Navigation("Transforms");
-                });
-
             modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfigs.GatewayConfig", b =>
                 {
                     b.Navigation("Clusters");
@@ -310,9 +250,6 @@ namespace environmentgateway.infrastructure.Migrations
             modelBuilder.Entity("EnvironmentGateway.Domain.Routes.Route", b =>
                 {
                     b.Navigation("Match");
-
-                    b.Navigation("Transforms")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,7 @@
-﻿using EnvironmentGateway.Domain.RouteMatches;
+﻿using System.Text.Json;
+using EnvironmentGateway.Domain.RouteMatches;
 using EnvironmentGateway.Domain.Routes;
+using EnvironmentGateway.Domain.Routes.Transforms;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -30,5 +32,9 @@ public class RouteConfiguration : IEntityTypeConfiguration<Route>
             .WithOne(match => match.Route)
             .HasForeignKey<RouteMatch>(match => match.RouteId)
             .IsRequired();
+
+        builder.HasOne(route => route.Transforms)
+            .WithOne(routeTransforms => routeTransforms.Route)
+            .HasForeignKey<RouteTransforms>(routeTransforms => routeTransforms.RouteId);
     }
 }

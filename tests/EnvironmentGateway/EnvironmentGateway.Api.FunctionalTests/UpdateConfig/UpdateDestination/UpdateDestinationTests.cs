@@ -16,11 +16,14 @@ public class UpdateDestinationTests(FunctionalTestWebAppFactory factory) : BaseF
     {
         // Arrange
         const string testAddress = "https://example.com";
+        Guid clusterId = await DbContext.Clusters
+            .Select(c => c.Id)
+            .FirstOrDefaultAsync();
         Guid destinationId = await DbContext.Clusters
             .SelectMany(c => c.Destinations)
             .Select(d => d.Id)
             .FirstOrDefaultAsync();
-        var request = new UpdateDestinationRequest(destinationId, testAddress);
+        var request = new UpdateDestinationRequest(destinationId, clusterId, testAddress);
 
         // Act
         HttpResponseMessage response = await HttpClient.PutAsJsonAsync("update-destination", request);
@@ -52,7 +55,10 @@ public class UpdateDestinationTests(FunctionalTestWebAppFactory factory) : BaseF
             .SelectMany(c => c.Destinations)
             .Select(d => d.Id)
             .FirstOrDefaultAsync();
-        var request = new UpdateDestinationRequest(destinationId, testAddress);
+        Guid clusterId = await DbContext.Clusters
+            .Select(c => c.Id)
+            .FirstOrDefaultAsync();
+        var request = new UpdateDestinationRequest(destinationId, clusterId, testAddress);
 
         // Act
         HttpResponseMessage response = await HttpClient.PutAsJsonAsync("update-destination", request);
