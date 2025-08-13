@@ -1,6 +1,7 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Data;
 using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.Abstractions;
+using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Domain.Routes.Transforms;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,15 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
         GetCurrentConfigQuery request,
         CancellationToken cancellationToken)
     {
+        var isCurrentConfig = await context
+            .GatewayConfigs
+            .AnyAsync(config => config.IsCurrentConfig, cancellationToken);
+        
+        if (!isCurrentConfig)
+        {
+            return Result.Failure<CurrentConfigResponse>(GatewayConfigErrors.CurrentConfigNotFound);
+        }
+
         CurrentConfig? currentConfig = await context
             .Database
             .SqlQuery<CurrentConfig>($"""
@@ -24,11 +34,6 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                 WHERE gc.is_current_config = true
                 """)
             .FirstOrDefaultAsync(cancellationToken);
-        
-        if (currentConfig is null)
-        {
-            return Result.Failure<CurrentConfigResponse>(Error.NullValue);
-        }
         
         var currentRoutes = await context
             .Database
