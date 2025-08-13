@@ -43,35 +43,34 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
             ))
             .ToListAsync(cancellationToken);
 
-        
-        List<CurrentClusters> currentClusters = await context
-            .Database
-            .SqlQuery<CurrentClusters>($"""
-                SELECT 
-                    c.id AS id,
-                    c.cluster_name_value AS cluster_name
-                FROM clusters c
-                WHERE c.gateway_config_id = {currentConfigBaseData?.Id}
-                """)
+        var currentClusters = await context
+            .Clusters
+            .Where(cluster => cluster.GatewayConfigId == currentConfigBaseData.Id)
+            .Select(cluster => new CurrentCluster(
+                cluster.Id,
+                cluster.ClusterName.Value,
+                new List<Destination>(
+                    cluster.Destinations
+                        .Select(destination => new Destination(
+                            destination.Id,
+                            destination.DestinationName.Value,
+                            destination.Address.Value)
+                        )
+                        .ToList()
+                )
+            ))
             .ToListAsync(cancellationToken);
+        
 
-        var currentDestinations = new List<List<Destination>>();
-        foreach (var cluster in currentClusters)
-        {
-            var destinations = await context
-                .Database
-                .SqlQuery<Destination>($"""
-                    SELECT 
-                        d.id AS id,
-                        d.destination_name AS destination_name,
-                        d.address AS Address
-                    FROM destinations d
-                    WHERE d.cluster_id = {cluster.Id}
-                    """)
-                .ToListAsync(cancellationToken);
-            currentDestinations.Add(destinations);
-        }
+        CurrentConfigResponse response = MapCurrentConfigResponse(currentConfigBaseData, currentRoutes, currentClusters);
 
+
+        return response;
+    }
+
+    private static CurrentConfigResponse MapCurrentConfigResponse(CurrentConfigBaseData? currentConfigBaseData,
+        List<CurrentRoute> currentRoutes, List<CurrentCluster> currentClusters)
+    {
         var response = new CurrentConfigResponse()
         {
             Id = currentConfigBaseData.Id,
@@ -97,12 +96,11 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                 Transforms = transforms
             });
         });
-
-        var clusterIndex = 0;
+        
         currentClusters.ForEach(cluster =>
         {
             var destinations = new Dictionary<string, DestinationResponse>();
-            currentDestinations[clusterIndex].ForEach(destination =>
+            cluster.Destinations.ForEach(destination =>
             {
                 var key = destination.DestinationName;
                 var value = new DestinationResponse()
@@ -115,14 +113,11 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
             });
             response.Clusters.Add(new ClusterResponse()
             {
-                Id = cluster.Id,
-                ClusterName = cluster.ClusterName,
+                Id = cluster.Id, 
+                ClusterName = cluster.ClusterName, 
                 Destinations = destinations
             });
-            clusterIndex++;
         });
-
-
         return response;
     }
 
@@ -160,9 +155,10 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
     
     private sealed record TransformItem(string Key, string Value);
 
-    private sealed record CurrentClusters(
+    private sealed record CurrentCluster(
         Guid Id,
-        string ClusterName);
+        string ClusterName,
+        List<Destination> Destinations);
 
     private sealed record Destination(
         Guid Id,
