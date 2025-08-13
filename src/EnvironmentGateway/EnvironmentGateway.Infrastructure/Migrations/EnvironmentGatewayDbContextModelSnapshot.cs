@@ -262,7 +262,7 @@ namespace environmentgateway.infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_route_transforms_routes_route_id");
 
-                    b.OwnsMany("EnvironmentGateway.Domain.Routes.Transforms.Transform", "Transforms", b1 =>
+                    b.OwnsMany("EnvironmentGateway.Domain.Routes.Transforms.TransformsItem", "Transforms", b1 =>
                         {
                             b1.Property<Guid>("RouteTransformsId")
                                 .HasColumnType("uuid")
