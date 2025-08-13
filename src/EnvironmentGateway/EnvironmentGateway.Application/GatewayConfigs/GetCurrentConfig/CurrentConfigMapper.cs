@@ -2,7 +2,7 @@
 
 internal sealed class CurrentConfigMapper
 {
-    internal static CurrentConfigResponse MapCurrentConfigResponse(
+    internal static CurrentConfigResponse Map(
         CurrentConfigBaseData? currentConfigBaseData,
         List<CurrentRoute> currentRoutes, 
         List<CurrentCluster> currentClusters)

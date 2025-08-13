@@ -60,7 +60,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
             .ToListAsync(cancellationToken);
         
 
-        CurrentConfigResponse response = CurrentConfigMapper.MapCurrentConfigResponse(currentConfigBaseData, currentRoutes, currentClusters);
+        CurrentConfigResponse response = CurrentConfigMapper.Map(currentConfigBaseData, currentRoutes, currentClusters);
 
 
         return response;
