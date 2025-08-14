@@ -11,9 +11,7 @@ public class ClustersTests
     private const string TestDestinationAddress = "https://test-address.test";
     private const string NewDestinationName = "newDestination";
     private const string NewDestinationAddress = "https://new-address.test";
-    private const string AddressString = "address";
-    private const string DestinationString = "destination";
-    private const string ClusterString = "cluster";
+    
 
     [Fact]
     public void CreateInitialCluster_Should_SetPropertyValues()
@@ -46,19 +44,18 @@ public class ClustersTests
         cluster.Destinations[1].Address.Value.Should().Be(NewDestinationAddress);
     }
 
-    
     [Theory]
-    [InlineData(null, TestDestinationName, TestDestinationAddress)]
-    [InlineData(TestClusterName, null, TestDestinationAddress)]
-    [InlineData(TestClusterName, TestDestinationName, null)]
+    [InlineData((string?)null, TestDestinationName, TestDestinationAddress)]
+    [InlineData(TestClusterName, (string?)null, TestDestinationAddress)]
+    [InlineData(TestClusterName, TestDestinationName, (string?)null)]
     public void Create_Should_ThrowArgumentNullException_When_ParameterIsNull(
-        string clusterName, string destinationName, string destinationAddress)
+        string? clusterName, string? destinationName, string? destinationAddress)
     {
         // Arrange & Act & Assert
-        Action act = () => Cluster.Create(clusterName, destinationName, destinationAddress);
+        Action act = () => Cluster.Create(clusterName!, destinationName!, destinationAddress!);
         act.Should().Throw<ArgumentNullException>();
-    }    
-    
+    }
+
     [Fact]
     public void AddDestination_Should_ThrowException_When_DestinationIsNull()
     {
@@ -66,9 +63,7 @@ public class ClustersTests
         var cluster = Cluster.Create(TestClusterName, TestDestinationName, TestDestinationAddress);
         Destination newDestination = null;
 
-        //Act
-
-        //Assert
+        //Act & Assert
         Action act = () => cluster.AddDestination(newDestination!);
         act.Should().Throw<ArgumentNullException>();
     }
