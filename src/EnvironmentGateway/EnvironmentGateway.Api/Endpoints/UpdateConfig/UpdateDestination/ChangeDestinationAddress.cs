@@ -4,7 +4,7 @@ using EnvironmentGateway.Application.Destinations.UpdateDestination;
 
 namespace EnvironmentGateway.Api.Endpoints.UpdateConfig.UpdateDestination;
 
-public class UpdateDestination : IEndpoint
+public class ChangeDestinationAddress : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {

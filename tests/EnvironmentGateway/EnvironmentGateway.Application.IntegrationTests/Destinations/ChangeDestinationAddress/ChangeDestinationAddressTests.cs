@@ -7,13 +7,14 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EnvironmentGateway.Application.IntegrationTests.UpdateConfig.UpdateDestination;
+namespace EnvironmentGateway.Application.IntegrationTests.Destinations.ChangeDestinationAddress;
 
-public class UpdateDestinationTests : BaseIntegrationTest
+public class ChangeDestinationAddressTests : BaseIntegrationTest
 {
     private readonly ICommandHandler<ChangeDestinationAddressCommand> _handler;
-    
-    public UpdateDestinationTests(IntegrationTestWebAppFactory factory) 
+    private const string TestAddress = "https://test-address.com";
+
+    public ChangeDestinationAddressTests(IntegrationTestWebAppFactory factory) 
         : base(factory)
     {
         _handler = Scope.ServiceProvider.GetRequiredService<ICommandHandler<ChangeDestinationAddressCommand>>();
@@ -21,10 +22,9 @@ public class UpdateDestinationTests : BaseIntegrationTest
     
     
     [Fact]
-    public async Task UpdateDestination_ShouldReturnSuccess_WhenDestinationAddressUpdated()
+    public async Task ChangeDestinationAddress_ShouldReturnSuccess_WhenDestinationAddressWasChanged()
     {
         // Arrange
-        const string testAddress = "https://example.com";
         Guid destinationId = await DbContext.Clusters
             .SelectMany(c => c.Destinations)
             .Select(d => d.Id)
@@ -32,7 +32,7 @@ public class UpdateDestinationTests : BaseIntegrationTest
         Guid clusterId = await DbContext.Clusters
             .Select(c => c.Id)
             .FirstOrDefaultAsync();
-        var request = new ChangeDestinationAddressCommand(destinationId, clusterId, testAddress);
+        var request = new ChangeDestinationAddressCommand(destinationId, clusterId, TestAddress);
 
         // Act
         Result result = await _handler.Handle(request, CancellationToken.None);
@@ -43,15 +43,14 @@ public class UpdateDestinationTests : BaseIntegrationTest
             .SelectMany(c => c.Destinations)
             .FirstOrDefaultAsync(d => d.Id == destinationId);
         updatedDestination.Should().NotBeNull();
-        updatedDestination.Address.Value.Should().Be(testAddress);
+        updatedDestination.Address.Value.Should().Be(TestAddress);
     }
 
     [Fact]
-    public async Task UpdateDestination_ShouldReturnFailure_WhenDestinationIdNotExits()
+    public async Task ChangeDestinationAddress_ShouldReturnFailure_WhenDestinationIdNotExits()
     {
         // Arrange
-        const string testAddress = "https://example.com";
-        var request = new ChangeDestinationAddressCommand(Guid.NewGuid(), Guid.NewGuid(), testAddress);
+        var request = new ChangeDestinationAddressCommand(Guid.NewGuid(), Guid.NewGuid(), TestAddress);
 
         // Act
         Result result = await _handler.Handle(request, CancellationToken.None);
@@ -62,6 +61,6 @@ public class UpdateDestinationTests : BaseIntegrationTest
             .SelectMany(c => c.Destinations)
             .FirstOrDefaultAsync();
         testDestination.Should().NotBeNull();
-        testDestination.Address.Value.Should().NotBe(testAddress);
+        testDestination.Address.Value.Should().NotBe(TestAddress);
     }
 }

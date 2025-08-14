@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnvironmentGateway.Api.FunctionalTests.UpdateConfig.UpdateDestination;
 
-public class UpdateDestinationTests(FunctionalTestWebAppFactory factory) : BaseFunctionalTest(factory)
+public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) : BaseFunctionalTest(factory)
 {
     [Fact]
     public async Task UpdateDestination_ShouldReturnOk_WhenRequestIsValid()
