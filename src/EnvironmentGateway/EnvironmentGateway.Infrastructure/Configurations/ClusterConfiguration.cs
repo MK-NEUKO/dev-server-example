@@ -1,5 +1,5 @@
 ﻿using EnvironmentGateway.Domain.Clusters;
-using EnvironmentGateway.Domain.Destinations;
+using EnvironmentGateway.Domain.Clusters.Destinations;
 using EnvironmentGateway.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

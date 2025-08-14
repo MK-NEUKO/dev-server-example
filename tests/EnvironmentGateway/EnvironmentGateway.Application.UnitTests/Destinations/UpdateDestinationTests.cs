@@ -1,6 +1,6 @@
 ﻿using EnvironmentGateway.Application.Destinations.UpdateDestination;
 using EnvironmentGateway.Domain.Abstractions;
-using EnvironmentGateway.Domain.Destinations;
+using EnvironmentGateway.Domain.Clusters.Destinations;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;

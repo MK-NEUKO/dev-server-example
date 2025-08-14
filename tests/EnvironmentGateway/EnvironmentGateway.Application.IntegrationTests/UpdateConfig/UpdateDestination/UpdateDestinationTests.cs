@@ -2,7 +2,7 @@
 using EnvironmentGateway.Application.Destinations.UpdateDestination;
 using EnvironmentGateway.Application.IntegrationTests.Infrastructure;
 using EnvironmentGateway.Domain.Abstractions;
-using EnvironmentGateway.Domain.Destinations;
+using EnvironmentGateway.Domain.Clusters.Destinations;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,5 +1,5 @@
 ﻿using EnvironmentGateway.Domain.Clusters;
-using EnvironmentGateway.Domain.Destinations;
+using EnvironmentGateway.Domain.Clusters.Destinations;
 using FluentAssertions;
 
 namespace EnvironmentGateway.Domain.UnitTests.Clusters;

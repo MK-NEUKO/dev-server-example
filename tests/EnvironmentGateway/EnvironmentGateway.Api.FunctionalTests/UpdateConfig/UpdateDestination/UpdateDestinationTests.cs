@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using EnvironmentGateway.Api.Endpoints.UpdateConfig.UpdateDestination;
 using EnvironmentGateway.Api.FunctionalTests.Infrastructure;
-using EnvironmentGateway.Domain.Destinations;
+using EnvironmentGateway.Domain.Clusters.Destinations;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;

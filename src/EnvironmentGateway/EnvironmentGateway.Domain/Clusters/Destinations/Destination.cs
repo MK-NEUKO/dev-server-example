@@ -1,7 +1,7 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Shared;
 
-namespace EnvironmentGateway.Domain.Destinations;
+namespace EnvironmentGateway.Domain.Clusters.Destinations;
 
 public sealed class Destination : Entity
 {

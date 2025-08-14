@@ -1,4 +1,4 @@
-﻿using EnvironmentGateway.Domain.Destinations;
+﻿using EnvironmentGateway.Domain.Clusters.Destinations;
 using FluentAssertions;
 
 namespace EnvironmentGateway.Domain.UnitTests.Destinations;

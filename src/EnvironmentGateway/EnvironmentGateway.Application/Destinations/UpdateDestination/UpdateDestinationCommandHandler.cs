@@ -1,6 +1,6 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Domain.Abstractions;
-using EnvironmentGateway.Domain.Destinations;
+using EnvironmentGateway.Domain.Clusters.Destinations;
 
 namespace EnvironmentGateway.Application.Destinations.UpdateDestination;
 

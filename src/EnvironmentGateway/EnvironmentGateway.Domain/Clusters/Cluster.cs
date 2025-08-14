@@ -1,5 +1,5 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
-using EnvironmentGateway.Domain.Destinations;
+using EnvironmentGateway.Domain.Clusters.Destinations;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Domain.Shared;
 
