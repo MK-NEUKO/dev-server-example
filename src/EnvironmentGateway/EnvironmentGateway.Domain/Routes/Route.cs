@@ -1,6 +1,6 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfigs;
-using EnvironmentGateway.Domain.Routes.Matches;
+using EnvironmentGateway.Domain.Routes.Match;
 using EnvironmentGateway.Domain.Routes.Transforms;
 using EnvironmentGateway.Domain.Shared;
 

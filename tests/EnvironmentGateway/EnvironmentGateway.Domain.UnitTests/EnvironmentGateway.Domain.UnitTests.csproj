@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <Folder Include="GatewayConfigs\" />
-    <Folder Include="Routes\Matches\" />
+    <Folder Include="Routes\Match\" />
   </ItemGroup>
 
   <ItemGroup>

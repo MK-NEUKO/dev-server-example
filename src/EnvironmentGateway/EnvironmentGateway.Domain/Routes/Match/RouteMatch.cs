@@ -1,6 +1,6 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 
-namespace EnvironmentGateway.Domain.Routes.Matches;
+namespace EnvironmentGateway.Domain.Routes.Match;
 
 public sealed class RouteMatch : Entity
 {
@@ -20,6 +20,8 @@ public sealed class RouteMatch : Entity
 
     public static RouteMatch Create(string path)
     {
+        ArgumentNullException.ThrowIfNull(path);
+        
         var routeMatch = new RouteMatch(Guid.NewGuid(), new Path(path));
        
         return routeMatch;

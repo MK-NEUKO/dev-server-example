@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using EnvironmentGateway.Domain.Routes;
-using EnvironmentGateway.Domain.Routes.Matches;
+using EnvironmentGateway.Domain.Routes.Match;
 using EnvironmentGateway.Domain.Routes.Transforms;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
