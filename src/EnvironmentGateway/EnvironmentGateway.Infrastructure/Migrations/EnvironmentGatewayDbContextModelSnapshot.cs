@@ -154,7 +154,7 @@ namespace environmentgateway.infrastructure.Migrations
                     b.ToTable("routes", (string)null);
                 });
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.Routes.Transforms.RouteTransforms", b =>
+            modelBuilder.Entity("EnvironmentGateway.Domain.Routes.TransformsItems.RouteTransforms", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -253,16 +253,16 @@ namespace environmentgateway.infrastructure.Migrations
                     b.Navigation("GatewayConfig");
                 });
 
-            modelBuilder.Entity("EnvironmentGateway.Domain.Routes.Transforms.RouteTransforms", b =>
+            modelBuilder.Entity("EnvironmentGateway.Domain.Routes.TransformsItems.RouteTransforms", b =>
                 {
                     b.HasOne("EnvironmentGateway.Domain.Routes.Route", "Route")
-                        .WithOne("Transforms")
-                        .HasForeignKey("EnvironmentGateway.Domain.Routes.Transforms.RouteTransforms", "RouteId")
+                        .WithOne("TransformsItems")
+                        .HasForeignKey("EnvironmentGateway.Domain.Routes.TransformsItems.RouteTransforms", "RouteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_route_transforms_routes_route_id");
 
-                    b.OwnsMany("EnvironmentGateway.Domain.Routes.Transforms.TransformsItem", "Transforms", b1 =>
+                    b.OwnsMany("EnvironmentGateway.Domain.Routes.TransformsItems.TransformsItem", "TransformsItems", b1 =>
                         {
                             b1.Property<Guid>("RouteTransformsId")
                                 .HasColumnType("uuid")
@@ -297,7 +297,7 @@ namespace environmentgateway.infrastructure.Migrations
 
                     b.Navigation("Route");
 
-                    b.Navigation("Transforms");
+                    b.Navigation("TransformsItems");
                 });
 
             modelBuilder.Entity("EnvironmentGateway.Domain.GatewayConfigs.GatewayConfig", b =>
@@ -311,7 +311,7 @@ namespace environmentgateway.infrastructure.Migrations
                 {
                     b.Navigation("Match");
 
-                    b.Navigation("Transforms")
+                    b.Navigation("TransformsItems")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

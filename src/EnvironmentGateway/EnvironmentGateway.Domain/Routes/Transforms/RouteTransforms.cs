@@ -8,22 +8,25 @@ public sealed class RouteTransforms : Entity
         : base(id)
     {
     }
+    
     private RouteTransforms()
     {
     }
     
     public Guid RouteId { get; init; }
     public Route Route { get; init; } = null!;
-    public List<TransformsItem> Transforms { get; private set; } = new();
+    public List<TransformsItem> TransformsItems { get; private set; } = new();
 
-    public static RouteTransforms Create()
+    public static RouteTransforms Create(string key, string value)
     {
-        return new RouteTransforms(Guid.NewGuid());
+        var newRoutTransforms = new RouteTransforms(Guid.NewGuid());
+        newRoutTransforms.AddTransformsItem(key, value);
+        return newRoutTransforms;
     }
     
-    public void AddTransform(string key, string value)
+    public void AddTransformsItem(string key, string value)
     {
         var transform = new TransformsItem(key, value);
-        Transforms.Add(transform);
+        TransformsItems.Add(transform);
     }
 }

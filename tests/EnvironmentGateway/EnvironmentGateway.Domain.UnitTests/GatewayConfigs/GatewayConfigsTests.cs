@@ -9,7 +9,7 @@ namespace EnvironmentGateway.Domain.UnitTests.GatewayConfigs;
 public class GatewayConfigsTests : BaseTest
 {
     [Fact]
-    public void CreateInitialConfig_Should_SetPropertyValues()
+    public void CreateConfig_Should_SetPropertyValues()
     {
         // Arrange
         const string configName = "New Configuration";
@@ -18,14 +18,14 @@ public class GatewayConfigsTests : BaseTest
         var newConfig = GatewayConfig.Create();
 
         // Assert
-        newConfig.Name.Value.Should().Be(configName);
+        newConfig.Name?.Value.Should().Be(configName);
         newConfig.IsCurrentConfig.Should().BeTrue();
         newConfig.Routes.Count.Should().BeGreaterThanOrEqualTo(1);
         newConfig.Clusters.Count.Should().BeGreaterThanOrEqualTo(1);
     }
 
     [Fact]
-    public void CreateInitialConfig_Should_RaiseInitialConfigCreatedDomainEvent()
+    public void CreateConfig_Should_RaiseInitialConfigCreatedDomainEvent()
     {
         // Act
         var initialConfig = GatewayConfig.Create();

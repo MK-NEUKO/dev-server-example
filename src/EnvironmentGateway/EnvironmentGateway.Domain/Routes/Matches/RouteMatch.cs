@@ -1,7 +1,6 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
-using EnvironmentGateway.Domain.Routes;
 
-namespace EnvironmentGateway.Domain.RouteMatches;
+namespace EnvironmentGateway.Domain.Routes.Matches;
 
 public sealed class RouteMatch : Entity
 {

@@ -1,6 +1,6 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.GatewayConfigs;
-using EnvironmentGateway.Domain.RouteMatches;
+using EnvironmentGateway.Domain.Routes.Matches;
 using EnvironmentGateway.Domain.Routes.Transforms;
 using EnvironmentGateway.Domain.Shared;
 
@@ -28,12 +28,12 @@ public sealed class Route : Entity
     public RouteMatch? Match { get; private set; }
     public RouteTransforms? Transforms { get; private set; }
 
-    public static Route CreateNewRoute(string routeName, string clusterName, string matchPath, string pathRemovePrefix)
+    public static Route Create(string routeName, string clusterName, string matchPath)
     {
         var match = RouteMatch.Create(matchPath);
         
-        var transforms = RouteTransforms.Create();
-        transforms.AddTransform("PathRemovePrefix", pathRemovePrefix);
+        var transforms = RouteTransforms.Create(TransformsKey.PathPattern, "/prefix");
+        transforms.AddTransformsItem("PathRemovePrefix", "/");
 
         var route = new Route(Guid.NewGuid(), new Name(routeName), new Name(clusterName), match, transforms);
         
