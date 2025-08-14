@@ -19,14 +19,22 @@ public sealed class RouteTransforms : Entity
 
     public static RouteTransforms Create(string key, string value)
     {
+        ArgumentNullException.ThrowIfNull(key);
+        ArgumentNullException.ThrowIfNull(value);
+        
         var newRoutTransforms = new RouteTransforms(Guid.NewGuid());
         newRoutTransforms.AddTransformsItem(key, value);
+        
         return newRoutTransforms;
     }
     
     public void AddTransformsItem(string key, string value)
     {
+        ArgumentNullException.ThrowIfNull(key);
+        ArgumentNullException.ThrowIfNull(value);
+        
         var transform = new TransformsItem(key, value);
+        
         TransformsItems.Add(transform);
     }
 }
