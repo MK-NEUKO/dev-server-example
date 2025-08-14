@@ -8,13 +8,12 @@ namespace EnvironmentGateway.Domain.Routes;
 
 public sealed class Route : Entity
 {
-    private Route(Guid id, Name routeName, Name clusterName, RouteMatch match, RouteTransforms transforms)
+    private Route(Guid id, Name routeName, Name clusterName, RouteMatch match)
         : base(id)
     {
         RouteName = routeName;
         ClusterName = clusterName;
         Match = match;
-        Transforms = transforms;
     }
 
     private Route()
@@ -23,20 +22,29 @@ public sealed class Route : Entity
 
     public Guid GatewayConfigId { get; init; }
     public GatewayConfig GatewayConfig { get; init; } = null!;
-    public Name RouteName { get; init; } = new Name("route1");
-    public Name ClusterName { get; init; } = new Name("cluster1");
+    public Name RouteName { get; init; } = new Name("");
+    public Name ClusterName { get; init; } = new Name("");
     public RouteMatch? Match { get; private set; }
     public RouteTransforms? Transforms { get; private set; }
 
     public static Route Create(string routeName, string clusterName, string matchPath)
     {
-        var match = RouteMatch.Create(matchPath);
+        ArgumentNullException.ThrowIfNull(routeName);
+        ArgumentNullException.ThrowIfNull(clusterName);
+        ArgumentNullException.ThrowIfNull(matchPath);
         
-        var transforms = RouteTransforms.Create(TransformsKey.PathPattern, "/prefix");
-        transforms.AddTransformsItem("PathRemovePrefix", "/");
-
-        var route = new Route(Guid.NewGuid(), new Name(routeName), new Name(clusterName), match, transforms);
+        var match = RouteMatch.Create(matchPath);
+        var transforms = RouteTransforms.Create(TransformKeys.PathPattern, ConfigDefaultParams.TransformValue);
+        var route = new Route(Guid.NewGuid(), new Name(routeName), new Name(clusterName), match);
+        route.AddTransforms(transforms);
         
         return route;
+    }
+
+    public void AddTransforms(RouteTransforms transforms)
+    {
+        ArgumentNullException.ThrowIfNull(transforms);
+        
+        Transforms = transforms;
     }
 }
