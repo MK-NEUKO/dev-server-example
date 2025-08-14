@@ -4,12 +4,12 @@ using EnvironmentGateway.Domain.Clusters.Destinations;
 
 namespace EnvironmentGateway.Application.Destinations.UpdateDestination;
 
-internal sealed class UpdateDestinationCommandHandler(
+internal sealed class ChangeDestinationAddressCommandHandler(
     IDestinationRepository destinationRepository,
     IUnitOfWork unitOfWork)
-    : ICommandHandler<UpdateDestinationCommand>
+    : ICommandHandler<ChangeDestinationAddressCommand>
 {
-    public async Task<Result> Handle(UpdateDestinationCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ChangeDestinationAddressCommand request, CancellationToken cancellationToken)
     {
         var destination = await destinationRepository.GetByIdAsync(request.ClusterId, request.DestinationId, cancellationToken);
 

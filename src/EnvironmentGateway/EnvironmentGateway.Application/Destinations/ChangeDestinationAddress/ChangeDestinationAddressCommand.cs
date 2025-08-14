@@ -2,7 +2,7 @@
 
 namespace EnvironmentGateway.Application.Destinations.UpdateDestination;
 
-public sealed record UpdateDestinationCommand(
+public sealed record ChangeDestinationAddressCommand(
     Guid ClusterId,
     Guid DestinationId,
     string Address)

@@ -11,11 +11,11 @@ public class UpdateDestination : IEndpoint
         app.MapPut("update-destination", 
             async (
             UpdateDestinationRequest request,
-            ICommandHandler<UpdateDestinationCommand> handler,
+            ICommandHandler<ChangeDestinationAddressCommand> handler,
             IRuntimeConfigurator runtimeConfigurator,
             CancellationToken cancellationToken) =>
         {
-            var command = new UpdateDestinationCommand(
+            var command = new ChangeDestinationAddressCommand(
                 request.ClusterId,
                 request.DestinationId,
                 request.Address);

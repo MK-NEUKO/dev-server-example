@@ -11,12 +11,12 @@ namespace EnvironmentGateway.Application.IntegrationTests.UpdateConfig.UpdateDes
 
 public class UpdateDestinationTests : BaseIntegrationTest
 {
-    private readonly ICommandHandler<UpdateDestinationCommand> _handler;
+    private readonly ICommandHandler<ChangeDestinationAddressCommand> _handler;
     
     public UpdateDestinationTests(IntegrationTestWebAppFactory factory) 
         : base(factory)
     {
-        _handler = Scope.ServiceProvider.GetRequiredService<ICommandHandler<UpdateDestinationCommand>>();
+        _handler = Scope.ServiceProvider.GetRequiredService<ICommandHandler<ChangeDestinationAddressCommand>>();
     }
     
     
@@ -32,7 +32,7 @@ public class UpdateDestinationTests : BaseIntegrationTest
         Guid clusterId = await DbContext.Clusters
             .Select(c => c.Id)
             .FirstOrDefaultAsync();
-        var request = new UpdateDestinationCommand(destinationId, clusterId, testAddress);
+        var request = new ChangeDestinationAddressCommand(destinationId, clusterId, testAddress);
 
         // Act
         Result result = await _handler.Handle(request, CancellationToken.None);
@@ -51,7 +51,7 @@ public class UpdateDestinationTests : BaseIntegrationTest
     {
         // Arrange
         const string testAddress = "https://example.com";
-        var request = new UpdateDestinationCommand(Guid.NewGuid(), Guid.NewGuid(), testAddress);
+        var request = new ChangeDestinationAddressCommand(Guid.NewGuid(), Guid.NewGuid(), testAddress);
 
         // Act
         Result result = await _handler.Handle(request, CancellationToken.None);
