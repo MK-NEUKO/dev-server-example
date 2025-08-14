@@ -7,14 +7,10 @@ namespace EnvironmentGateway.Domain.Clusters;
 
 public sealed class Cluster : Entity
 {
-    private Cluster(Guid id, Name clusterName, List<Destination> destinations)
+    private Cluster(Guid id, Name clusterName)
         : base(id)
     {
         ClusterName = clusterName;
-        foreach (Destination destination in destinations)
-        {
-            Destinations.Add(destination);
-        }
     }
 
     private Cluster()
@@ -26,18 +22,26 @@ public sealed class Cluster : Entity
     public Name ClusterName { get; init; } = new Name("cluster1");
     public List<Destination> Destinations { get; } = [];
 
-    public static Cluster CreateNewCluster(string clusterName, int index)
+    public static Cluster Create(
+        string clusterName, 
+        string destinationName, 
+        string destinationAddress)
     {
-        var initialDestinations = new List<Destination>();
-        var addresses = new List<string>() { "https://example.com", "https://neuko-know-how.com", "https://cneb.de" };
-        for (var i = 0; i <= 2; i++)
-        {
-            var destination = Destination.Create($"destination{i+1}{index}", addresses[i]);
-            initialDestinations.Add(destination);
-        }
+        ArgumentNullException.ThrowIfNull(clusterName);
+        ArgumentNullException.ThrowIfNull(destinationName);
+        ArgumentNullException.ThrowIfNull(destinationAddress);
+        
+        var destination = Destination.Create(destinationName, destinationAddress);
+        var cluster = new Cluster(Guid.NewGuid(), new Name(clusterName));
+        cluster.AddDestination(destination);
 
-        var initialCluster = new Cluster(Guid.NewGuid(), new Name(clusterName), initialDestinations);
-
-        return initialCluster;
+        return cluster;
+    }
+    
+    public void AddDestination(Destination destination)
+    {
+        ArgumentNullException.ThrowIfNull(destination);
+        
+        Destinations.Add(destination);
     }
 }
