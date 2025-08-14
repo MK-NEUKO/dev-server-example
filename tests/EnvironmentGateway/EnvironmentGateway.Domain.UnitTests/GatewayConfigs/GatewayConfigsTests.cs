@@ -11,14 +11,11 @@ public class GatewayConfigsTests : BaseTest
     [Fact]
     public void CreateConfig_Should_SetPropertyValues()
     {
-        // Arrange
-        const string configName = "New Configuration";
-
-        // Act
+        // Arrange & Act
         var newConfig = GatewayConfig.Create();
 
         // Assert
-        newConfig.Name?.Value.Should().Be(configName);
+        newConfig.Name?.Value.Should().Be(ConfigDefaultParams.ConfigName);
         newConfig.IsCurrentConfig.Should().BeTrue();
         newConfig.Routes.Count.Should().BeGreaterThanOrEqualTo(1);
         newConfig.Clusters.Count.Should().BeGreaterThanOrEqualTo(1);

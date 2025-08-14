@@ -18,7 +18,7 @@ internal sealed class UpdateDestinationCommandHandler(
             return Result.Failure(DestinationErrors.NotFound);
         }
 
-        destination.Update(request.Address);
+        destination.ChangeAddress(request.Address);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

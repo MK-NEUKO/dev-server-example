@@ -45,9 +45,9 @@ public class ClustersTests
     }
 
     [Theory]
-    [InlineData((string?)null, TestDestinationName, TestDestinationAddress)]
-    [InlineData(TestClusterName, (string?)null, TestDestinationAddress)]
-    [InlineData(TestClusterName, TestDestinationName, (string?)null)]
+    [InlineData(null, TestDestinationName, TestDestinationAddress)]
+    [InlineData(TestClusterName, null, TestDestinationAddress)]
+    [InlineData(TestClusterName, TestDestinationName, null)]
     public void Create_Should_ThrowArgumentNullException_When_ParameterIsNull(
         string? clusterName, string? destinationName, string? destinationAddress)
     {

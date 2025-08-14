@@ -44,6 +44,9 @@ public sealed class GatewayConfig : Entity
         gatewayConfig.AddCluster(cluster);
         gatewayConfig.AddRoute(route);
         gatewayConfig.IsCurrentConfig = true;
+        
+        gatewayConfig.RaiseDomainEvent(new NewConfigCreatedDomainEvent(gatewayConfig.Id));
+        
         return gatewayConfig;
     }
 
