@@ -32,22 +32,24 @@ public class ChangeDestinationAddressTests : BaseIntegrationTest
         Guid clusterId = await DbContext.Clusters
             .Select(c => c.Id)
             .FirstOrDefaultAsync();
-        var request = new ChangeDestinationAddressCommand(destinationId, clusterId, TestAddress);
+        var request = new ChangeDestinationAddressCommand(clusterId, destinationId, TestAddress);
 
         // Act
         Result result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        Destination? updatedDestination = await DbContext.Clusters
-            .SelectMany(c => c.Destinations)
-            .FirstOrDefaultAsync(d => d.Id == destinationId);
+        var cluster = await DbContext.Clusters
+            .Include(c => c.Destinations)
+            .FirstOrDefaultAsync(c => c.Id == clusterId);
+        cluster.Should().NotBeNull();
+        Destination? updatedDestination = cluster!.Destinations.FirstOrDefault(d => d.Id == destinationId);
         updatedDestination.Should().NotBeNull();
         updatedDestination.Address.Value.Should().Be(TestAddress);
     }
 
     [Fact]
-    public async Task ChangeDestinationAddress_ShouldReturnFailure_WhenDestinationIdNotExits()
+    public async Task ChangeDestinationAddress_ShouldReturnFailure_WhenDestinationDoesNotExist()
     {
         // Arrange
         var request = new ChangeDestinationAddressCommand(Guid.NewGuid(), Guid.NewGuid(), TestAddress);
@@ -57,10 +59,23 @@ public class ChangeDestinationAddressTests : BaseIntegrationTest
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        Destination? testDestination = await DbContext.Clusters
+        result.Error.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task ChangeDestinationAddress_ShouldReturnFailure_WhenClusterDoesNotExist()
+    {
+        // Arrange
+        Guid destinationId = await DbContext.Clusters
             .SelectMany(c => c.Destinations)
+            .Select(d => d.Id)
             .FirstOrDefaultAsync();
-        testDestination.Should().NotBeNull();
-        testDestination.Address.Value.Should().NotBe(TestAddress);
+        var request = new ChangeDestinationAddressCommand(Guid.NewGuid(), destinationId, TestAddress);
+
+        // Act
+        Result result = await _handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        result.IsSuccess.Should().BeFalse();
     }
 }
