@@ -1,13 +1,12 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using EnvironmentGateway.Api.Endpoints.UpdateConfig.UpdateDestination;
+using EnvironmentGateway.Api.Endpoints.Destinations.ChangeDestinationAddress;
 using EnvironmentGateway.Api.FunctionalTests.Infrastructure;
 using EnvironmentGateway.Domain.Clusters.Destinations;
-using EnvironmentGateway.Domain.GatewayConfigs;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
-namespace EnvironmentGateway.Api.FunctionalTests.UpdateConfig.UpdateDestination;
+namespace EnvironmentGateway.Api.FunctionalTests.Destinations;
 
 public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) : BaseFunctionalTest(factory)
 {
@@ -23,7 +22,7 @@ public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) 
             .SelectMany(c => c.Destinations)
             .Select(d => d.Id)
             .FirstOrDefaultAsync();
-        var request = new UpdateDestinationRequest(destinationId, clusterId, testAddress);
+        var request = new ChangeDestinationAddressRequest(destinationId, clusterId, testAddress);
 
         // Act
         HttpResponseMessage response = await HttpClient.PutAsJsonAsync("update-destination", request);
@@ -58,7 +57,7 @@ public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) 
         Guid clusterId = await DbContext.Clusters
             .Select(c => c.Id)
             .FirstOrDefaultAsync();
-        var request = new UpdateDestinationRequest(destinationId, clusterId, testAddress);
+        var request = new ChangeDestinationAddressRequest(destinationId, clusterId, testAddress);
 
         // Act
         HttpResponseMessage response = await HttpClient.PutAsJsonAsync("update-destination", request);

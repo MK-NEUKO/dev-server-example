@@ -2,7 +2,7 @@
 using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Application.Destinations.UpdateDestination;
 
-namespace EnvironmentGateway.Api.Endpoints.UpdateConfig.UpdateDestination;
+namespace EnvironmentGateway.Api.Endpoints.Destinations.ChangeDestinationAddress;
 
 public class ChangeDestinationAddress : IEndpoint
 {
@@ -10,15 +10,15 @@ public class ChangeDestinationAddress : IEndpoint
     {
         app.MapPut("update-destination", 
             async (
-            UpdateDestinationRequest request,
+            ChangeDestinationAddressRequest addressRequest,
             ICommandHandler<ChangeDestinationAddressCommand> handler,
             IRuntimeConfigurator runtimeConfigurator,
             CancellationToken cancellationToken) =>
         {
             var command = new ChangeDestinationAddressCommand(
-                request.ClusterId,
-                request.DestinationId,
-                request.Address);
+                addressRequest.ClusterId,
+                addressRequest.DestinationId,
+                addressRequest.Address);
 
             var result = await handler.Handle(command, cancellationToken);
 
