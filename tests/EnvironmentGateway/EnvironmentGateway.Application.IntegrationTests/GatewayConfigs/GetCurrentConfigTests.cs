@@ -54,6 +54,6 @@ public class GetCurrentConfigTests : BaseIntegrationTest
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Should().Be(Error.NullValue);
+        result.Error.Should().Be(GatewayConfigErrors.CurrentConfigNotFound);
     }
 }
