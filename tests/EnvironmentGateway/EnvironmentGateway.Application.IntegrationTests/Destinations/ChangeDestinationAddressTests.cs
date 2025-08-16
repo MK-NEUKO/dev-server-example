@@ -7,7 +7,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EnvironmentGateway.Application.IntegrationTests.Destinations.ChangeDestinationAddress;
+namespace EnvironmentGateway.Application.IntegrationTests.Destinations;
 
 public class ChangeDestinationAddressTests : BaseIntegrationTest
 {
