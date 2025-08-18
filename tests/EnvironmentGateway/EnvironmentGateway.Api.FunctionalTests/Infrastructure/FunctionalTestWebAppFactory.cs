@@ -12,6 +12,7 @@ using System.Net.Http.Json;
 using EnvironmentGateway.Application.GatewayConfigs.CreateNewConfig;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
 using Testcontainers.PostgreSql;
+using Testcontainers.Keycloak;
 
 namespace EnvironmentGateway.Api.FunctionalTests.Infrastructure;
 
@@ -19,13 +20,19 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:latest")
-        .WithDatabase("gateways")
+        .WithDatabase("test-db")
         .WithUsername("testUser")
         .WithPassword("password")
         .Build();
 
+    private readonly KeycloakContainer _keycloakContainer = new KeycloakBuilder()
+        .WithImage("quay.io/keycloak/keycloak:21.1")
+        .Build();
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        Environment.SetEnvironmentVariable("DB_NAME", "test-db");
+        
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll(typeof(DbContextOptions<EnvironmentGatewayDbContext>));
@@ -37,6 +44,8 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
             services.RemoveAll(typeof(ISqlConnectionFactory));
             services.AddSingleton<ISqlConnectionFactory>(_ =>
                 new SqlConnectionFactory(_dbContainer.GetConnectionString()));
+            
+            
         });
     }
 

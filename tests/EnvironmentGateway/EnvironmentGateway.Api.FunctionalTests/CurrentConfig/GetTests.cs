@@ -8,13 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnvironmentGateway.Api.FunctionalTests.CurrentConfig;
 
-public class GetTests : BaseFunctionalTest
+public class GetTests(FunctionalTestWebAppFactory factory) : BaseFunctionalTest(factory)
 {
-    public GetTests(FunctionalTestWebAppFactory factory) 
-        : base(factory)
-    {
-    }
-
     [Fact]
     public async Task GetCurrentConfig_ShouldReturnCurrentConfig_WhenRequestIsValid()
     {
