@@ -27,6 +27,15 @@ isReadOnly: false)
 
 #region DatabaseConfig
 
+var keycloakDbServer = builder.AddPostgres(
+    name: "KeycloakDbServer")
+    .WithDataBindMount(
+        source: builder.Configuration.GetValue<string>("KeycloakDbServer:DataBindMount")!,
+        isReadOnly: false)
+    .WithHttpsEndpoint(port: 6010, name: "KeycloakDbServerHttp", isProxied: false);
+
+var keycloakDb = keycloakDbServer.AddDatabase("KeycloakDb");
+
 var gatewaysDbServer = builder.AddPostgres(
         name: "GatewaysDbServer")
     .WithDataBindMount(
@@ -52,7 +61,12 @@ var userManagerDb = userManagerDbServer.AddDatabase("UserManagerDb");
 #region AuthConfig
 
 var keycloak = builder.AddKeycloak("Keycloak", 6001)
-    .WithDataBindMount(builder.Configuration.GetValue<string>("Keycloak:DataBindMount")!);
+    .WithDataBindMount(builder.Configuration.GetValue<string>("Keycloak:DataBindMount")!)
+    .WaitFor(keycloakDb)
+    .WithEnvironment("KC_DB", "postgres")
+    .WithEnvironment("KC_DB_URL", "jdbc:postgresql://KeycloakDbServer:5432/KeycloakDb")
+    .WithEnvironment("KC_DB_USERNAME", "postgres")
+    .WithEnvironment("KC_DB_PASSWORD", builder.Configuration.GetValue<string>("Parameters:KeycloakDbServer-password"));
 
 #endregion
 

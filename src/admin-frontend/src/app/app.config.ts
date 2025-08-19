@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
       config: {
         url: 'http://localhost:6001',
         realm: 'dev-server-example',
-        clientId: 'admin-frontend-client'
+        clientId: 'admin-frontend'
       },
       initOptions: {
         onLoad: 'login-required',
