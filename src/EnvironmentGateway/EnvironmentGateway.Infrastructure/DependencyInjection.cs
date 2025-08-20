@@ -3,6 +3,7 @@ using EnvironmentGateway.Application.Abstractions.Email;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Clusters.Destinations;
 using EnvironmentGateway.Domain.GatewayConfigs;
+using EnvironmentGateway.Infrastructure.Authentication;
 using EnvironmentGateway.Infrastructure.Data;
 using EnvironmentGateway.Infrastructure.DomainEvents;
 using EnvironmentGateway.Infrastructure.Email;
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EnvironmentGateway.Infrastructure;
@@ -19,11 +21,11 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
-        IConfiguration configuration) => 
-        services
+        IConfiguration configuration,
+        IHostEnvironment environment) => services
             .AddServices()
             .AddDatabase(configuration)
-            .AddAuthenticationInternal(configuration);
+            .AddAuthenticationInternal(configuration, environment);
     
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
@@ -61,20 +63,17 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddAuthenticationInternal(this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddAuthenticationInternal(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IHostEnvironment environment)
     {
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(o =>
-            {
-                o.RequireHttpsMetadata = false;
-                o.Audience = configuration["Keycloak:Audience"];
-                o.MetadataAddress = configuration["Keycloak:MetadataAddress"]!;
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = configuration["Keycloak:Issuer"],
-                };
-            });
+        services.AddAuthentication()
+            .AddKeycloakJwtBearer(serviceName: "Keycloak", realm: "dev-server-example");
+
+        services.Configure<AuthenticationOptions>(configuration.GetSection("Keycloak"));
+
+        services.ConfigureOptions<JwtBearerOptionsSetup>();
 
         services.AddAuthorization();
         

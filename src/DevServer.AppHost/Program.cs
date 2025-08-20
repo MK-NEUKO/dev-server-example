@@ -61,6 +61,7 @@ var userManagerDb = userManagerDbServer.AddDatabase("UserManagerDb");
 #region AuthConfig
 
 var keycloak = builder.AddKeycloak("Keycloak", 6001)
+    .WithImage("keycloak/keycloak:latest")
     .WithDataBindMount(builder.Configuration.GetValue<string>("Keycloak:DataBindMount")!)
     .WaitFor(keycloakDb)
     .WithEnvironment("KC_DB", "postgres")
@@ -76,6 +77,7 @@ var keycloak = builder.AddKeycloak("Keycloak", 6001)
 
 var productionGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("ProductionGateway")
     .WithReference(productionGatewayDb)
+    .WithReference(keycloak)
     .WithEnvironment("DB_NAME", nameof(productionGatewayDb))
     .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Development")
     .WaitFor(productionGatewayDb)
@@ -87,6 +89,7 @@ var productionGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("Pro
 
 var customerGateway = builder.AddProject<Projects.EnvironmentGateway_Api>("CustomerGateway")
     .WithReference(customerGatewayDb)
+    .WithReference(keycloak)
     .WithEnvironment("DB_NAME", nameof(customerGatewayDb))
     .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Development")
     .WaitFor(customerGatewayDb)
