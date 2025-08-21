@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using EnvironmentGateway.Api.FunctionalTests.Infrastructure;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using FluentAssertions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,8 +15,10 @@ public class GetTests(FunctionalTestWebAppFactory factory) : BaseFunctionalTest(
     public async Task GetCurrentConfig_ShouldReturnCurrentConfig_WhenRequestIsValid()
     {
         // Arrange
-        DbContext.GatewayConfigs.Add(GatewayConfig.Create());
-        await DbContext.SaveChangesAsync();
+        var accessToken = await GetAccessTokenAsync();
+        HttpClient.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue(
+                JwtBearerDefaults.AuthenticationScheme, accessToken);
         // Act
         var httpResponse = await HttpClient.GetAsync("current-config");
 

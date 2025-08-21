@@ -68,8 +68,11 @@ public static class DependencyInjection
         IConfiguration configuration,
         IHostEnvironment environment)
     {
+        var serviceName = configuration["Keycloak:ServiceName"] ?? "Keycloak";
+        var realm = configuration["Keycloak:Realm"] ?? "dev-server-example";
+
         services.AddAuthentication()
-            .AddKeycloakJwtBearer(serviceName: "Keycloak", realm: "dev-server-example");
+            .AddKeycloakJwtBearer(serviceName: serviceName, realm: realm);
 
         services.Configure<AuthenticationOptions>(configuration.GetSection("Keycloak"));
 
