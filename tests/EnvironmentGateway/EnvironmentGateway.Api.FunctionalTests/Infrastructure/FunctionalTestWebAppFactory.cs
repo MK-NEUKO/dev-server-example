@@ -1,6 +1,7 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Data;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Infrastructure;
+using EnvironmentGateway.Infrastructure.Authentication;
 using EnvironmentGateway.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -39,24 +40,8 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
     {
         Environment.SetEnvironmentVariable("DB_NAME", "test-db");
         
-        builder.ConfigureAppConfiguration((context, configBuilder) =>
-        {
-            var keycloakServiceName = _keycloakContainer.Name; // oder dynamisch aus _keycloakContainer
-            var keycloakRealm = "dev-server-example"; // oder dynamisch aus _keycloakContainer
-            var keycloakBaseUrl = $"http://{_keycloakContainer.Hostname}:{_keycloakContainer.GetMappedPublicPort(8080)}/";
+        KeycloakBaseUrl = $"http://{_keycloakContainer.Hostname}:{_keycloakContainer.GetMappedPublicPort(8080)}";
 
-            var dict = new List<KeyValuePair<string, string>>
-            {
-                new("Keycloak:ServiceName", keycloakServiceName),
-                new("Keycloak:Realm", keycloakRealm),
-                new("Keycloak:Issuer", $"{keycloakBaseUrl}realms/dev-server-example"),
-                new("Keycloak:AuthorizationUrl", $"{keycloakBaseUrl}realms/dev-server-example/protocol/openid-connect/auth"),
-                new("Keycloak:MetadataAddress", $"{keycloakBaseUrl}realms/dev-server-example/.well-known/openid-configuration"),
-                // 
-            };
-            configBuilder.AddInMemoryCollection(dict);
-        });
-            
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll(typeof(DbContextOptions<EnvironmentGatewayDbContext>));
@@ -68,6 +53,20 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
             services.RemoveAll(typeof(ISqlConnectionFactory));
             services.AddSingleton<ISqlConnectionFactory>(_ =>
                 new SqlConnectionFactory(_dbContainer.GetConnectionString()));
+
+            services.Configure<KeycloakOptions>(options =>
+            {
+                options.ServiceName = _keycloakContainer.Name;
+                options.Realm = "dev-server-example";
+            });
+            
+            services.Configure<AuthenticationOptions>(options =>
+            {
+                options.AuthorizationUrl = $"{KeycloakBaseUrl}/realms/dev-server-example/protocol/openid-connect/auth";
+                options.Issuer = $"{KeycloakBaseUrl}/realms/dev-server-example";
+                options.MetadataAddress =
+                    $"{KeycloakBaseUrl}/realms/dev-server-example/.well-known/openid-configuration";
+            });
         });
     }
 
@@ -75,11 +74,6 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
     {
         await _dbContainer.StartAsync();
         await _keycloakContainer.StartAsync();
-        
-        var keycloakHost = _keycloakContainer.Hostname; // or .Host
-        var keycloakPort = _keycloakContainer.GetMappedPublicPort(8080); // Keycloak default HTTP port
-        KeycloakBaseUrl = $"http://{keycloakHost}:{keycloakPort}/";
-
         await InitializeTestConfigAsync();
     }
         

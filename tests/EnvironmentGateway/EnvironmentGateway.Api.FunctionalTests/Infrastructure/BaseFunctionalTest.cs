@@ -22,7 +22,7 @@ public abstract class BaseFunctionalTest : IClassFixture<FunctionalTestWebAppFac
     
     protected async Task<string> GetAccessTokenAsync()
     {
-        var keycloakTokenUrl = KeycloakBaseUrl + "realms/dev-server-example/protocol/openid-connect/token";
+        var keycloakTokenUrl = KeycloakBaseUrl + "/realms/dev-server-example/protocol/openid-connect/token";
         var requestBody = new Dictionary<string, string>
         {
             { "client_id", "production-gateway-api" },
