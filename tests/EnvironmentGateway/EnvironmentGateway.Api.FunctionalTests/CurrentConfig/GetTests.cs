@@ -19,6 +19,7 @@ public class GetTests(FunctionalTestWebAppFactory factory) : BaseFunctionalTest(
         HttpClient.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue(
                 JwtBearerDefaults.AuthenticationScheme, accessToken);
+        await CreateTestConfigAsync();
         // Act
         var httpResponse = await HttpClient.GetAsync("current-config");
 
@@ -30,16 +31,11 @@ public class GetTests(FunctionalTestWebAppFactory factory) : BaseFunctionalTest(
     public async Task GetCurrentConfig_ShouldReturnNotFound_WhenCurrentConfigNotExists()
     {
         // Arrange
-        var existingConfigs = await DbContext.GatewayConfigs
-            .Where(gc => gc.IsCurrentConfig)
-            .ToListAsync();
-        foreach (var existingConfig in existingConfigs)
-        {
-            if (!existingConfig.IsCurrentConfig) continue;
-            DbContext.GatewayConfigs.Remove(existingConfig);
-            await DbContext.SaveChangesAsync();
-        }
-
+        var accessToken = await GetAccessTokenAsync();
+        HttpClient.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue(
+                JwtBearerDefaults.AuthenticationScheme, accessToken);
+        await DeleteCurrentConfig();
         // Act
         var httpResponse = await HttpClient.GetAsync("current-Config");
 

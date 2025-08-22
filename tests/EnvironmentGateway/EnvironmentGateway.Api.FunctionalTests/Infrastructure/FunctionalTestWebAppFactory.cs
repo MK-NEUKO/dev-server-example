@@ -74,26 +74,11 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
     {
         await _dbContainer.StartAsync();
         await _keycloakContainer.StartAsync();
-        await InitializeTestConfigAsync();
     }
         
     public new async Task DisposeAsync()
     {
         await _dbContainer.StopAsync();
         await _keycloakContainer.StopAsync();
-    }
-    
-    private async Task InitializeTestConfigAsync()
-    {
-        using var scope = Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<EnvironmentGatewayDbContext>();
-
-        await dbContext.Database.EnsureDeletedAsync();
-        await dbContext.Database.EnsureCreatedAsync();
-
-        var initialConfig = GatewayConfig.Create();
-        dbContext.GatewayConfigs.Add(initialConfig);
-
-        await dbContext.SaveChangesAsync();
     }
 }
