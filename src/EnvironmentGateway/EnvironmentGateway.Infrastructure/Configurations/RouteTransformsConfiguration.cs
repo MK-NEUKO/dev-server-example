@@ -15,7 +15,7 @@ public class RouteTransformsConfiguration : IEntityTypeConfiguration<RouteTransf
         builder.Property(routeTransforms => routeTransforms.RouteId)
             .IsRequired();
 
-        builder.OwnsMany(routeTransform => routeTransform.Transforms, transform =>
+        builder.OwnsMany(routeTransform => routeTransform.TransformsItems, transform =>
         {
             transform.ToTable("route_transform_items");
             transform.WithOwner()

@@ -1,6 +1,6 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 
-namespace EnvironmentGateway.Domain.Destinations;
+namespace EnvironmentGateway.Domain.Clusters.Destinations;
 
 public static class DestinationErrors
 {

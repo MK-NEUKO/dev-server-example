@@ -2,10 +2,10 @@
 using EnvironmentGateway.Application.Exceptions;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Clusters;
-using EnvironmentGateway.Domain.Destinations;
+using EnvironmentGateway.Domain.Clusters.Destinations;
 using EnvironmentGateway.Domain.GatewayConfigs;
-using EnvironmentGateway.Domain.RouteMatches;
 using EnvironmentGateway.Domain.Routes;
+using EnvironmentGateway.Domain.Routes.Match;
 using EnvironmentGateway.Domain.Routes.Transforms;
 using EnvironmentGateway.Infrastructure.DomainEvents;
 using Microsoft.EntityFrameworkCore;

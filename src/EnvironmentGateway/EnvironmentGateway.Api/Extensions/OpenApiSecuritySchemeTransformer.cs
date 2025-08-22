@@ -19,7 +19,7 @@ internal sealed class OpenApiSecuritySchemeTransformer(
             {
                 Implicit = new OpenApiOAuthFlow
                 {
-                    AuthorizationUrl = new Uri(configuration["Keycloak:AuthorizationUrl"]!),
+                    AuthorizationUrl = new Uri(configuration["JwtBearer:AuthorizationUrl"]!),
                     Scopes = new Dictionary<string, string>
                     {
                         { "openid", "openid" },

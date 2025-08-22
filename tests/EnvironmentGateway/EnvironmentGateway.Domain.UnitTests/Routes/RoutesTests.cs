@@ -1,21 +1,54 @@
 ﻿using EnvironmentGateway.Domain.Routes;
+using EnvironmentGateway.Domain.Routes.Transforms;
 using FluentAssertions;
 
 namespace EnvironmentGateway.Domain.UnitTests.Routes;
 
 public class RoutesTests
 {
+    private const string TestKey = "key";
+    private const string TestValue = "value";
+    private const string TestRouteName = "testRoute";
+    private const string TestClusterName = "testCluster";
+    private const string TestMatchPath = "{**catch-all}";
+
     [Fact]
-    public void CreateInitialRoute_Should_SetPropertyValues()
+    public void CreateRoute_Should_SetPropertyValues()
     {
-        const string routeName = "testRoute";
-        const string clusterName = "testClusterName";
-        const string matchPath = "{**catch-all}";
+        var newRoute = Route.Create(TestRouteName, TestClusterName, TestMatchPath);
 
-        var initRoute = Route.CreateNewRoute(routeName, clusterName, matchPath, "test");
+        newRoute.RouteName.Value.Should().Be(TestRouteName);
+        newRoute.ClusterName.Value.Should().Be(TestClusterName);
+        newRoute.Match?.Path.Value.Should().Be(TestMatchPath);
+    }
 
-        initRoute.RouteName.Value.Should().Be(routeName);
-        initRoute.ClusterName.Value.Should().Be(clusterName);
-        initRoute.Match.Path.Value.Should().Be(matchPath);
+    [Theory]
+    [InlineData(null, TestClusterName, TestMatchPath)]
+    [InlineData(TestRouteName, null, TestMatchPath)]
+    [InlineData(TestRouteName, TestClusterName, null)]
+    public void CreateRoute_Should_ThrowArgumentNullException_WhenArgumentIsNull(
+        string? routeName,
+        string? clusterName, 
+        string? matchPath)
+    {
+        Action act = () => Route.Create(routeName!, clusterName!, matchPath!);
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void AddTransforms_Should_SetTransformsProperty()
+    {
+        var route = Route.Create(TestRouteName, TestClusterName, TestMatchPath);
+        var transforms = RouteTransforms.Create(TestKey, TestValue);
+        route.AddTransforms(transforms);
+        route.Transforms.Should().Be(transforms);
+    }
+
+    [Fact]
+    public void AddTransforms_Should_ThrowArgumentNullException_WhenNull()
+    {
+        var route = Route.Create(TestRouteName, TestClusterName, TestMatchPath);
+        Action act = () => route.AddTransforms(null!);
+        act.Should().Throw<ArgumentNullException>();
     }
 }

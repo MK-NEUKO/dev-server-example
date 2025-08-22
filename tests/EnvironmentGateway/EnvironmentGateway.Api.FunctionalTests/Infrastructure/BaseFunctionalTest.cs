@@ -1,18 +1,87 @@
-﻿using EnvironmentGateway.Infrastructure;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
+using EnvironmentGateway.Domain.GatewayConfigs;
+using EnvironmentGateway.Infrastructure;
+using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EnvironmentGateway.Api.FunctionalTests.Infrastructure;
 
 public abstract class BaseFunctionalTest : IClassFixture<FunctionalTestWebAppFactory>
 {
-    private readonly IServiceScope _scope;
     protected readonly HttpClient HttpClient;
-    protected readonly EnvironmentGatewayDbContext DbContext;
+    protected EnvironmentGatewayDbContext DbContext;
+    protected readonly string KeycloakBaseUrl;
+    private readonly IServiceScopeFactory _scopeFactory;
+
 
     protected BaseFunctionalTest(FunctionalTestWebAppFactory factory)
     {
         HttpClient = factory.CreateClient();
-        _scope = factory.Services.CreateScope();
-        DbContext = _scope.ServiceProvider.GetRequiredService<EnvironmentGatewayDbContext>();
+        IServiceScope scope = factory.Services.CreateScope();
+        DbContext = scope.ServiceProvider.GetRequiredService<EnvironmentGatewayDbContext>();
+        _scopeFactory = factory.Services.GetRequiredService<IServiceScopeFactory>();
+        KeycloakBaseUrl = factory.KeycloakBaseUrl;
+    }
+    
+    protected void RenewDbContext()
+    {
+        DbContext.Dispose();
+        var scope = _scopeFactory.CreateScope();
+        DbContext = scope.ServiceProvider.GetRequiredService<EnvironmentGatewayDbContext>();
+    }
+    
+    protected async Task<string> GetAccessTokenAsync()
+    {
+        var keycloakTokenUrl = KeycloakBaseUrl + "/realms/dev-server-example/protocol/openid-connect/token";
+        var requestBody = new Dictionary<string, string>
+        {
+            { "username", TestUser.UserName },
+            { "password", TestUser.Password },
+            { "client_id", "production-gateway-api" },
+            { "grant_type", "password" }
+        };
+
+        using var httpClient = new HttpClient();
+        var response = await httpClient.PostAsync(
+            keycloakTokenUrl,
+            new FormUrlEncodedContent(requestBody)
+        );
+
+        response.EnsureSuccessStatusCode();
+        return await AccessTokenAsync(response);
+    }
+    
+    protected async Task CreateTestConfigAsync()
+    {
+        await DbContext.Database.EnsureDeletedAsync();
+        await DbContext.Database.EnsureCreatedAsync();
+
+        var testConfig = GatewayConfig.Create();
+        DbContext.GatewayConfigs.Add(testConfig);
+
+        await DbContext.SaveChangesAsync();
+    }
+
+    protected async Task DeleteCurrentConfig()
+    {
+        var existingConfigs = await DbContext.GatewayConfigs
+            .Where(gc => gc.IsCurrentConfig)
+            .ToListAsync();
+        foreach (var existingConfig in existingConfigs)
+        {
+            if (!existingConfig.IsCurrentConfig) continue;
+            DbContext.GatewayConfigs.Remove(existingConfig);
+            await DbContext.SaveChangesAsync();
+        }
+    }
+
+    private static async Task<string> AccessTokenAsync(HttpResponseMessage response)
+    {
+        var content = await response.Content.ReadAsStringAsync();
+        
+        using var doc = JsonDocument.Parse(content);
+        return doc.RootElement.GetProperty("access_token").GetString() ?? string.Empty;
     }
 }

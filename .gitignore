@@ -360,4 +360,8 @@ MigrationBackup/
 .ionide/
 
 # Fody - auto-generated XML schema
-FodyWeavers.xsd
+FodyWeavers.
+
+# keycloak realm-export files
+*.realm-export.json
+/tests/EnvironmentGateway/EnvironmentGateway.Api.FunctionalTests/.files/dev-server-example-realm-export.json

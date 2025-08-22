@@ -11,7 +11,7 @@ export const appConfig: ApplicationConfig = {
       config: {
         url: 'http://localhost:6001',
         realm: 'dev-server-example',
-        clientId: 'service-frontend-client'
+        clientId: 'service-frontend'
       },
       initOptions: {
         onLoad: 'check-sso'

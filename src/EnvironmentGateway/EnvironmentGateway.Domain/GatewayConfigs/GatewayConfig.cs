@@ -9,18 +9,10 @@ namespace EnvironmentGateway.Domain.GatewayConfigs;
 
 public sealed class GatewayConfig : Entity
 {
-    private GatewayConfig(
-        Guid id,
-        Name name,
-        bool isCurrentConfig,
-        List<Route> routes,
-        List<Cluster> clusters)
+    private GatewayConfig(Guid id, Name name)
         : base(id)
     {
         Name = name;
-        IsCurrentConfig = isCurrentConfig;
-        Routes = routes;
-        Clusters = clusters;
     }
 
     private GatewayConfig()
@@ -37,25 +29,38 @@ public sealed class GatewayConfig : Entity
 
     public static GatewayConfig Create()
     {
-        var routes = new List<Route>();
-        var clusters = new List<Cluster>();
-        for (var i = 1; i < 3; i++)
-        {
-            var newRoute = Route.CreateNewRoute($"route{i}", $"cluster{i}", $"/service{i}", $"/service{i}");
-            var newCluster = Cluster.CreateNewCluster($"cluster{i}", i);
-            routes.Add(newRoute);
-            clusters.Add(newCluster);
-        }
-
-        var newConfig = new GatewayConfig(
+        var route = Route.Create(
+            ConfigDefaultParams.RouteName, 
+            ConfigDefaultParams.ClusterName, 
+            ConfigDefaultParams.RouteMatchPath);
+        var cluster = Cluster.Create(
+            ConfigDefaultParams.ClusterName, 
+            ConfigDefaultParams.DestinationName,
+            ConfigDefaultParams.DestinationAddress);
+        var gatewayConfig = new GatewayConfig(
             Guid.NewGuid(),
-            new Name("New Configuration"),
-            true,
-            routes,
-            clusters);
+            new Name(ConfigDefaultParams.ConfigName));
         
-        newConfig.RaiseDomainEvent(new NewConfigCreatedDomainEvent(newConfig.Id));
+        gatewayConfig.AddCluster(cluster);
+        gatewayConfig.AddRoute(route);
+        gatewayConfig.IsCurrentConfig = true;
+        
+        gatewayConfig.RaiseDomainEvent(new NewConfigCreatedDomainEvent(gatewayConfig.Id));
+        
+        return gatewayConfig;
+    }
 
-        return newConfig;
+    public void AddCluster(Cluster cluster)
+    {
+        ArgumentNullException.ThrowIfNull(cluster);
+        
+        Clusters.Add(cluster);
+    }
+    
+    public void AddRoute(Route route)
+    {
+        ArgumentNullException.ThrowIfNull(route);
+
+        Routes.Add(route);
     }
 }

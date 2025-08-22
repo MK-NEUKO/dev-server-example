@@ -2,23 +2,23 @@
 using EnvironmentGateway.Application.Abstractions.Messaging;
 using EnvironmentGateway.Application.Destinations.UpdateDestination;
 
-namespace EnvironmentGateway.Api.Endpoints.UpdateConfig.UpdateDestination;
+namespace EnvironmentGateway.Api.Endpoints.Destinations.ChangeDestinationAddress;
 
-public class UpdateDestination : IEndpoint
+public class ChangeDestinationAddress : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPut("update-destination", 
             async (
-            UpdateDestinationRequest request,
-            ICommandHandler<UpdateDestinationCommand> handler,
+            ChangeDestinationAddressRequest addressRequest,
+            ICommandHandler<ChangeDestinationAddressCommand> handler,
             IRuntimeConfigurator runtimeConfigurator,
             CancellationToken cancellationToken) =>
         {
-            var command = new UpdateDestinationCommand(
-                request.ClusterId,
-                request.DestinationId,
-                request.Address);
+            var command = new ChangeDestinationAddressCommand(
+                addressRequest.ClusterId,
+                addressRequest.DestinationId,
+                addressRequest.Address);
 
             var result = await handler.Handle(command, cancellationToken);
 

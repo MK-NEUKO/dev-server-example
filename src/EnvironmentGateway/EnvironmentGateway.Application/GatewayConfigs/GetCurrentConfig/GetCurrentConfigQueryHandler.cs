@@ -34,7 +34,7 @@ internal sealed class GetCurrentConfigQueryHandler(IEnvironmentGatewayDbContext 
                     route.Match.Path.Value,
                     new CurrentConfigMapper.Transforms(
                         route.Transforms.Id,
-                        route.Transforms.Transforms
+                        route.Transforms.TransformsItems
                             .Select(item => new Dictionary<string, string>{{item.Key, item.Value}})
                             .ToList()
                         )

@@ -1,7 +1,7 @@
 ﻿using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Shared;
 
-namespace EnvironmentGateway.Domain.Destinations;
+namespace EnvironmentGateway.Domain.Clusters.Destinations;
 
 public sealed class Destination : Entity
 {
@@ -22,12 +22,17 @@ public sealed class Destination : Entity
 
     public static Destination Create(string destinationName, string address)
     {
+        ArgumentNullException.ThrowIfNull(destinationName);
+        ArgumentNullException.ThrowIfNull(address);
+        
         var destination = new Destination(Guid.NewGuid(), new Name(destinationName), new Address(address));
         return destination;
     }
 
-    public void Update(string address)
+    public void ChangeAddress(string address)
     {
+        ArgumentNullException.ThrowIfNull(address);
+        
         Address = new Address(address);
     }
 }

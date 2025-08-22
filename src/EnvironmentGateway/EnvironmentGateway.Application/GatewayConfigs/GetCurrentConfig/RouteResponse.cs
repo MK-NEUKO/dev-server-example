@@ -1,6 +1,4 @@
-﻿using EnvironmentGateway.Domain.Routes.Transforms;
-
-namespace EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
+﻿namespace EnvironmentGateway.Application.GatewayConfigs.GetCurrentConfig;
 
 public sealed record RouteResponse
 {

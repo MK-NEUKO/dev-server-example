@@ -3,24 +3,23 @@ using System.Net.Http.Json;
 using EnvironmentGateway.Api.FunctionalTests.Infrastructure;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using FluentAssertions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnvironmentGateway.Api.FunctionalTests.CurrentConfig;
 
-public class GetTests : BaseFunctionalTest
+public class GetTests(FunctionalTestWebAppFactory factory) : BaseFunctionalTest(factory)
 {
-    public GetTests(FunctionalTestWebAppFactory factory) 
-        : base(factory)
-    {
-    }
-
     [Fact]
     public async Task GetCurrentConfig_ShouldReturnCurrentConfig_WhenRequestIsValid()
     {
         // Arrange
-        DbContext.GatewayConfigs.Add(GatewayConfig.Create());
-        await DbContext.SaveChangesAsync();
+        var accessToken = await GetAccessTokenAsync();
+        HttpClient.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue(
+                JwtBearerDefaults.AuthenticationScheme, accessToken);
+        await CreateTestConfigAsync();
         // Act
         var httpResponse = await HttpClient.GetAsync("current-config");
 
@@ -32,16 +31,11 @@ public class GetTests : BaseFunctionalTest
     public async Task GetCurrentConfig_ShouldReturnNotFound_WhenCurrentConfigNotExists()
     {
         // Arrange
-        var existingConfigs = await DbContext.GatewayConfigs
-            .Where(gc => gc.IsCurrentConfig)
-            .ToListAsync();
-        foreach (var existingConfig in existingConfigs)
-        {
-            if (!existingConfig.IsCurrentConfig) continue;
-            DbContext.GatewayConfigs.Remove(existingConfig);
-            await DbContext.SaveChangesAsync();
-        }
-
+        var accessToken = await GetAccessTokenAsync();
+        HttpClient.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue(
+                JwtBearerDefaults.AuthenticationScheme, accessToken);
+        await DeleteCurrentConfig();
         // Act
         var httpResponse = await HttpClient.GetAsync("current-Config");
 

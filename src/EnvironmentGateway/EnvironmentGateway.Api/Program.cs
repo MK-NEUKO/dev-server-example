@@ -20,7 +20,7 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy
 builder.Services
     .AddApplication()
     .AddPresentation()
-    .AddInfrastructure(builder.Configuration);
+    .AddInfrastructure(builder.Configuration, builder.Environment);
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
     

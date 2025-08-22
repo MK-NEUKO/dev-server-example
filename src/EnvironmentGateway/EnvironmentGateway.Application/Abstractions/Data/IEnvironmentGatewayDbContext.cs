@@ -1,9 +1,9 @@
 ﻿using EnvironmentGateway.Domain.Clusters;
-using EnvironmentGateway.Domain.Destinations;
+using EnvironmentGateway.Domain.Clusters.Destinations;
 using Microsoft.EntityFrameworkCore;
 using EnvironmentGateway.Domain.GatewayConfigs;
-using EnvironmentGateway.Domain.RouteMatches;
 using EnvironmentGateway.Domain.Routes;
+using EnvironmentGateway.Domain.Routes.Match;
 using EnvironmentGateway.Domain.Routes.Transforms;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
