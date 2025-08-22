@@ -61,7 +61,7 @@ public class ClustersTests
     {
         //Arrange
         var cluster = Cluster.Create(TestClusterName, TestDestinationName, TestDestinationAddress);
-        Destination newDestination = null;
+        Destination newDestination = null!;
 
         //Act & Assert
         Action act = () => cluster.AddDestination(newDestination!);

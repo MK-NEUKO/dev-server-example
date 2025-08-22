@@ -72,8 +72,7 @@ public class ChangeDestinationAddressTests
     {
         // Arrange
         var cluster = Cluster.Create(TestClusterName, TestDestinationName, TestAddress);
-        //var destination = Destination.Create(
-        //    DestinationName, TestAddress);
+        
         _destinationRepositoryMock.GetByIdAsync(
             ClusterId, 
             DestinationId, 

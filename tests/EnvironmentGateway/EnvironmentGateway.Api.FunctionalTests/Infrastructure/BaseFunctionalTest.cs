@@ -81,7 +81,6 @@ public abstract class BaseFunctionalTest : IClassFixture<FunctionalTestWebAppFac
     {
         var content = await response.Content.ReadAsStringAsync();
         
-        // Nur das access_token extrahieren
         using var doc = JsonDocument.Parse(content);
         return doc.RootElement.GetProperty("access_token").GetString() ?? string.Empty;
     }
