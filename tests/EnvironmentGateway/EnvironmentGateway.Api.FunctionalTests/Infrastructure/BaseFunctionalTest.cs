@@ -25,9 +25,9 @@ public abstract class BaseFunctionalTest : IClassFixture<FunctionalTestWebAppFac
         var keycloakTokenUrl = KeycloakBaseUrl + "/realms/dev-server-example/protocol/openid-connect/token";
         var requestBody = new Dictionary<string, string>
         {
+            { "username", TestUser.UserName },
+            { "password", TestUser.Password },
             { "client_id", "production-gateway-api" },
-            { "username", "mkneuko" },
-            { "password", "password123" },
             { "grant_type", "password" }
         };
 
@@ -43,6 +43,5 @@ public abstract class BaseFunctionalTest : IClassFixture<FunctionalTestWebAppFac
         // Nur das access_token extrahieren
         using var doc = JsonDocument.Parse(content);
         return doc.RootElement.GetProperty("access_token").GetString() ?? string.Empty;
-
     }
 }

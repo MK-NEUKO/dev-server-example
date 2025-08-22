@@ -26,8 +26,8 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
     
     private readonly KeycloakContainer _keycloakContainer = new KeycloakBuilder()
         .WithImage("keycloak/keycloak:latest")
-        .WithUsername("mkneuko")
-        .WithPassword("password123")
+        .WithUsername("testUser")
+        .WithPassword("password")
         .WithResourceMapping(
             new FileInfo(".files/dev-server-example-realm-export.json"),
             new FileInfo("/opt/keycloak/data/import/realm.json"))
