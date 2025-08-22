@@ -38,6 +38,11 @@ public abstract class BaseFunctionalTest : IClassFixture<FunctionalTestWebAppFac
         );
 
         response.EnsureSuccessStatusCode();
+        return await AccessTokenAsync(response);
+    }
+
+    private static async Task<string> AccessTokenAsync(HttpResponseMessage response)
+    {
         var content = await response.Content.ReadAsStringAsync();
         
         // Nur das access_token extrahieren
