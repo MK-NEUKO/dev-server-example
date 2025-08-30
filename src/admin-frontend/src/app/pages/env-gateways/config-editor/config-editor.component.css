@@ -32,7 +32,7 @@
 .form__footer-buttons {
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 
 .tab-2ch {
@@ -145,4 +145,11 @@
 .control-feedback__info:focus {
   outline: 1px solid var(--neuko-text-info);
   outline-offset: 2px;
+}
+
+.control__editing-options {
+  padding-top: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
 }

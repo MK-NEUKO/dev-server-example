@@ -28,21 +28,50 @@ export class DestinationsComponent implements OnInit {
   public modalMessage: string = '';
   public formArray!: FormArray;
   public parentForm!: FormGroup;
+  public isControlOptionsDisplayed: boolean = false;
 
   ngOnInit(): void {
     const rootForm = this.rootFormGroup.control;
     const parentArray = rootForm.get(this.parentArrayName()) as FormArray;
     this.parentForm = parentArray.at(0) as FormGroup;
     this.formArray = this.parentForm.get(this.formArrayName()) as FormArray;
+
   }
 
-  public canUpdate(index: number): boolean {
-    const address = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS);
-    const result = !(address?.valid && (address?.dirty || address?.touched));
-    return result;
+  public onDestinationNameFocus(index: number): void {
+    this.isControlOptionsDisplayed = true;
+    console.log('Destination Name focused:', index, this.isControlOptionsDisplayed);
   }
 
-  public async updateDestination(index: number): Promise<void> {
+  public onDestinationNameBlur(index: number): void {
+
+
+    console.log('Destination Name blurred:', index, this.isControlOptionsDisplayed);
+  }
+
+  public canUpdateIsDisabled(index: number): boolean | undefined {
+    const address = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME);
+    if (address?.pristine) {
+      return true;
+    }
+    if (address?.invalid) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public reset(index: number): void {
+    const address = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME);
+    address?.reset();
+    address?.markAsTouched();
+    address?.markAsDirty();
+  }
+
+  public async makeChangeRequest(index: number): Promise<void> {
+    console.log('Make Change Request at index:', index);
+
+    /*
     const clusterId = this.parentForm.get('clusterId')?.value;
     const destinationId = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ID)?.value;
     const address = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS)?.value;
@@ -62,19 +91,17 @@ export class DestinationsComponent implements OnInit {
       console.error('Error updating destination:', error.message);
       message = error.message || 'An error occurred while updating the destination.';
     }
+    */
 
+    const message = "This is the test request";
     this.openDialog(
       'Destination update response',
       `HttpClient - response: ${message}`
     );
+
+    this.isControlOptionsDisplayed = false;
   }
 
-  public resetDestination(index: number): void {
-    const address = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS);
-    address?.reset();
-    address?.markAsTouched();
-    address?.markAsDirty();
-  }
 
   openDialog(title: string, message: string): void {
     this.modalTitle = title;

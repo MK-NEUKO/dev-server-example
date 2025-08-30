@@ -1,92 +1,125 @@
 <div [formGroup]="parentForm">
   <h3 class="form__heading form__heading--third">Destinations: {{ "{" }}</h3>
   <ng-container formArrayName="destinations">
-    @for (destination of formArray.controls; track $index; let i = $index) {
-    <div class="tab-2ch form-container" [formGroupName]="i">
-      <div class="control-field">
-        <span>"</span>
-        @if (destination.get('destinationName')?.invalid) {
-        <label class="control__label" for="destinationName-{{ i }}"
-          >Destination Name:
-        </label>
-        }
-
-        <div class="control__input-wrapper">
-          <input
-            class="control__input"
-            type="text"
-            id="destinationName-{{ i }}"
-            formControlName="destinationName"
-            name="destinationName-{{ i }}"
-            autocomplete="off"
-            [required]="true"
-          />
-          <span class="control-required"></span>
-          @if (destination.get('destinationName')?.errors?.['required']) {
-          <span class="control-feedback">Required</span>
-          }
-        </div>
-        <span>": {{ "{" }}</span>
-      </div>
-      <div class="tab-2ch">
+    @for (destination of formArray.controls; track $index; let i = $index) 
+    {
+      <div class="tab-2ch form-container" [formGroupName]="i">
         <div class="control-field">
-          <label class="control__label" for="address-{{ i }}">Address: </label>
+          <span>"</span>
+          @if (destination.get('destinationName')?.invalid) 
+          {
+            <label class="control__label" for="destinationName-{{ i }}"
+              >Destination Name:
+            </label>
+          }
           <div class="control__input-wrapper">
             <input
               class="control__input"
-              id="address-{{ i }}"
               type="text"
-              formControlName="address"
-              name="address-{{ i }}"
+              id="destinationName-{{ i }}"
+              formControlName="destinationName"
+              name="destinationName-{{ i }}"
               autocomplete="off"
               [required]="true"
+              (focus)="onDestinationNameFocus(i)"
+              (blur)="onDestinationNameBlur(i)"
             />
             <span class="control-required"></span>
-            @if (destination.get('address')?.invalid &&
-            (destination.get('address')?.dirty ||
-            destination.get('address')?.touched)) { @if
-            (destination.get('address')?.hasError('required')) {
-            <span class="control-feedback">Required</span>
-            } @if
-            (destination.get('address')?.hasError('invalidDestinationAddress'))
+            @if (destination.get('destinationName')?.errors?.['required']) 
             {
-            <span class="control-feedback"
-              >Invalid URL
+              <span class="control-feedback">Required</span>
+            }
+            @if (isControlOptionsDisplayed)
+            {
+              <div class="control__editing-options">
+                <div class="tooltip">
+                  <button
+                    class="button button--primary button--icon"
+                    (click)="makeChangeRequest(i)"
+                    [disabled]="canUpdateIsDisabled(i)"
+                  >
+                    <i class="bi bi-arrow-repeat"></i>
+                  </button>
+                  <span class="tooltip-text">Update</span>
+                </div>
+                <div class="tooltip">
+                  <button
+                    class="button button--secondary button--icon"
+                    (click)="reset(i)"
+                  >
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                  </button>
+                  <span class="tooltip-text">Reset</span>
+                </div>
+              </div>
+            }
+          </div>
+          <span>": {{ "{" }}</span>
+        </div>
+        <div class="tab-2ch">
+          <div class="control-field">
+            <label class="control__label" for="address-{{ i }}">Address: </label>
+            <div class="control__input-wrapper">
+              <input
+                class="control__input"
+                id="address-{{ i }}"
+                type="text"
+                formControlName="address"
+                name="address-{{ i }}"
+                autocomplete="off"
+                [required]="true"
+              />
+              <span class="control-required"></span>
+              @if (destination.get('address')?.invalid &&
+                  (destination.get('address')?.dirty ||
+                  destination.get('address')?.touched)) 
+              { 
+                @if (destination.get('address')?.hasError('required')) 
+                {
+                  <span class="control-feedback">Required</span>
+                } 
+                @if (destination.get('address')?.hasError('invalidDestinationAddress'))
+                {
+                  <span class="control-feedback"
+                    >Invalid URL
+                    <button
+                      type="button"
+                      class="control-feedback__info"
+                      [title]="destination.get('address')?.getError('invalidDestinationAddress')?.message"
+                      tabindex="-1"
+                    ></button>
+                  </span>
+                } 
+              }
+            </div>
+          </div>
+        </div>
+        <div class="tab-2ch"></div>
+        <div class="form__footer">
+          <span>{{ "}" }}</span>
+          <div class="form__footer-buttons">
+            <div class="tooltip">
               <button
-                type="button"
-                class="control-feedback__info"
-                [title]="
-                  destination
-                    .get('address')
-                    ?.getError('invalidDestinationAddress')?.message
-                "
-                tabindex="-1"
-              ></button>
-            </span>
-            } }
+                class="button button--primary button--icon"
+                (click)="makeChangeRequest(i)"
+                [disabled]="true"
+              >
+                <i class="bi bi-arrow-repeat"></i>
+              </button>
+              <span class="tooltip-text">Update</span>
+            </div>
+            <div class="tooltip">
+              <button
+                class="button button--secondary button--icon"
+                (click)="reset(i)"
+              >
+                <i class="bi bi-arrow-counterclockwise"></i>
+              </button>
+              <span class="tooltip-text">Reset</span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="tab-2ch"></div>
-      <div class="form__footer">
-        <span>{{ "}" }}</span>
-        <div class="form__footer-buttons"></div>
-
-        <button
-          class="button button--primary button--small"
-          (click)="updateDestination(i)"
-          [disabled]="canUpdate(i)"
-        >
-          Update
-        </button>
-        <button
-          class="button button--secondary button--small"
-          (click)="resetDestination(i)"
-        >
-          Reset
-        </button>
-      </div>
-    </div>
     }
   </ng-container>
   <span class="form__heading form__heading--third">{{ "}" }},</span>
