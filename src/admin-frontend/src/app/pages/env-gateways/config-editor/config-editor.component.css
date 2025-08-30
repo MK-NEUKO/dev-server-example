@@ -68,6 +68,11 @@
   width: fit-content;
   align-items: flex-start;
 }
+.control__input.control__input-reminder:focus {
+  border-color: var(--neuko-text-warning);
+  box-shadow: 0 0 0.25rem var(--neuko-text-warning);
+  animation: pulse 2s infinite;
+}
 .control__input:focus {
   outline: none;
   border-color: var(--neuko-text-body-highlight);

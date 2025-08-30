@@ -22,7 +22,7 @@
               autocomplete="off"
               [required]="true"
               (focus)="onControlFocus(i, 'destinationName')"
-              (blur)="onDestinationNameBlur(i)"
+              (blur)="onControlBlur(i, 'destinationName')"
             />
             <span class="control-required"></span>
             @if (destination.get('destinationName')?.errors?.['required']) 
@@ -47,8 +47,8 @@
                 <div class="tooltip">
                   <button
                     class="button button--primary button--icon"
-                    (click)="makeChangeRequest(i)"
-                    [disabled]="canUpdateIsDisabled(i)"
+                    (click)="makeChangeRequest(i, 'destinationName')"
+                    [disabled]="!isControlValueChanged(i, 'destinationName')"
                   >
                     <i class="bi bi-arrow-repeat"></i>
                   </button>
@@ -81,6 +81,7 @@
                 autocomplete="off"
                 [required]="true"
                 (focus)="onControlFocus(i, 'address')"
+                (blur)="onControlBlur(i, 'address')"
               />
               <span class="control-required"></span>
               @if (destination.get('address')?.invalid &&
@@ -110,8 +111,8 @@
                   <div class="tooltip">
                     <button
                       class="button button--primary button--icon"
-                      (click)="makeChangeRequest(i)"
-                      [disabled]="canUpdateIsDisabled(i)"
+                      (click)="makeChangeRequest(i, 'address')"
+                      [disabled]="!isControlValueChanged(i, 'address')"
                     >
                       <i class="bi bi-arrow-repeat"></i>
                     </button>

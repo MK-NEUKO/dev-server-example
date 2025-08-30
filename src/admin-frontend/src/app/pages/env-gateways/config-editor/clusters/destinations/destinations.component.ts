@@ -50,22 +50,27 @@ export class DestinationsComponent implements OnInit {
     console.log('Control focused:', index, controlName, this.canControlOptionsDisplayed);
   }
 
-  public onDestinationNameBlur(index: number): void {
-
-
-    console.log('Destination Name blurred:', index, this.canControlOptionsDisplayed);
+  public onControlBlur(index: number, controlName: string): void {
+    if (this.isControlValueChanged(index, controlName)) {
+      const control = document.querySelector('input[formControlName="' + controlName + '"]') as HTMLInputElement;
+      if (control) {
+        setTimeout(() => control.focus());
+        control.classList.add('control__input-reminder');
+      }
+      console.log('Destination Name blurred:', index, controlName);
+    }
   }
 
-  public canUpdateIsDisabled(index: number): boolean | undefined {
-    const address = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME);
-    if (address?.pristine) {
-      return true;
+  public isControlValueChanged(index: number, controlName: string): boolean | undefined {
+    const control = this.formArray.at(index).get(controlName);
+    if (control?.pristine) {
+      return false;
     }
-    if (address?.invalid) {
-      return true;
+    if (control?.invalid) {
+      return false;
     }
 
-    return false;
+    return true;
   }
 
   public reset(index: number): void {
@@ -75,7 +80,7 @@ export class DestinationsComponent implements OnInit {
     address?.markAsDirty();
   }
 
-  public async makeChangeRequest(index: number): Promise<void> {
+  public async makeChangeRequest(index: number, controlName: string): Promise<void> {
     console.log('Make Change Request at index:', index);
 
     /*
@@ -106,11 +111,22 @@ export class DestinationsComponent implements OnInit {
       `HttpClient - response: ${message}`
     );
 
-    this.canControlOptionsDisplayed['destinationName'] = false;
-    const destinationName = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME);
-    destinationName?.markAsPristine();
-    destinationName?.markAsUntouched();
+    this.resetControlProperties(index, controlName);
   }
+
+  private resetControlProperties(index: number, controlName: string): void {
+    const control = this.formArray.at(index).get(controlName);
+    control?.markAsPristine();
+    control?.markAsUntouched();
+    const input = document.querySelector('input[formControlName="' + controlName + '"]') as HTMLInputElement;
+    if (input) {
+      input.classList.remove('control__input-reminder');
+    }
+    Object.keys(this.canControlOptionsDisplayed).forEach(key => {
+      this.canControlOptionsDisplayed[key] = false;
+    });
+  }
+
 
 
   openDialog(title: string, message: string): void {
