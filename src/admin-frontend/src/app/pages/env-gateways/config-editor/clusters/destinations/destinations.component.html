@@ -21,7 +21,7 @@
               name="destinationName-{{ i }}"
               autocomplete="off"
               [required]="true"
-              (focus)="onDestinationNameFocus(i)"
+              (focus)="onControlFocus(i, 'destinationName')"
               (blur)="onDestinationNameBlur(i)"
             />
             <span class="control-required"></span>
@@ -41,7 +41,7 @@
                     ></button>
                   </span>
                 }
-            @if (isControlOptionsDisplayed)
+            @if (canControlOptionsDisplayed['destinationName'])
             {
               <div class="control__editing-options">
                 <div class="tooltip">
@@ -80,6 +80,7 @@
                 name="address-{{ i }}"
                 autocomplete="off"
                 [required]="true"
+                (focus)="onControlFocus(i, 'address')"
               />
               <span class="control-required"></span>
               @if (destination.get('address')?.invalid &&
@@ -103,33 +104,36 @@
                   </span>
                 } 
               }
+              @if (canControlOptionsDisplayed['address'])
+              {
+                <div class="control__editing-options">
+                  <div class="tooltip">
+                    <button
+                      class="button button--primary button--icon"
+                      (click)="makeChangeRequest(i)"
+                      [disabled]="canUpdateIsDisabled(i)"
+                    >
+                      <i class="bi bi-arrow-repeat"></i>
+                    </button>
+                    <span class="tooltip-text">Update</span>
+                  </div>
+                  <div class="tooltip">
+                    <button
+                      class="button button--secondary button--icon"
+                      (click)="reset(i)"
+                    >
+                      <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
+                    <span class="tooltip-text">Reset</span>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         </div>
         <div class="tab-2ch"></div>
         <div class="form__footer">
           <span>{{ "}" }}</span>
-          <div class="form__footer-buttons">
-            <div class="tooltip">
-              <button
-                class="button button--primary button--icon"
-                (click)="makeChangeRequest(i)"
-                [disabled]="true"
-              >
-                <i class="bi bi-arrow-repeat"></i>
-              </button>
-              <span class="tooltip-text">Update</span>
-            </div>
-            <div class="tooltip">
-              <button
-                class="button button--secondary button--icon"
-                (click)="reset(i)"
-              >
-                <i class="bi bi-arrow-counterclockwise"></i>
-              </button>
-              <span class="tooltip-text">Reset</span>
-            </div>
-          </div>
         </div>
       </div>
     }

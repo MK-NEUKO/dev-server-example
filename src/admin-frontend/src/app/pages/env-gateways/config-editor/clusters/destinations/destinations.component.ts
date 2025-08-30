@@ -28,7 +28,12 @@ export class DestinationsComponent implements OnInit {
   public modalMessage: string = '';
   public formArray!: FormArray;
   public parentForm!: FormGroup;
-  public isControlOptionsDisplayed: boolean = false;
+  public canControlOptionsDisplayed: Record<string, boolean> = {
+    destinationName: false,
+    address: false,
+    test1: true,
+    test2: true,
+  };
 
   ngOnInit(): void {
     const rootForm = this.rootFormGroup.control;
@@ -38,15 +43,17 @@ export class DestinationsComponent implements OnInit {
 
   }
 
-  public onDestinationNameFocus(index: number): void {
-    this.isControlOptionsDisplayed = true;
-    console.log('Destination Name focused:', index, this.isControlOptionsDisplayed);
+  public onControlFocus(index: number, controlName: string): void {
+    Object.keys(this.canControlOptionsDisplayed).forEach(key => {
+      this.canControlOptionsDisplayed[key] = (key === controlName);
+    });
+    console.log('Control focused:', index, controlName, this.canControlOptionsDisplayed);
   }
 
   public onDestinationNameBlur(index: number): void {
 
 
-    console.log('Destination Name blurred:', index, this.isControlOptionsDisplayed);
+    console.log('Destination Name blurred:', index, this.canControlOptionsDisplayed);
   }
 
   public canUpdateIsDisabled(index: number): boolean | undefined {
@@ -99,7 +106,7 @@ export class DestinationsComponent implements OnInit {
       `HttpClient - response: ${message}`
     );
 
-    this.isControlOptionsDisplayed = false;
+    this.canControlOptionsDisplayed['destinationName'] = false;
     const destinationName = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME);
     destinationName?.markAsPristine();
     destinationName?.markAsUntouched();
