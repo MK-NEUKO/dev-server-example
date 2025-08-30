@@ -73,6 +73,20 @@
   box-shadow: 0 0 0.25rem var(--neuko-text-warning);
   animation: pulse 2s infinite;
 }
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0.25rem var(--neuko-text-warning);
+    background-color: transparent;
+  }
+  50% {
+    box-shadow: 0 0 0.75rem var(--neuko-text-warning);
+    background-color: rgba(var(--neuko-text-warning-rgb), 0.125);
+  }
+  100% {
+    box-shadow: 0 0 0.25rem var(--neuko-text-warning);
+    background-color: transparent;
+  }
+}
 .control__input:focus {
   outline: none;
   border-color: var(--neuko-text-body-highlight);

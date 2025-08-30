@@ -47,7 +47,6 @@ export class DestinationsComponent implements OnInit {
     Object.keys(this.canControlOptionsDisplayed).forEach(key => {
       this.canControlOptionsDisplayed[key] = (key === controlName);
     });
-    console.log('Control focused:', index, controlName, this.canControlOptionsDisplayed);
   }
 
   public onControlBlur(index: number, controlName: string): void {
@@ -57,7 +56,6 @@ export class DestinationsComponent implements OnInit {
         setTimeout(() => control.focus());
         control.classList.add('control__input-reminder');
       }
-      console.log('Destination Name blurred:', index, controlName);
     }
   }
 
@@ -112,6 +110,7 @@ export class DestinationsComponent implements OnInit {
     );
 
     this.resetControlProperties(index, controlName);
+    this.resetCanControlOptionsDisplayed();
   }
 
   private resetControlProperties(index: number, controlName: string): void {
@@ -122,12 +121,13 @@ export class DestinationsComponent implements OnInit {
     if (input) {
       input.classList.remove('control__input-reminder');
     }
+  }
+
+  private resetCanControlOptionsDisplayed(): void {
     Object.keys(this.canControlOptionsDisplayed).forEach(key => {
       this.canControlOptionsDisplayed[key] = false;
     });
   }
-
-
 
   openDialog(title: string, message: string): void {
     this.modalTitle = title;

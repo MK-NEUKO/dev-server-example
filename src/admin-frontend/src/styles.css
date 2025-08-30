@@ -43,6 +43,7 @@
   --neuko-bg-body-quaternary: #9fa6bc;
   --neuko-bg-success: #90d67f;
   --neuko-bg-warning: #e5780b;
+  --neuko-text-warning-rgb: 255, 193, 7;
   --neuko-bg-danger: #ff5b42;
   --neuko-border: #e3e6ed;
   --neuko-bg-card: #ffffff;
@@ -65,6 +66,7 @@
   --neuko-bg-body-quaternary: #3e465b;
   --neuko-bg-success: #25b003;
   --neuko-bg-warning: #ffcc85;
+  --neuko-text-warning-rgb: 255, 204, 133;
   --neuko-bg-danger: #ec1f00;
   --neuko-border: #2f3549;
   --neuko-bg-card: #141824;
