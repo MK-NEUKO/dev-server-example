@@ -29,6 +29,18 @@
             {
               <span class="control-feedback">Required</span>
             }
+            @if (destination.get('destinationName')?.hasError('invalidNameProperty'))
+                {
+                  <span class="control-feedback"
+                    >Invalid Name
+                    <button
+                      type="button"
+                      class="control-feedback__info"
+                      [title]="destination.get('destinationName')?.getError('invalidNameProperty')?.message"
+                      tabindex="-1"
+                    ></button>
+                  </span>
+                }
             @if (isControlOptionsDisplayed)
             {
               <div class="control__editing-options">

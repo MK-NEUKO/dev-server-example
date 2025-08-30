@@ -100,6 +100,9 @@ export class DestinationsComponent implements OnInit {
     );
 
     this.isControlOptionsDisplayed = false;
+    const destinationName = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME);
+    destinationName?.markAsPristine();
+    destinationName?.markAsUntouched();
   }
 
 
