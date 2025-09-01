@@ -4,12 +4,14 @@ import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-
 import { DestinationService } from '../../../../../services/env-gateway/destination/destination.service';
 import { ClustersComponent } from '../clusters.component';
 import { ModalDialogComponent } from "../../../../../dialogues/modal-dialog/modal-dialog.component";
+import { RequestProgressComponent } from '../../../../../dialogues/request-progress/request-progress.component';
 
 @Component({
   selector: 'app-destinations',
   imports: [
     ReactiveFormsModule,
-    ModalDialogComponent
+    ModalDialogComponent,
+    RequestProgressComponent
   ],
   templateUrl: './destinations.component.html',
   styleUrls: [
@@ -24,6 +26,7 @@ export class DestinationsComponent implements OnInit {
   private rootFormGroup = inject(FormGroupDirective);
   private destinationService = inject(DestinationService);
   public showDialog: boolean = false;
+  public showRequestProgress: boolean = false;
   public modalTitle: string = '';
   public modalMessage: string = '';
   public formArray!: FormArray;
@@ -34,6 +37,7 @@ export class DestinationsComponent implements OnInit {
     test1: true,
     test2: true,
   };
+  private blurCausedByControlOptionButton: boolean = false;
 
   ngOnInit(): void {
     const rootForm = this.rootFormGroup.control;
@@ -44,19 +48,38 @@ export class DestinationsComponent implements OnInit {
   }
 
   public onControlFocus(index: number, controlName: string): void {
+    const control = document.querySelector('input[formControlName="' + controlName + '"]') as HTMLInputElement;
+    if (control) {
+      control.classList.remove('control__input-changed');
+    }
     Object.keys(this.canControlOptionsDisplayed).forEach(key => {
       this.canControlOptionsDisplayed[key] = (key === controlName);
     });
   }
 
   public onControlBlur(index: number, controlName: string): void {
-    if (this.isControlValueChanged(index, controlName)) {
-      const control = document.querySelector('input[formControlName="' + controlName + '"]') as HTMLInputElement;
-      if (control) {
-        setTimeout(() => control.focus());
-        control.classList.add('control__input-reminder');
+    const control = document.querySelector('input[formControlName="' + controlName + '"]') as HTMLInputElement;
+
+    setTimeout(() => {
+      if (this.blurCausedByControlOptionButton) {
+        if (control) {
+          control.classList.remove('control__input-reminder');
+        }
+        return;
       }
-    }
+
+      if (this.isControlValueChanged(index, controlName)) {
+        if (control) {
+          control.focus();
+          control.classList.add('control__input-reminder');
+        }
+        return;
+      }
+    });
+  }
+
+  public onControlOptionButtonMouseDown(): void {
+    this.blurCausedByControlOptionButton = true;
   }
 
   public isControlValueChanged(index: number, controlName: string): boolean | undefined {
@@ -78,40 +101,37 @@ export class DestinationsComponent implements OnInit {
     address?.markAsDirty();
   }
 
-  public async makeChangeRequest(index: number, controlName: string): Promise<void> {
+  public async handleChangeRequest(index: number, controlName: string): Promise<void> {
     console.log('Make Change Request at index:', index);
+    this.openRequestProgress('Processing Change Request');
 
-    /*
-    const clusterId = this.parentForm.get('clusterId')?.value;
-    const destinationId = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ID)?.value;
-    const address = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS)?.value;
-    const destinationName = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME)?.value;
     const request = {
-      clusterId: clusterId,
-      destinationId: destinationId,
-      address: address,
-      destinationName: destinationName
+      clusterId: this.parentForm.get('clusterId')?.value,
+      destinationId: this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ID)?.value,
+      [controlName]: this.formArray.at(index).get(controlName)?.value
     };
 
-    var message = '';
+    let message = '';
+    let responseTitle = '';
     try {
-      message = await this.destinationService.SaveChanges(request);
-
+      if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME) {
+        message = await this.destinationService.SaveDestinationNameChanges(request);
+        responseTitle = 'Destination Name Update Response';
+      } else if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS) {
+        message = await this.destinationService.SaveDestinationAddressChanges(request);
+        responseTitle = 'Destination Address Update Response';
+      }
     } catch (error: any) {
       console.error('Error updating destination:', error.message);
-      message = error.message || 'An error occurred while updating the destination.';
+      return error.message || 'An error occurred while updating the destination.';
     }
-    */
 
-    const message = "This is the test request";
-    this.openDialog(
-      'Destination update response',
-      `HttpClient - response: ${message}`
-    );
-
+    this.showRequestProgress = false;
+    this.openDialog(responseTitle, message);
     this.resetControlProperties(index, controlName);
     this.resetCanControlOptionsDisplayed();
   }
+
 
   private resetControlProperties(index: number, controlName: string): void {
     const control = this.formArray.at(index).get(controlName);
@@ -119,7 +139,9 @@ export class DestinationsComponent implements OnInit {
     control?.markAsUntouched();
     const input = document.querySelector('input[formControlName="' + controlName + '"]') as HTMLInputElement;
     if (input) {
-      input.classList.remove('control__input-reminder');
+      input.classList.remove('control__input-reminder', 'control__input-processed');
+      input.classList.add('control__input-changed');
+      this.blurCausedByControlOptionButton = false;
     }
   }
 
@@ -129,9 +151,15 @@ export class DestinationsComponent implements OnInit {
     });
   }
 
-  openDialog(title: string, message: string): void {
+
+  private openDialog(title: string, message: string): void {
     this.modalTitle = title;
     this.modalMessage = message;
     this.showDialog = true;
+  }
+
+  private openRequestProgress(title: string): void {
+    this.modalTitle = title;
+    this.showRequestProgress = true;
   }
 }

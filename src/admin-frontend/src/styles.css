@@ -31,6 +31,7 @@
   --neuko-text-body-highlight: #222834;
   --neuko-text-body-quaternary: #8a94ad;
   --neuko-text-success: #25b003;
+  --neuko-text-success-rgb: 37, 176, 3;
   --neuko-text-warning: #e5780b;
   --neuko-text-danger: #ec1f00;
   --neuko-text-info: #0097eb;
@@ -54,6 +55,7 @@
   --neuko-text-body-highlight: #dee2ec;
   --neuko-text-body-quaternary: #5e677f;
   --neuko-text-success: #90d67f;
+  --neuko-text-success-rgb: 144, 214, 127;
   --neuko-text-warning: #ffcc85;
   --neuko-text-danger: #f48270;
   --neuko-text-info: #0097eb;

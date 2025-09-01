@@ -47,7 +47,8 @@
                 <div class="tooltip">
                   <button
                     class="button button--primary button--icon"
-                    (click)="makeChangeRequest(i, 'destinationName')"
+                    (mousedown)="onControlOptionButtonMouseDown()"
+                    (click)="handleChangeRequest(i, 'destinationName')"
                     [disabled]="!isControlValueChanged(i, 'destinationName')"
                   >
                     <i class="bi bi-arrow-repeat"></i>
@@ -57,6 +58,7 @@
                 <div class="tooltip">
                   <button
                     class="button button--secondary button--icon"
+                    (mousedown)="onControlOptionButtonMouseDown()"
                     (click)="reset(i)"
                   >
                     <i class="bi bi-arrow-counterclockwise"></i>
@@ -111,7 +113,7 @@
                   <div class="tooltip">
                     <button
                       class="button button--primary button--icon"
-                      (click)="makeChangeRequest(i, 'address')"
+                      (click)="handleChangeRequest(i, 'address')"
                       [disabled]="!isControlValueChanged(i, 'address')"
                     >
                       <i class="bi bi-arrow-repeat"></i>
@@ -148,5 +150,13 @@
     >
       <p>{{ modalMessage }}</p>
     </app-modal-dialog>
+  </div>
+  <div>
+    <app-request-progress
+      [title]="modalTitle"
+      [visible]="showRequestProgress"
+      (close)="showRequestProgress = false"
+    >
+    </app-request-progress>
   </div>
 </div>
