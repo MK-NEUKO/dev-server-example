@@ -48,7 +48,7 @@
                   <button
                     class="button button--primary button--icon"
                     (mousedown)="onControlOptionButtonMouseDown()"
-                    (click)="handleChangeRequest(i, 'destinationName')"
+                    (click)="changeDestinationProperty(i, 'destinationName')"
                     [disabled]="!isControlValueChanged(i, 'destinationName')"
                   >
                     <i class="bi bi-arrow-repeat"></i>
@@ -113,7 +113,7 @@
                   <div class="tooltip">
                     <button
                       class="button button--primary button--icon"
-                      (click)="handleChangeRequest(i, 'address')"
+                      (click)="changeDestinationProperty(i, 'address')"
                       [disabled]="!isControlValueChanged(i, 'address')"
                     >
                       <i class="bi bi-arrow-repeat"></i>
@@ -154,8 +154,8 @@
   <div>
     <app-request-progress
       [title]="modalTitle"
-      [visible]="showRequestProgress"
-      (close)="showRequestProgress = false"
+      [visible]="showRequestProgressDialog"
+      (close)="showRequestProgressDialog = false"
     >
     </app-request-progress>
   </div>

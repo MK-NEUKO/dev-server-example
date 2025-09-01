@@ -26,7 +26,7 @@ export class DestinationsComponent implements OnInit {
   private rootFormGroup = inject(FormGroupDirective);
   private destinationService = inject(DestinationService);
   public showDialog: boolean = false;
-  public showRequestProgress: boolean = false;
+  public showRequestProgressDialog: boolean = false;
   public modalTitle: string = '';
   public modalMessage: string = '';
   public formArray!: FormArray;
@@ -49,9 +49,11 @@ export class DestinationsComponent implements OnInit {
 
   public onControlFocus(index: number, controlName: string): void {
     const control = document.querySelector('input[formControlName="' + controlName + '"]') as HTMLInputElement;
+
     if (control) {
       control.classList.remove('control__input-changed');
     }
+
     Object.keys(this.canControlOptionsDisplayed).forEach(key => {
       this.canControlOptionsDisplayed[key] = (key === controlName);
     });
@@ -101,9 +103,8 @@ export class DestinationsComponent implements OnInit {
     address?.markAsDirty();
   }
 
-  public async handleChangeRequest(index: number, controlName: string): Promise<void> {
-    console.log('Make Change Request at index:', index);
-    this.openRequestProgress('Processing Change Request');
+  public async changeDestinationProperty(index: number, controlName: string): Promise<void> {
+    this.openRequestProgressDialog(`${controlName} will be changed`);
 
     const request = {
       clusterId: this.parentForm.get('clusterId')?.value,
@@ -111,23 +112,19 @@ export class DestinationsComponent implements OnInit {
       [controlName]: this.formArray.at(index).get(controlName)?.value
     };
 
-    let message = '';
+    let responseMessage = '';
     let responseTitle = '';
-    try {
-      if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME) {
-        message = await this.destinationService.SaveDestinationNameChanges(request);
-        responseTitle = 'Destination Name Update Response';
-      } else if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS) {
-        message = await this.destinationService.SaveDestinationAddressChanges(request);
-        responseTitle = 'Destination Address Update Response';
-      }
-    } catch (error: any) {
-      console.error('Error updating destination:', error.message);
-      return error.message || 'An error occurred while updating the destination.';
+
+    if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME) {
+      responseMessage = await this.destinationService.SaveDestinationNameChanges(request);
+      responseTitle = 'Destination Name Update Response';
+    } else if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS) {
+      responseMessage = await this.destinationService.SaveDestinationAddressChanges(request);
+      responseTitle = 'Destination Address Update Response';
     }
 
-    this.showRequestProgress = false;
-    this.openDialog(responseTitle, message);
+    this.showRequestProgressDialog = false;
+    this.openDialog(responseTitle, responseMessage);
     this.resetControlProperties(index, controlName);
     this.resetCanControlOptionsDisplayed();
   }
@@ -158,8 +155,8 @@ export class DestinationsComponent implements OnInit {
     this.showDialog = true;
   }
 
-  private openRequestProgress(title: string): void {
+  private openRequestProgressDialog(title: string): void {
     this.modalTitle = title;
-    this.showRequestProgress = true;
+    this.showRequestProgressDialog = true;
   }
 }
