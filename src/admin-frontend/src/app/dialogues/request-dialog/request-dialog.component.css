@@ -34,6 +34,14 @@
   max-height: 60vh;
   overflow-y: auto;
 }
+.modal-message {
+  white-space: pre-line;
+}
+.modal__body--hr {
+  border: none;
+  border-top: 0.0625rem solid var(--neuko-border);
+  margin: 1rem 0;
+}
 .modal-close {
   background: none;
   border: none;

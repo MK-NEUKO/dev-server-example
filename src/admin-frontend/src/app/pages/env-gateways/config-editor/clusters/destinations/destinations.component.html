@@ -143,17 +143,17 @@
   </ng-container>
   <span class="form__heading form__heading--third">{{ "}" }},</span>
   <div>
-    <app-modal-dialog
-      [title]="modalTitle"
+    <app-request-dialog
+      [title]="requestDialogTitle"
+      [requestResponse]="requestResponse"
       [visible]="showDialog"
       (close)="showDialog = false"
     >
-      <p>{{ modalMessage }}</p>
-    </app-modal-dialog>
+    </app-request-dialog>
   </div>
   <div>
     <app-request-progress
-      [title]="modalTitle"
+      [title]="requestProgressDialogTitle"
       [visible]="showRequestProgressDialog"
       (close)="showRequestProgressDialog = false"
     >

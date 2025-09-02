@@ -3,14 +3,15 @@ import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
 import { DestinationService } from '../../../../../services/env-gateway/destination/destination.service';
 import { ClustersComponent } from '../clusters.component';
-import { ModalDialogComponent } from "../../../../../dialogues/modal-dialog/modal-dialog.component";
+import { RequestDialogComponent } from "../../../../../dialogues/request-dialog/request-dialog.component";
 import { RequestProgressComponent } from '../../../../../dialogues/request-progress/request-progress.component';
+import { RequestResponse } from '../../../../../services/env-gateway/RequestResponse/request-response';
 
 @Component({
   selector: 'app-destinations',
   imports: [
     ReactiveFormsModule,
-    ModalDialogComponent,
+    RequestDialogComponent,
     RequestProgressComponent
   ],
   templateUrl: './destinations.component.html',
@@ -27,8 +28,9 @@ export class DestinationsComponent implements OnInit {
   private destinationService = inject(DestinationService);
   public showDialog: boolean = false;
   public showRequestProgressDialog: boolean = false;
-  public modalTitle: string = '';
-  public modalMessage: string = '';
+  public requestDialogTitle: string = '';
+  public requestProgressDialogTitle: string = '';
+  public requestResponse!: RequestResponse;
   public formArray!: FormArray;
   public parentForm!: FormGroup;
   public canControlOptionsDisplayed: Record<string, boolean> = {
@@ -112,19 +114,22 @@ export class DestinationsComponent implements OnInit {
       [controlName]: this.formArray.at(index).get(controlName)?.value
     };
 
-    let responseMessage = '';
+
     let responseTitle = '';
 
     if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME) {
-      responseMessage = await this.destinationService.SaveDestinationNameChanges(request);
-      responseTitle = 'Destination Name Update Response';
+      const requestResponse = await this.destinationService.SaveDestinationNameChanges(request);
+      responseTitle = 'Destination name changed response';
     } else if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS) {
-      responseMessage = await this.destinationService.SaveDestinationAddressChanges(request);
-      responseTitle = 'Destination Address Update Response';
+      const requestResponse = await this.destinationService.SaveDestinationAddressChanges(request);
+      console.log(requestResponse);
+
+      responseTitle = 'Destination address changed response';
+      this.openRequestDialog(responseTitle, requestResponse);
     }
 
     this.showRequestProgressDialog = false;
-    this.openDialog(responseTitle, responseMessage);
+
     this.resetControlProperties(index, controlName);
     this.resetCanControlOptionsDisplayed();
   }
@@ -149,14 +154,14 @@ export class DestinationsComponent implements OnInit {
   }
 
 
-  private openDialog(title: string, message: string): void {
-    this.modalTitle = title;
-    this.modalMessage = message;
+  private openRequestDialog(title: string, requestResponse: RequestResponse): void {
+    this.requestDialogTitle = title;
+    this.requestResponse = requestResponse;
     this.showDialog = true;
   }
 
   private openRequestProgressDialog(title: string): void {
-    this.modalTitle = title;
+    this.requestDialogTitle = title;
     this.showRequestProgressDialog = true;
   }
 }

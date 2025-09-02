@@ -229,6 +229,35 @@ body {
   border-radius: 0.25rem;
 }
 
+.accordion {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.accordion-toggle {
+  padding: 0.5rem 1rem;
+  background-color: var(--neuko-bg-body-secondary);
+  border: 0.1rem solid var(--neuko-border);
+  border-radius: 0.25rem;
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: left;
+}
+
+.accordion-content {
+  background: transparent;
+  border-left: 0.1rem solid var(--neuko-border);
+  border-right: 0.1rem solid var(--neuko-border);
+  border-bottom: 0.1rem solid var(--neuko-border);
+  border-end-end-radius: 0.25rem;
+  margin-top: -0.25rem;
+  padding: 1rem;
+  font-size: 0.95em;
+  white-space: pre-wrap;
+}
+
 /* Tooltip container */
 .tooltip {
   position: relative;
