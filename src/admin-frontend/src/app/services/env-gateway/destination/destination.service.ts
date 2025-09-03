@@ -12,9 +12,9 @@ export class DestinationService {
 
   constructor() { }
 
-  public SaveDestinationNameChanges(request: any): Promise<string> {
+  public SaveDestinationNameChanges(request: any): Promise<RequestResponse> {
     return new Promise(resolve => {
-      setTimeout(() => resolve('Test: Destination name change simulated'), 2000);
+      setTimeout(() => resolve({ isError: false, message: 'Test: Destination name change simulated' }), 2000);
     })
     /*
     return new Promise((resolve, reject) => {

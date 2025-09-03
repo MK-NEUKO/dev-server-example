@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output, input } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { RequestResponse } from '../../services/env-gateway/RequestResponse/request-response';
-import { ErrorDetails } from '../../services/env-gateway/error/error-details';
+import { DialogService } from '../../services/dialog-service/dialog.service';
 
 @Component({
   selector: 'app-request-dialog',
@@ -8,19 +8,43 @@ import { ErrorDetails } from '../../services/env-gateway/error/error-details';
   templateUrl: './request-dialog.component.html',
   styleUrl: './request-dialog.component.css'
 })
-export class RequestDialogComponent {
-  readonly title = input<string>('');
-  readonly requestResponse = input<RequestResponse | null>(null);
-  readonly visible = input<boolean>(false);
-  @Output() close = new EventEmitter<void>();
+export class RequestDialogComponent implements OnInit {
 
+  private dialogService = inject(DialogService);
+  public title: string = '';
+  public requestResponse: RequestResponse | null = null;
   public showDetails = false;
+  @ViewChild('modal') modalReference!: ElementRef;
+
+  ngOnInit(): void {
+    this.showError();
+  }
+
 
   onClose() {
-    this.close.emit();
+    this.dialogService.close();
+    this.showDetails = false;
   }
 
   public toggleDetails(): void {
     this.showDetails = !this.showDetails;
+  }
+
+  private showError() {
+    const modal = document.getElementById('modal');
+
+    if (modal) {
+      modal.classList.add('modal--error');
+    }
+  }
+
+  public onBackdropClick(): void {
+    const modalElement = this.modalReference.nativeElement;
+    if (modalElement) {
+      modalElement.classList.add('shake');
+      modalElement.addEventListener('animationend', () => {
+        modalElement.classList.remove('shake');
+      }, { once: true });
+    }
   }
 }

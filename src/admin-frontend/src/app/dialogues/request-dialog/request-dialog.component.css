@@ -14,17 +14,45 @@
   background: var(--neuko-bg-body);
   border: 0.1rem solid var(--neuko-border);
   border-radius: 6px;
-  min-width: 300px;
-  max-width: 90vw;
+  min-width: 25rem;
+  max-width: 30vw;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+}
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-8px);
+  }
+  80% {
+    transform: translateX(8px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.modal.shake {
+  animation: shake 0.4s;
+}
+.modal--error {
+  border-color: var(--neuko-text-danger);
+  box-shadow: 0 0 0.5rem var(--neuko-text-danger);
 }
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  border-bottom: 0.125rem solid var(--neuko-border);
+  border-bottom: 0.1rem solid var(--neuko-border);
 }
 .modal-title {
   font-weight: bold;
@@ -53,5 +81,5 @@
   display: flex;
   justify-content: flex-end;
   padding: 1rem;
-  border-top: 0.125rem solid var(--neuko-border);
+  border-top: 0.1rem solid var(--neuko-border);
 }
