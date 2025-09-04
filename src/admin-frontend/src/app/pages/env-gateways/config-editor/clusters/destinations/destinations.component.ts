@@ -60,6 +60,7 @@ export class DestinationsComponent implements OnInit {
       if (this.blurCausedByControlOptionButton) {
         if (control) {
           control.classList.remove('control__input-reminder');
+          this.blurCausedByControlOptionButton = false;
         }
         return;
       }
@@ -95,6 +96,7 @@ export class DestinationsComponent implements OnInit {
     control?.reset();
     control?.markAsTouched();
     control?.markAsDirty();
+    this.blurCausedByControlOptionButton = false;
   }
 
   public async changeDestinationProperty(index: number, controlName: string): Promise<void> {
@@ -125,6 +127,7 @@ export class DestinationsComponent implements OnInit {
     this.resetControlProperties(index, controlName);
     this.setControlStatusColors(index, controlName, requestResponse.isError);
     this.resetCanControlOptionsDisplayed();
+    this.blurCausedByControlOptionButton = false;
   }
 
   private resetControlProperties(index: number, controlName: string): void {

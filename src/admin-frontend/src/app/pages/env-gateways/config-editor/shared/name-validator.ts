@@ -6,7 +6,6 @@ export class NameValidator {
             const value = control.value as string;
             const pattern = /^[a-zA-Z0-9-]+$/;
 
-            // Emty string is allowed
             if (!value || value.trim().length === 0) {
                 return null;
             }

@@ -36,24 +36,20 @@ export class DestinationService {
   }
 
   public SaveDestinationAddressChanges(request: any): Promise<RequestResponse> {
-    request.address = 'Httppp';
-
     return new Promise((resolve) => {
-      this.httpClient.put(`https://localhost:9100/update-destination`, request, {
-
-      }).subscribe({
-        next: (response) => {
-          resolve({
-            isError: false,
-            message: 'Destination address was successfully changed.'
-          });
-        },
-        error: (error) => {
-          console.error('Error updating destination:', error);
-          const processedResponse = this.requestErrorHandler.handle(error.error);
-          resolve(processedResponse);
-        }
-      });
+      this.httpClient.put(`https://localhost:9100/update-destination`, request, {})
+        .subscribe({
+          next: (response) => {
+            resolve({
+              isError: false,
+              message: 'Destination address was successfully changed.'
+            });
+          },
+          error: (error) => {
+            const processedResponse = this.requestErrorHandler.handle(error.error);
+            resolve(processedResponse);
+          }
+        });
     });
   }
 }
