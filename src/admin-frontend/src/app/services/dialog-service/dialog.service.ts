@@ -8,15 +8,27 @@ export class DialogService {
 
   constructor(private appRef: ApplicationRef, private injector: Injector) { }
 
-  open(requestResponse: RequestResponse, title: string = '') {
-    if (this.dialogRef) return; // Nur ein Dialog gleichzeitig
+  open(title: string = ''): RequestDialogComponent | undefined {
+    if (this.dialogRef) return;
 
     this.dialogRef = createComponent(RequestDialogComponent, { environmentInjector: this.appRef.injector });
-    this.dialogRef.instance.requestResponse = requestResponse;
-    this.dialogRef.instance.title = title;
-
+    this.dialogRef.instance.title.set(title);
     this.appRef.attachView(this.dialogRef.hostView);
     document.body.appendChild(this.dialogRef.location.nativeElement);
+
+    return this.dialogRef.instance;
+  }
+
+  setRequestResponse(requestResponse: RequestResponse) {
+    if (this.dialogRef) {
+      this.dialogRef.instance.requestResponse.set(requestResponse);
+    }
+  }
+
+  setRequestDialogTitle(title: string) {
+    if (this.dialogRef) {
+      this.dialogRef.instance.title.set(title);
+    }
   }
 
   close() {

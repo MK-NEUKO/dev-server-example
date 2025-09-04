@@ -1,66 +1,77 @@
 <div class="modal-backdrop" (click)="onBackdropClick()">
   <div class="modal" #modal id="modal" (click)="$event.stopPropagation()">
-    <div class="modal-header" id="request-dialog-header">
-      <span class="modal-title">{{ title }}</span>
-      <button class="modal-close" (click)="onClose()">&#x2716;</button>
-    </div>
-    <div class="modal-body">
-      <p class="modal-message">{{ requestResponse?.message }}</p>
-      @if (requestResponse?.isError) {
-        <hr class="modal__body--hr" />
-        <div class="accordion">
-          <button class="accordion-toggle" (click)="toggleDetails()">
-            Response Details
-          </button>
-          @if (showDetails) {
-            <div class="accordion-content">
-              <table class="details-table">
-                <tr>
-                  <td>Title: </td>
-                  <td>{{ requestResponse?.details?.title }}</td>
-                </tr>
-                <tr>
-                  <td>Type: </td>
-                  <td>{{ requestResponse?.details?.type }}</td>
-                </tr>
-                <tr>
-                  <td>Status: </td>
-                  <td>{{ requestResponse?.details?.status }}</td>
-                </tr>
-                <tr>
-                  <td>Detail: </td>
-                  <td>{{ requestResponse?.details?.detail }}</td>
-                </tr>
-              </table>
-              <br />
-              <table class="details-table">
-                <thead>
-                  <tr>
-                    <th>Errors</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (error of requestResponse?.details?.errors; track error) {
-                    <tr>
-                      <td>Property Name: </td>
-                      <td>{{ error["propertyName"] }}</td>
-                    </tr>
-                    <tr>
-                      <td>Error Message: </td>
-                      <td>{{ error["errorMessage"] }}</td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
-            </div>
-          }
+    @if (!requestResponse()) {
+      <div class="modal-header">
+      <span class="modal-title">{{ title() }}</span>
+      </div>
+      <div class="modal-body">
+        <div class="progress-indicator">
+          <div class="progress-indicator__bar"></div>
         </div>
-      }
-    </div>
-    <div class="modal-footer" id="request-dialog-footer">
-      <button class="button button--secondary" (click)="onClose()">
-        Close
-      </button>
-    </div>
+      </div>
+    } @else {
+      <div class="modal-header" id="request-dialog-header">
+      <span class="modal-title">{{ title() }}</span>
+      <button class="modal-close" (click)="onClose()">&#x2716;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-message">{{ requestResponse()?.message }}</p>
+        @if (requestResponse()?.isError) {
+          <hr class="modal__body--hr" />
+          <div class="accordion">
+            <button class="accordion-toggle" (click)="toggleDetails()">
+              Response Details
+            </button>
+            @if (showDetails) {
+              <div class="accordion-content">
+                <table class="details-table">
+                  <tr>
+                    <td>Title: </td>
+                    <td>{{ requestResponse()?.details?.title }}</td>
+                  </tr>
+                  <tr>
+                    <td>Type: </td>
+                    <td>{{ requestResponse()?.details?.type }}</td>
+                  </tr>
+                  <tr>
+                    <td>Status: </td>
+                    <td>{{ requestResponse()?.details?.status }}</td>
+                  </tr>
+                  <tr>
+                    <td>Detail: </td>
+                    <td>{{ requestResponse()?.details?.detail }}</td>
+                  </tr>
+                </table>
+                <br />
+                <table class="details-table">
+                  <thead>
+                    <tr>
+                      <th>Errors</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (error of requestResponse()?.details?.errors; track error) {
+                      <tr>
+                        <td>Property Name: </td>
+                        <td>{{ error["propertyName"] }}</td>
+                      </tr>
+                      <tr>
+                        <td>Error Message: </td>
+                        <td>{{ error["errorMessage"] }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <div class="modal-footer" id="request-dialog-footer">
+        <button class="button button--secondary" (click)="onClose()">
+          Close
+        </button>
+      </div>
+    }
   </div>
 </div>

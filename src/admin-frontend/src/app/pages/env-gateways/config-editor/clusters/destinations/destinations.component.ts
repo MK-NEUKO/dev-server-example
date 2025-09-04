@@ -105,7 +105,9 @@ export class DestinationsComponent implements OnInit {
   }
 
   public async changeDestinationProperty(index: number, controlName: string): Promise<void> {
-    this.openRequestProgressDialog(`${controlName} will be changed`);
+    //this.openRequestProgressDialog(`${controlName} will be changed`);
+
+    const requestDialog = this.dialogService.open(`Destination ${controlName} will be changed`);
 
     const request = {
       clusterId: this.parentForm.get('clusterId')?.value,
@@ -115,22 +117,26 @@ export class DestinationsComponent implements OnInit {
 
 
     let responseTitle = '';
+    let requestResponse: RequestResponse = { isError: false, message: '' };
 
     if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME) {
-      const requestResponse = await this.destinationService.SaveDestinationNameChanges(request);
+      requestResponse = await this.destinationService.SaveDestinationNameChanges(request);
       responseTitle = 'Destination name changed response';
-      this.openRequestDialog(responseTitle, requestResponse);
     } else if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS) {
-      const requestResponse = await this.destinationService.SaveDestinationAddressChanges(request);
+      requestResponse = await this.destinationService.SaveDestinationAddressChanges(request);
       console.log(requestResponse);
       responseTitle = 'Destination address changed response';
-      this.openRequestDialog(responseTitle, requestResponse);
     }
 
+    if (requestDialog && requestResponse) {
+      this.dialogService.setRequestResponse(requestResponse);
+      this.dialogService.setRequestDialogTitle(responseTitle);
+    }
     this.showRequestProgressDialog = false;
     this.resetControlProperties(index, controlName);
     this.resetCanControlOptionsDisplayed();
   }
+
 
 
   private resetControlProperties(index: number, controlName: string): void {
@@ -149,11 +155,6 @@ export class DestinationsComponent implements OnInit {
     Object.keys(this.canControlOptionsDisplayed).forEach(key => {
       this.canControlOptionsDisplayed[key] = false;
     });
-  }
-
-
-  private openRequestDialog(title: string, requestResponse: RequestResponse): void {
-    this.dialogService.open(requestResponse, title);
   }
 
   private openRequestProgressDialog(title: string): void {

@@ -12,12 +12,17 @@
 }
 .modal {
   background: var(--neuko-bg-body);
-  border: 0.1rem solid var(--neuko-border);
+  border: 0.1rem solid var(--neuko-text-info);
+  box-shadow: 0 0 0.5rem var(--neuko-text-info);
   border-radius: 6px;
   min-width: 25rem;
   max-width: 30vw;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+}
+
+.modal.shake {
+  animation: shake 0.4s;
 }
 @keyframes shake {
   0% {
@@ -40,13 +45,15 @@
   }
 }
 
-.modal.shake {
-  animation: shake 0.4s;
-}
 .modal--error {
   border-color: var(--neuko-text-danger);
   box-shadow: 0 0 0.5rem var(--neuko-text-danger);
 }
+.modal--success {
+  border-color: var(--neuko-text-success);
+  box-shadow: 0 0 0.5rem var(--neuko-text-success);
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -82,4 +89,56 @@
   justify-content: flex-end;
   padding: 1rem;
   border-top: 0.1rem solid var(--neuko-border);
+}
+
+.progress-indicator {
+  width: 15rem;
+  margin: 0 auto;
+  border-radius: 1rem;
+  border: 0.25rem solid transparent;
+  position: relative;
+  padding: 1px;
+}
+.progress-indicator:before {
+  content: "";
+  border: 0.1rem solid var(--neuko-border);
+  border-radius: 1rem;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  bottom: -4px;
+  left: -4px;
+}
+.progress-indicator__bar {
+  position: absolute;
+  border-radius: 1rem;
+  top: 0;
+  right: 100%;
+  bottom: 0;
+  left: 0;
+  background: var(--neuko-text-info);
+  width: 0;
+  animation: borealisBar 1.25s linear infinite;
+}
+@keyframes borealisBar {
+  0% {
+    left: 0%;
+    right: 100%;
+    width: 0%;
+  }
+  10% {
+    left: 0%;
+    right: 75%;
+    width: 25%;
+  }
+  90% {
+    right: 0%;
+    left: 75%;
+    width: 25%;
+  }
+  100% {
+    left: 100%;
+    right: 0%;
+    width: 0%;
+  }
 }

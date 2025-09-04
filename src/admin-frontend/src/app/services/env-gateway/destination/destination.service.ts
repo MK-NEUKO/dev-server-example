@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { RequestErrorHandler } from '../error/request-error-handler.service';
 import { RequestResponse } from '../RequestResponse/request-response';
+import { timeout } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +37,12 @@ export class DestinationService {
 
   public SaveDestinationAddressChanges(request: any): Promise<RequestResponse> {
     request.address = 'Httppp';
+    return new Promise(resolve => {
+      setTimeout(() => resolve({ isError: false, message: 'Test: Destination name change simulated' }), 5000);
+    });
 
-    return new Promise((resolve, reject) => {
+    /*
+    return new Promise((resolve) => {
       this.httpClient.put(`https://localhost:9100/update-destination`, request, {
 
       }).subscribe({
@@ -54,6 +59,6 @@ export class DestinationService {
         }
       });
     });
-
+    */
   }
 }

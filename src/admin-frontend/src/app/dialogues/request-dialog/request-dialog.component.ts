@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { RequestResponse } from '../../services/env-gateway/RequestResponse/request-response';
 import { DialogService } from '../../services/dialog-service/dialog.service';
 
@@ -11,13 +11,27 @@ import { DialogService } from '../../services/dialog-service/dialog.service';
 export class RequestDialogComponent implements OnInit {
 
   private dialogService = inject(DialogService);
-  public title: string = '';
-  public requestResponse: RequestResponse | null = null;
+  public requestResponse = signal<RequestResponse | null>(null);
+  public title = signal<string | ''>('');
   public showDetails = false;
   @ViewChild('modal') modalReference!: ElementRef;
 
+  constructor() {
+    effect(() => {
+      console.log(this.requestResponse());
+      if (this.requestResponse()) {
+        if (this.requestResponse()?.isError) {
+          this.showError();
+        } else {
+          this.showSuccess();
+        }
+      }
+
+    });
+  }
+
   ngOnInit(): void {
-    this.showError();
+    //this.showError();
   }
 
 
@@ -34,7 +48,17 @@ export class RequestDialogComponent implements OnInit {
     const modal = document.getElementById('modal');
 
     if (modal) {
+      modal.classList.remove('modal--success');
       modal.classList.add('modal--error');
+    }
+  }
+
+  private showSuccess() {
+    const modal = document.getElementById('modal');
+
+    if (modal) {
+      modal.classList.remove('modal--error');
+      modal.classList.add('modal--success');
     }
   }
 
