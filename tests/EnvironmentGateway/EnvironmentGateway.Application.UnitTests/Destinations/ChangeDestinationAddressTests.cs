@@ -1,4 +1,4 @@
-﻿using EnvironmentGateway.Application.Destinations.UpdateDestination;
+﻿using EnvironmentGateway.Application.Destinations.ChangeDestinationAddress;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Clusters;
 using EnvironmentGateway.Domain.Clusters.Destinations;

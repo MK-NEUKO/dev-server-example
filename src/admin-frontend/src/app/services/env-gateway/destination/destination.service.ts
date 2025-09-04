@@ -37,7 +37,7 @@ export class DestinationService {
 
   public SaveDestinationAddressChanges(request: any): Promise<RequestResponse> {
     return new Promise((resolve) => {
-      this.httpClient.put(`https://localhost:9100/update-destination`, request, {})
+      this.httpClient.put(`https://localhost:9100/change-destination-address`, request, {})
         .subscribe({
           next: (response) => {
             resolve({

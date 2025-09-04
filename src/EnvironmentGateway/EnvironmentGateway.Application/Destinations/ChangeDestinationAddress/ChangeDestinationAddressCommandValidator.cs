@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
+using FluentValidation;
 
-namespace EnvironmentGateway.Application.Destinations.UpdateDestination;
+namespace EnvironmentGateway.Application.Destinations.ChangeDestinationAddress;
 
 public class ChangeDestinationAddressCommandValidator : AbstractValidator<ChangeDestinationAddressCommand>
 {

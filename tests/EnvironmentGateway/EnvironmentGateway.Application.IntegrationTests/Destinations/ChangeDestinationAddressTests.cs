@@ -1,5 +1,5 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Messaging;
-using EnvironmentGateway.Application.Destinations.UpdateDestination;
+using EnvironmentGateway.Application.Destinations.ChangeDestinationAddress;
 using EnvironmentGateway.Application.IntegrationTests.Infrastructure;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Clusters.Destinations;

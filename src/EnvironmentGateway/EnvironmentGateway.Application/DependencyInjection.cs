@@ -1,6 +1,5 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Behaviors;
 using EnvironmentGateway.Application.Abstractions.Messaging;
-using EnvironmentGateway.Application.Destinations.UpdateDestination;
 using EnvironmentGateway.Domain.Abstractions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

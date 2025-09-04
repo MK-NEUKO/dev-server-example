@@ -2,7 +2,7 @@
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Clusters.Destinations;
 
-namespace EnvironmentGateway.Application.Destinations.UpdateDestination;
+namespace EnvironmentGateway.Application.Destinations.ChangeDestinationAddress;
 
 internal sealed class ChangeDestinationAddressCommandHandler(
     IDestinationRepository destinationRepository,

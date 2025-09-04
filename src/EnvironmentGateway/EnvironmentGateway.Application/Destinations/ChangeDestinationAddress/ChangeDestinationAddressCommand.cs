@@ -1,6 +1,7 @@
-﻿using EnvironmentGateway.Application.Abstractions.Messaging;
+﻿
+using EnvironmentGateway.Application.Abstractions.Messaging;
 
-namespace EnvironmentGateway.Application.Destinations.UpdateDestination;
+namespace EnvironmentGateway.Application.Destinations.ChangeDestinationAddress;
 
 public sealed record ChangeDestinationAddressCommand(
     Guid ClusterId,

@@ -17,7 +17,7 @@ public sealed class Destination : Entity
     }
 
     public Guid ClusterId { get; init; }
-    public Name DestinationName { get; init; } = new Name("null");
+    public Name DestinationName { get; private set; } = new Name("null");
     public Address Address { get; private set; } = new Address("null");
 
     public static Destination Create(string destinationName, string address)
@@ -34,5 +34,12 @@ public sealed class Destination : Entity
         ArgumentNullException.ThrowIfNull(address);
         
         Address = new Address(address);
+    }
+
+    public void ChangeName(string destinationName)
+    {
+        ArgumentNullException.ThrowIfNull(destinationName);
+        
+        DestinationName = new Name(destinationName);
     }
 }
