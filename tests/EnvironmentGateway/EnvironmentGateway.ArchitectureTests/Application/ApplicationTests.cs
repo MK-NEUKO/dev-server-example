@@ -71,5 +71,42 @@ public class ApplicationTests : BaseTest
         result.IsSuccessful.Should().BeTrue();
     }
 
-    // todo: Validator tests, naming convention and access modifier!
+    [Fact]
+    public void Validator_ShouldHave_NameEndingWith_Validator()
+    {
+        var result = Types.InAssembly(ApplicationAssembly)
+            .That()
+            .Inherit(typeof(FluentValidation.AbstractValidator<>))
+            .Should()
+            .HaveNameEndingWith("Validator")
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Validator_Should_NotBePublic()
+    {
+        var result = Types.InAssembly(ApplicationAssembly)
+            .That()
+            .Inherit(typeof(FluentValidation.AbstractValidator<>))
+            .Should()
+            .NotBePublic()
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue();
+    }
+    
+    [Fact]
+    public void Validator_Should_BeSealed()
+    {
+        var result = Types.InAssembly(ApplicationAssembly)
+            .That()
+            .Inherit(typeof(FluentValidation.AbstractValidator<>))
+            .Should()
+            .BeSealed()
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue();
+    }
 }

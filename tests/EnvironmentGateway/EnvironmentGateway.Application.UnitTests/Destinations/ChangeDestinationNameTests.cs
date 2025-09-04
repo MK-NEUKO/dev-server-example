@@ -1,4 +1,4 @@
-﻿using EnvironmentGateway.Application.Destinations.ChangeDestinationAddress;
+﻿using EnvironmentGateway.Application.Destinations.ChangeDestinationName;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Clusters;
 using EnvironmentGateway.Domain.Clusters.Destinations;
@@ -8,44 +8,45 @@ using NSubstitute.ExceptionExtensions;
 
 namespace EnvironmentGateway.Application.UnitTests.Destinations;
 
-public class ChangeDestinationAddressTests
+public class ChangeDestinationNameTests
 {
     private static readonly Guid ClusterId = Guid.NewGuid();
     private static readonly Guid DestinationId = Guid.NewGuid();
     private const string TestDestinationName = "TestDestination";
     private const string TestClusterName = "TestCluster";
     private const string TestAddress = "Https://test-address.com";
+    private const string NewDestinationName = "NewDestinationName";
 
-    private static readonly ChangeDestinationAddressCommand AddressCommand = new(
+    private static readonly ChangeDestinationNameCommand NameCommand = new(
         ClusterId,
         DestinationId,
-        TestAddress);
+        NewDestinationName);
 
-    private readonly ChangeDestinationAddressCommandHandler _handler;
+    private readonly ChangeDestinationNameCommandHandler _handler;
     private readonly IDestinationRepository _destinationRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
 
-    public ChangeDestinationAddressTests()
+    public ChangeDestinationNameTests()
     {
         _destinationRepositoryMock = Substitute.For<IDestinationRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
 
-        _handler = new ChangeDestinationAddressCommandHandler(
+        _handler = new ChangeDestinationNameCommandHandler(
             _destinationRepositoryMock,
             _unitOfWorkMock);
     }
-    
+
     [Fact]
     public async Task Handle_Should_ReturnFailure_WhenDestinationDoesNotExist()
     {
         // Arrange
         _destinationRepositoryMock.GetByIdAsync(
-            ClusterId, 
-            DestinationId, 
+            ClusterId,
+            DestinationId,
             Arg.Any<CancellationToken>()).Returns((Destination?)null);
 
         // Act
-        var result = await _handler.Handle(AddressCommand, default);
+        var result = await _handler.Handle(NameCommand, default);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -56,38 +57,39 @@ public class ChangeDestinationAddressTests
     public async Task Handle_Should_ReturnFailure_WhenUnitOfWorkThrowsException()
     {
         // Arrange
+        var cluster = Cluster.Create(TestClusterName, TestDestinationName, TestAddress);
+        _destinationRepositoryMock.GetByIdAsync(
+            ClusterId,
+            DestinationId,
+            Arg.Any<CancellationToken>()).Returns(cluster.Destinations[0]);
         _unitOfWorkMock.SaveChangesAsync(
             Arg.Any<CancellationToken>()).Throws(new Exception());
-        
-        // Act
-        var result = await _handler.Handle(AddressCommand, default);
 
-        // Assert
-        result.IsFailure.Should().BeTrue();
+        // Act & Assert
+        await FluentActions.Invoking(() => _handler.Handle(NameCommand, default))
+            .Should().ThrowAsync<Exception>();
     }
 
-    
     [Fact]
-    public async Task Handle_Should_UpdateDestination_WhenDestinationExists()
+    public async Task Handle_Should_UpdateDestinationName_WhenDestinationExists()
     {
         // Arrange
         var cluster = Cluster.Create(TestClusterName, TestDestinationName, TestAddress);
-        
         _destinationRepositoryMock.GetByIdAsync(
-            ClusterId, 
-            DestinationId, 
+            ClusterId,
+            DestinationId,
             Arg.Any<CancellationToken>()).Returns(cluster.Destinations[0]);
 
         // Act
-        var result = await _handler.Handle(AddressCommand, default);
+        var result = await _handler.Handle(NameCommand, default);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
         await _destinationRepositoryMock.Received(1).GetByIdAsync(ClusterId, DestinationId, Arg.Any<CancellationToken>());
-            await _unitOfWorkMock.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
-        cluster.Destinations[0].Address.Value.Should().Be(TestAddress);
+        await _unitOfWorkMock.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
+        cluster.Destinations[0].DestinationName.Value.Should().Be(NewDestinationName);
     }
-    
+
     [Fact]
     public async Task Handle_Should_NotCallSaveChanges_WhenDestinationDoesNotExist()
     {
@@ -98,7 +100,7 @@ public class ChangeDestinationAddressTests
             Arg.Any<CancellationToken>()).Returns((Destination?)null);
 
         // Act
-        var result = await _handler.Handle(AddressCommand, default);
+        var result = await _handler.Handle(NameCommand, default);
 
         // Assert
         await _unitOfWorkMock.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
@@ -119,7 +121,7 @@ public class ChangeDestinationAddressTests
         var token = cts.Token;
 
         // Act
-        await _handler.Handle(AddressCommand, token);
+        await _handler.Handle(NameCommand, token);
 
         // Assert
         await _destinationRepositoryMock.Received(1).GetByIdAsync(ClusterId, DestinationId, token);

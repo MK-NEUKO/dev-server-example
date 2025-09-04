@@ -1,5 +1,5 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Messaging;
-using EnvironmentGateway.Application.Destinations.ChangeDestinationAddress;
+using EnvironmentGateway.Application.Destinations.ChangeDestinationName;
 using EnvironmentGateway.Application.IntegrationTests.Infrastructure;
 using EnvironmentGateway.Domain.Abstractions;
 using EnvironmentGateway.Domain.Clusters.Destinations;
@@ -9,20 +9,19 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EnvironmentGateway.Application.IntegrationTests.Destinations;
 
-public class ChangeDestinationAddressTests : BaseIntegrationTest
+public class ChangeDestinationNameTests : BaseIntegrationTest
 {
-    private readonly ICommandHandler<ChangeDestinationAddressCommand> _handler;
-    private const string TestAddress = "https://test-address.com";
+    private readonly ICommandHandler<ChangeDestinationNameCommand> _handler;
+    private const string TestName = "TestDestinationName";
 
-    public ChangeDestinationAddressTests(IntegrationTestWebAppFactory factory) 
+    public ChangeDestinationNameTests(IntegrationTestWebAppFactory factory)
         : base(factory)
     {
-        _handler = Scope.ServiceProvider.GetRequiredService<ICommandHandler<ChangeDestinationAddressCommand>>();
+        _handler = Scope.ServiceProvider.GetRequiredService<ICommandHandler<ChangeDestinationNameCommand>>();
     }
-    
-    
+
     [Fact]
-    public async Task ChangeDestinationAddress_ShouldReturnSuccess_WhenDestinationAddressWasChanged()
+    public async Task ChangeDestinationName_ShouldReturnSuccess_WhenDestinationNameWasChanged()
     {
         // Arrange
         Guid destinationId = await DbContext.Clusters
@@ -32,7 +31,7 @@ public class ChangeDestinationAddressTests : BaseIntegrationTest
         Guid clusterId = await DbContext.Clusters
             .Select(c => c.Id)
             .FirstOrDefaultAsync();
-        var request = new ChangeDestinationAddressCommand(clusterId, destinationId, TestAddress);
+        var request = new ChangeDestinationNameCommand(clusterId, destinationId, TestName);
 
         // Act
         Result result = await _handler.Handle(request, CancellationToken.None);
@@ -45,14 +44,14 @@ public class ChangeDestinationAddressTests : BaseIntegrationTest
         cluster.Should().NotBeNull();
         Destination? updatedDestination = cluster!.Destinations.FirstOrDefault(d => d.Id == destinationId);
         updatedDestination.Should().NotBeNull();
-        updatedDestination.Address.Value.Should().Be(TestAddress);
+        updatedDestination.DestinationName.Value.Should().Be(TestName);
     }
 
     [Fact]
-    public async Task ChangeDestinationAddress_ShouldReturnFailure_WhenDestinationDoesNotExist()
+    public async Task ChangeDestinationName_ShouldReturnFailure_WhenDestinationDoesNotExist()
     {
         // Arrange
-        var request = new ChangeDestinationAddressCommand(Guid.NewGuid(), Guid.NewGuid(), TestAddress);
+        var request = new ChangeDestinationNameCommand(Guid.NewGuid(), Guid.NewGuid(), TestName);
 
         // Act
         Result result = await _handler.Handle(request, CancellationToken.None);
@@ -63,14 +62,14 @@ public class ChangeDestinationAddressTests : BaseIntegrationTest
     }
 
     [Fact]
-    public async Task ChangeDestinationAddress_ShouldReturnFailure_WhenClusterDoesNotExist()
+    public async Task ChangeDestinationName_ShouldReturnFailure_WhenClusterDoesNotExist()
     {
         // Arrange
         Guid destinationId = await DbContext.Clusters
             .SelectMany(c => c.Destinations)
             .Select(d => d.Id)
             .FirstOrDefaultAsync();
-        var request = new ChangeDestinationAddressCommand(Guid.NewGuid(), destinationId, TestAddress);
+        var request = new ChangeDestinationNameCommand(Guid.NewGuid(), destinationId, TestName);
 
         // Act
         Result result = await _handler.Handle(request, CancellationToken.None);

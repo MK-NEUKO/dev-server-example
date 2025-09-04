@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using EnvironmentGateway.Api.Endpoints.Destinations.ChangeDestinationAddress;
+using EnvironmentGateway.Api.Endpoints.Destinations.ChangeDestinationName;
 using EnvironmentGateway.Api.FunctionalTests.Infrastructure;
 using EnvironmentGateway.Domain.Clusters.Destinations;
 using FluentAssertions;
@@ -9,17 +9,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnvironmentGateway.Api.FunctionalTests.Destinations;
 
-public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) : BaseFunctionalTest(factory)
+public class ChangeDestinationNameTests(FunctionalTestWebAppFactory factory) : BaseFunctionalTest(factory)
 {
     [Fact]
-    public async Task ChangeDestinationAddress_ShouldReturnOk_WhenRequestIsValid()
+    public async Task UpdateDestinationName_ShouldReturnOk_WhenRequestIsValid()
     {
         // Arrange
         var accessToken = await GetAccessTokenAsync();
         HttpClient.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue(
                 JwtBearerDefaults.AuthenticationScheme, accessToken);
-        const string testAddress = "https://example.com";
+        const string testName = "NewDestinationName";
         await CreateTestConfigAsync();
         Guid clusterId = await DbContext.Clusters
             .Select(c => c.Id)
@@ -28,10 +28,10 @@ public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) 
             .SelectMany(c => c.Destinations)
             .Select(d => d.Id)
             .FirstOrDefaultAsync();
-        var request = new ChangeDestinationAddressRequest(clusterId, destinationId, testAddress);
+        var request = new ChangeDestinationNameRequest(clusterId, destinationId, testName);
 
         // Act
-        HttpResponseMessage response = await HttpClient.PutAsJsonAsync("change-destination-address", request);
+        HttpResponseMessage response = await HttpClient.PutAsJsonAsync("change-destination-name", request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -42,21 +42,21 @@ public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) 
         cluster.Should().NotBeNull();
         Destination? updatedDestination = cluster.Destinations.FirstOrDefault(d => d.Id == destinationId);
         updatedDestination.Should().NotBeNull();
-        updatedDestination.Address.Value.Should().Be(testAddress);
+        updatedDestination.DestinationName.Value.Should().Be(testName);
     }
-    
+
     [Theory]
-    [InlineData("htps://example.com")]
-    [InlineData("example.com")]
-    [InlineData("//example.com")]
-    [InlineData("https:/example.com")]
-    [InlineData("https//example.com")]
-    [InlineData("https://example")]
-    [InlineData("https://example..com")]
-    [InlineData("https://.com")]
-    [InlineData("https://exam ple.com")]
-    [InlineData("https://example!.com")]
-    public async Task ChangeDestinationAddress_ShouldReturnBadRequest_WhenDestinationAddressIsInvalid(string testAddress)
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("!")]
+    [InlineData("@invalid")]
+    [InlineData("NameWith#Hash")]
+    [InlineData("NameWith$Dollar")]
+    [InlineData("NameWith%Percent")]
+    [InlineData("NameWith^Caret")]
+    [InlineData("NameWith&And")]
+    [InlineData("NameWith*Star")]
+    public async Task UpdateDestinationName_ShouldReturnBadRequest_WhenDestinationNameIsInvalid(string testName)
     {
         // Arrange
         var accessToken = await GetAccessTokenAsync();
@@ -71,10 +71,10 @@ public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) 
         Guid clusterId = await DbContext.Clusters
             .Select(c => c.Id)
             .FirstOrDefaultAsync();
-        var request = new ChangeDestinationAddressRequest(clusterId, destinationId, testAddress);
+        var request = new ChangeDestinationNameRequest(clusterId, destinationId, testName);
 
         // Act
-        HttpResponseMessage response = await HttpClient.PutAsJsonAsync("change-destination-address", request);
+        HttpResponseMessage response = await HttpClient.PutAsJsonAsync("change-destination-name", request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
