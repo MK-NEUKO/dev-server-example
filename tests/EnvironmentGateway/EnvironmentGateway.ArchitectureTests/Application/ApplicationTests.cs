@@ -96,4 +96,17 @@ public class ApplicationTests : BaseTest
 
         result.IsSuccessful.Should().BeTrue();
     }
+    
+    [Fact]
+    public void Validator_Should_BeSealed()
+    {
+        var result = Types.InAssembly(ApplicationAssembly)
+            .That()
+            .Inherit(typeof(FluentValidation.AbstractValidator<>))
+            .Should()
+            .BeSealed()
+            .GetResult();
+
+        result.IsSuccessful.Should().BeTrue();
+    }
 }
