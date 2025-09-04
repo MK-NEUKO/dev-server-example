@@ -6,6 +6,7 @@ import { RoutesComponent } from './routes/routes.component';
 import { ClustersComponent } from './clusters/clusters.component';
 import { CONFIG_EDITOR_CONTROL_NAMES } from './shared/config-editor-control-names';
 import { DestinationAddressValidator } from './shared/destination-address-validator';
+import { NameValidator } from './shared/name-validator';
 import { RouteConfig } from '../../../models/gateway-config/route-config.model';
 import { Destination } from '../../../models/gateway-config/destination.model';
 import { ClusterConfig } from '../../../models/gateway-config/cluster-config.model';
@@ -105,10 +106,13 @@ export class ConfigEditorComponent {
           value: destinationData['id'] || 'build error',
           disabled: true
         }),
-        [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME]: this.formBuilder.control({
-          value: destinationName || 'build error',
-          disabled: false
-        }, Validators.required),
+        [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME]: this.formBuilder.control(
+          destinationName || 'build error',
+          [
+            Validators.required,
+            NameValidator.validate()
+          ]
+        ),
         [CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS]: this.formBuilder.control(
           destinationData['address'] || 'build error',
           [

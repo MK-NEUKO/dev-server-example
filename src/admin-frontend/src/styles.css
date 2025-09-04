@@ -31,6 +31,7 @@
   --neuko-text-body-highlight: #222834;
   --neuko-text-body-quaternary: #8a94ad;
   --neuko-text-success: #25b003;
+  --neuko-text-success-rgb: 37, 176, 3;
   --neuko-text-warning: #e5780b;
   --neuko-text-danger: #ec1f00;
   --neuko-text-info: #0097eb;
@@ -43,6 +44,7 @@
   --neuko-bg-body-quaternary: #9fa6bc;
   --neuko-bg-success: #90d67f;
   --neuko-bg-warning: #e5780b;
+  --neuko-text-warning-rgb: 255, 193, 7;
   --neuko-bg-danger: #ff5b42;
   --neuko-border: #e3e6ed;
   --neuko-bg-card: #ffffff;
@@ -53,6 +55,7 @@
   --neuko-text-body-highlight: #dee2ec;
   --neuko-text-body-quaternary: #5e677f;
   --neuko-text-success: #90d67f;
+  --neuko-text-success-rgb: 144, 214, 127;
   --neuko-text-warning: #ffcc85;
   --neuko-text-danger: #f48270;
   --neuko-text-info: #0097eb;
@@ -65,6 +68,7 @@
   --neuko-bg-body-quaternary: #3e465b;
   --neuko-bg-success: #25b003;
   --neuko-bg-warning: #ffcc85;
+  --neuko-text-warning-rgb: 255, 204, 133;
   --neuko-bg-danger: #ec1f00;
   --neuko-border: #2f3549;
   --neuko-bg-card: #141824;
@@ -143,6 +147,12 @@ body {
   border: 0;
 }
 
+.bi {
+  display: inline-block;
+  vertical-align: -0.125em;
+  fill: currentcolor;
+}
+
 .margin-start {
   margin-left: 1rem;
 }
@@ -183,7 +193,14 @@ body {
   background-color: var(--neuko-bg-body-secondary);
   color: var(--neuko-text-body-quaternary);
   border-color: var(--neuko-bg-body-secondary);
-  cursor: not-allowed;
+  cursor: auto;
+}
+.button:disabled:hover,
+.button[disabled]:hover {
+  background-color: var(--neuko-bg-body-secondary);
+  color: var(--neuko-text-body-quaternary);
+  border-color: var(--neuko-bg-body-secondary);
+  cursor: auto;
 }
 .button:hover {
   background-color: var(--neuko-bg-body);
@@ -204,6 +221,83 @@ body {
   padding: 0.2rem 0.5rem;
   font-size: 0.75rem;
   border-radius: 0.25rem;
+}
+
+.button--icon {
+  padding: 0 0.2rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.accordion-toggle {
+  padding: 0.5rem 1rem;
+  background-color: var(--neuko-bg-body-secondary);
+  border: 0.1rem solid var(--neuko-border);
+  border-radius: 0.25rem;
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: left;
+}
+
+.accordion-content {
+  background: transparent;
+  border-left: 0.1rem solid var(--neuko-border);
+  border-right: 0.1rem solid var(--neuko-border);
+  border-bottom: 0.1rem solid var(--neuko-border);
+  border-end-end-radius: 0.25rem;
+  margin-top: -0.25rem;
+  padding: 1rem;
+  font-size: 0.95em;
+  white-space: pre-wrap;
+}
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltip-text {
+  visibility: hidden;
+  padding: 0.125rem 0.5rem 0.25rem;
+  width: auto;
+  background-color: var(--neuko-bg-body);
+  color: var(--neuko-text-body);
+  outline: none;
+  border-color: var(--neuko-text-body-highlight);
+  box-shadow: 0 0 0.25rem var(--neuko-text-body-highlight);
+  text-align: center;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  top: 150%;
+  left: 0;
+}
+
+.tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 0.75rem;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent var(--neuko-bg-body) transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltip-text {
+  visibility: visible;
 }
 
 .spinner {

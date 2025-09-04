@@ -16,6 +16,15 @@ public class ChangeDestinationAddressCommandValidator : AbstractValidator<Change
     {
         RuleFor(c => c.Address)
             .NotEmpty()
-            .Matches(UrlPattern, RegexOptions.IgnoreCase);
+            .Matches(UrlPattern, RegexOptions.IgnoreCase)
+            .OverridePropertyName("Destination address")
+            .WithMessage("Please try entering the destination address again.\n" +
+                         "To help you, here are some things to check:\n" +
+                         "• Start the address with http:// or https://\n" +
+                         "• Use a valid domain name (for example: example.com)\n" +
+                         "• Do not include spaces or unsupported characters\n" +
+                         "• If needed, add a port number after the domain (for example: :8080)\n" +
+                         "• Make sure the address is complete and correctly formatted"
+            );
     }
 }
