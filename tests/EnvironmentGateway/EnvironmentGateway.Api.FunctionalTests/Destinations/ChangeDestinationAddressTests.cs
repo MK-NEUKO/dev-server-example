@@ -13,7 +13,7 @@ namespace EnvironmentGateway.Api.FunctionalTests.Destinations;
 public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) : BaseFunctionalTest(factory)
 {
     [Fact]
-    public async Task UpdateDestination_ShouldReturnOk_WhenRequestIsValid()
+    public async Task ChangeDestinationAddress_ShouldReturnOk_WhenRequestIsValid()
     {
         // Arrange
         var accessToken = await GetAccessTokenAsync();
@@ -32,7 +32,7 @@ public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) 
         var request = new ChangeDestinationAddressRequest(clusterId, destinationId, testAddress);
 
         // Act
-        HttpResponseMessage response = await HttpClient.PutAsJsonAsync("update-destination", request);
+        HttpResponseMessage response = await HttpClient.PutAsJsonAsync("change-destination-address", request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -57,7 +57,7 @@ public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) 
     [InlineData("https://.com")]
     [InlineData("https://exam ple.com")]
     [InlineData("https://example!.com")]
-    public async Task UpdateDestination_ShouldReturnBadRequest_WhenDestinationAddressIsInvalid(string testAddress)
+    public async Task ChangeDestinationAddress_ShouldReturnBadRequest_WhenDestinationAddressIsInvalid(string testAddress)
     {
         // Arrange
         var accessToken = await GetAccessTokenAsync();
@@ -75,7 +75,7 @@ public class ChangeDestinationAddressTests(FunctionalTestWebAppFactory factory) 
         var request = new ChangeDestinationAddressRequest(clusterId, destinationId, testAddress);
 
         // Act
-        HttpResponseMessage response = await HttpClient.PutAsJsonAsync("update-destination", request);
+        HttpResponseMessage response = await HttpClient.PutAsJsonAsync("change-destination-address", request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

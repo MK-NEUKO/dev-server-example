@@ -14,25 +14,23 @@ export class DestinationService {
   constructor() { }
 
   public SaveDestinationNameChanges(request: any): Promise<RequestResponse> {
-    return new Promise(resolve => {
-      setTimeout(() => resolve({ isError: false, message: 'Test: Destination name change simulated' }), 2000);
-    })
-    /*
-    return new Promise((resolve, reject) => {
-      this.httpClient.put(`https://localhost:9100/update-destination`, request, {
-
-      }).subscribe({
-        next: (response) => {
-          console.log('Destination updated successfully:', response);
-          resolve(`Destination updated successfully: ${JSON.stringify(response)}`);
-        },
-        error: (error) => {
-          console.error('Error updating destination:', error);
-          reject(`Error updating destination: ${JSON.stringify(error.message)}`);
-        }
-      });
+    return new Promise((resolve) => {
+      this.httpClient.put(`https://localhost:9100/change-destination-name`, request, {})
+        .subscribe({
+          next: (response) => {
+            console.log('Destination updated successfully:', response);
+            resolve({
+              isError: false,
+              message: 'Destination name was successfully changed.'
+            });
+          },
+          error: (error) => {
+            console.error('Error updating destination:', error);
+            const processedResponse = this.requestErrorHandler.handle(error.error);
+            resolve(processedResponse);
+          }
+        });
     });
-    */
   }
 
   public SaveDestinationAddressChanges(request: any): Promise<RequestResponse> {
