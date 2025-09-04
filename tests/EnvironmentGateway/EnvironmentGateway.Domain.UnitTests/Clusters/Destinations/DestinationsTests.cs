@@ -8,6 +8,7 @@ public class DestinationsTests
     private const string TestName = "TestName";
     private const string TestAddress = "https://test-address.com";
     private const string NewAddress = "https://new-address.com";
+    private const string NewName = "NewName";
 
     [Fact]
     public void CreateNewDestination_Should_SetPropertyValues()
@@ -53,6 +54,32 @@ public class DestinationsTests
 
         // Act
         Action act = () => destination.ChangeAddress(null!);
+
+        // Assert
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void ChangeName_Should_ChangeDestinationName()
+    {
+        // Arrange
+        var destination = Destination.Create(TestName, TestAddress);
+
+        // Act
+        destination.ChangeName(NewName);
+
+        // Assert
+        destination.DestinationName.Value.Should().Be(NewName);
+    }
+
+    [Fact]
+    public void ChangeName_Should_ThrowArgumentNullException_When_NameIsNull()
+    {
+        // Arrange
+        var destination = Destination.Create(TestName, TestAddress);
+
+        // Act
+        Action act = () => destination.ChangeName(null!);
 
         // Assert
         act.Should().Throw<ArgumentNullException>();
