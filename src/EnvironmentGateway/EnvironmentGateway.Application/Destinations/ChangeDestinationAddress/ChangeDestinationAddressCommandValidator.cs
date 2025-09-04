@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace EnvironmentGateway.Application.Destinations.ChangeDestinationAddress;
 
-public class ChangeDestinationAddressCommandValidator : AbstractValidator<ChangeDestinationAddressCommand>
+internal sealed class ChangeDestinationAddressCommandValidator : AbstractValidator<ChangeDestinationAddressCommand>
 {
     private const string UrlPattern =
         @"^(https?|ftps?):\/\/(?:[a-zA-Z0-9]" +

@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace EnvironmentGateway.Application.Destinations.ChangeDestinationName;
 
-public class ChangeDestinationNameValidator : AbstractValidator<ChangeDestinationNameCommand>
+internal sealed class ChangeDestinationNameValidator : AbstractValidator<ChangeDestinationNameCommand>
 {
     private const string UrlPattern = "^[A-Za-z0-9-]+$";
     
