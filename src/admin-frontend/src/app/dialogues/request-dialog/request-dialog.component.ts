@@ -1,6 +1,6 @@
-import { Component, effect, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { RequestResponse } from '../../services/env-gateway/RequestResponse/request-response';
-import { DialogService } from '../../services/dialog-service/dialog.service';
+import { RequestDialogService } from '../../services/dialog-service/request-dialog.service';
 
 @Component({
   selector: 'app-request-dialog',
@@ -8,9 +8,9 @@ import { DialogService } from '../../services/dialog-service/dialog.service';
   templateUrl: './request-dialog.component.html',
   styleUrl: './request-dialog.component.css'
 })
-export class RequestDialogComponent implements OnInit {
+export class RequestDialogComponent {
 
-  private dialogService = inject(DialogService);
+  private requestDialogService = inject(RequestDialogService);
   public requestResponse = signal<RequestResponse | null>(null);
   public title = signal<string | ''>('');
   public showDetails = false;
@@ -18,7 +18,6 @@ export class RequestDialogComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      console.log(this.requestResponse());
       if (this.requestResponse()) {
         if (this.requestResponse()?.isError) {
           this.showError();
@@ -30,13 +29,8 @@ export class RequestDialogComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    //this.showError();
-  }
-
-
   onClose() {
-    this.dialogService.close();
+    this.requestDialogService.close();
     this.showDetails = false;
   }
 

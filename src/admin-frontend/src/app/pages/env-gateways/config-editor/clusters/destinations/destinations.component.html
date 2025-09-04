@@ -59,7 +59,7 @@
                   <button
                     class="button button--secondary button--icon"
                     (mousedown)="onControlOptionButtonMouseDown()"
-                    (click)="reset(i)"
+                    (click)="reset(i, 'destinationName')"
                   >
                     <i class="bi bi-arrow-counterclockwise"></i>
                   </button>
@@ -123,7 +123,7 @@
                   <div class="tooltip">
                     <button
                       class="button button--secondary button--icon"
-                      (click)="reset(i)"
+                      (click)="reset(i, 'address')"
                     >
                       <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
@@ -142,12 +142,4 @@
     }
   </ng-container>
   <span class="form__heading form__heading--third">{{ "}" }},</span>
-  <div>
-    <app-request-progress
-      [title]="requestProgressDialogTitle"
-      [visible]="showRequestProgressDialog"
-      (close)="showRequestProgressDialog = false"
-    >
-    </app-request-progress>
-  </div>
 </div>

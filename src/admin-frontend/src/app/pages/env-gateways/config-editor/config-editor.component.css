@@ -68,10 +68,14 @@
   width: fit-content;
   align-items: flex-start;
 }
-.control__input.control__input-changed {
+.control__input.control__input-success {
   border-color: var(--neuko-text-success);
   box-shadow: 0 0 0.25rem var(--neuko-text-success);
-  background-color: rgba(var(--neuko-text-success-rgb), 0.25);
+  color: var(--neuko-text-body-highlight);
+}
+.control__input.control__input-error {
+  border-color: var(--neuko-text-danger);
+  box-shadow: 0 0 0.25rem var(--neuko-text-danger);
   color: var(--neuko-text-body-highlight);
 }
 

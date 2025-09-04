@@ -2,15 +2,13 @@ import { Component, inject, OnInit, input, signal } from '@angular/core';
 import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
 import { DestinationService } from '../../../../../services/env-gateway/destination/destination.service';
-import { DialogService } from '../../../../../services/dialog-service/dialog.service';
-import { RequestProgressComponent } from '../../../../../dialogues/request-progress/request-progress.component';
+import { RequestDialogService } from '../../../../../services/dialog-service/request-dialog.service';
 import { RequestResponse } from '../../../../../services/env-gateway/RequestResponse/request-response';
 
 @Component({
   selector: 'app-destinations',
   imports: [
     ReactiveFormsModule,
-    RequestProgressComponent
   ],
   templateUrl: './destinations.component.html',
   styleUrls: [
@@ -24,12 +22,7 @@ export class DestinationsComponent implements OnInit {
   readonly parentArrayName = input.required<string>();
   private rootFormGroup = inject(FormGroupDirective);
   private destinationService = inject(DestinationService);
-  private dialogService = inject(DialogService);
-  public showDialog = signal(false);
-  public showRequestProgressDialog: boolean = false;
-  public requestDialogTitle: string = '';
-  public requestProgressDialogTitle: string = '';
-  public requestResponse!: RequestResponse;
+  private requestDialogService = inject(RequestDialogService);
   public formArray!: FormArray;
   public parentForm!: FormGroup;
   public canControlOptionsDisplayed: Record<string, boolean> = {
@@ -52,7 +45,7 @@ export class DestinationsComponent implements OnInit {
     const control = document.querySelector('input[formControlName="' + controlName + '"]') as HTMLInputElement;
 
     if (control) {
-      control.classList.remove('control__input-changed');
+      control.classList.remove('control__input-success', 'control__input-error');
     }
 
     Object.keys(this.canControlOptionsDisplayed).forEach(key => {
@@ -97,24 +90,21 @@ export class DestinationsComponent implements OnInit {
     return true;
   }
 
-  public reset(index: number): void {
-    const address = this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME);
-    address?.reset();
-    address?.markAsTouched();
-    address?.markAsDirty();
+  public reset(index: number, controlName: string): void {
+    const control = this.formArray.at(index).get(controlName);
+    control?.reset();
+    control?.markAsTouched();
+    control?.markAsDirty();
   }
 
   public async changeDestinationProperty(index: number, controlName: string): Promise<void> {
-    //this.openRequestProgressDialog(`${controlName} will be changed`);
-
-    const requestDialog = this.dialogService.open(`Destination ${controlName} will be changed`);
+    const requestDialog = this.requestDialogService.open(`Destination ${controlName} will be changed`);
 
     const request = {
       clusterId: this.parentForm.get('clusterId')?.value,
       destinationId: this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ID)?.value,
       [controlName]: this.formArray.at(index).get(controlName)?.value
     };
-
 
     let responseTitle = '';
     let requestResponse: RequestResponse = { isError: false, message: '' };
@@ -124,30 +114,35 @@ export class DestinationsComponent implements OnInit {
       responseTitle = 'Destination name changed response';
     } else if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ADDRESS) {
       requestResponse = await this.destinationService.SaveDestinationAddressChanges(request);
-      console.log(requestResponse);
       responseTitle = 'Destination address changed response';
     }
 
     if (requestDialog && requestResponse) {
-      this.dialogService.setRequestResponse(requestResponse);
-      this.dialogService.setRequestDialogTitle(responseTitle);
+      this.requestDialogService.setRequestResponse(requestResponse);
+      this.requestDialogService.setTitle(responseTitle);
     }
-    this.showRequestProgressDialog = false;
+
     this.resetControlProperties(index, controlName);
+    this.setControlStatusColors(index, controlName, requestResponse.isError);
     this.resetCanControlOptionsDisplayed();
   }
-
-
 
   private resetControlProperties(index: number, controlName: string): void {
     const control = this.formArray.at(index).get(controlName);
     control?.markAsPristine();
     control?.markAsUntouched();
+
+  }
+
+  private setControlStatusColors(index: number, controlName: string, isError: boolean): void {
     const input = document.querySelector('input[formControlName="' + controlName + '"]') as HTMLInputElement;
     if (input) {
-      input.classList.remove('control__input-reminder', 'control__input-processed');
-      input.classList.add('control__input-changed');
-      this.blurCausedByControlOptionButton = false;
+      input.classList.remove('control__input-error', 'control__input-success', 'control__input-reminder');
+      if (isError) {
+        input.classList.add('control__input-error');
+      } else {
+        input.classList.add('control__input-success');
+      }
     }
   }
 
@@ -155,10 +150,5 @@ export class DestinationsComponent implements OnInit {
     Object.keys(this.canControlOptionsDisplayed).forEach(key => {
       this.canControlOptionsDisplayed[key] = false;
     });
-  }
-
-  private openRequestProgressDialog(title: string): void {
-    this.requestDialogTitle = title;
-    this.showRequestProgressDialog = true;
   }
 }

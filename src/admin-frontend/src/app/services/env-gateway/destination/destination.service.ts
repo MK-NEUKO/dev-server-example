@@ -37,11 +37,7 @@ export class DestinationService {
 
   public SaveDestinationAddressChanges(request: any): Promise<RequestResponse> {
     request.address = 'Httppp';
-    return new Promise(resolve => {
-      setTimeout(() => resolve({ isError: false, message: 'Test: Destination name change simulated' }), 5000);
-    });
 
-    /*
     return new Promise((resolve) => {
       this.httpClient.put(`https://localhost:9100/update-destination`, request, {
 
@@ -59,6 +55,5 @@ export class DestinationService {
         }
       });
     });
-    */
   }
 }
