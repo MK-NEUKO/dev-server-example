@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using EnvironmentGateway.Api.Endpoints.Destinations.ChangeDestinationName;
 using EnvironmentGateway.Api.FunctionalTests.Infrastructure;
 using EnvironmentGateway.Domain.Clusters.Destinations;
-using EnvironmentGateway.Infrastructure;
 using FluentAssertions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;

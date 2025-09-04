@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace EnvironmentGateway.Api.Endpoints.Destinations.ChangeDestinationName;
+﻿namespace EnvironmentGateway.Api.Endpoints.Destinations.ChangeDestinationName;
 
 public sealed record ChangeDestinationNameRequest(
     Guid ClusterId,
