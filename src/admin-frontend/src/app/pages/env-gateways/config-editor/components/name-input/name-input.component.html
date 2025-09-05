@@ -1,0 +1,19 @@
+<div [formGroup]="parentFormGroup">
+  @if(false) { // label is shown when name is invalid
+    <label class="control__label" for="clusterName">Cluster Id:</label>
+  }
+  <div class="form-control__input-wrapper">
+    <input
+      [formControl]="formControl"
+  class="form-control__input"
+      type="text"
+      formControlName="clusterName"
+      name="clusterName"
+      autocomplete="off"
+      [required]="true"
+    />
+    <span class="control-required"></span>
+  </div>
+</div>
+
+

@@ -4,7 +4,7 @@
     @for (destination of formArray.controls; track $index; let i = $index) 
     {
       <div class="tab-2ch form-container" [formGroupName]="i">
-        <div class="control-field">
+  <div class="form-control__container">
           <span>"</span>
           @if (destination.get('destinationName')?.invalid) 
           {
@@ -12,9 +12,9 @@
               >Destination Name:
             </label>
           }
-          <div class="control__input-wrapper">
+          <div class="form-control__input-wrapper">
             <input
-              class="control__input"
+              class="form-control__input"
               type="text"
               id="destinationName-{{ i }}"
               formControlName="destinationName"
@@ -71,11 +71,11 @@
           <span>": {{ "{" }}</span>
         </div>
         <div class="tab-2ch">
-          <div class="control-field">
+          <div class="form-control__container">
             <label class="control__label" for="address-{{ i }}">Address: </label>
-            <div class="control__input-wrapper">
+            <div class="form-control__input-wrapper">
               <input
-                class="control__input"
+                class="form-control__input"
                 id="address-{{ i }}"
                 type="text"
                 formControlName="address"

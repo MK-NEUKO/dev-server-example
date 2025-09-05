@@ -39,26 +39,24 @@
   padding-left: 2ch;
 }
 
-.control-field {
+/*########################################################################*/
+/* form-control styles */
+/*########################################################################*/
+
+.form-control__container {
   position: relative;
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
   margin-top: 0.25rem;
 }
-
-.control__label {
-  align-self: flex-start;
-}
-
-.control__input-wrapper {
+.form-control__input-wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
   overflow: visible;
 }
-
-.control__input {
+.form-control__input {
   background-color: transparent;
   border: 0.1rem solid var(--neuko-border);
   border-radius: 0.25rem;
@@ -68,18 +66,23 @@
   width: fit-content;
   align-items: flex-start;
 }
-.control__input.control__input-success {
+
+.control__label {
+  align-self: flex-start;
+}
+
+.form-control__input.form-control__input-success {
   border-color: var(--neuko-text-success);
   box-shadow: 0 0 0.25rem var(--neuko-text-success);
   color: var(--neuko-text-body-highlight);
 }
-.control__input.control__input-error {
+.form-control__input.form-control__input-error {
   border-color: var(--neuko-text-danger);
   box-shadow: 0 0 0.25rem var(--neuko-text-danger);
   color: var(--neuko-text-body-highlight);
 }
 
-.control__input.control__input-reminder:focus {
+.form-control__input.form-control__input-reminder:focus {
   border-color: var(--neuko-text-warning);
   box-shadow: 0 0 0.25rem var(--neuko-text-warning);
   animation: pulse 2s infinite;
@@ -98,20 +101,20 @@
     background-color: transparent;
   }
 }
-.control__input:focus {
+.form-control__input:focus {
   outline: none;
   border-color: var(--neuko-text-body-highlight);
   box-shadow: 0 0 0.25rem var(--neuko-text-body-highlight);
 }
-.control__input:hover {
+.form-control__input:hover {
   background-color: var(--neuko-bg-body-highlight);
   color: var(--neuko-text-body-highlight);
 }
-.control__input.ng-invalid.ng-dirty {
+.form-control__input.ng-invalid.ng-dirty {
   border-color: var(--neuko-text-danger);
   padding: 0.125rem 1rem 0.25rem 0.25rem;
 }
-.control__input ~ .control-required {
+.form-control__input ~ .control-required {
   display: none;
   color: var(--neuko-text-body);
   font-weight: bold;
@@ -122,10 +125,10 @@
     content: "*";
   }
 }
-.control__input.ng-invalid.ng-dirty ~ .control-required {
+.form-control__input.ng-invalid.ng-dirty ~ .control-required {
   color: var(--neuko-text-danger);
 }
-.control__input[required] ~ .control-required {
+.form-control__input[required] ~ .control-required {
   display: inline-block;
 }
 

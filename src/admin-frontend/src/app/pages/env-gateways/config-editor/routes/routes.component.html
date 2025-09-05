@@ -6,14 +6,14 @@
       class="tab-2ch form-container form-container--child"
       [formGroupName]="i"
     >
-      <div class="control-field">
+  <div class="form-control__container">
         <span>"</span>
         @if (routeName?.invalid) {
         <label class="control__label" for="routeName">Route Name:</label>
         }
-        <div class="control__input-wrapper">
+  <div class="form-control__input-wrapper">
           <input
-            class="control__input"
+            class="form-control__input"
             id="routeName"
             type="text"
             formControlName="routeName"
@@ -29,11 +29,11 @@
         <span>": {{ "{" }}</span>
       </div>
       <div class="tab-2ch">
-        <div class="control-field">
+  <div class="form-control__container">
           <label for="clusterName">ClusterId: </label>
-          <div class="control__input-wrapper">
+          <div class="form-control__input-wrapper">
             <input
-              class="control__input"
+              class="form-control__input"
               id="clusterName"
               type="text"
               formControlName="clusterName"
@@ -50,11 +50,11 @@
 
         <span>Match: {{ "{" }}</span>
         <div class="tab-2ch" formGroupName="match">
-          <div class="control-field">
+          <div class="form-control__container">
             <label for="path">Path: </label>
-            <div class="control__input-wrapper">
+            <div class="form-control__input-wrapper">
               <input
-                class="control__input"
+                class="form-control__input"
                 id="path"
                 type="text"
                 formControlName="path"

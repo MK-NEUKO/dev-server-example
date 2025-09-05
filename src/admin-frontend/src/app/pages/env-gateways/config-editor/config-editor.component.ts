@@ -84,10 +84,13 @@ export class ConfigEditorComponent {
             value: cluster.id || 'build error',
             disabled: true
           }),
-          [CONFIG_EDITOR_CONTROL_NAMES.CLUSTER_NAME]: this.formBuilder.control({
-            value: cluster.clusterName || 'build error',
-            disabled: true
-          }),
+          [CONFIG_EDITOR_CONTROL_NAMES.CLUSTER_NAME]: this.formBuilder.control(
+            cluster.clusterName || 'build error',
+            [
+              Validators.required,
+              NameValidator.validate()
+            ]
+          ),
           [CONFIG_EDITOR_CONTROL_NAMES.DESTINATIONS]: this.buildDestinationsConfigForm(cluster.destinations)
         })
       )
