@@ -1,0 +1,6 @@
+.editing-options__wrapper {
+  padding-top: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+}

@@ -50,12 +50,15 @@
   gap: 0.5rem;
   margin-top: 0.25rem;
 }
+
 .form-control__input-wrapper {
+  border: 0.1rem solid var(--neuko-border);
   position: relative;
   display: flex;
   flex-direction: column;
   overflow: visible;
 }
+
 .form-control__input {
   background-color: transparent;
   border: 0.1rem solid var(--neuko-border);
@@ -67,7 +70,7 @@
   align-items: flex-start;
 }
 
-.control__label {
+.form-control__label {
   align-self: flex-start;
 }
 
@@ -132,7 +135,7 @@
   display: inline-block;
 }
 
-.control-feedback {
+.form-control-feedback {
   margin: -0.3rem 0 0 1rem;
   top: 1.5rem;
   left: 1rem;
@@ -148,7 +151,7 @@
   align-items: center;
   gap: 0.5rem;
 }
-.control-feedback__info {
+.form-control-feedback__info {
   background: none;
   border: 0.1rem solid var(--neuko-text-body-highlight);
   border-radius: 50%;
@@ -162,27 +165,20 @@
   font-family: serif;
   transition: all 0.2s ease;
 }
-.control-feedback__info:before {
+.form-control-feedback__info:before {
   content: "i";
   padding-top: auto;
   padding-bottom: auto;
   font-weight: bold;
 }
 
-.control-feedback__info:hover {
+.form-control-feedback__info:hover {
   background-color: var(--neuko-text-info);
   color: var(--neuko-bg-body);
   transform: scale(1.1);
 }
 
-.control-feedback__info:focus {
+.form-control-feedback__info:focus {
   outline: 1px solid var(--neuko-text-info);
   outline-offset: 2px;
-}
-
-.control__editing-options {
-  padding-top: 0.25rem;
-  display: flex;
-  flex-direction: row;
-  gap: 0.25rem;
 }

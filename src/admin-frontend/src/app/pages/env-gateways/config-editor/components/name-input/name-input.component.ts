@@ -2,10 +2,14 @@ import { Component, input, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
+import { EditingToolsComponent } from '../editing-tools/editing-tools.component';
 
 @Component({
   selector: 'app-name-input',
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    EditingToolsComponent,
+  ],
   templateUrl: './name-input.component.html',
   styleUrls: [
     './name-input.component.css',
