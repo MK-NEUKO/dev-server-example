@@ -52,11 +52,20 @@
 }
 
 .form-control__input-wrapper {
-  border: 0.1rem solid var(--neuko-border);
   position: relative;
   display: flex;
   flex-direction: column;
   overflow: visible;
+}
+.form-control__input-wrapper:has(.form-control__input:focus) {
+  padding: 0.5rem;
+  border: 0.1rem solid var(--neuko-text-info);
+  background-color: rgba(var(--neuko-text-info-rgb), 0.125);
+  border-radius: 0.25rem;
+}
+.form-control__input-wrapper:has(.form-control__input:focus) .control-required {
+  right: 0.75rem;
+  top: 0.5rem;
 }
 
 .form-control__input {
@@ -68,6 +77,23 @@
   font-size: 1rem;
   width: fit-content;
   align-items: flex-start;
+}
+.form-control__input ~ .control-required {
+  display: none;
+  color: var(--neuko-text-body);
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  right: 0.25rem;
+  &:after {
+    content: "*";
+  }
+}
+.form-control__input.ng-invalid.ng-dirty ~ .control-required {
+  color: var(--neuko-text-danger);
+}
+.form-control__input[required] ~ .control-required {
+  display: inline-block;
 }
 
 .form-control__label {
@@ -116,23 +142,6 @@
 .form-control__input.ng-invalid.ng-dirty {
   border-color: var(--neuko-text-danger);
   padding: 0.125rem 1rem 0.25rem 0.25rem;
-}
-.form-control__input ~ .control-required {
-  display: none;
-  color: var(--neuko-text-body);
-  font-weight: bold;
-  position: absolute;
-  top: 0;
-  right: 0.25rem;
-  &:after {
-    content: "*";
-  }
-}
-.form-control__input.ng-invalid.ng-dirty ~ .control-required {
-  color: var(--neuko-text-danger);
-}
-.form-control__input[required] ~ .control-required {
-  display: inline-block;
 }
 
 .form-control-feedback {

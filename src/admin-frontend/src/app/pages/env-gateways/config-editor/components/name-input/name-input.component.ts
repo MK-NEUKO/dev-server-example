@@ -24,11 +24,20 @@ export class NameInputComponent implements OnInit {
 
   public formControl!: FormControl;
   public parentFormGroup!: FormGroup;
+  public isEditingToolsVisible = false;
 
   ngOnInit(): void {
     this.formControl = this.parent()?.get(this.CONTROL_NAMES.CLUSTER_NAME) as FormControl;
     this.parentFormGroup = this.parent() as FormGroup;
   }
 
+  public onInputControlFocus() {
+    this.isEditingToolsVisible = true;
+  }
 
+  public onEditingToolsCancel() {
+    this.isEditingToolsVisible = false;
+    console.log('Editing tools canceled');
+
+  }
 }

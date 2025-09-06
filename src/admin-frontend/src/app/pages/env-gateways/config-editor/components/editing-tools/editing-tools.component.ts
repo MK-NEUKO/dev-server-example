@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 
 @Component({
   selector: 'app-editing-tools',
@@ -8,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class EditingToolsComponent {
 
+  public cancelEvent = output<void>();
+
+  public onCancelClick() {
+    this.cancelEvent.emit();
+    console.log('Cancel clicked');
+
+  }
 }

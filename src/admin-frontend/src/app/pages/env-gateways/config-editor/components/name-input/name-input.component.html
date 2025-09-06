@@ -11,12 +11,13 @@
       name="clusterName"
       autocomplete="off"
       [required]="true"
+      (focus)="onInputControlFocus()"
     />
     <span class="control-required"></span>
-    @if (true) {
-      <app-editing-tools>
-      
-      </app-editing-tools>
+    @if (isEditingToolsVisible) {
+      <app-editing-tools
+        (cancelEvent)="onEditingToolsCancel()"
+      ></app-editing-tools>
     }
   </div>
   
