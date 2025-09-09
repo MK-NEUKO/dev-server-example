@@ -21,17 +21,14 @@ import { ConfigEditorEventService } from '../../../../../services/config-editor/
 })
 export class EditingModalComponent implements OnInit {
 
-  public readonly CONTROL_NAMES = CONFIG_EDITOR_CONTROL_NAMES;
-  public readonly parent = input.required<AbstractControl<any, any> | null>();
-  public readonly parentIndex = input.required<number>();
+
   private elementRef = inject(ElementRef);
   @ViewChild('inputElement') inputElement!: ElementRef<HTMLElement>;
 
   private configEditorEventService = inject(ConfigEditorEventService);
 
 
-  public formControl!: FormControl;
-  public parentFormGroup!: FormGroup;
+
   public isEditingToolsVisible = false;
   public isShaking = false;
 
@@ -42,8 +39,7 @@ export class EditingModalComponent implements OnInit {
     this.configEditorEventService.mouseDown$.subscribe(event => {
       this.handleMouseDownOutside(event);
     });
-    this.formControl = this.parent()?.get(this.CONTROL_NAMES.CLUSTER_NAME) as FormControl;
-    this.parentFormGroup = this.parent() as FormGroup;
+
   }
 
   @HostListener('blur', ['$event']) onComponentBlur(event: FocusEvent) {
