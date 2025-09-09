@@ -1,18 +1,17 @@
 <div [formGroup]="parentForm">
   <h3 class="form__heading form__heading--second">"Clusters": {{ "{" }}</h3>
   <ng-container formArrayName="clusters">
-    @for (cluster of formArray.controls; track $index; let i = $index) {
+    @for (cluster of formArray.controls; track $index; let clusterIndex = $index) {
     <div
       class="tab-2ch form-container form-container--child"
-      [formGroupName]="i"
+      [formGroupName]="clusterIndex"
     >
   <div class="form-control__container">
         <span>"</span>
         <app-editable-input
           [parent]="cluster"
-          [parentIndex]="i"
-        > 
-        </app-editable-input>
+          [parentIndex]="clusterIndex"
+        ></app-editable-input>
         <span>": {{ "{" }}</span>
       </div>
       <div class="tab-2ch">
