@@ -24,7 +24,7 @@
               (focus)="onControlFocus(i, 'destinationName')"
               (blur)="onControlBlur(i, 'destinationName')"
             />
-            <span class="control-required"></span>
+            <span class="required-asterisk"></span>
             @if (destination.get('destinationName')?.errors?.['required']) 
             {
               <span class="control-feedback">Required</span>
@@ -85,7 +85,7 @@
                 (focus)="onControlFocus(i, 'address')"
                 (blur)="onControlBlur(i, 'address')"
               />
-              <span class="control-required"></span>
+              <span class="required-asterisk"></span>
               @if (destination.get('address')?.invalid &&
                   (destination.get('address')?.dirty ||
                   destination.get('address')?.touched)) 

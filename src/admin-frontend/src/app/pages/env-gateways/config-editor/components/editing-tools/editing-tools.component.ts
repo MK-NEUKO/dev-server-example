@@ -12,7 +12,5 @@ export class EditingToolsComponent {
 
   public onCancelClick() {
     this.cancelEvent.emit();
-    console.log('Cancel clicked');
-
   }
 }

@@ -1,4 +1,4 @@
-<section class="container">
+<section class="container" (mousedown)="emitMouseDown($event)">
   <h2>Gateway configuration editor</h2>
 
   @if (currentConfigResource.isLoading()) {
@@ -23,7 +23,7 @@
                 autocomplete="off"
                 [required]="true"
               />
-              <span class="control-required"></span>
+              <span class="required-asterisk"></span>
               @if (configName?.hasError('required')) {
               <span class="control-feedback">Required</span>
               }

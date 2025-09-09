@@ -10,6 +10,7 @@ import { NameValidator } from './shared/name-validator';
 import { RouteConfig } from '../../../models/gateway-config/route-config.model';
 import { Destination } from '../../../models/gateway-config/destination.model';
 import { ClusterConfig } from '../../../models/gateway-config/cluster-config.model';
+import { ConfigEditorEventService } from '../../../services/config-editor/config-editor-event.service';
 
 @Component({
   selector: 'app-config-editor',
@@ -25,6 +26,7 @@ export class ConfigEditorComponent {
 
   private gatewayDataService = inject(GatewayDataService);
   private formBuilder = inject(FormBuilder);
+  private configEditorEventService = inject(ConfigEditorEventService);
   readonly routesControlName = CONFIG_EDITOR_CONTROL_NAMES.ROUTES;
   readonly clustersControlName = CONFIG_EDITOR_CONTROL_NAMES.CLUSTERS;
   public currentConfigResource = this.gatewayDataService.getCurrentConfig();
@@ -43,6 +45,11 @@ export class ConfigEditorComponent {
         this.buildGatewayConfigForm();
       }
     });
+  }
+
+  public emitMouseDown(event: MouseEvent) {
+    this.configEditorEventService.emitMouseDown(event);
+
   }
 
   buildGatewayConfigForm() {

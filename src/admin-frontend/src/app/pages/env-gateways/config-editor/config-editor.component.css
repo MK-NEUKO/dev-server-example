@@ -57,15 +57,11 @@
   flex-direction: column;
   overflow: visible;
 }
-.form-control__input-wrapper:has(.form-control__input:focus) {
+.input-wrapper--editing-tools-visible {
   padding: 0.5rem;
   border: 0.1rem solid var(--neuko-text-info);
   background-color: rgba(var(--neuko-text-info-rgb), 0.125);
   border-radius: 0.25rem;
-}
-.form-control__input-wrapper:has(.form-control__input:focus) .control-required {
-  right: 0.75rem;
-  top: 0.5rem;
 }
 
 .form-control__input {
@@ -78,7 +74,7 @@
   width: fit-content;
   align-items: flex-start;
 }
-.form-control__input ~ .control-required {
+.form-control__input ~ .required-asterisk {
   display: none;
   color: var(--neuko-text-body);
   font-weight: bold;
@@ -89,10 +85,14 @@
     content: "*";
   }
 }
-.form-control__input.ng-invalid.ng-dirty ~ .control-required {
+.form-control__input ~ .required-asterisk--editing-tools-visible {
+  right: 0.75rem;
+  top: 0.5rem;
+}
+.form-control__input.ng-invalid.ng-dirty ~ .required-asterisk {
   color: var(--neuko-text-danger);
 }
-.form-control__input[required] ~ .control-required {
+.form-control__input[required] ~ .required-asterisk {
   display: inline-block;
 }
 
