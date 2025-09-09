@@ -1,7 +1,8 @@
-import { Component, ElementRef, input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, input, OnInit, ViewChild } from '@angular/core';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EditingModalService } from '../../../../../services/config-editor/editing-modal.service';
 
 @Component({
   selector: 'app-editable-input',
@@ -19,6 +20,8 @@ export class EditableInputComponent implements OnInit {
   public readonly parent = input.required<AbstractControl<any, any> | null>();
   public readonly parentIndex = input.required<number>();
   @ViewChild('editButton') editButton!: ElementRef<HTMLButtonElement>;
+  private editingModalService = inject(EditingModalService);
+  private elementRef = inject(ElementRef);
 
   public formControl!: FormControl;
   public parentFormGroup!: FormGroup;
@@ -41,6 +44,8 @@ export class EditableInputComponent implements OnInit {
   }
 
   public openEditingModal() {
-    console.log('Open Modal');
+    const hostComponentRect = this.elementRef.nativeElement.getBoundingClientRect();
+    const position = { top: hostComponentRect.top, left: hostComponentRect.left, width: hostComponentRect.width };
+    this.editingModalService.open(position);
   }
 }
