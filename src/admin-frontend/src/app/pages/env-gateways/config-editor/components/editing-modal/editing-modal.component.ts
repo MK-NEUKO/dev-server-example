@@ -41,4 +41,14 @@ export class EditingModalComponent {
   public onCancelClick() {
     console.log('Cancel clicked');
   }
+
+  public onBackdropClick(): void {
+    const modalElement = this.modalContainer.nativeElement;
+    if (modalElement) {
+      modalElement.classList.add('shake');
+      modalElement.addEventListener('animationend', () => {
+        modalElement.classList.remove('shake');
+      }, { once: true });
+    }
+  }
 }

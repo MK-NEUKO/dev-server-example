@@ -30,7 +30,7 @@
   padding: 0.5rem;
 }
 
-.form-control__input-wrapper.shake {
+.editing-modal__container.shake {
   animation: shake 0.4s;
 }
 @keyframes shake {
