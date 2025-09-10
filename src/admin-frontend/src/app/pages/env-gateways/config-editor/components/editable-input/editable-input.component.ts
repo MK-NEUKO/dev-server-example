@@ -57,6 +57,6 @@ export class EditableInputComponent implements OnInit {
       width: editableInputRect.width,
       height: editableInputRect.height
     };
-    this.editingModalService.open(editableInputPosition);
+    this.editingModalService.open(editableInputPosition, this.formControl);
   }
 }

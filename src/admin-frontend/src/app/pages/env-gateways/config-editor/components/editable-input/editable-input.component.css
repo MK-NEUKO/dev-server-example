@@ -4,7 +4,6 @@
   gap: 0.25rem;
   flex-direction: row;
   overflow: visible;
-  background-color: tomato;
 }
 
 .editable-input__input-wrapper {

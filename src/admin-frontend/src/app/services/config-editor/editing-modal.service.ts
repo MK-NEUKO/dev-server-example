@@ -1,5 +1,6 @@
 import { ApplicationRef, ComponentRef, createComponent, inject, Injectable, Injector, signal } from '@angular/core';
 import { EditingModalComponent } from '../../pages/env-gateways/config-editor/components/editing-modal/editing-modal.component';
+import { FormControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class EditingModalService {
   private applicationReference = inject(ApplicationRef);
   private injector = inject(Injector);
 
-  open(position: { top: number, left: number, width: number, height: number }): EditingModalComponent | undefined {
+  open(position: { top: number, left: number, width: number, height: number }, formControl: FormControl): EditingModalComponent | undefined {
     if (this.editingModalReference) {
       return
     }
@@ -22,6 +23,8 @@ export class EditingModalService {
     this.editingModalReference = createComponent(EditingModalComponent, { environmentInjector: this.applicationReference.injector });
     this.applicationReference.attachView(this.editingModalReference.hostView);
     document.body.appendChild(this.editingModalReference.location.nativeElement);
+
+    this.editingModalReference.instance.formControl = formControl;
 
     return this.editingModalReference.instance;
   }

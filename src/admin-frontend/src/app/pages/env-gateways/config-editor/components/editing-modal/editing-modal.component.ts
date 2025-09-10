@@ -1,5 +1,5 @@
 import { afterNextRender, Component, ElementRef, inject, ViewChild, viewChild } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { EditingModalService } from '../../../../../services/config-editor/editing-modal.service';
 import { NgStyle } from '@angular/common';
 
@@ -18,6 +18,8 @@ import { NgStyle } from '@angular/common';
 export class EditingModalComponent {
   private editingModalService = inject(EditingModalService);
   @ViewChild('modalContainer') modalContainer!: ElementRef;
+
+  public formControl!: FormControl;
 
   constructor() {
     afterNextRender(() => {
