@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { afterNextRender, Component, ElementRef, inject, ViewChild, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditingModalService } from '../../../../../services/config-editor/editing-modal.service';
 import { NgStyle } from '@angular/common';
@@ -16,11 +16,22 @@ import { NgStyle } from '@angular/common';
   ]
 })
 export class EditingModalComponent {
-
   private editingModalService = inject(EditingModalService);
+  @ViewChild('modalContainer') modalContainer!: ElementRef;
+
+  constructor() {
+    afterNextRender(() => {
+      this.setEditingModalSize();
+    });
+  }
 
   get modalPosition() {
     return this.editingModalService.modalPosition();
   }
 
+
+  setEditingModalSize() {
+    const editingModalRect = this.modalContainer.nativeElement.getBoundingClientRect();
+    this.editingModalService.setModalSize({ width: editingModalRect.width, height: editingModalRect.height });
+  }
 }

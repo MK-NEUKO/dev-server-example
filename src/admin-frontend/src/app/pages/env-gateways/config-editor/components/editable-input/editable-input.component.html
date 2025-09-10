@@ -1,6 +1,8 @@
 <div 
   [formGroup]="parentFormGroup"
-  class="editable-input__container">
+  class="editable-input__container"
+  [ngStyle]="{ width: editingModalSize?.width + 'px', height: editingModalSize?.height + 'px' }"
+  >
   <label class="form-control__label" for="inputControl">Cluster Id:</label>
   <div class="editable-input__input-wrapper">
     <input
@@ -21,3 +23,5 @@
     }
   </div>  
 </div>
+
+

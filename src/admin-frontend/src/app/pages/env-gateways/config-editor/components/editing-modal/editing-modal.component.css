@@ -11,16 +11,23 @@
 .editing-modal__container {
   position: fixed;
   display: inline-block;
-  overflow: visible;
-  background: var(--neuko-bg-card);
-  border-radius: 0.5rem;
+  overflow: hidden;
+  background: linear-gradient(
+      rgba(var(--neuko-text-info-rgb), 0.1),
+      rgba(var(--neuko-text-info-rgb), 0.1)
+    ),
+    var(--neuko-bg-body);
+
+  border: 0.1rem solid var(--neuko-text-info);
+  border-radius: 0.25rem;
   z-index: 1001;
-  padding: 0.5rem;
 }
 
 .editing-modal__content {
   display: flex;
+  flex-direction: column;
   gap: 0.25rem;
+  padding: 0.5rem;
 }
 
 .form-control__input-wrapper.shake {

@@ -1,9 +1,16 @@
 <div class="editing-modal__overlay"></div>
-<div 
+<div
+  #modalContainer
   class="editing-modal__container"
-  [ngStyle]="{ top: modalPosition?.top + 'px', left: modalPosition?.left + 'px', width: modalPosition?.width + 'px' }">
-  <form class="editing-modal__content">
-    <label class="form-control__label" for="inputForm">Label: </label>
+  [ngStyle]="{ 
+    top: modalPosition?.top + 'px', 
+    left: modalPosition?.left + 'px', 
+    minWidth: modalPosition?.width + 'px',
+    minHeight: modalPosition?.height + 'px'
+  }">
+  <form 
+    class="editing-modal__content">
+    <label class="form-control__label" for="inputForm">Lfknlmsöobndöylbmfy-kbnmyölkbkfvbnkdjvuskef: </label>
     <input
       #inputElement
       id="inputForm"

@@ -7,12 +7,13 @@ import { EditingModalComponent } from '../../pages/env-gateways/config-editor/co
 export class EditingModalService {
   private editingModalReference!: ComponentRef<EditingModalComponent>;
 
-  public modalPosition = signal<{ top: number, left: number, width: number } | null>(null);
+  public modalPosition = signal<{ top: number, left: number, width: number, height: number } | null>(null);
+  public modalSize = signal<{ width: number, height: number } | null>(null);
 
   private applicationReference = inject(ApplicationRef);
   private injector = inject(Injector);
 
-  open(position: { top: number, left: number, width: number }): EditingModalComponent | undefined {
+  open(position: { top: number, left: number, width: number, height: number }): EditingModalComponent | undefined {
     if (this.editingModalReference) {
       return
     }
@@ -23,5 +24,9 @@ export class EditingModalService {
     document.body.appendChild(this.editingModalReference.location.nativeElement);
 
     return this.editingModalReference.instance;
+  }
+
+  setModalSize(size: { width: number, height: number }) {
+    this.modalSize.set(size);
   }
 }

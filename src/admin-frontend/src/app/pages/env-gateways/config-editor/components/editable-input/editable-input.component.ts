@@ -3,11 +3,13 @@ import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditingModalService } from '../../../../../services/config-editor/editing-modal.service';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-editable-input',
   imports: [
     ReactiveFormsModule,
+    NgStyle
   ],
   templateUrl: './editable-input.component.html',
   styleUrls: [
@@ -20,12 +22,16 @@ export class EditableInputComponent implements OnInit {
   public readonly parent = input.required<AbstractControl<any, any> | null>();
   public readonly parentIndex = input.required<number>();
   @ViewChild('editButton') editButton!: ElementRef<HTMLButtonElement>;
-  private editingModalService = inject(EditingModalService);
-  private elementRef = inject(ElementRef);
+  public editingModalService = inject(EditingModalService);
+  private editableInputReference = inject(ElementRef);
 
   public formControl!: FormControl;
   public parentFormGroup!: FormGroup;
   public isInputEditable = false;
+
+  get editingModalSize() {
+    return this.editingModalService.modalSize();
+  }
 
   ngOnInit(): void {
     this.formControl = this.parent()?.get(this.CONTROL_NAMES.CLUSTER_NAME) as FormControl;
@@ -44,8 +50,13 @@ export class EditableInputComponent implements OnInit {
   }
 
   public openEditingModal() {
-    const hostComponentRect = this.elementRef.nativeElement.getBoundingClientRect();
-    const position = { top: hostComponentRect.top, left: hostComponentRect.left, width: hostComponentRect.width };
-    this.editingModalService.open(position);
+    const editableInputRect = this.editableInputReference.nativeElement.getBoundingClientRect();
+    const editableInputPosition = {
+      top: editableInputRect.top,
+      left: editableInputRect.left,
+      width: editableInputRect.width,
+      height: editableInputRect.height
+    };
+    this.editingModalService.open(editableInputPosition);
   }
 }
