@@ -27,6 +27,8 @@ export class ClustersComponent implements OnInit {
   formArray!: FormArray;
   parentForm!: FormGroup;
 
+  public labelClusterName = 'Cluster Id: ';
+
   get clusterName() {
     const cluster = this.formArray.at(0) as FormGroup;
     return cluster.get(CONFIG_EDITOR_CONTROL_NAMES.CLUSTER_NAME);

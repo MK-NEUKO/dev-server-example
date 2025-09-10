@@ -20,6 +20,7 @@ export class EditingModalComponent {
   @ViewChild('modalContainer') modalContainer!: ElementRef;
 
   public formControl!: FormControl;
+  public label!: string;
 
   constructor() {
     afterNextRender(() => {

@@ -14,7 +14,11 @@ export class EditingModalService {
   private applicationReference = inject(ApplicationRef);
   private injector = inject(Injector);
 
-  open(position: { top: number, left: number, width: number, height: number }, formControl: FormControl): EditingModalComponent | undefined {
+  open(
+    position: { top: number, left: number, width: number, height: number },
+    formControl: FormControl,
+    label: string
+  ): EditingModalComponent | undefined {
     if (this.editingModalReference) {
       return
     }
@@ -25,6 +29,7 @@ export class EditingModalService {
     document.body.appendChild(this.editingModalReference.location.nativeElement);
 
     this.editingModalReference.instance.formControl = formControl;
+    this.editingModalReference.instance.label = label;
 
     return this.editingModalReference.instance;
   }

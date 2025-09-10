@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Input, input, OnInit, ViewChild } from '@angular/core';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -22,6 +22,7 @@ export class EditableInputComponent implements OnInit {
   public readonly parent = input.required<AbstractControl<any, any> | null>();
   public readonly parentIndex = input.required<number>();
   @ViewChild('editButton') editButton!: ElementRef<HTMLButtonElement>;
+  @Input() label!: string;
   public editingModalService = inject(EditingModalService);
   private editableInputReference = inject(ElementRef);
 
@@ -57,6 +58,6 @@ export class EditableInputComponent implements OnInit {
       width: editableInputRect.width,
       height: editableInputRect.height
     };
-    this.editingModalService.open(editableInputPosition, this.formControl);
+    this.editingModalService.open(editableInputPosition, this.formControl, this.label);
   }
 }
