@@ -37,4 +37,8 @@ export class EditingModalComponent {
     const editingModalRect = this.modalContainer.nativeElement.getBoundingClientRect();
     this.editingModalService.setModalSize({ width: editingModalRect.width, height: editingModalRect.height });
   }
+
+  public onCancelClick() {
+    console.log('Cancel clicked');
+  }
 }

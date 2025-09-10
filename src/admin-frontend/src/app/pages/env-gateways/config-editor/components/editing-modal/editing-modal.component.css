@@ -11,7 +11,7 @@
 .editing-modal__container {
   position: fixed;
   display: inline-block;
-  overflow: hidden;
+  overflow: visible;
   background: linear-gradient(
       rgba(var(--neuko-text-info-rgb), 0.1),
       rgba(var(--neuko-text-info-rgb), 0.1)
@@ -52,4 +52,11 @@
   100% {
     transform: translateX(0);
   }
+}
+
+.editing-options__wrapper {
+  padding-top: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
 }
