@@ -1,4 +1,4 @@
-import { afterNextRender, Component, ElementRef, inject, ViewChild, viewChild } from '@angular/core';
+import { afterNextRender, Component, ElementRef, inject, OnInit, ViewChild, viewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { EditingModalService } from '../../../../../services/config-editor/editing-modal.service';
 import { NgStyle } from '@angular/common';
@@ -15,12 +15,14 @@ import { NgStyle } from '@angular/common';
     '../../config-editor.component.css'
   ]
 })
-export class EditingModalComponent {
+export class EditingModalComponent implements OnInit {
   private editingModalService = inject(EditingModalService);
   @ViewChild('modalContainer') modalContainer!: ElementRef;
 
   public formControl!: FormControl;
   public label!: string;
+
+  private initialValue!: string;
   public onSubmit?: (value: any) => void;
 
   constructor() {
@@ -29,10 +31,8 @@ export class EditingModalComponent {
     });
   }
 
-  public onFormSubmit() {
-    if (this.onSubmit) {
-      this.onSubmit({ value: this.formControl.value });
-    }
+  ngOnInit() {
+    this.initialValue = this.formControl.value;
   }
 
   get modalPosition() {
@@ -42,6 +42,16 @@ export class EditingModalComponent {
   setEditingModalSize() {
     const editingModalRect = this.modalContainer.nativeElement.getBoundingClientRect();
     this.editingModalService.setModalSize({ width: editingModalRect.width, height: editingModalRect.height });
+  }
+
+  public onFormSubmit() {
+    if (this.onSubmit) {
+      this.onSubmit({ value: this.formControl.value });
+    }
+  }
+
+  public onResetClick() {
+    this.formControl.setValue(this.initialValue);
   }
 
   public onCancelClick() {

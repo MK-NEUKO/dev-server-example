@@ -12,6 +12,8 @@
       id="inputControl"
       class="editable-input"
       type="text"
+      autocomplete="off"
+      [readonly]="true"
       [formControl]="formControl"
       (focus)="onInputControlFocus()"
       (blur)="onInputControlBlur()"
