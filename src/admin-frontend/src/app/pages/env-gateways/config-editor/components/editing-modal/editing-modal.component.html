@@ -8,8 +8,9 @@
     minWidth: modalPosition?.width + 'px',
     minHeight: modalPosition?.height + 'px'
   }">
-  <form 
-    class="editing-modal__content">
+  <div 
+    class="editing-modal__content"
+    >
     <label class="form-control__label" for="inputForm">{{ label }}</label>
     <input
       #inputElement
@@ -23,8 +24,9 @@
     <div class="editing-options__wrapper">
       <div class="tooltip">
         <button
-        type="submit"
+          type="submit"
           class="button button--primary button--icon"
+          (click)="onFormSubmit()"
         >
           <i class="bi bi-save"></i>
         </button>
@@ -43,11 +45,12 @@
         <button
           type="button"
           class="button button--secondary button--icon"
+          (click)="onCancelClick()"
         >
           <i class="bi bi-x-circle"></i>
         </button>
         <span class="tooltip-text">Cancel</span>
       </div>
     </div>
-  </form>
+  </div>
 </div>

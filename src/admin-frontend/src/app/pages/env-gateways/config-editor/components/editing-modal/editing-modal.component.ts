@@ -21,6 +21,7 @@ export class EditingModalComponent {
 
   public formControl!: FormControl;
   public label!: string;
+  public onSubmit?: (value: any) => void;
 
   constructor() {
     afterNextRender(() => {
@@ -28,10 +29,15 @@ export class EditingModalComponent {
     });
   }
 
+  public onFormSubmit() {
+    if (this.onSubmit) {
+      this.onSubmit({ value: this.formControl.value });
+    }
+  }
+
   get modalPosition() {
     return this.editingModalService.modalPosition();
   }
-
 
   setEditingModalSize() {
     const editingModalRect = this.modalContainer.nativeElement.getBoundingClientRect();
@@ -39,7 +45,10 @@ export class EditingModalComponent {
   }
 
   public onCancelClick() {
-    console.log('Cancel clicked');
+    this.editingModalService.close()
+    if (this.onSubmit) {
+      this.onSubmit({ value: 'cancel' });
+    }
   }
 
   public onBackdropClick(): void {

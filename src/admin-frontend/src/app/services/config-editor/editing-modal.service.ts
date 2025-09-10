@@ -37,4 +37,14 @@ export class EditingModalService {
   setModalSize(size: { width: number, height: number }) {
     this.modalSize.set(size);
   }
+
+  close() {
+    if (this.editingModalReference) {
+      this.applicationReference.detachView(this.editingModalReference.hostView);
+      this.editingModalReference.destroy();
+      this.editingModalReference = undefined!;
+      this.modalPosition.set(null);
+      this.modalSize.set(null);
+    }
+  }
 }
