@@ -21,6 +21,7 @@ export class EditingModalComponent implements OnInit {
 
   public formControl!: FormControl;
   public label!: string;
+  public isSubmitDisabled = true;
 
   private initialValue!: string;
   public onSubmit?: (value: any) => void;
@@ -44,6 +45,16 @@ export class EditingModalComponent implements OnInit {
     this.editingModalService.setModalSize({ width: editingModalRect.width, height: editingModalRect.height });
   }
 
+  public onInputChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    const isValueChanged = value !== this.initialValue;
+    if (isValueChanged) {
+      this.isSubmitDisabled = false;
+      return;
+    }
+    this.isSubmitDisabled = true;
+  }
+
   public onFormSubmit() {
     if (this.onSubmit) {
       this.onSubmit({ value: this.formControl.value });
@@ -52,6 +63,7 @@ export class EditingModalComponent implements OnInit {
 
   public onResetClick() {
     this.formControl.setValue(this.initialValue);
+    this.isSubmitDisabled = true;
   }
 
   public onCancelClick() {

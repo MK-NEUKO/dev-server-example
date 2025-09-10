@@ -18,6 +18,7 @@
       class="form-control__input"
       type="text"
       autocomplete="off"
+      (input)="onInputChange($event)"
       [required]="true"
       [formControl]="formControl"
     />
@@ -26,6 +27,7 @@
         <button
           type="submit"
           class="button button--primary button--icon"
+          [disabled]="isSubmitDisabled"
           (click)="onFormSubmit()"
         >
           <i class="bi bi-save"></i>
@@ -35,7 +37,7 @@
       <div class="tooltip">
         <button
           type="button"
-          class="button button--secondary button--icon"
+          class="button button--secondary button--icon" 
           (click)="onResetClick()"
         >
           <i class="bi bi-arrow-counterclockwise"></i>
