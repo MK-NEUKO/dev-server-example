@@ -27,20 +27,20 @@
       {
         <div class="editing-modal__validation-feedback">
           <span>Invalid</span>
-          @for (error of validationErrors; track error) {
-            <div class="editing-modal__validation-tooltip">
-              <ol class="editing-modal__validation-list">
+          <div class="editing-modal__validation-tooltip">
+            <ol class="editing-modal__validation-list">
+              @for (error of validationErrors; track error) {
                 <li>
                   <div class="editing-modal__validation-key">
                     {{ error['key'] }}
                   </div>
                   <div class="editing-modal__validation-value">
-                    {{ error['value']?.message || error['value'] }}
+                    {{ error['value'] | json }}
                   </div>
                 </li>
-              </ol>
-            </div>
-          }
+              }
+            </ol>
+          </div>
         </div>
       }
     </div>

@@ -134,6 +134,13 @@
 
 .editing-modal__validation-tooltip {
   display: none;
+  background-color: var(--neuko-bg-body);
+  color: var(--neuko-text-body);
+  border: 1px solid var(--neuko-border);
+  border-radius: 0.25rem;
+  margin-top: 0.5rem;
+  width: 15rem;
+  overflow: auto;
 }
 
 .editing-modal__validation-feedback:hover .editing-modal__validation-tooltip {
@@ -141,7 +148,12 @@
 }
 
 .editing-modal__validation-list {
-  padding-inline-start: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-inline-start: 1.5rem;
+  padding-inline-end: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .editing-modal__validation-key {

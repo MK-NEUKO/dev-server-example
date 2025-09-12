@@ -1,13 +1,14 @@
-import { afterNextRender, Component, ElementRef, inject, OnInit, ViewChild, viewChild } from '@angular/core';
+import { afterNextRender, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { EditingModalService } from '../../../../../services/config-editor/editing-modal.service';
-import { NgStyle } from '@angular/common';
+import { NgStyle, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-editing-modal',
   imports: [
     ReactiveFormsModule,
     NgStyle,
+    JsonPipe,
   ],
   templateUrl: './editing-modal.component.html',
   styleUrls: [
