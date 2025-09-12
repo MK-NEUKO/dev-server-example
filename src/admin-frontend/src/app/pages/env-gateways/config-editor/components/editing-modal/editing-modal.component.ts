@@ -22,6 +22,7 @@ export class EditingModalComponent implements OnInit {
   public formControl!: FormControl;
   public label!: string;
   public isSubmitDisabled = true;
+  public validationErrors: Record<string, any>[] | null = null;
 
   private initialValue!: string;
   public onSubmit?: (value: any) => void;
@@ -46,13 +47,10 @@ export class EditingModalComponent implements OnInit {
   }
 
   public onInputChange(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    const isValueChanged = value !== this.initialValue;
-    if (isValueChanged) {
-      this.isSubmitDisabled = false;
-      return;
+    if (this.formControl.invalid) {
+      this.processValidationErrors();
     }
-    this.isSubmitDisabled = true;
+    this.setIsSubmitDisabled(event);
   }
 
   public onFormSubmit() {
@@ -67,6 +65,8 @@ export class EditingModalComponent implements OnInit {
   }
 
   public onCancelClick() {
+    this.formControl.setValue(this.initialValue);
+    this.isSubmitDisabled = true;
     this.editingModalService.close()
     if (this.onSubmit) {
       this.onSubmit({ value: 'cancel' });
@@ -80,6 +80,27 @@ export class EditingModalComponent implements OnInit {
       modalElement.addEventListener('animationend', () => {
         modalElement.classList.remove('shake');
       }, { once: true });
+    }
+  }
+
+  private setIsSubmitDisabled(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    const isValueValid = this.formControl.valid;
+    const isValueChanged = value !== this.initialValue;
+    if (isValueChanged && isValueValid) {
+      this.isSubmitDisabled = false;
+      return;
+    }
+    this.isSubmitDisabled = true;
+  }
+
+  private processValidationErrors() {
+    if (this.formControl.errors) {
+      this.validationErrors = Object.entries(this.formControl.errors).map(([key, value]) => ({ key, value }));
+      console.log('Validation Errors:', this.validationErrors);
+
+    } else {
+      this.validationErrors = null;
     }
   }
 }

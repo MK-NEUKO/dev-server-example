@@ -11,17 +11,39 @@
   <div 
     class="editing-modal__content"
     >
-    <label class="form-control__label" for="inputForm">{{ label }}</label>
-    <input
-      #inputElement
-      id="inputForm"
-      class="form-control__input"
-      type="text"
-      autocomplete="off"
-      (input)="onInputChange($event)"
-      [required]="true"
-      [formControl]="formControl"
-    />
+    <div class="editing-modal__input-wrapper">
+      <label class="editing-modal__input-label" for="inputForm">{{ label }}</label>
+      <input
+        #inputElement
+        id="inputForm"
+        class="editing-modal__input"
+        type="text"
+        autocomplete="off"
+        (input)="onInputChange($event)"
+        [required]="true"
+        [formControl]="formControl"
+        />
+      @if (formControl.errors)
+      {
+        <div class="editing-modal__validation-feedback">
+          <span>Invalid</span>
+          @for (error of validationErrors; track error) {
+            <div class="editing-modal__validation-tooltip">
+              <ol class="editing-modal__validation-list">
+                <li>
+                  <div class="editing-modal__validation-key">
+                    {{ error['key'] }}
+                  </div>
+                  <div class="editing-modal__validation-value">
+                    {{ error['value']?.message || error['value'] }}
+                  </div>
+                </li>
+              </ol>
+            </div>
+          }
+        </div>
+      }
+    </div>
     <div class="editing-options__wrapper">
       <div class="tooltip">
         <button
