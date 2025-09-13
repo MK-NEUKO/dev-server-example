@@ -6,7 +6,7 @@ import { EditingModalService } from '../../../../../services/config-editor/editi
 import { NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'app-editable-input',
+  selector: 'config-editor-editable-input',
   imports: [
     ReactiveFormsModule,
     NgStyle
@@ -67,6 +67,7 @@ export class EditableInputComponent implements OnInit {
           return;
         }
         if (data && data.value !== undefined) {
+          this.isInputEditable = false;
           this.formControl.setValue(data.value);
           this.editingModalService.close();
           // request

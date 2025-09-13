@@ -30,22 +30,11 @@
       </div>
       <div class="tab-2ch">
         <div class="form-control__container">
-          <label for="clusterName">ClusterId: </label>
-          <div class="form-control__input-wrapper">
-            <input
-              class="form-control__input"
-              id="clusterName"
-              type="text"
-              formControlName="clusterName"
-              name="clusterName"
-              autocomplete="off"
-              [required]="true"
-            />
-            <span class="required-asterisk"></span>
-            @if (clusterName?.hasError('required')) {
-            <span class="control-feedback">Required</span>
-            }
-          </div>
+          <config-editor-editable-input
+            [parent]="route"
+            [parentIndex]="i"
+            [label]="labelClusterId"
+          ></config-editor-editable-input>
         </div>
 
         <span>Match: {{ "{" }}</span>
