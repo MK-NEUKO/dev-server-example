@@ -20,14 +20,13 @@ export class EditingModalService {
     label: string
   ): EditingModalComponent | undefined {
     if (this.editingModalReference) {
-      return
+      return undefined;
     }
 
     this.modalPosition.set(position);
     this.editingModalReference = createComponent(EditingModalComponent, { environmentInjector: this.applicationReference.injector });
     this.applicationReference.attachView(this.editingModalReference.hostView);
     document.body.appendChild(this.editingModalReference.location.nativeElement);
-
     this.editingModalReference.instance.formControl = formControl;
     this.editingModalReference.instance.label = label;
 

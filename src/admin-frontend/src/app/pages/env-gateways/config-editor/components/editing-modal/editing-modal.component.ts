@@ -104,9 +104,9 @@ export class EditingModalComponent implements OnInit {
           const processedErrorObject = { key: error.key, value: errorDetailsObject };
           this.validationErrors.push(processedErrorObject);
         } else {
-          const errorDetailPrimitiv = [{ key: 'Found value', value: error['value'] }];
-          const processedErrorPrimitiv = { key: error.key, value: errorDetailPrimitiv };
-          this.validationErrors.push(processedErrorPrimitiv);
+          const errorDetailPrimitive = [{ key: 'Found value', value: error['value'] }];
+          const processedErrorPrimitive = { key: error.key, value: errorDetailPrimitive };
+          this.validationErrors.push(processedErrorPrimitive);
         }
       }
       return;
