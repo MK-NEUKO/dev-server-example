@@ -9,7 +9,7 @@ import { EditableInputComponent } from "../components/editable-input/editable-in
   imports: [
     ReactiveFormsModule,
     DestinationsComponent,
-    EditableInputComponent
+    EditableInputComponent,
   ],
   templateUrl: './clusters.component.html',
   styleUrls: [
@@ -27,7 +27,7 @@ export class ClustersComponent implements OnInit {
   formArray!: FormArray;
   parentForm!: FormGroup;
 
-  public labelClusterName = 'Cluster Id: ';
+  public readonly labelClusterName = 'Cluster Id: ';
 
   get clusterName() {
     const cluster = this.formArray.at(0) as FormGroup;

@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, Input, input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Input, input, OnInit, ViewChild, signal } from '@angular/core';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -21,6 +21,8 @@ export class EditableInputComponent implements OnInit {
   public readonly CONTROL_NAMES = CONFIG_EDITOR_CONTROL_NAMES;
   public readonly parent = input.required<AbstractControl<any, any> | null>();
   public readonly parentIndex = input.required<number>();
+  public readonly controlName = input.required<string>();
+  public readonly showLabel = input<boolean>(true);
   @ViewChild('editButton') editButton!: ElementRef<HTMLButtonElement>;
   @Input() label!: string;
   public editingModalService = inject(EditingModalService);
@@ -29,13 +31,11 @@ export class EditableInputComponent implements OnInit {
   public formControl!: FormControl;
   public parentFormGroup!: FormGroup;
   public isInputEditable = false;
+  public editingModalSize = signal<{ width: number, height: number } | null>(null);
 
-  get editingModalSize() {
-    return this.editingModalService.modalSize();
-  }
 
   ngOnInit(): void {
-    this.formControl = this.parent()?.get(this.CONTROL_NAMES.CLUSTER_NAME) as FormControl;
+    this.formControl = this.parent()?.get(this.controlName()) as FormControl;
     this.parentFormGroup = this.parent() as FormGroup;
   }
 
@@ -61,6 +61,7 @@ export class EditableInputComponent implements OnInit {
     const modalInstance = this.editingModalService.open(editableInputPosition, this.formControl, this.label);
     if (modalInstance) {
       modalInstance.onSubmit = (data: any) => {
+        this.editingModalSize.set(data.width && data.height ? { width: data.width, height: data.height } : null);
         if (data.value === 'cancel') {
           this.isInputEditable = false;
           this.editingModalService.close();

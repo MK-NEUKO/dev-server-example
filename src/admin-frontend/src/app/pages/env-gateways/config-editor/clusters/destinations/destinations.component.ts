@@ -4,11 +4,13 @@ import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-
 import { DestinationService } from '../../../../../services/env-gateway/destination/destination.service';
 import { RequestDialogService } from '../../../../../services/dialog-service/request-dialog.service';
 import { RequestResponse } from '../../../../../services/env-gateway/RequestResponse/request-response';
+import { EditableInputComponent } from '../../components/editable-input/editable-input.component';
 
 @Component({
   selector: 'app-destinations',
   imports: [
     ReactiveFormsModule,
+    EditableInputComponent
   ],
   templateUrl: './destinations.component.html',
   styleUrls: [
@@ -18,6 +20,7 @@ import { RequestResponse } from '../../../../../services/env-gateway/RequestResp
 })
 export class DestinationsComponent implements OnInit {
 
+  public readonly CONTROL_NAMES = CONFIG_EDITOR_CONTROL_NAMES;
   readonly formArrayName = input.required<string>();
   readonly parentArrayName = input.required<string>();
   private rootFormGroup = inject(FormGroupDirective);
@@ -32,6 +35,7 @@ export class DestinationsComponent implements OnInit {
     test2: true,
   };
   private blurCausedByControlOptionButton: boolean = false;
+  public readonly labelDestinationName: string = 'Destination Name: ';
 
   ngOnInit(): void {
     const rootForm = this.rootFormGroup.control;

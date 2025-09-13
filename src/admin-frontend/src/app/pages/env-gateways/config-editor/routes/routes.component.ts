@@ -17,6 +17,7 @@ import { EditableInputComponent } from "../components/editable-input/editable-in
 })
 export class RoutesComponent implements OnInit {
 
+  public readonly CONTROL_NAMES = CONFIG_EDITOR_CONTROL_NAMES;
   readonly formArrayName = input.required<string>();
   private rootFormGroup = inject(FormGroupDirective);
   formArray!: FormArray;

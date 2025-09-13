@@ -11,7 +11,9 @@
         <config-editor-editable-input
           [parent]="cluster"
           [parentIndex]="clusterIndex"
+          [controlName]="CONTROL_NAMES.CLUSTER_NAME"
           [label]="labelClusterName"
+          [showLabel]="false"
         ></config-editor-editable-input>
         <span>": {{ "{" }}</span>
       </div>

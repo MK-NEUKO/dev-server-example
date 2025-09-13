@@ -2,11 +2,13 @@
   [formGroup]="parentFormGroup"
   class="editable-input__container"
   [ngStyle]="{ 
-    width: editingModalSize?.width ? editingModalSize?.width + 'px' : 'auto', 
-    height: editingModalSize?.height ? editingModalSize?.height + 'px' : 'auto' 
+    width: editingModalSize()?.width ? editingModalSize()?.width + 'px' : 'auto', 
+    height: editingModalSize()?.height ? editingModalSize()?.height + 'px' : 'auto' 
   }"
   >
-  <label class="form-control__label" for="inputControl">{{ label }}</label>
+  @if (showLabel()) {
+    <label class="form-control__label" for="inputControl">{{ label }}</label>
+  }
   <div class="editable-input__input-wrapper">
     <input
       id="inputControl"

@@ -33,10 +33,10 @@
           <config-editor-editable-input
             [parent]="route"
             [parentIndex]="i"
+            [controlName]="CONTROL_NAMES.CLUSTER_NAME"
             [label]="labelClusterId"
           ></config-editor-editable-input>
         </div>
-
         <span>Match: {{ "{" }}</span>
         <div class="tab-2ch" formGroupName="match">
           <div class="form-control__container">

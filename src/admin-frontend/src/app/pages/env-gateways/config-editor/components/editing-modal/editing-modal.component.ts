@@ -43,7 +43,9 @@ export class EditingModalComponent implements OnInit {
 
   setEditingModalSize() {
     const editingModalRect = this.modalContainer.nativeElement.getBoundingClientRect();
-    this.editingModalService.setModalSize({ width: editingModalRect.width, height: editingModalRect.height });
+    if (this.onSubmit) {
+      this.onSubmit({ width: editingModalRect.width, height: editingModalRect.height });
+    }
   }
 
   public onInputChange(event: Event) {
@@ -111,7 +113,7 @@ export class EditingModalComponent implements OnInit {
       }
       return;
     } else {
-      this.validationErrors = null;
+      this.validationErrors = [];
     }
   }
 }

@@ -9,7 +9,6 @@ export class EditingModalService {
   private editingModalReference!: ComponentRef<EditingModalComponent>;
 
   public modalPosition = signal<{ top: number, left: number, width: number, height: number } | null>(null);
-  public modalSize = signal<{ width: number, height: number } | null>(null);
 
   private applicationReference = inject(ApplicationRef);
   private injector = inject(Injector);
@@ -30,11 +29,8 @@ export class EditingModalService {
     this.editingModalReference.instance.formControl = formControl;
     this.editingModalReference.instance.label = label;
 
-    return this.editingModalReference.instance;
-  }
 
-  setModalSize(size: { width: number, height: number }) {
-    this.modalSize.set(size);
+    return this.editingModalReference.instance;
   }
 
   close() {
@@ -43,7 +39,6 @@ export class EditingModalService {
       this.editingModalReference.destroy();
       this.editingModalReference = undefined!;
       this.modalPosition.set(null);
-      this.modalSize.set(null);
     }
   }
 }
