@@ -28,14 +28,23 @@
         <div class="editing-modal__validation-feedback">
           <span>Invalid</span>
           <div class="editing-modal__validation-tooltip">
-            <ol class="editing-modal__validation-list">
-              @for (error of validationErrors; track error) {
-                <li>
-                  <div class="editing-modal__validation-key">
-                    {{ error['key'] }}
+            <ol class="editing-modal__validation-error-list">
+              @for (error of validationErrors; track $index) {
+                <li class="editing-modal__validation-error-item">
+                  <div class="editing-modal__validation-error-key">
+                    {{ error.key }}
                   </div>
-                  <div class="editing-modal__validation-value">
-                    {{ error['value'] | json }}
+                  <div class="editing-modal__validation-error-value">
+                    @for (detail of error.value; track $index) {
+                      <div class="editing-modal__error-details">
+                        <span class="editing-modal__error-details-key">
+                          {{ detail.key }}
+                        </span>
+                        <span class="editing-modal__error-details-value">
+                          {{ detail.value }}
+                        </span>
+                      </div>
+                    }
                   </div>
                 </li>
               }

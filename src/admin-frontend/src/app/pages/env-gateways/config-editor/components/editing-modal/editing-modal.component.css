@@ -133,21 +133,20 @@
 }
 
 .editing-modal__validation-tooltip {
-  display: none;
+  display: block;
   background-color: var(--neuko-bg-body);
   color: var(--neuko-text-body);
   border: 1px solid var(--neuko-border);
   border-radius: 0.25rem;
   margin-top: 0.5rem;
   width: 15rem;
-  overflow: auto;
 }
 
 .editing-modal__validation-feedback:hover .editing-modal__validation-tooltip {
   display: block;
 }
 
-.editing-modal__validation-list {
+.editing-modal__validation-error-list {
   margin-block-start: 0;
   margin-block-end: 0;
   padding-inline-start: 1.5rem;
@@ -156,14 +155,39 @@
   padding-bottom: 0.25rem;
 }
 
-.editing-modal__validation-key {
+.editing-modal__validation-error-item {
+  margin-bottom: 0.25rem;
+}
+
+.editing-modal__validation-error-key {
   font-weight: bold;
   text-decoration: underline;
   text-transform: capitalize;
   font-size: 1rem;
 }
 
-.editing-modal__validation-value {
-  font-style: italic;
+.editing-modal__validation-error-value {
   font-size: 0.85rem;
+}
+
+.editing-modal__error-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.editing-modal__error-details-key {
+  font-weight: bold;
+  text-decoration: underline;
+  text-transform: capitalize;
+}
+
+.editing-modal__error-details-value {
+  font-family: monospace;
+  background: var(--neuko-bg-body-highlight);
+  padding: 0.5em;
+  border-radius: 0.25rem;
+  font-size: 0.95em;
+  overflow: auto;
 }

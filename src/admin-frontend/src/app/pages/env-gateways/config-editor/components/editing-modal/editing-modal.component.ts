@@ -8,7 +8,6 @@ import { NgStyle, JsonPipe } from '@angular/common';
   imports: [
     ReactiveFormsModule,
     NgStyle,
-    JsonPipe,
   ],
   templateUrl: './editing-modal.component.html',
   styleUrls: [
@@ -23,7 +22,7 @@ export class EditingModalComponent implements OnInit {
   public formControl!: FormControl;
   public label!: string;
   public isSubmitDisabled = true;
-  public validationErrors: Record<string, any>[] | null = null;
+  public validationErrors: { key: string, value: { key: string, value: any }[] }[] | null = null;
 
   private initialValue!: string;
   public onSubmit?: (value: any) => void;
@@ -96,10 +95,23 @@ export class EditingModalComponent implements OnInit {
   }
 
   private processValidationErrors() {
+    this.validationErrors = [];
     if (this.formControl.errors) {
-      this.validationErrors = Object.entries(this.formControl.errors).map(([key, value]) => ({ key, value }));
+      const errors = Object.entries(this.formControl.errors).map(([key, value]) => ({ key, value }));
+      for (const error of errors) {
+        if (typeof error['value'] === 'object') {
+          const errorDetailsObject = Object.entries(error['value']).map(([key, value]) => ({ key, value }));
+          const processedErrorObject = { key: error.key, value: errorDetailsObject };
+          this.validationErrors.push(processedErrorObject);
+        } else {
+          const errorDetailPrimitiv = [{ key: 'Found value', value: error['value'] }];
+          const processedErrorPrimitiv = { key: error.key, value: errorDetailPrimitiv };
+          this.validationErrors.push(processedErrorPrimitiv);
+        }
+      }
       console.log('Validation Errors:', this.validationErrors);
 
+      return;
     } else {
       this.validationErrors = null;
     }
