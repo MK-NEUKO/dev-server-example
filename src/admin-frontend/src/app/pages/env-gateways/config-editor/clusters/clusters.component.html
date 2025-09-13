@@ -19,8 +19,8 @@
       </div>
       <div class="tab-2ch">
         <app-destinations
-          [formArrayName]="childArrayControlName"
-          [parentArrayName]="parentArrayControlName"
+          [parent]="cluster"
+          [destinationsArrayName]="CONTROL_NAMES.DESTINATIONS"
         ></app-destinations>
       </div>
       <span>{{ "}" }}</span>

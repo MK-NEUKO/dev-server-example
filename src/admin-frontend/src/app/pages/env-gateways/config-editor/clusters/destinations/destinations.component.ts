@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, input, signal } from '@angular/core';
-import { FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
 import { DestinationService } from '../../../../../services/env-gateway/destination/destination.service';
 import { RequestDialogService } from '../../../../../services/dialog-service/request-dialog.service';
@@ -21,13 +21,13 @@ import { EditableInputComponent } from '../../components/editable-input/editable
 export class DestinationsComponent implements OnInit {
 
   public readonly CONTROL_NAMES = CONFIG_EDITOR_CONTROL_NAMES;
-  readonly formArrayName = input.required<string>();
-  readonly parentArrayName = input.required<string>();
-  private rootFormGroup = inject(FormGroupDirective);
+  public readonly parent = input.required<AbstractControl<any, any> | null>();
+  public readonly destinationsArrayName = input.required<string>();
+  public parentFormGroup!: FormGroup;
+  public destinations!: FormArray;
+
   private destinationService = inject(DestinationService);
   private requestDialogService = inject(RequestDialogService);
-  public formArray!: FormArray;
-  public parentForm!: FormGroup;
   public canControlOptionsDisplayed: Record<string, boolean> = {
     destinationName: false,
     address: false,
@@ -38,11 +38,8 @@ export class DestinationsComponent implements OnInit {
   public readonly labelDestinationName: string = 'Destination Name: ';
 
   ngOnInit(): void {
-    const rootForm = this.rootFormGroup.control;
-    const parentArray = rootForm.get(this.parentArrayName()) as FormArray;
-    this.parentForm = parentArray.at(0) as FormGroup;
-    this.formArray = this.parentForm.get(this.formArrayName()) as FormArray;
-
+    this.parentFormGroup = this.parent() as FormGroup;
+    this.destinations = this.parent()?.get(this.destinationsArrayName()) as FormArray;
   }
 
   public onControlFocus(index: number, controlName: string): void {
@@ -83,7 +80,7 @@ export class DestinationsComponent implements OnInit {
   }
 
   public isControlValueChanged(index: number, controlName: string): boolean | undefined {
-    const control = this.formArray.at(index).get(controlName);
+    const control = this.destinations.at(index).get(controlName);
     if (control?.pristine) {
       return false;
     }
@@ -95,7 +92,7 @@ export class DestinationsComponent implements OnInit {
   }
 
   public reset(index: number, controlName: string): void {
-    const control = this.formArray.at(index).get(controlName);
+    const control = this.destinations.at(index).get(controlName);
     control?.reset();
     control?.markAsTouched();
     control?.markAsDirty();
@@ -106,9 +103,9 @@ export class DestinationsComponent implements OnInit {
     const requestDialog = this.requestDialogService.open(`Destination ${controlName} will be changed`);
 
     const request = {
-      clusterId: this.parentForm.get('clusterId')?.value,
-      destinationId: this.formArray.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ID)?.value,
-      [controlName]: this.formArray.at(index).get(controlName)?.value
+      clusterId: this.parentFormGroup.get('clusterId')?.value,
+      destinationId: this.destinations.at(index).get(CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_ID)?.value,
+      [controlName]: this.destinations.at(index).get(controlName)?.value
     };
 
     let responseTitle = '';
@@ -134,7 +131,7 @@ export class DestinationsComponent implements OnInit {
   }
 
   private resetControlProperties(index: number, controlName: string): void {
-    const control = this.formArray.at(index).get(controlName);
+    const control = this.destinations.at(index).get(controlName);
     control?.markAsPristine();
     control?.markAsUntouched();
 

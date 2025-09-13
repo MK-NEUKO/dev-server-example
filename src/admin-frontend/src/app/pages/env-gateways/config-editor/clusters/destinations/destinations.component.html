@@ -1,7 +1,7 @@
-<div [formGroup]="parentForm">
+<div [formGroup]="parentFormGroup">
   <h3 class="form__heading form__heading--third">Destinations: {{ "{" }}</h3>
   <ng-container formArrayName="destinations">
-    @for (destination of formArray.controls; track $index; let destinationIndex = $index) 
+    @for (destination of destinations.controls; track $index; let destinationIndex = $index) 
     {
       <div class="tab-2ch form-container" [formGroupName]="destinationIndex">
       <div class="form-control__container">
