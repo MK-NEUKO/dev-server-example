@@ -63,17 +63,14 @@ export class EditableInputComponent implements OnInit {
       modalInstance.onSubmit = (data: any) => {
         if (data.value === 'cancel') {
           this.isInputEditable = false;
+          this.editingModalService.close();
           return;
         }
-
-        // Hier kannst du die Daten aus dem Modal verarbeiten
-        // Beispiel: Wert ins FormControl setzen
         if (data && data.value !== undefined) {
           this.formControl.setValue(data.value);
+          this.editingModalService.close();
+          // request
         }
-        console.log('FormControl value after modal submit:', this.formControl.value);
-
-        // Weitere Logik nach Bedarf
       };
     }
   }

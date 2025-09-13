@@ -95,7 +95,7 @@ export class ConfigEditorComponent {
             cluster.clusterName || 'build error',
             [
               Validators.required,
-              Validators.maxLength(50),
+              Validators.maxLength(100),
               NameValidator.validate()
             ]
           ),

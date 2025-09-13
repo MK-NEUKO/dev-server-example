@@ -57,6 +57,7 @@ export class EditingModalComponent implements OnInit {
     if (this.onSubmit) {
       this.onSubmit({ value: this.formControl.value });
     }
+    this.isSubmitDisabled = true;
   }
 
   public onResetClick() {
@@ -66,11 +67,10 @@ export class EditingModalComponent implements OnInit {
 
   public onCancelClick() {
     this.formControl.setValue(this.initialValue);
-    this.isSubmitDisabled = true;
-    this.editingModalService.close()
     if (this.onSubmit) {
       this.onSubmit({ value: 'cancel' });
     }
+    this.isSubmitDisabled = true;
   }
 
   public onBackdropClick(): void {
@@ -109,8 +109,6 @@ export class EditingModalComponent implements OnInit {
           this.validationErrors.push(processedErrorPrimitiv);
         }
       }
-      console.log('Validation Errors:', this.validationErrors);
-
       return;
     } else {
       this.validationErrors = null;
