@@ -1,0 +1,36 @@
+.editable-input__container {
+  position: relative;
+  display: flex;
+  gap: 0.25rem;
+  flex-direction: row;
+  overflow: visible;
+}
+
+.editable-input__input-wrapper {
+  position: relative;
+  display: flex;
+  gap: 0.25rem;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.editable-input {
+  background-color: transparent;
+  border: 0.1rem solid var(--neuko-border);
+  border-radius: 0.25rem;
+  padding: 0.125rem 1rem 0.125rem 0.25rem;
+  color: var(--neuko-text-body);
+  font-size: 1rem;
+  width: fit-content;
+  align-items: flex-start;
+}
+.editable-input:focus {
+  outline: none;
+  border: 0.1rem solid var(--neuko-text-info);
+  background-color: rgba(var(--neuko-text-info-rgb), 0.125);
+}
+
+.editable-input__edit-button {
+  width: 1.5rem;
+  color: var(--neuko-text-info);
+}

@@ -60,7 +60,6 @@ export class DestinationsComponent implements OnInit {
       if (this.blurCausedByControlOptionButton) {
         if (control) {
           control.classList.remove('control__input-reminder');
-          this.blurCausedByControlOptionButton = false;
         }
         return;
       }

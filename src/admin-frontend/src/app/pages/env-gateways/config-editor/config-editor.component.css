@@ -39,7 +39,11 @@
   padding-left: 2ch;
 }
 
-.control-field {
+/*########################################################################*/
+/* form-control styles */
+/*########################################################################*/
+
+.form-control__container {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -47,18 +51,20 @@
   margin-top: 0.25rem;
 }
 
-.control__label {
-  align-self: flex-start;
-}
-
-.control__input-wrapper {
+.form-control__input-wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
   overflow: visible;
 }
+.input-wrapper--editing-tools-visible {
+  padding: 0.5rem;
+  border: 0.1rem solid var(--neuko-text-info);
+  background-color: rgba(var(--neuko-text-info-rgb), 0.125);
+  border-radius: 0.25rem;
+}
 
-.control__input {
+.form-control__input {
   background-color: transparent;
   border: 0.1rem solid var(--neuko-border);
   border-radius: 0.25rem;
@@ -68,18 +74,44 @@
   width: fit-content;
   align-items: flex-start;
 }
-.control__input.control__input-success {
+.form-control__input ~ .required-asterisk {
+  display: none;
+  color: var(--neuko-text-body);
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  right: 0.25rem;
+  &:after {
+    content: "*";
+  }
+}
+.form-control__input ~ .required-asterisk--editing-tools-visible {
+  right: 0.75rem;
+  top: 0.5rem;
+}
+.form-control__input.ng-invalid.ng-dirty ~ .required-asterisk {
+  color: var(--neuko-text-danger);
+}
+.form-control__input[required] ~ .required-asterisk {
+  display: inline-block;
+}
+
+.form-control__label {
+  align-self: flex-start;
+}
+
+.form-control__input.form-control__input-success {
   border-color: var(--neuko-text-success);
   box-shadow: 0 0 0.25rem var(--neuko-text-success);
   color: var(--neuko-text-body-highlight);
 }
-.control__input.control__input-error {
+.form-control__input.form-control__input-error {
   border-color: var(--neuko-text-danger);
   box-shadow: 0 0 0.25rem var(--neuko-text-danger);
   color: var(--neuko-text-body-highlight);
 }
 
-.control__input.control__input-reminder:focus {
+.form-control__input.form-control__input-reminder:focus {
   border-color: var(--neuko-text-warning);
   box-shadow: 0 0 0.25rem var(--neuko-text-warning);
   animation: pulse 2s infinite;
@@ -98,38 +130,21 @@
     background-color: transparent;
   }
 }
-.control__input:focus {
+.form-control__input:focus {
   outline: none;
   border-color: var(--neuko-text-body-highlight);
   box-shadow: 0 0 0.25rem var(--neuko-text-body-highlight);
 }
-.control__input:hover {
+.form-control__input:hover {
   background-color: var(--neuko-bg-body-highlight);
   color: var(--neuko-text-body-highlight);
 }
-.control__input.ng-invalid.ng-dirty {
+.form-control__input.ng-invalid.ng-dirty {
   border-color: var(--neuko-text-danger);
   padding: 0.125rem 1rem 0.25rem 0.25rem;
 }
-.control__input ~ .control-required {
-  display: none;
-  color: var(--neuko-text-body);
-  font-weight: bold;
-  position: absolute;
-  top: 0;
-  right: 0.25rem;
-  &:after {
-    content: "*";
-  }
-}
-.control__input.ng-invalid.ng-dirty ~ .control-required {
-  color: var(--neuko-text-danger);
-}
-.control__input[required] ~ .control-required {
-  display: inline-block;
-}
 
-.control-feedback {
+.form-control-feedback {
   margin: -0.3rem 0 0 1rem;
   top: 1.5rem;
   left: 1rem;
@@ -145,7 +160,7 @@
   align-items: center;
   gap: 0.5rem;
 }
-.control-feedback__info {
+.form-control-feedback__info {
   background: none;
   border: 0.1rem solid var(--neuko-text-body-highlight);
   border-radius: 50%;
@@ -159,27 +174,20 @@
   font-family: serif;
   transition: all 0.2s ease;
 }
-.control-feedback__info:before {
+.form-control-feedback__info:before {
   content: "i";
   padding-top: auto;
   padding-bottom: auto;
   font-weight: bold;
 }
 
-.control-feedback__info:hover {
+.form-control-feedback__info:hover {
   background-color: var(--neuko-text-info);
   color: var(--neuko-bg-body);
   transform: scale(1.1);
 }
 
-.control-feedback__info:focus {
+.form-control-feedback__info:focus {
   outline: 1px solid var(--neuko-text-info);
   outline-offset: 2px;
-}
-
-.control__editing-options {
-  padding-top: 0.25rem;
-  display: flex;
-  flex-direction: row;
-  gap: 0.25rem;
 }

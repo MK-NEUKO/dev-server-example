@@ -1,27 +1,18 @@
 <div [formGroup]="parentForm">
   <h3 class="form__heading form__heading--second">"Clusters": {{ "{" }}</h3>
   <ng-container formArrayName="clusters">
-    @for (cluster of formArray.controls; track $index; let i = $index) {
+    @for (cluster of formArray.controls; track $index; let clusterIndex = $index) {
     <div
       class="tab-2ch form-container form-container--child"
-      [formGroupName]="i"
+      [formGroupName]="clusterIndex"
     >
-      <div class="control-field">
+      <div class="form-control__container">
         <span>"</span>
-        @if(clusterName?.hasError("required")) {
-        <label class="control__label" for="clusterName">Cluster Id:</label>
-        }
-        <div class="control__input-wrapper">
-          <input
-            class="control__input"
-            type="text"
-            formControlName="clusterName"
-            name="clusterName"
-            autocomplete="off"
-            [required]="true"
-          />
-          <span class="control-required"></span>
-        </div>
+        <config-editor-editable-input
+          [parent]="cluster"
+          [parentIndex]="clusterIndex"
+          [label]="labelClusterName"
+        ></config-editor-editable-input>
         <span>": {{ "{" }}</span>
       </div>
       <div class="tab-2ch">

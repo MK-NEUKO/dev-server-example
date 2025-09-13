@@ -1,0 +1,32 @@
+<div 
+  [formGroup]="parentFormGroup"
+  class="editable-input__container"
+  [ngStyle]="{ 
+    width: editingModalSize?.width ? editingModalSize?.width + 'px' : 'auto', 
+    height: editingModalSize?.height ? editingModalSize?.height + 'px' : 'auto' 
+  }"
+  >
+  <label class="form-control__label" for="inputControl">{{ label }}</label>
+  <div class="editable-input__input-wrapper">
+    <input
+      id="inputControl"
+      class="editable-input"
+      type="text"
+      autocomplete="off"
+      [readonly]="true"
+      [formControl]="formControl"
+      (focus)="onInputControlFocus()"
+      (blur)="onInputControlBlur()"
+      />
+    @if (isInputEditable) {
+      <button 
+        class="button button--small button--icon editable-input__edit-button"
+        #editButton
+        (click)="openEditingModal()">
+        <i class="bi bi-pencil-square"></i>
+      </button>
+    }
+  </div>  
+</div>
+
+

@@ -1,0 +1,90 @@
+<div class="editing-modal__overlay" (click)="onBackdropClick()"></div>
+<div
+  #modalContainer
+  class="editing-modal__container"
+  [ngStyle]="{ 
+    top: modalPosition?.top + 'px', 
+    left: modalPosition?.left + 'px', 
+    minWidth: modalPosition?.width + 'px',
+    minHeight: modalPosition?.height + 'px'
+  }">
+  <div 
+    class="editing-modal__content"
+    >
+    <div class="editing-modal__input-wrapper">
+      <label class="editing-modal__input-label" for="inputForm">{{ label }}</label>
+      <input
+        #inputElement
+        id="inputForm"
+        class="editing-modal__input"
+        type="text"
+        autocomplete="off"
+        (input)="onInputChange($event)"
+        [required]="true"
+        [formControl]="formControl"
+        />
+      @if (formControl.errors)
+      {
+        <div class="editing-modal__validation-feedback">
+          <span>Invalid</span>
+          <div class="editing-modal__validation-tooltip">
+            <ol class="editing-modal__validation-error-list">
+              @for (error of validationErrors; track $index) {
+                <li class="editing-modal__validation-error-item">
+                  <div class="editing-modal__validation-error-key">
+                    {{ error.key }}
+                  </div>
+                  <div class="editing-modal__validation-error-value">
+                    @for (detail of error.value; track $index) {
+                      <div class="editing-modal__error-details">
+                        <span class="editing-modal__error-details-key">
+                          {{ detail.key }}
+                        </span>
+                        <span class="editing-modal__error-details-value">
+                          {{ detail.value }}
+                        </span>
+                      </div>
+                    }
+                  </div>
+                </li>
+              }
+            </ol>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="editing-options__wrapper">
+      <div class="tooltip">
+        <button
+          type="submit"
+          class="button button--primary button--icon"
+          [disabled]="isSubmitDisabled"
+          (click)="onFormSubmit()"
+        >
+          <i class="bi bi-save"></i>
+        </button>
+        <span class="tooltip-text">Save changes</span>
+      </div>
+      <div class="tooltip">
+        <button
+          type="button"
+          class="button button--secondary button--icon" 
+          (click)="onResetClick()"
+        >
+          <i class="bi bi-arrow-counterclockwise"></i>
+        </button>
+        <span class="tooltip-text">Reset</span>
+      </div>
+      <div class="tooltip">
+        <button
+          type="button"
+          class="button button--secondary button--icon"
+          (click)="onCancelClick()"
+        >
+          <i class="bi bi-x-circle"></i>
+        </button>
+        <span class="tooltip-text">Cancel</span>
+      </div>
+    </div>
+  </div>
+</div>

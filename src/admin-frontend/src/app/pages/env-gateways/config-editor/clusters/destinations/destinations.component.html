@@ -4,17 +4,17 @@
     @for (destination of formArray.controls; track $index; let i = $index) 
     {
       <div class="tab-2ch form-container" [formGroupName]="i">
-        <div class="control-field">
+  <div class="form-control__container">
           <span>"</span>
           @if (destination.get('destinationName')?.invalid) 
           {
-            <label class="control__label" for="destinationName-{{ i }}"
+            <label class="form-control__label" for="destinationName-{{ i }}"
               >Destination Name:
             </label>
           }
-          <div class="control__input-wrapper">
+          <div class="form-control__input-wrapper">
             <input
-              class="control__input"
+              class="form-control__input"
               type="text"
               id="destinationName-{{ i }}"
               formControlName="destinationName"
@@ -24,7 +24,7 @@
               (focus)="onControlFocus(i, 'destinationName')"
               (blur)="onControlBlur(i, 'destinationName')"
             />
-            <span class="control-required"></span>
+            <span class="required-asterisk"></span>
             @if (destination.get('destinationName')?.errors?.['required']) 
             {
               <span class="control-feedback">Required</span>
@@ -71,11 +71,11 @@
           <span>": {{ "{" }}</span>
         </div>
         <div class="tab-2ch">
-          <div class="control-field">
-            <label class="control__label" for="address-{{ i }}">Address: </label>
-            <div class="control__input-wrapper">
+          <div class="form-control__container">
+            <label class="form-control__label" for="address-{{ i }}">Address: </label>
+            <div class="form-control__input-wrapper">
               <input
-                class="control__input"
+                class="form-control__input"
                 id="address-{{ i }}"
                 type="text"
                 formControlName="address"
@@ -85,7 +85,7 @@
                 (focus)="onControlFocus(i, 'address')"
                 (blur)="onControlBlur(i, 'address')"
               />
-              <span class="control-required"></span>
+              <span class="required-asterisk"></span>
               @if (destination.get('address')?.invalid &&
                   (destination.get('address')?.dirty ||
                   destination.get('address')?.touched)) 
