@@ -12,7 +12,7 @@
           [parent]="route"
           [parentIndex]="routeIndex"
           [controlName]="CONTROL_NAMES.ROUTE_NAME"
-          [label]="labelRouteName"
+          [label]="CONTROL_LABELS.ROUTE_NAME"
           [showLabel]="false"
         ></config-editor-editable-input>
         <span>": {{ "{" }}</span>
@@ -23,7 +23,7 @@
             [parent]="route"
             [parentIndex]="routeIndex"
             [controlName]="CONTROL_NAMES.CLUSTER_NAME"
-            [label]="labelClusterId"
+            [label]="CONTROL_LABELS.CLUSTER_NAME"
           ></config-editor-editable-input>
         </div>
         <span>Match: {{ "{" }}</span>
@@ -33,8 +33,8 @@
               [parent]="route.get('match')"
               [parentIndex]="routeIndex"
               [controlName]="CONTROL_NAMES.MATCH_PATH"
-              [label]="labelMatchPath"
-            ></config-editor-editable-input>  
+              [label]="CONTROL_LABELS.MATCH_PATH"
+            ></config-editor-editable-input>
           </div>
         </div>
         <span>{{ "}" }}</span>

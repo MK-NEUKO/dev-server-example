@@ -1,10 +1,11 @@
-import { Component, inject, OnInit, input, signal } from '@angular/core';
+import { Component, inject, OnInit, input } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
 import { DestinationService } from '../../../../../services/env-gateway/destination/destination.service';
 import { RequestDialogService } from '../../../../../services/dialog-service/request-dialog.service';
 import { RequestResponse } from '../../../../../services/env-gateway/RequestResponse/request-response';
 import { EditableInputComponent } from '../../components/editable-input/editable-input.component';
+import { CONFIG_EDITOR_CONTROL_LABELS } from '../../shared/config-editor-control-labels';
 
 @Component({
   selector: 'config-editor-destinations',
@@ -21,6 +22,7 @@ import { EditableInputComponent } from '../../components/editable-input/editable
 export class DestinationsComponent implements OnInit {
 
   public readonly CONTROL_NAMES = CONFIG_EDITOR_CONTROL_NAMES;
+  public readonly CONTROL_LABELS = CONFIG_EDITOR_CONTROL_LABELS;
   public readonly parent = input.required<AbstractControl<any, any> | null>();
   public readonly destinationsArrayName = input.required<string>();
   public parentFormGroup!: FormGroup;
@@ -28,9 +30,6 @@ export class DestinationsComponent implements OnInit {
 
   private destinationService = inject(DestinationService);
   private requestDialogService = inject(RequestDialogService);
-
-  public readonly labelDestinationName: string = 'Destination Name: ';
-  public readonly labelDestinationAddress: string = 'Address: ';
 
   ngOnInit(): void {
     this.parentFormGroup = this.parent() as FormGroup;
