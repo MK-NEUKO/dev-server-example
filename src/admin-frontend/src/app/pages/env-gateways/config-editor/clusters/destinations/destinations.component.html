@@ -1,137 +1,30 @@
-<div [formGroup]="parentForm">
+<div [formGroup]="parentFormGroup">
   <h3 class="form__heading form__heading--third">Destinations: {{ "{" }}</h3>
   <ng-container formArrayName="destinations">
-    @for (destination of formArray.controls; track $index; let i = $index) 
+    @for (destination of destinations.controls; track $index; let destinationIndex = $index) 
     {
-      <div class="tab-2ch form-container" [formGroupName]="i">
-  <div class="form-control__container">
-          <span>"</span>
-          @if (destination.get('destinationName')?.invalid) 
-          {
-            <label class="form-control__label" for="destinationName-{{ i }}"
-              >Destination Name:
-            </label>
-          }
-          <div class="form-control__input-wrapper">
-            <input
-              class="form-control__input"
-              type="text"
-              id="destinationName-{{ i }}"
-              formControlName="destinationName"
-              name="destinationName-{{ i }}"
-              autocomplete="off"
-              [required]="true"
-              (focus)="onControlFocus(i, 'destinationName')"
-              (blur)="onControlBlur(i, 'destinationName')"
-            />
-            <span class="required-asterisk"></span>
-            @if (destination.get('destinationName')?.errors?.['required']) 
-            {
-              <span class="control-feedback">Required</span>
-            }
-            @if (destination.get('destinationName')?.hasError('invalidNameProperty'))
-                {
-                  <span class="control-feedback"
-                    >Invalid Name
-                    <button
-                      type="button"
-                      class="control-feedback__info"
-                      [title]="destination.get('destinationName')?.getError('invalidNameProperty')?.message"
-                      tabindex="-1"
-                    ></button>
-                  </span>
-                }
-            @if (canControlOptionsDisplayed['destinationName'])
-            {
-              <div class="control__editing-options">
-                <div class="tooltip">
-                  <button
-                    class="button button--primary button--icon"
-                    (mousedown)="onControlOptionButtonMouseDown()"
-                    (click)="changeDestinationProperty(i, 'destinationName')"
-                    [disabled]="!isControlValueChanged(i, 'destinationName')"
-                  >
-                    <i class="bi bi-arrow-repeat"></i>
-                  </button>
-                  <span class="tooltip-text">Update</span>
-                </div>
-                <div class="tooltip">
-                  <button
-                    class="button button--secondary button--icon"
-                    (mousedown)="onControlOptionButtonMouseDown()"
-                    (click)="reset(i, 'destinationName')"
-                  >
-                    <i class="bi bi-arrow-counterclockwise"></i>
-                  </button>
-                  <span class="tooltip-text">Reset</span>
-                </div>
-              </div>
-            }
-          </div>
-          <span>": {{ "{" }}</span>
+      <div class="tab-2ch form-container" [formGroupName]="destinationIndex">
+      <div class="form-control__container">
+        <span>"</span> 
+        <config-editor-editable-input
+          [parent]="destination"
+          [parentIndex]="destinationIndex"
+          [controlName]="CONTROL_NAMES.DESTINATION_NAME"
+          [label]="CONTROL_LABELS.DESTINATION_NAME"
+          [showLabel]="false"
+        ></config-editor-editable-input>
+        <span>": {{ "{" }}</span>
         </div>
         <div class="tab-2ch">
           <div class="form-control__container">
-            <label class="form-control__label" for="address-{{ i }}">Address: </label>
-            <div class="form-control__input-wrapper">
-              <input
-                class="form-control__input"
-                id="address-{{ i }}"
-                type="text"
-                formControlName="address"
-                name="address-{{ i }}"
-                autocomplete="off"
-                [required]="true"
-                (focus)="onControlFocus(i, 'address')"
-                (blur)="onControlBlur(i, 'address')"
-              />
-              <span class="required-asterisk"></span>
-              @if (destination.get('address')?.invalid &&
-                  (destination.get('address')?.dirty ||
-                  destination.get('address')?.touched)) 
-              { 
-                @if (destination.get('address')?.hasError('required')) 
-                {
-                  <span class="control-feedback">Required</span>
-                } 
-                @if (destination.get('address')?.hasError('invalidDestinationAddress'))
-                {
-                  <span class="control-feedback"
-                    >Invalid URL
-                    <button
-                      type="button"
-                      class="control-feedback__info"
-                      [title]="destination.get('address')?.getError('invalidDestinationAddress')?.message"
-                      tabindex="-1"
-                    ></button>
-                  </span>
-                } 
-              }
-              @if (canControlOptionsDisplayed['address'])
-              {
-                <div class="control__editing-options">
-                  <div class="tooltip">
-                    <button
-                      class="button button--primary button--icon"
-                      (click)="changeDestinationProperty(i, 'address')"
-                      [disabled]="!isControlValueChanged(i, 'address')"
-                    >
-                      <i class="bi bi-arrow-repeat"></i>
-                    </button>
-                    <span class="tooltip-text">Update</span>
-                  </div>
-                  <div class="tooltip">
-                    <button
-                      class="button button--secondary button--icon"
-                      (click)="reset(i, 'address')"
-                    >
-                      <i class="bi bi-arrow-counterclockwise"></i>
-                    </button>
-                    <span class="tooltip-text">Reset</span>
-                  </div>
-                </div>
-              }
-            </div>
+            <config-editor-editable-input
+              [parent]="destination"
+              [parentIndex]="destinationIndex"
+              [controlName]="CONTROL_NAMES.DESTINATION_ADDRESS"
+              [label]="CONTROL_LABELS.DESTINATION_ADDRESS"
+              [showLabel]="true"
+            ></config-editor-editable-input>
+            <span>"</span>
           </div>
         </div>
         <div class="tab-2ch"></div>

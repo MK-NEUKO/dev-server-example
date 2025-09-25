@@ -1,61 +1,40 @@
-<div [formGroup]="parentForm">
+<div [formGroup]="parentFormGroup">
   <h3 class="form__heading form__heading--second">"Routes": {{ "{" }}</h3>
   <ng-container formArrayName="routes">
-    @for (route of formArray.controls; track $index; let i = $index) {
+    @for (route of routes.controls; track $index; let routeIndex = $index) {
     <div
       class="tab-2ch form-container form-container--child"
-      [formGroupName]="i"
+      [formGroupName]="routeIndex"
     >
       <div class="form-control__container">
         <span>"</span>
-        @if (routeName?.invalid) {
-        <label class="form-control__label" for="routeName">Route Name:</label>
-        }
-        <div class="form-control__input-wrapper">
-          <input
-            class="form-control__input"
-            id="routeName"
-            type="text"
-            formControlName="routeName"
-            name="routeName"
-            autocomplete="off"
-            [required]="true"
-          />
-          <span class="required-asterisk"></span>
-          @if (routeName?.hasError('required')) {
-          <span class="control-feedback">Required</span>
-          }
-        </div>
+        <config-editor-editable-input
+          [parent]="route"
+          [parentIndex]="routeIndex"
+          [controlName]="CONTROL_NAMES.ROUTE_NAME"
+          [label]="CONTROL_LABELS.ROUTE_NAME"
+          [showLabel]="false"
+        ></config-editor-editable-input>
         <span>": {{ "{" }}</span>
       </div>
       <div class="tab-2ch">
         <div class="form-control__container">
           <config-editor-editable-input
             [parent]="route"
-            [parentIndex]="i"
-            [label]="labelClusterId"
+            [parentIndex]="routeIndex"
+            [controlName]="CONTROL_NAMES.CLUSTER_NAME"
+            [label]="CONTROL_LABELS.CLUSTER_NAME"
           ></config-editor-editable-input>
         </div>
-
         <span>Match: {{ "{" }}</span>
         <div class="tab-2ch" formGroupName="match">
           <div class="form-control__container">
-            <label for="path">Path: </label>
-            <div class="form-control__input-wrapper">
-              <input
-                class="form-control__input"
-                id="path"
-                type="text"
-                formControlName="path"
-                name="matchPath"
-                autocomplete="off"
-                [required]="true"
-              />
-              <span class="required-asterisk"></span>
-              @if (path?.hasError('required')) {
-              <span class="control-feedback">Required</span>
-              }
-            </div>
+            <config-editor-editable-input
+              [parent]="route.get('match')"
+              [parentIndex]="routeIndex"
+              [controlName]="CONTROL_NAMES.MATCH_PATH"
+              [label]="CONTROL_LABELS.MATCH_PATH"
+            ></config-editor-editable-input>
           </div>
         </div>
         <span>{{ "}" }}</span>

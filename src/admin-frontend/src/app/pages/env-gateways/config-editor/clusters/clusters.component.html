@@ -1,7 +1,7 @@
-<div [formGroup]="parentForm">
+<div [formGroup]="parentFormGroup">
   <h3 class="form__heading form__heading--second">"Clusters": {{ "{" }}</h3>
   <ng-container formArrayName="clusters">
-    @for (cluster of formArray.controls; track $index; let clusterIndex = $index) {
+    @for (cluster of clusters.controls; track $index; let clusterIndex = $index) {
     <div
       class="tab-2ch form-container form-container--child"
       [formGroupName]="clusterIndex"
@@ -11,15 +11,17 @@
         <config-editor-editable-input
           [parent]="cluster"
           [parentIndex]="clusterIndex"
-          [label]="labelClusterName"
+          [controlName]="CONTROL_NAMES.CLUSTER_NAME"
+          [label]="CONTROL_LABELS.CLUSTER_NAME"
+          [showLabel]="false"
         ></config-editor-editable-input>
         <span>": {{ "{" }}</span>
       </div>
       <div class="tab-2ch">
-        <app-destinations
-          [formArrayName]="childArrayControlName"
-          [parentArrayName]="parentArrayControlName"
-        ></app-destinations>
+        <config-editor-destinations
+          [parent]="cluster"
+          [destinationsArrayName]="CONTROL_NAMES.DESTINATIONS"
+        ></config-editor-destinations>
       </div>
       <span>{{ "}" }}</span>
     </div>
