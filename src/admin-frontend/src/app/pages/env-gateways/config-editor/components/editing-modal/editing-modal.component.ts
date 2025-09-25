@@ -1,7 +1,7 @@
 import { afterNextRender, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { EditingModalService } from '../../../../../services/config-editor/editing-modal.service';
-import { NgStyle, JsonPipe } from '@angular/common';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-editing-modal',
@@ -23,9 +23,9 @@ export class EditingModalComponent implements OnInit {
   public label!: string;
   public isSubmitDisabled = true;
   public validationErrors: { key: string, value: { key: string, value: any }[] }[] | null = null;
-
   private initialValue!: string;
   public onSubmit?: (value: any) => void;
+  public feedbackOutOfViewport = false;
 
   constructor() {
     afterNextRender(() => {

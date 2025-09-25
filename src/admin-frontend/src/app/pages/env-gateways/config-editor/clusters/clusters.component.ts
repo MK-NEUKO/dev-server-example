@@ -5,7 +5,7 @@ import { CONFIG_EDITOR_CONTROL_NAMES } from '../shared/config-editor-control-nam
 import { EditableInputComponent } from "../components/editable-input/editable-input.component";
 
 @Component({
-  selector: 'app-clusters',
+  selector: 'config-editor-clusters',
   imports: [
     ReactiveFormsModule,
     DestinationsComponent,
@@ -20,22 +20,15 @@ import { EditableInputComponent } from "../components/editable-input/editable-in
 export class ClustersComponent implements OnInit {
 
   public readonly CONTROL_NAMES = CONFIG_EDITOR_CONTROL_NAMES;
-  readonly formArrayName = input.required<string>();
-  readonly childArrayControlName = CONFIG_EDITOR_CONTROL_NAMES.DESTINATIONS;
-  readonly parentArrayControlName = CONFIG_EDITOR_CONTROL_NAMES.CLUSTERS;
-  private rootFormGroup = inject(FormGroupDirective);
-  formArray!: FormArray;
-  parentForm!: FormGroup;
+  public readonly parent = input.required<FormGroup<any> | null>();
+  readonly clustersArrayName = input.required<string>();
+  public parentFormGroup!: FormGroup;
+  public clusters!: FormArray;
 
   public readonly labelClusterName = 'Cluster Id: ';
 
-  get clusterName() {
-    const cluster = this.formArray.at(0) as FormGroup;
-    return cluster.get(CONFIG_EDITOR_CONTROL_NAMES.CLUSTER_NAME);
-  }
-
   ngOnInit(): void {
-    this.parentForm = this.rootFormGroup.control;
-    this.formArray = this.parentForm.get(this.formArrayName()) as FormArray;
+    this.parentFormGroup = this.parent() as FormGroup;
+    this.clusters = this.parentFormGroup.get(this.clustersArrayName()) as FormArray;
   };
 }

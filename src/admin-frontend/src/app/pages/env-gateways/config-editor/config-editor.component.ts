@@ -64,10 +64,14 @@ export class ConfigEditorComponent {
     return this.formBuilder.array(
       routes.map(route =>
         this.formBuilder.group({
-          [CONFIG_EDITOR_CONTROL_NAMES.ROUTE_NAME]: this.formBuilder.control({
-            value: route.routeName || 'build error',
-            disabled: true
-          }),
+          [CONFIG_EDITOR_CONTROL_NAMES.ROUTE_NAME]: this.formBuilder.control(
+            route.routeName || 'build error',
+            [
+              Validators.required,
+              Validators.maxLength(100),
+              NameValidator.validate()
+            ]
+          ),
           [CONFIG_EDITOR_CONTROL_NAMES.CLUSTER_NAME]: this.formBuilder.control(
             route.clusterName || 'build error',
             [
@@ -77,10 +81,13 @@ export class ConfigEditorComponent {
             ]
           ),
           [CONFIG_EDITOR_CONTROL_NAMES.MATCH]: this.formBuilder.group({
-            [CONFIG_EDITOR_CONTROL_NAMES.MATCH_PATH]: this.formBuilder.control({
-              value: route.match.path || 'build error',
-              disabled: true
-            }),
+            [CONFIG_EDITOR_CONTROL_NAMES.MATCH_PATH]: this.formBuilder.control(
+              route.match.path || 'build error',
+              [
+                Validators.required,
+                Validators.maxLength(200),
+              ]
+            ),
           })
         })
       )

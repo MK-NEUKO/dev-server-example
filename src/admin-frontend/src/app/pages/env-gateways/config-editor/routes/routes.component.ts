@@ -4,7 +4,7 @@ import { CONFIG_EDITOR_CONTROL_NAMES } from '../shared/config-editor-control-nam
 import { EditableInputComponent } from "../components/editable-input/editable-input.component";
 
 @Component({
-  selector: 'app-routes',
+  selector: 'config-editor-routes',
   imports: [
     ReactiveFormsModule,
     EditableInputComponent
@@ -18,29 +18,22 @@ import { EditableInputComponent } from "../components/editable-input/editable-in
 export class RoutesComponent implements OnInit {
 
   public readonly CONTROL_NAMES = CONFIG_EDITOR_CONTROL_NAMES;
-  readonly formArrayName = input.required<string>();
-  private rootFormGroup = inject(FormGroupDirective);
-  formArray!: FormArray;
-  parentForm!: FormGroup;
+  public readonly parent = input.required<FormGroup<any> | null>();
+  readonly routesArrayName = input.required<string>();
+  public parentFormGroup!: FormGroup;
+  public routes!: FormArray;
+
   public readonly labelClusterId = 'Cluster Id: ';
-
-  get routeName() {
-    const route = this.formArray.at(0) as FormGroup;
-    return route.get(CONFIG_EDITOR_CONTROL_NAMES.ROUTE_NAME);
-  }
-
-  get clusterName() {
-    const route = this.formArray.at(0) as FormGroup;
-    return route.get(CONFIG_EDITOR_CONTROL_NAMES.CLUSTER_NAME);
-  }
+  public readonly labelRouteName = 'Route Id: ';
+  public readonly labelMatchPath = 'Path: ';
 
   get path() {
-    const route = this.formArray.at(0) as FormGroup;
+    const route = this.routes.at(0) as FormGroup;
     return route.get(CONFIG_EDITOR_CONTROL_NAMES.MATCH_PATH);
   }
 
   ngOnInit(): void {
-    this.parentForm = this.rootFormGroup.control;
-    this.formArray = this.parentForm.get(this.formArrayName()) as FormArray;
+    this.parentFormGroup = this.parent() as FormGroup;
+    this.routes = this.parentFormGroup.get(this.routesArrayName()) as FormArray;
   };
 }

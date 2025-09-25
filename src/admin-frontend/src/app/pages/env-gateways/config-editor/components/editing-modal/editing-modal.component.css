@@ -114,7 +114,7 @@
   position: absolute;
   top: 2.75rem;
   left: 8rem;
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 0.5rem;
   background-color: var(--neuko-bg-danger);
   color: var(--neuko-bg-body);
   z-index: 100;
@@ -132,7 +132,7 @@
   box-shadow: 0 0 0.25rem var(--neuko-text-danger);
 }
 
-.editing-modal__validation-tooltip {
+.editing-modal__validation-details {
   display: block;
   background-color: var(--neuko-bg-body);
   color: var(--neuko-text-body);
@@ -140,10 +140,10 @@
   border-radius: 0.25rem;
   margin-top: 0.5rem;
   width: 15rem;
-}
-
-.editing-modal__validation-feedback:hover .editing-modal__validation-tooltip {
-  display: block;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  z-index: 2000;
 }
 
 .editing-modal__validation-error-list {

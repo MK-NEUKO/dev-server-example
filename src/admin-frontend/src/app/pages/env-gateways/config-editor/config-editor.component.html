@@ -34,8 +34,14 @@
         <div class="tab-2ch">
           <span>"ConfigId": "{{ currentConfigResource.value()?.id }}",</span
           ><br />
-          <app-routes [formArrayName]="routesControlName"></app-routes>
-          <app-clusters [formArrayName]="clustersControlName"></app-clusters>
+          <config-editor-routes
+            [routesArrayName]="routesControlName"
+            [parent]="gatewayConfigForm"
+          ></config-editor-routes>
+          <config-editor-clusters
+           [clustersArrayName]="clustersControlName"
+           [parent]="gatewayConfigForm"
+          ></config-editor-clusters>
         </div>
       </div>
     </ng-container>

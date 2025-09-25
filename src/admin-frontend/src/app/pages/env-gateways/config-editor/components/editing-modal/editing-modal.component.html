@@ -25,9 +25,12 @@
         />
       @if (formControl.errors)
       {
-        <div class="editing-modal__validation-feedback">
+        <div 
+          class="editing-modal__validation-feedback"
+          #validationFeedback
+          >
           <span>Invalid</span>
-          <div class="editing-modal__validation-tooltip">
+          <div class="editing-modal__validation-details">
             <ol class="editing-modal__validation-error-list">
               @for (error of validationErrors; track $index) {
                 <li class="editing-modal__validation-error-item">

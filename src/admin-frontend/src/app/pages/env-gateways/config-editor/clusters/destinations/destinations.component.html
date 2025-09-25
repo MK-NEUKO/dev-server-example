@@ -17,66 +17,14 @@
         </div>
         <div class="tab-2ch">
           <div class="form-control__container">
-            <label class="form-control__label" for="address-{{ destinationIndex }}">Address: </label>
-            <div class="form-control__input-wrapper">
-              <input
-                class="form-control__input"
-                id="address-{{ destinationIndex }}"
-                type="text"
-                formControlName="address"
-                name="address-{{ destinationIndex }}"
-                autocomplete="off"
-                [required]="true"
-                (focus)="onControlFocus(destinationIndex, 'address')"
-                (blur)="onControlBlur(destinationIndex, 'address')"
-              />
-              <span class="required-asterisk"></span>
-              @if (destination.get('address')?.invalid &&
-                  (destination.get('address')?.dirty ||
-                  destination.get('address')?.touched)) 
-              { 
-                @if (destination.get('address')?.hasError('required')) 
-                {
-                  <span class="control-feedback">Required</span>
-                } 
-                @if (destination.get('address')?.hasError('invalidDestinationAddress'))
-                {
-                  <span class="control-feedback"
-                    >Invalid URL
-                    <button
-                      type="button"
-                      class="control-feedback__info"
-                      [title]="destination.get('address')?.getError('invalidDestinationAddress')?.message"
-                      tabindex="-1"
-                    ></button>
-                  </span>
-                } 
-              }
-              @if (canControlOptionsDisplayed['address'])
-              {
-                <div class="control__editing-options">
-                  <div class="tooltip">
-                    <button
-                      class="button button--primary button--icon"
-                      (click)="changeDestinationProperty(destinationIndex, 'address')"
-                      [disabled]="!isControlValueChanged(destinationIndex, 'address')"
-                    >
-                      <i class="bi bi-arrow-repeat"></i>
-                    </button>
-                    <span class="tooltip-text">Update</span>
-                  </div>
-                  <div class="tooltip">
-                    <button
-                      class="button button--secondary button--icon"
-                      (click)="reset(destinationIndex, 'address')"
-                    >
-                      <i class="bi bi-arrow-counterclockwise"></i>
-                    </button>
-                    <span class="tooltip-text">Reset</span>
-                  </div>
-                </div>
-              }
-            </div>
+            <config-editor-editable-input
+              [parent]="destination"
+              [parentIndex]="destinationIndex"
+              [controlName]="CONTROL_NAMES.DESTINATION_ADDRESS"
+              [label]="labelDestinationAddress"
+              [showLabel]="true"
+            ></config-editor-editable-input>
+            <span>"</span>
           </div>
         </div>
         <div class="tab-2ch"></div>
