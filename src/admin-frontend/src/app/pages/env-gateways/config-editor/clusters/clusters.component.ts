@@ -35,7 +35,11 @@ export class ClustersComponent implements OnInit {
   };
 
   public onSaveClusterName(newClusterName: string, clusterIndex: number): void {
-    console.log(`Cluster name at index ${clusterIndex} changed to: ${newClusterName}`);
-    this.clusterService.SaveClusterNameChanges({ newName: newClusterName });
+
+    const clusterId = this.clusters.at(clusterIndex).get(this.CONTROL_NAMES.CLUSTER_ID)?.value;
+    const request = { newName: newClusterName, clusterId: clusterId };
+    console.log('Request to save cluster name changes:', request);
+
+    this.clusterService.SaveClusterNameChanges(request);
   }
 }
