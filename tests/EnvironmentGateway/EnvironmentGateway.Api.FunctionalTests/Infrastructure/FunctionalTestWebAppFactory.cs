@@ -16,7 +16,7 @@ using DotNet.Testcontainers.Builders;
 
 namespace EnvironmentGateway.Api.FunctionalTests.Infrastructure;
 
-public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>
+public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:latest")
@@ -45,14 +45,8 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        // Ensure containers are started before configuring the host.
-        _dbContainer.StartAsync().GetAwaiter().GetResult();
-        _keycloakContainer.StartAsync().GetAwaiter().GetResult();
-        
         Environment.SetEnvironmentVariable("DB_NAME", "test-db");
         
-        KeycloakBaseUrl = $"http://{_keycloakContainer.Hostname}:{_keycloakContainer.GetMappedPublicPort(8080)}";
-
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll(typeof(DbContextOptions<EnvironmentGatewayDbContext>));
@@ -81,14 +75,16 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>
         });
     }
 
-    protected override void Dispose(bool disposing)
+    public async Task InitializeAsync()
     {
-        base.Dispose(disposing);
-        if (disposing)
-        {
-            // Best-effort stop (ignore failures on dispose)
-            try { _dbContainer.StopAsync().GetAwaiter().GetResult(); } catch { /* ignore */ }
-            try { _keycloakContainer.StopAsync().GetAwaiter().GetResult(); } catch { /* ignore */ }
-        }
+        await _dbContainer.StartAsync();
+        await _keycloakContainer.StartAsync();
+        KeycloakBaseUrl = $"http://{_keycloakContainer.Hostname}:{_keycloakContainer.GetMappedPublicPort(8080)}";
+    }
+
+    public new async Task DisposeAsync()
+    {
+        await _dbContainer.StopAsync();
+        await _keycloakContainer.StopAsync();
     }
 }
