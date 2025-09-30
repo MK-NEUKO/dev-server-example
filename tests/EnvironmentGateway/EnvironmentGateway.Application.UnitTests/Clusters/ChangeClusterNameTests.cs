@@ -5,7 +5,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
-namespace EnvironmentGateway.Application.UnitTests;
+namespace EnvironmentGateway.Application.UnitTests.Clusters;
 
 public class ChangeClusterNameTests
 {
