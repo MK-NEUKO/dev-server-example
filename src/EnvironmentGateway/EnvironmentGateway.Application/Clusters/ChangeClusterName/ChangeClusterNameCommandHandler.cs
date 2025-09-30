@@ -22,6 +22,8 @@ internal sealed class ChangeClusterNameCommandHandler(
         }
 
         cluster.ChangeName(command.ClusterName);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         
         return Result.Success();
     }
