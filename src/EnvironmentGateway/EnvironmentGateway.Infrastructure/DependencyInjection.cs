@@ -1,6 +1,7 @@
 ﻿using EnvironmentGateway.Application.Abstractions.Data;
 using EnvironmentGateway.Application.Abstractions.Email;
 using EnvironmentGateway.Domain.Abstractions;
+using EnvironmentGateway.Domain.Clusters;
 using EnvironmentGateway.Domain.Clusters.Destinations;
 using EnvironmentGateway.Domain.GatewayConfigs;
 using EnvironmentGateway.Infrastructure.Authentication;
@@ -50,6 +51,8 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IGatewayConfigRepository, GatewayConfigRepository>();
+
+        services.AddScoped<IClusterRepository, ClusterRepository>();
         
         services.AddScoped<IDestinationRepository, DestinationRepository>();
 

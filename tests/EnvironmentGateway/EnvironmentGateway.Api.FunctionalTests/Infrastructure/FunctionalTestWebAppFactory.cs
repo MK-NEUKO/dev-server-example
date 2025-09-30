@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Configuration;
 using Testcontainers.PostgreSql;
 using Testcontainers.Keycloak;
+using DotNet.Testcontainers.Builders;
 
 namespace EnvironmentGateway.Api.FunctionalTests.Infrastructure;
 
@@ -22,6 +23,7 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
         .WithDatabase("test-db")
         .WithUsername("testUser")
         .WithPassword("password")
+        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
         .Build();
     
     private readonly KeycloakContainer _keycloakContainer = new KeycloakBuilder()
@@ -32,6 +34,11 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
             new FileInfo(".files/dev-server-example-realm-export.json"),
             new FileInfo("/opt/keycloak/data/import/realm.json"))
         .WithCommand("--import-realm")
+        .WithWaitStrategy(Wait
+            .ForUnixContainer()
+            .UntilHttpRequestIsSucceeded(request => request
+                .ForPort(8080)
+                .ForPath("/realms/dev-server-example/.well-known/openid-configuration")))
         .Build();
 
     public string KeycloakBaseUrl { get; private set; } = "";
@@ -40,8 +47,6 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
     {
         Environment.SetEnvironmentVariable("DB_NAME", "test-db");
         
-        KeycloakBaseUrl = $"http://{_keycloakContainer.Hostname}:{_keycloakContainer.GetMappedPublicPort(8080)}";
-
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll(typeof(DbContextOptions<EnvironmentGatewayDbContext>));
@@ -74,8 +79,9 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
     {
         await _dbContainer.StartAsync();
         await _keycloakContainer.StartAsync();
+        KeycloakBaseUrl = $"http://{_keycloakContainer.Hostname}:{_keycloakContainer.GetMappedPublicPort(8080)}";
     }
-        
+
     public new async Task DisposeAsync()
     {
         await _dbContainer.StopAsync();
