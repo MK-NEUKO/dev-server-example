@@ -67,4 +67,31 @@ public class ClustersTests
         Action act = () => cluster.AddDestination(newDestination!);
         act.Should().Throw<ArgumentNullException>();
     }
+
+    [Fact]
+    public void ChangeName_Should_ChangeClusterName()
+    {
+        // Arrange
+        var cluster = Cluster.Create(TestClusterName, TestDestinationName, TestDestinationAddress);
+        var newName = "newClusterName";
+
+        // Act
+        cluster.ChangeName(newName);
+
+        // Assert
+        cluster.ClusterName.Value.Should().Be(newName);
+    }
+
+    [Fact]
+    public void ChangeName_Should_ThrowArgumentNullException_When_NameIsNull()
+    {
+        // Arrange
+        var cluster = Cluster.Create(TestClusterName, TestDestinationName, TestDestinationAddress);
+
+        // Act
+        Action act = () => cluster.ChangeName(null!);
+
+        // Assert
+        act.Should().Throw<ArgumentNullException>();
+    }
 }
