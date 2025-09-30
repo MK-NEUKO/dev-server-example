@@ -31,4 +31,9 @@ export class ClustersComponent implements OnInit {
     this.parentFormGroup = this.parent() as FormGroup;
     this.clusters = this.parentFormGroup.get(this.clustersArrayName()) as FormArray;
   };
+
+  public onSaveClusterName(newClusterName: string, clusterIndex: number): void {
+    console.log(`Cluster name at index ${clusterIndex} changed to: ${newClusterName}`);
+
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, Input, input, OnInit, ViewChild, signal } from '@angular/core';
+import { Component, ElementRef, inject, Input, input, OnInit, ViewChild, signal, Output, EventEmitter } from '@angular/core';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +25,7 @@ export class EditableInputComponent implements OnInit {
   public readonly showLabel = input<boolean>(true);
   @ViewChild('editButton') editButton!: ElementRef<HTMLButtonElement>;
   @Input() label!: string;
+  @Output() editComplete = new EventEmitter<string>();
   public editingModalService = inject(EditingModalService);
   private editableInputReference = inject(ElementRef);
 
@@ -51,13 +52,7 @@ export class EditableInputComponent implements OnInit {
   }
 
   public openEditingModal() {
-    const editableInputRect = this.editableInputReference.nativeElement.getBoundingClientRect();
-    const editableInputPosition = {
-      top: editableInputRect.top,
-      left: editableInputRect.left,
-      width: editableInputRect.width,
-      height: editableInputRect.height
-    };
+    const editableInputPosition = this.getEditableInputPosition();
     const modalInstance = this.editingModalService.open(editableInputPosition, this.formControl, this.label);
     if (modalInstance) {
       modalInstance.onSubmit = (data: any) => {
@@ -71,9 +66,20 @@ export class EditableInputComponent implements OnInit {
           this.isInputEditable = false;
           this.formControl.setValue(data.value);
           this.editingModalService.close();
-          // request
+          this.editComplete.emit(data.value);
         }
       };
     }
+  }
+
+  private getEditableInputPosition() {
+    const editableInputRect = this.editableInputReference.nativeElement.getBoundingClientRect();
+    const editableInputPosition = {
+      top: editableInputRect.top,
+      left: editableInputRect.left,
+      width: editableInputRect.width,
+      height: editableInputRect.height
+    };
+    return editableInputPosition;
   }
 }
