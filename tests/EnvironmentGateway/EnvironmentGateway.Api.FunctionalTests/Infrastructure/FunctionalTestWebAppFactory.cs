@@ -12,16 +12,18 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Configuration;
 using Testcontainers.PostgreSql;
 using Testcontainers.Keycloak;
+using DotNet.Testcontainers.Builders;
 
 namespace EnvironmentGateway.Api.FunctionalTests.Infrastructure;
 
-public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
+public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:latest")
         .WithDatabase("test-db")
         .WithUsername("testUser")
         .WithPassword("password")
+        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
         .Build();
     
     private readonly KeycloakContainer _keycloakContainer = new KeycloakBuilder()
@@ -32,12 +34,21 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
             new FileInfo(".files/dev-server-example-realm-export.json"),
             new FileInfo("/opt/keycloak/data/import/realm.json"))
         .WithCommand("--import-realm")
+        .WithWaitStrategy(Wait
+            .ForUnixContainer()
+            .UntilHttpRequestIsSucceeded(request => request
+                .ForPort(8080)
+                .ForPath("/realms/dev-server-example/.well-known/openid-configuration")))
         .Build();
 
     public string KeycloakBaseUrl { get; private set; } = "";
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        // Ensure containers are started before configuring the host.
+        _dbContainer.StartAsync().GetAwaiter().GetResult();
+        _keycloakContainer.StartAsync().GetAwaiter().GetResult();
+        
         Environment.SetEnvironmentVariable("DB_NAME", "test-db");
         
         KeycloakBaseUrl = $"http://{_keycloakContainer.Hostname}:{_keycloakContainer.GetMappedPublicPort(8080)}";
@@ -70,15 +81,14 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<Program>, IAsyn
         });
     }
 
-    public async Task InitializeAsync()
+    protected override void Dispose(bool disposing)
     {
-        await _dbContainer.StartAsync();
-        await _keycloakContainer.StartAsync();
-    }
-        
-    public new async Task DisposeAsync()
-    {
-        await _dbContainer.StopAsync();
-        await _keycloakContainer.StopAsync();
+        base.Dispose(disposing);
+        if (disposing)
+        {
+            // Best-effort stop (ignore failures on dispose)
+            try { _dbContainer.StopAsync().GetAwaiter().GetResult(); } catch { /* ignore */ }
+            try { _keycloakContainer.StopAsync().GetAwaiter().GetResult(); } catch { /* ignore */ }
+        }
     }
 }
