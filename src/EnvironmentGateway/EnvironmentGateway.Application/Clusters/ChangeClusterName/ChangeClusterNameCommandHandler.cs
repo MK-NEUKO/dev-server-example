@@ -9,8 +9,20 @@ internal sealed class ChangeClusterNameCommandHandler(
     IUnitOfWork unitOfWork)
     : ICommandHandler<ChangeClusterNameCommand>
 {
-    public Task<Result> Handle(ChangeClusterNameCommand command, CancellationToken cancellationToken)
+    public async Task<Result> Handle(
+        ChangeClusterNameCommand command, 
+        CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var cluster = await clusterReppository
+            .GetByIdAsync(command.ClusterId, cancellationToken);
+
+        if (cluster is null)
+        {
+            return Result.Failure(ClusterErrors.NotFound);
+        }
+
+        cluster.ChangeName(command.ClusterName);
+        
+        return Result.Success();
     }
 }

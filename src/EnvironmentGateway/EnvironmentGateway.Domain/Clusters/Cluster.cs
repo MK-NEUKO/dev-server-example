@@ -19,7 +19,7 @@ public sealed class Cluster : Entity
 
     public Guid GatewayConfigId { get; init; }
     public GatewayConfig GatewayConfig { get; init; } = null!;
-    public Name ClusterName { get; init; } = new Name("cluster1");
+    public Name ClusterName { get; private set; } = new Name("cluster1");
     public List<Destination> Destinations { get; } = [];
 
     public static Cluster Create(
@@ -43,5 +43,12 @@ public sealed class Cluster : Entity
         ArgumentNullException.ThrowIfNull(destination);
         
         Destinations.Add(destination);
+    }
+
+    public void ChangeName(string clusterName)
+    {
+        ArgumentNullException.ThrowIfNull(clusterName);
+        
+        ClusterName = new Name(clusterName);
     }
 }
