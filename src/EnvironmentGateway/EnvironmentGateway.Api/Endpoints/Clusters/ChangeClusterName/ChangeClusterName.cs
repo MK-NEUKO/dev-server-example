@@ -31,6 +31,7 @@ public class ChangeClusterName : IEndpoint
 
                     return Results.Ok(updateResult.IsSuccess);
                 }
-            );
+            )
+            .RequireAuthorization();
     }
 }

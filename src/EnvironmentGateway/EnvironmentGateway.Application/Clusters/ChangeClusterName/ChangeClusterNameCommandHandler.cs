@@ -5,7 +5,7 @@ using EnvironmentGateway.Domain.Clusters;
 namespace EnvironmentGateway.Application.Clusters.ChangeClusterName;
 
 internal sealed class ChangeClusterNameCommandHandler(
-    IClusterRepository clusterReppository,
+    IClusterRepository clusterRepository,
     IUnitOfWork unitOfWork)
     : ICommandHandler<ChangeClusterNameCommand>
 {
@@ -13,7 +13,7 @@ internal sealed class ChangeClusterNameCommandHandler(
         ChangeClusterNameCommand command, 
         CancellationToken cancellationToken)
     {
-        var cluster = await clusterReppository
+        var cluster = await clusterRepository
             .GetByIdAsync(command.ClusterId, cancellationToken);
 
         if (cluster is null)
