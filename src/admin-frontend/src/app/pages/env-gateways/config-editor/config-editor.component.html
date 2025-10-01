@@ -37,11 +37,12 @@
           <config-editor-routes
             [routesArrayName]="routesControlName"
             [parent]="gatewayConfigForm"
+            [clusterNameChangedTrigger]="clusterRenameTrigger()"
           ></config-editor-routes>
           <config-editor-clusters
             [clustersArrayName]="clustersControlName"
             [parent]="gatewayConfigForm"
-            (clusterNameChanged)="onClusterChanged({clusterNameBeforeChange: $event.clusterNameBeforeChange, newClusterName: $event.newClusterName})"
+            (clusterNameChanged)="onClusterNameChanged({clusterNameBeforeChange: $event.clusterNameBeforeChange, newClusterName: $event.newClusterName})"
           ></config-editor-clusters>
         </div>
       </div>

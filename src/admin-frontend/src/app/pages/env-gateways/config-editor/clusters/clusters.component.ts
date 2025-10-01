@@ -51,8 +51,7 @@ export class ClustersComponent implements OnInit {
 
     if (requestDialog && requestResponse.isSuccess) {
       this.requestDialogService.onClose(() => {
-        console.log('Callback from dialog service:', values.oldClusterName, 'to', values.newClusterName);
-
+        this.clusterNameChanged.emit({ clusterNameBeforeChange: values.oldClusterName, newClusterName: values.newClusterName });
       });
     }
   }

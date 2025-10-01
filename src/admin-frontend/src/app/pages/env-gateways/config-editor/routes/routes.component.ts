@@ -1,4 +1,4 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, effect, input } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../shared/config-editor-control-names';
 import { EditableInputComponent } from "../components/editable-input/editable-input.component";
@@ -22,11 +22,26 @@ export class RoutesComponent implements OnInit {
   public readonly CONTROL_LABELS = CONFIG_EDITOR_CONTROL_LABELS;
   public readonly parent = input.required<FormGroup<any> | null>();
   readonly routesArrayName = input.required<string>();
+  public readonly clusterNameChangedTrigger = input<{ clusterNameBeforeChange: string; newClusterName: string; listRouteName: string[] } | null>();
   public parentFormGroup!: FormGroup;
   public routes!: FormArray;
+
+  constructor() {
+    effect(() => {
+      const trigger = this.clusterNameChangedTrigger();
+      if (trigger) {
+        this.notifyUserToChangeClusterName(trigger.clusterNameBeforeChange, trigger.newClusterName, trigger.listRouteName);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.parentFormGroup = this.parent() as FormGroup;
     this.routes = this.parentFormGroup.get(this.routesArrayName()) as FormArray;
   };
+
+  private notifyUserToChangeClusterName(oldClusterName: string, newClusterName: string, listRouteName: string[]): void {
+    console.log('Cluster name changed from', oldClusterName, 'to', newClusterName, 'in routes:', listRouteName);
+
+  }
 }

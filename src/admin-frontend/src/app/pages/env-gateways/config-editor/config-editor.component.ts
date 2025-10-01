@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { GatewayDataService } from '../../../services/env-gateway/gateway-data.service';
 import { GatewayConfig } from '../../../models/gateway-config/gateway-config.model';
@@ -28,6 +28,7 @@ export class ConfigEditorComponent {
   readonly routesControlName = CONFIG_EDITOR_CONTROL_NAMES.ROUTES;
   readonly clustersControlName = CONFIG_EDITOR_CONTROL_NAMES.CLUSTERS;
   public currentConfigResource = this.gatewayDataService.getCurrentConfig();
+  public clusterRenameTrigger = signal<{ clusterNameBeforeChange: string; newClusterName: string; listRouteName: string[] } | null>(null);
   public currentConfigData!: GatewayConfig;
   public gatewayConfigForm!: FormGroup;
 
@@ -45,8 +46,16 @@ export class ConfigEditorComponent {
     });
   }
 
-  public onClusterChanged(event: { clusterNameBeforeChange: string, newClusterName: string }): void {
-    console.log('Cluster changed:', event);
+  public onClusterNameChanged(event: { clusterNameBeforeChange: string, newClusterName: string }): void {
+    const listRouteName = this.currentConfigData.routes
+      .filter(route => route.clusterName === event.clusterNameBeforeChange)
+      .map(route => route.routeName);
+
+    this.clusterRenameTrigger.set({
+      clusterNameBeforeChange: event.clusterNameBeforeChange,
+      newClusterName: event.newClusterName,
+      listRouteName: listRouteName
+    })
   }
 
   private buildGatewayConfigForm() {
