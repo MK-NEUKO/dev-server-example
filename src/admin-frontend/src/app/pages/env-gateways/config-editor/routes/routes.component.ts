@@ -30,7 +30,7 @@ export class RoutesComponent implements OnInit {
     effect(() => {
       const trigger = this.clusterNameChangedTrigger();
       if (trigger) {
-        this.notifyUserToChangeClusterName(trigger.clusterNameBeforeChange, trigger.newClusterName, trigger.listRouteName);
+        this.changeClusterName(trigger.clusterNameBeforeChange, trigger.newClusterName, trigger.listRouteName);
       }
     });
   }
@@ -40,8 +40,14 @@ export class RoutesComponent implements OnInit {
     this.routes = this.parentFormGroup.get(this.routesArrayName()) as FormArray;
   };
 
-  private notifyUserToChangeClusterName(oldClusterName: string, newClusterName: string, listRouteName: string[]): void {
-    console.log('Cluster name changed from', oldClusterName, 'to', newClusterName, 'in routes:', listRouteName);
-
+  private changeClusterName(oldClusterName: string, newClusterName: string, listRouteName: string[]): void {
+    this.routes.controls.forEach(routeControl => {
+      const route = routeControl as FormGroup;
+      const routeName = route.get(this.CONTROL_NAMES.ROUTE_NAME)?.value;
+      const clusterNameControl = route.get(this.CONTROL_NAMES.CLUSTER_NAME);
+      if (routeName && clusterNameControl) {
+        console.log(`Route '${routeName}' is still using cluster '${oldClusterName}'. Please update it to '${newClusterName}'.`);
+      }
+    });
   }
 }
