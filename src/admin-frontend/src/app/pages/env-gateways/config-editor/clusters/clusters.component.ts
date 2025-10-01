@@ -5,6 +5,7 @@ import { CONFIG_EDITOR_CONTROL_NAMES } from '../shared/config-editor-control-nam
 import { EditableInputComponent } from "../components/editable-input/editable-input.component";
 import { CONFIG_EDITOR_CONTROL_LABELS } from '../shared/config-editor-control-labels';
 import { ClusterService } from '../../../../services/env-gateway/clusters/cluster.service';
+import { RequestDialogService } from '../../../../services/dialog-service/request-dialog.service';
 
 @Component({
   selector: 'config-editor-clusters',
@@ -26,6 +27,7 @@ export class ClustersComponent implements OnInit {
   public readonly parent = input.required<FormGroup<any> | null>();
   readonly clustersArrayName = input.required<string>();
   private readonly clusterService = inject(ClusterService);
+  private readonly requestDialogService = inject(RequestDialogService);
   public parentFormGroup!: FormGroup;
   public clusters!: FormArray;
 
@@ -34,12 +36,16 @@ export class ClustersComponent implements OnInit {
     this.clusters = this.parentFormGroup.get(this.clustersArrayName()) as FormArray;
   };
 
-  public onSaveClusterName(newClusterName: string, clusterIndex: number): void {
-
+  public async onSaveClusterName(newClusterName: string, clusterIndex: number): Promise<void> {
+    const requestDialog = this.requestDialogService.open('Cluster name will be changed');
     const clusterId = this.clusters.at(clusterIndex).get(this.CONTROL_NAMES.CLUSTER_ID)?.value;
-    const request = { newName: newClusterName, clusterId: clusterId };
-    console.log('Request to save cluster name changes:', request);
+    const request = { clusterName: newClusterName, clusterId: clusterId };
 
-    this.clusterService.SaveClusterNameChanges(request);
+    const requestResponse = await this.clusterService.SaveClusterNameChanges(request);
+
+    if (requestDialog && requestResponse) {
+      this.requestDialogService.setRequestResponse(requestResponse);
+      this.requestDialogService.setTitle('Change cluster name response');
+    }
   }
 }

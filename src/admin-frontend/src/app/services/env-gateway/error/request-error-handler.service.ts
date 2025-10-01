@@ -12,7 +12,13 @@ export class RequestErrorHandler {
 
   public handle(error: any): RequestResponse {
     if (error) {
-      const errorMessage = error.errors[0].errorMessage;
+      let errorMessage = '';
+      if (error.errors) {
+        errorMessage = error.errors[0].errorMessage;
+      } else {
+        errorMessage = error.message || 'An error occurred';
+      }
+
       const errorTitle = error.title;
       const errorType = error.type;
       const errorStatus = error.status;
@@ -31,6 +37,7 @@ export class RequestErrorHandler {
         )
       };
     }
+
     return {
       isError: true,
       message: 'An unexpected error occurred.'
