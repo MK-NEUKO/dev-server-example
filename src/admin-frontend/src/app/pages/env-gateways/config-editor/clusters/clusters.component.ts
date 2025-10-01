@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject, input } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DestinationsComponent } from "./destinations/destinations.component";
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../shared/config-editor-control-names';
@@ -28,6 +28,7 @@ export class ClustersComponent implements OnInit {
   readonly clustersArrayName = input.required<string>();
   private readonly clusterService = inject(ClusterService);
   private readonly requestDialogService = inject(RequestDialogService);
+  @Output() clusterNameChanged = new EventEmitter<{ clusterNameBeforeChange: string, newClusterName: string }>();
   public parentFormGroup!: FormGroup;
   public clusters!: FormArray;
 
@@ -36,16 +37,23 @@ export class ClustersComponent implements OnInit {
     this.clusters = this.parentFormGroup.get(this.clustersArrayName()) as FormArray;
   };
 
-  public async onSaveClusterName(newClusterName: string, clusterIndex: number): Promise<void> {
+  public async onSaveClusterName(values: { newClusterName: string, oldClusterName: string }, clusterIndex: number): Promise<void> {
     const requestDialog = this.requestDialogService.open('Cluster name will be changed');
     const clusterId = this.clusters.at(clusterIndex).get(this.CONTROL_NAMES.CLUSTER_ID)?.value;
-    const request = { clusterName: newClusterName, clusterId: clusterId };
+    const request = { clusterName: values.newClusterName, clusterId: clusterId };
 
     const requestResponse = await this.clusterService.SaveClusterNameChanges(request);
 
     if (requestDialog && requestResponse) {
       this.requestDialogService.setRequestResponse(requestResponse);
       this.requestDialogService.setTitle('Change cluster name response');
+    }
+
+    if (requestDialog && requestResponse.isSuccess) {
+      this.requestDialogService.onClose(() => {
+        console.log('Callback from dialog service:', values.oldClusterName, 'to', values.newClusterName);
+
+      });
     }
   }
 }

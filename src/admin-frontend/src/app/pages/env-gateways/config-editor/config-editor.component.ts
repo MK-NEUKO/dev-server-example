@@ -45,8 +45,11 @@ export class ConfigEditorComponent {
     });
   }
 
+  public onClusterChanged(event: { clusterNameBeforeChange: string, newClusterName: string }): void {
+    console.log('Cluster changed:', event);
+  }
 
-  buildGatewayConfigForm() {
+  private buildGatewayConfigForm() {
     this.gatewayConfigForm = this.formBuilder.group({
       [CONFIG_EDITOR_CONTROL_NAMES.CONFIG_NAME]: this.formBuilder.control({ value: this.currentConfigData.name || 'build error', disabled: true }),
       [CONFIG_EDITOR_CONTROL_NAMES.ROUTES]: this.buildRoutesConfigForm(this.currentConfigData.routes),

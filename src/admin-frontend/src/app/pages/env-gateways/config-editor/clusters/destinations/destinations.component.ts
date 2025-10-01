@@ -47,7 +47,7 @@ export class DestinationsComponent implements OnInit {
     };
 
     let responseTitle = '';
-    let requestResponse: RequestResponse = { isError: false, message: '' };
+    let requestResponse: RequestResponse = { isError: false, isSuccess: false, message: '' };
 
     if (controlName === CONFIG_EDITOR_CONTROL_NAMES.DESTINATION_NAME) {
       requestResponse = await this.destinationService.SaveDestinationNameChanges(request);

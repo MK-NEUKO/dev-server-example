@@ -21,6 +21,7 @@ export class DestinationService {
             console.log('Destination updated successfully:', response);
             resolve({
               isError: false,
+              isSuccess: true,
               message: 'Destination name was successfully changed.'
             });
           },
@@ -40,6 +41,7 @@ export class DestinationService {
           next: (response) => {
             resolve({
               isError: false,
+              isSuccess: true,
               message: 'Destination address was successfully changed.'
             });
           },

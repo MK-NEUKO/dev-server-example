@@ -14,7 +14,7 @@
           [controlName]="CONTROL_NAMES.CLUSTER_NAME"
           [label]="CONTROL_LABELS.CLUSTER_NAME"
           [showLabel]="false"
-          (editComplete)="onSaveClusterName($event, clusterIndex)"
+          (editComplete)="onSaveClusterName({newClusterName: $event.newValue, oldClusterName: $event.oldValue}, clusterIndex)"
         ></config-editor-editable-input>
         <span>": {{ "{" }}</span>
       </div>

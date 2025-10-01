@@ -27,6 +27,7 @@ export class RequestErrorHandler {
 
       return {
         isError: true,
+        isSuccess: false,
         message: errorMessage,
         details: new ErrorDetails(
           errorTitle,
@@ -40,6 +41,7 @@ export class RequestErrorHandler {
 
     return {
       isError: true,
+      isSuccess: false,
       message: 'An unexpected error occurred.'
     };
   }

@@ -25,7 +25,7 @@ export class EditableInputComponent implements OnInit {
   public readonly showLabel = input<boolean>(true);
   @ViewChild('editButton') editButton!: ElementRef<HTMLButtonElement>;
   @Input() label!: string;
-  @Output() editComplete = new EventEmitter<string>();
+  @Output() editComplete = new EventEmitter<{ newValue: string, oldValue: string }>();
   public editingModalService = inject(EditingModalService);
   private editableInputReference = inject(ElementRef);
 
@@ -52,6 +52,7 @@ export class EditableInputComponent implements OnInit {
   }
 
   public openEditingModal() {
+    const currentControlValue = this.formControl.value;
     const editableInputPosition = this.getEditableInputPosition();
     const modalInstance = this.editingModalService.open(editableInputPosition, this.formControl, this.label);
     if (modalInstance) {
@@ -66,7 +67,7 @@ export class EditableInputComponent implements OnInit {
           this.isInputEditable = false;
           this.formControl.setValue(data.value);
           this.editingModalService.close();
-          this.editComplete.emit(data.value);
+          this.editComplete.emit({ newValue: data.value, oldValue: currentControlValue });
         }
       };
     }

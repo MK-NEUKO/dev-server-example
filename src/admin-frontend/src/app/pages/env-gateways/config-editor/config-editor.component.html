@@ -39,8 +39,9 @@
             [parent]="gatewayConfigForm"
           ></config-editor-routes>
           <config-editor-clusters
-           [clustersArrayName]="clustersControlName"
-           [parent]="gatewayConfigForm"
+            [clustersArrayName]="clustersControlName"
+            [parent]="gatewayConfigForm"
+            (clusterNameChanged)="onClusterChanged({clusterNameBeforeChange: $event.clusterNameBeforeChange, newClusterName: $event.newClusterName})"
           ></config-editor-clusters>
         </div>
       </div>

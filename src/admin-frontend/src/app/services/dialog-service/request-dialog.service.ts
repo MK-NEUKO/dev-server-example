@@ -1,10 +1,12 @@
 import { Injectable, ApplicationRef, ComponentRef, Injector, createComponent } from '@angular/core';
 import { RequestDialogComponent } from '../../dialogues/request-dialog/request-dialog.component';
 import { RequestResponse } from '../env-gateway/RequestResponse/request-response';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class RequestDialogService {
   private requestDialogReference?: ComponentRef<RequestDialogComponent>;
+  private readonly anCloseCallbacks = new Set<() => void>();
 
   constructor(private appRef: ApplicationRef, private injector: Injector) { }
 
@@ -36,6 +38,24 @@ export class RequestDialogService {
       this.appRef.detachView(this.requestDialogReference.hostView);
       this.requestDialogReference.destroy();
       this.requestDialogReference = undefined;
+      this.triggerCloseCallbacks();
     }
   }
+
+  onClose(callback: () => void) {
+    this.anCloseCallbacks.add(callback);
+    return () => this.anCloseCallbacks.delete(callback);
+  }
+
+  private triggerCloseCallbacks(): void {
+    this.anCloseCallbacks.forEach(callback => {
+      try {
+        callback();
+      } catch (error) {
+        console.error('Error executing onClose callback:', error);
+      }
+    });
+    this.anCloseCallbacks.clear();
+  }
+
 }

@@ -20,9 +20,9 @@ export class ClusterService {
       this.httpClient.put(this.CHANGE_CLUSTER_NAME, request, {})
         .subscribe({
           next: (response) => {
-            console.log('Cluster name updated successfully:', response);
             resolve({
               isError: false,
+              isSuccess: true,
               message: 'Cluster name was successfully changed.'
             });
           },
