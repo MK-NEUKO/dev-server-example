@@ -1,4 +1,4 @@
-<section class="container" (mousedown)="emitMouseDown($event)">
+<section class="container">
   <h2>Gateway configuration editor</h2>
 
   @if (currentConfigResource.isLoading()) {
@@ -37,10 +37,12 @@
           <config-editor-routes
             [routesArrayName]="routesControlName"
             [parent]="gatewayConfigForm"
+            [clusterNameChangedTrigger]="clusterRenameTrigger()"
           ></config-editor-routes>
           <config-editor-clusters
-           [clustersArrayName]="clustersControlName"
-           [parent]="gatewayConfigForm"
+            [clustersArrayName]="clustersControlName"
+            [parent]="gatewayConfigForm"
+            (clusterNameChanged)="onClusterNameChanged({clusterNameBeforeChange: $event.clusterNameBeforeChange, newClusterName: $event.newClusterName})"
           ></config-editor-clusters>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { RequestResponse } from '../env-gateway/RequestResponse/request-response
 @Injectable({ providedIn: 'root' })
 export class RequestDialogService {
   private requestDialogReference?: ComponentRef<RequestDialogComponent>;
+  private readonly onCloseCallbacks = new Set<() => void>();
 
   constructor(private appRef: ApplicationRef, private injector: Injector) { }
 
@@ -36,6 +37,24 @@ export class RequestDialogService {
       this.appRef.detachView(this.requestDialogReference.hostView);
       this.requestDialogReference.destroy();
       this.requestDialogReference = undefined;
+      this.triggerCloseCallbacks();
     }
   }
+
+  onClose(callback: () => void) {
+    this.onCloseCallbacks.add(callback);
+    return () => this.onCloseCallbacks.delete(callback);
+  }
+
+  private triggerCloseCallbacks(): void {
+    this.onCloseCallbacks.forEach(callback => {
+      try {
+        callback();
+      } catch (error) {
+        console.error('Error executing onClose callback:', error);
+      }
+    });
+    this.onCloseCallbacks.clear();
+  }
+
 }

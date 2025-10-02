@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { GatewayDataService } from '../../../services/env-gateway/gateway-data.service';
 import { GatewayConfig } from '../../../models/gateway-config/gateway-config.model';
@@ -10,7 +10,6 @@ import { NameValidator } from './shared/name-validator';
 import { RouteConfig } from '../../../models/gateway-config/route-config.model';
 import { Destination } from '../../../models/gateway-config/destination.model';
 import { ClusterConfig } from '../../../models/gateway-config/cluster-config.model';
-import { ConfigEditorEventService } from '../../../services/config-editor/config-editor-event.service';
 
 @Component({
   selector: 'app-config-editor',
@@ -26,10 +25,10 @@ export class ConfigEditorComponent {
 
   private gatewayDataService = inject(GatewayDataService);
   private formBuilder = inject(FormBuilder);
-  private configEditorEventService = inject(ConfigEditorEventService);
   readonly routesControlName = CONFIG_EDITOR_CONTROL_NAMES.ROUTES;
   readonly clustersControlName = CONFIG_EDITOR_CONTROL_NAMES.CLUSTERS;
   public currentConfigResource = this.gatewayDataService.getCurrentConfig();
+  public clusterRenameTrigger = signal<{ clusterNameBeforeChange: string; newClusterName: string } | null>(null);
   public currentConfigData!: GatewayConfig;
   public gatewayConfigForm!: FormGroup;
 
@@ -47,12 +46,14 @@ export class ConfigEditorComponent {
     });
   }
 
-  public emitMouseDown(event: MouseEvent) {
-    this.configEditorEventService.emitMouseDown(event);
-
+  public onClusterNameChanged(event: { clusterNameBeforeChange: string, newClusterName: string }): void {
+    this.clusterRenameTrigger.set({
+      clusterNameBeforeChange: event.clusterNameBeforeChange,
+      newClusterName: event.newClusterName,
+    })
   }
 
-  buildGatewayConfigForm() {
+  private buildGatewayConfigForm() {
     this.gatewayConfigForm = this.formBuilder.group({
       [CONFIG_EDITOR_CONTROL_NAMES.CONFIG_NAME]: this.formBuilder.control({ value: this.currentConfigData.name || 'build error', disabled: true }),
       [CONFIG_EDITOR_CONTROL_NAMES.ROUTES]: this.buildRoutesConfigForm(this.currentConfigData.routes),
