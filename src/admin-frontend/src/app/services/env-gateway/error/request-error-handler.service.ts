@@ -13,8 +13,8 @@ export class RequestErrorHandler {
   public handle(error: any): RequestResponse {
     if (error) {
       let errorMessage = '';
-      if (error.errors) {
-        errorMessage = error.errors[0].errorMessage;
+      if (Array.isArray(error.errors) && error.errors.length > 0) {
+        errorMessage = error.errors[0].errorMessage ?? 'An error occurred';
       } else {
         errorMessage = error.message || 'An error occurred';
       }
