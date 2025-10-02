@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, Input, input, OnInit, ViewChild, signal, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, inject, Input, input, OnInit, ViewChild, signal, output } from '@angular/core';
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../../shared/config-editor-control-names';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -23,9 +23,9 @@ export class EditableInputComponent implements OnInit {
   public readonly parentIndex = input.required<number>();
   public readonly controlName = input.required<string>();
   public readonly showLabel = input<boolean>(true);
+  public readonly label = input<string>();
   @ViewChild('editButton') editButton!: ElementRef<HTMLButtonElement>;
-  @Input() label!: string;
-  @Output() editComplete = new EventEmitter<{ newValue: string, oldValue: string }>();
+  public editComplete = output<{ newValue: string, oldValue: string }>();
   public editingModalService = inject(EditingModalService);
   private editableInputReference = inject(ElementRef);
 
