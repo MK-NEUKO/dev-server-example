@@ -50,6 +50,8 @@ export class RoutesComponent implements OnInit {
       if (routeName && isChangeRequired) {
         clusterNameControl?.setValue(newClusterName);
         this.notifyUserClusterNameChanged(routeName, oldClusterName, newClusterName);
+        // TODO: Replace alert with a better user notification system
+        // TODO: Make request to backend to update all routes with the old cluster name to the new cluster name
       }
     });
   }
