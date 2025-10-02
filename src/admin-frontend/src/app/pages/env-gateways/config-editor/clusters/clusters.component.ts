@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, inject, input, output } from '@angular/core';
+import { Component, OnInit, inject, input, output } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DestinationsComponent } from "./destinations/destinations.component";
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../shared/config-editor-control-names';

@@ -56,7 +56,7 @@ export class RoutesComponent implements OnInit {
     });
   }
 
-  notifyUserClusterNameChanged(routeName: any, oldClusterName: string, newClusterName: string) {
+  notifyUserClusterNameChanged(routeName: string, oldClusterName: string, newClusterName: string) {
     const message = `The cluster name for route "${routeName}" has been updated from "${oldClusterName}" to "${newClusterName}".`;
     alert(message);
   }
