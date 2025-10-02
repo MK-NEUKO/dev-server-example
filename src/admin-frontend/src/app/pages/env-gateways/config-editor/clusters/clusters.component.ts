@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, inject, input } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject, input, output } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DestinationsComponent } from "./destinations/destinations.component";
 import { CONFIG_EDITOR_CONTROL_NAMES } from '../shared/config-editor-control-names';
@@ -28,7 +28,7 @@ export class ClustersComponent implements OnInit {
   readonly clustersArrayName = input.required<string>();
   private readonly clusterService = inject(ClusterService);
   private readonly requestDialogService = inject(RequestDialogService);
-  @Output() clusterNameChanged = new EventEmitter<{ clusterNameBeforeChange: string, newClusterName: string }>();
+  public clusterNameChanged = output<{ clusterNameBeforeChange: string, newClusterName: string }>();
   public parentFormGroup!: FormGroup;
   public clusters!: FormArray;
 

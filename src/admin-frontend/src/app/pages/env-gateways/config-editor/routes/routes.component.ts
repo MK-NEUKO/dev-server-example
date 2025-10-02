@@ -22,7 +22,7 @@ export class RoutesComponent implements OnInit {
   public readonly CONTROL_LABELS = CONFIG_EDITOR_CONTROL_LABELS;
   public readonly parent = input.required<FormGroup<any> | null>();
   readonly routesArrayName = input.required<string>();
-  public readonly clusterNameChangedTrigger = input<{ clusterNameBeforeChange: string; newClusterName: string; listRouteName: string[] } | null>();
+  public readonly clusterNameChangedTrigger = input<{ clusterNameBeforeChange: string; newClusterName: string } | null>();
   public parentFormGroup!: FormGroup;
   public routes!: FormArray;
 
@@ -30,7 +30,7 @@ export class RoutesComponent implements OnInit {
     effect(() => {
       const trigger = this.clusterNameChangedTrigger();
       if (trigger) {
-        this.changeClusterName(trigger.clusterNameBeforeChange, trigger.newClusterName, trigger.listRouteName);
+        this.changeClusterName(trigger.clusterNameBeforeChange, trigger.newClusterName);
       }
     });
   }
@@ -40,14 +40,22 @@ export class RoutesComponent implements OnInit {
     this.routes = this.parentFormGroup.get(this.routesArrayName()) as FormArray;
   };
 
-  private changeClusterName(oldClusterName: string, newClusterName: string, listRouteName: string[]): void {
+  private changeClusterName(oldClusterName: string, newClusterName: string): void {
     this.routes.controls.forEach(routeControl => {
       const route = routeControl as FormGroup;
       const routeName = route.get(this.CONTROL_NAMES.ROUTE_NAME)?.value;
       const clusterNameControl = route.get(this.CONTROL_NAMES.CLUSTER_NAME);
-      if (routeName && clusterNameControl) {
-        console.log(`Route '${routeName}' is still using cluster '${oldClusterName}'. Please update it to '${newClusterName}'.`);
+      const currentClusterName = clusterNameControl?.value;
+      const isChangeRequired = currentClusterName === oldClusterName;
+      if (routeName && isChangeRequired) {
+        clusterNameControl?.setValue(newClusterName);
+        this.notifyUserClusterNameChanged(routeName, oldClusterName, newClusterName);
       }
     });
+  }
+
+  notifyUserClusterNameChanged(routeName: any, oldClusterName: string, newClusterName: string) {
+    const message = `The cluster name for route "${routeName}" has been updated from "${oldClusterName}" to "${newClusterName}".`;
+    alert(message);
   }
 }

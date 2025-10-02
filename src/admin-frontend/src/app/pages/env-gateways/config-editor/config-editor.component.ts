@@ -28,7 +28,7 @@ export class ConfigEditorComponent {
   readonly routesControlName = CONFIG_EDITOR_CONTROL_NAMES.ROUTES;
   readonly clustersControlName = CONFIG_EDITOR_CONTROL_NAMES.CLUSTERS;
   public currentConfigResource = this.gatewayDataService.getCurrentConfig();
-  public clusterRenameTrigger = signal<{ clusterNameBeforeChange: string; newClusterName: string; listRouteName: string[] } | null>(null);
+  public clusterRenameTrigger = signal<{ clusterNameBeforeChange: string; newClusterName: string } | null>(null);
   public currentConfigData!: GatewayConfig;
   public gatewayConfigForm!: FormGroup;
 
@@ -47,14 +47,9 @@ export class ConfigEditorComponent {
   }
 
   public onClusterNameChanged(event: { clusterNameBeforeChange: string, newClusterName: string }): void {
-    const listRouteName = this.currentConfigData.routes
-      .filter(route => route.clusterName === event.clusterNameBeforeChange)
-      .map(route => route.routeName);
-
     this.clusterRenameTrigger.set({
       clusterNameBeforeChange: event.clusterNameBeforeChange,
       newClusterName: event.newClusterName,
-      listRouteName: listRouteName
     })
   }
 
